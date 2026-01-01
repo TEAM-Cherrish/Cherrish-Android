@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ktlint)
 }
 
 val properties = Properties().apply {
@@ -88,4 +89,17 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     debugImplementation(libs.bundles.compose.debug)
+}
+
+ktlint {
+    android = true
+    debug = true
+    coloredOutput = true
+    verbose = true
+    outputToConsole = true
+
+    filter {
+        exclude { element -> element.file.path.contains("test/") }
+        exclude { element -> element.file.path.contains("androidTest/") }
+    }
 }
