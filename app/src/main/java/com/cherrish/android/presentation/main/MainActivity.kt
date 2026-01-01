@@ -1,4 +1,4 @@
-package com.cherrish.android
+package com.cherrish.android.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.cherrish.android.ui.theme.CherrishTheme
+import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

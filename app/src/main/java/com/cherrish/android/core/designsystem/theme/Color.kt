@@ -1,4 +1,4 @@
-package com.cherrish.android.ui.theme
+package com.cherrish.android.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
