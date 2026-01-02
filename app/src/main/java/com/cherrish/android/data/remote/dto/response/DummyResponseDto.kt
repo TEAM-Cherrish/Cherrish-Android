@@ -1,4 +1,4 @@
-package com.cherrish.android.data.dto.response
+package com.cherrish.android.data.remote.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

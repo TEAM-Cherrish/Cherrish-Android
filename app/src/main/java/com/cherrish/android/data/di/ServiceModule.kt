@@ -1,6 +1,6 @@
 package com.cherrish.android.data.di
 
-import com.cherrish.android.data.service.DummyService
+import com.cherrish.android.data.remote.service.DummyService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

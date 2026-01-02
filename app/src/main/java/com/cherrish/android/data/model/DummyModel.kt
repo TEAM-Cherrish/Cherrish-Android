@@ -1,6 +1,6 @@
 package com.cherrish.android.data.model
 
-import com.cherrish.android.data.dto.response.DummyResponseDto
+import com.cherrish.android.data.remote.dto.response.DummyResponseDto
 
 data class DummyModel(
     val id: Long,

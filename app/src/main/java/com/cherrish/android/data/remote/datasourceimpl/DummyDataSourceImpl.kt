@@ -1,9 +1,9 @@
-package com.cherrish.android.data.datasourceimpl
+package com.cherrish.android.data.remote.datasourceimpl
 
 import com.cherrish.android.core.network.BaseResponse
-import com.cherrish.android.data.datasource.DummyDataSource
-import com.cherrish.android.data.dto.response.DummyResponseDto
-import com.cherrish.android.data.service.DummyService
+import com.cherrish.android.data.remote.datasource.DummyDataSource
+import com.cherrish.android.data.remote.dto.response.DummyResponseDto
+import com.cherrish.android.data.remote.service.DummyService
 import javax.inject.Inject
 
 class DummyDataSourceImpl @Inject constructor(
