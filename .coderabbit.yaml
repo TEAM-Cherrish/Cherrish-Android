@@ -1,22 +1,32 @@
-language: "ko"
+language: ko
 
 reviews:
+  # 자동 리뷰 활성화
   auto_review:
     enabled: true
 
+  # 고수준 요약 포함
   high_level_summary: true
-  review_comments: true
 
-  rules:
-    - focus: "Jetpack Compose 구조, 상태 관리, recomposition 이슈"
-    - focus: "ViewModel, UiState, 단방향 데이터 흐름"
-    - focus: "불필요한 recomposition, remember/derivedStateOf 사용 여부"
-    - focus: "네이밍, 가독성, 구글 권장 아키텍처 계층 분리"
+  # 인라인 코멘트 활성화
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
 
-  ignore:
-    - "**/build/**"
-    - "**/generated/**"
-    - "**/.gradle/**"
-    - "**/*.png"
-    - "**/*.jpg"
-    - "**/*.webp"
+  # 리뷰 포커스 영역
+  path_instructions:
+    - path: "**/*.kt"
+      instructions: |
+        - Jetpack Compose 구조, 상태 관리, recomposition 최적화에 집중
+        - ViewModel, UiState, 단방향 데이터 흐름 패턴 검토
+        - 불필요한 recomposition 가능성, remember/derivedStateOf 적절한 사용 확인
+        - 네이밍 컨벤션, 가독성, Google 권장 Android 아키텍처 준수 여부
+
+  # 리뷰에서 제외할 파일
+  path_filters:
+    - "!**/build/**"
+    - "!**/generated/**"
+    - "!**/.gradle/**"
+    - "!**/*.png"
+    - "!**/*.jpg"
+    - "!**/*.webp"
