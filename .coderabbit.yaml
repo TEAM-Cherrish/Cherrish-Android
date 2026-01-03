@@ -1,0 +1,20 @@
+language: "ko"
+
+reviews:
+  auto_review: true
+  high_level_summary: true
+  review_comments: true
+
+  rules:
+    - focus: "Jetpack Compose 구조, 상태 관리, recomposition 이슈"
+    - focus: "ViewModel, UiState, 단방향 데이터 흐름"
+    - focus: "불필요한 recomposition, remember/derivedStateOf 사용 여부"
+    - focus: "네이밍, 가독성, 구글 권장 아키텍처 계층 분리"
+
+  ignore:
+    - "**/build/**"
+    - "**/generated/**"
+    - "**/.gradle/**"
+    - "**/*.png"
+    - "**/*.jpg"
+    - "**/*.webp"
