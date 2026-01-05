@@ -2,7 +2,7 @@ name: Cherrish CI
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [ develop, main ]
 
 jobs:
   lint:
@@ -38,7 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run ktlint
-        run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck --parallel
 
       - name: Upload ktlint reports
         if: failure()
@@ -48,7 +48,7 @@ jobs:
           path: app/build/reports/ktlint/
 
   build:
-    name: Build Check
+    name: PR Build Check
     runs-on: ubuntu-latest
 
     steps:
@@ -80,4 +80,4 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --parallel --stacktrace
