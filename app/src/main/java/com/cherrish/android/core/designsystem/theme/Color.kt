@@ -1,8 +1,14 @@
 package com.cherrish.android.core.designsystem.theme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 
 val CherrishPink = Color(0xFFEB445B)
 
@@ -91,3 +97,54 @@ val defaultCherrishColors = CherrishColors(
 )
 
 val LocalCherrishColorsProvider = staticCompositionLocalOf { defaultCherrishColors }
+
+@Preview
+@Composable
+fun CherrishRedColorsPreview() {
+    CherrishTheme {
+        Column {
+            Text("Red100", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red100)
+            Text("Red200", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red200)
+            Text("Red300", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red300)
+            Text("Red400", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red400)
+            Text("Red500", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red500)
+            Text("Red600", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red600)
+            Text("Red700", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red700)
+            Text("Red800", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Red800)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CherrishGrayColorsPreview() {
+    CherrishTheme {
+        Column {
+            Text("Gray0", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray0,
+                modifier = Modifier.background(CherrishTheme.colors.Gray1000))
+            Text("Gray100", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray100,
+                modifier = Modifier.background(CherrishTheme.colors.Gray1000))
+            Text("Gray200", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray200)
+            Text("Gray300", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray300)
+            Text("Gray400", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray400)
+            Text("Gray500", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray500)
+            Text("Gray600", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray600)
+            Text("Gray700", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray700)
+            Text("Gray800", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray800)
+            Text("Gray900", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray900)
+            Text("Gray1000", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Gray1000)
+        }
+    }
+}
+
+@Preview
+@Composable
+fun CherrishGreenColorsPreview() {
+    CherrishTheme {
+        Column {
+            Text("Green1", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Green1)
+            Text("Green2", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Green2)
+            Text("Green3", style = CherrishTheme.typography.body1_m_14, color = CherrishTheme.colors.Green3)
+        }
+    }
+}
