@@ -1,10 +1,14 @@
 package com.cherrish.android.core.designsystem.theme
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.cherrish.android.R
@@ -123,3 +127,93 @@ val defaultCherrishTypography = CherrishTypography(
     )
 
 val LocalCherrishTypographyProvider = staticCompositionLocalOf { defaultCherrishTypography }
+
+@Preview
+@Composable
+fun CherrishTypographyPreview() {
+    CherrishTheme {
+        Column {
+            Text(
+                "headline_b_20",
+                style = CherrishTheme.typography.headline_b_20,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "headline_sb_20",
+                style = CherrishTheme.typography.headline_sb_20,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "title1_sb_18",
+                style = CherrishTheme.typography.title1_sb_18,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "title1_m_18",
+                style = CherrishTheme.typography.title1_m_18,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "title1_r_18",
+                style = CherrishTheme.typography.title1_r_18,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "title2_sb_16",
+                style = CherrishTheme.typography.title2_sb_16,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "title2_m_16",
+                style = CherrishTheme.typography.title2_m_16,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "title2_r_16",
+                style = CherrishTheme.typography.title2_r_16,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "body1_sb_14",
+                style = CherrishTheme.typography.body1_sb_14,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "body1_m_14",
+                style = CherrishTheme.typography.body1_m_14,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "body1_r_14",
+                style = CherrishTheme.typography.body1_r_14,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "body2_r_13",
+                style = CherrishTheme.typography.body2_r_13,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "body3_m_12",
+                style = CherrishTheme.typography.body3_m_12,
+                color = CherrishTheme.colors.Gray900
+            )
+            Text(
+                "body3_r_12",
+                style = CherrishTheme.typography.body3_r_12,
+                color = CherrishTheme.colors.Gray900
+            )
+
+            Text(
+                "caption_r_11",
+                style = CherrishTheme.typography.caption_r_11,
+                color = CherrishTheme.colors.Gray900
+            )
+        }
+    }
+}
