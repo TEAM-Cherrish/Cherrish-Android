@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDay
+import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.util.nextMonth
 import com.cherrish.android.presentation.calendar.util.previousMonth
@@ -23,11 +24,9 @@ fun CherrishCalendar(
     onDateClick: (LocalDate) -> Unit,
     onMonthChange: (YearMonth) -> Unit,
     procedureCountByDate: Map<LocalDate, Int>,
-    downtimeByDate: Map<LocalDate, DownTimeStatus>,
+    displayMode: CalendarDisplayMode,
     modifier: Modifier = Modifier
 ) {
-    val isDowntimeMode = downtimeByDate.isNotEmpty()
-
     Column(modifier = modifier) {
         CalendarHeader(
             onLeftArrowClick = { onMonthChange(yearMonth.previousMonth) },
@@ -38,7 +37,7 @@ fun CherrishCalendar(
         BasicCalendar(
             yearMonth = yearMonth,
             procedureCountByDate = procedureCountByDate,
-            downtimeByDate = downtimeByDate,
+            displayMode = displayMode,
             dayContent = { day ->
                 DayItem(
                     day = day,
@@ -48,7 +47,7 @@ fun CherrishCalendar(
                         }
                     },
                     isSelected = day is CalendarDay.Date && day.date == selectedDate,
-                    showDowntime = isDowntimeMode
+                    showDowntime = displayMode is CalendarDisplayMode.ShowDowntime
                 )
             }
         )
@@ -74,11 +73,11 @@ private fun CherrishCalendarPreview() {
             yearMonth = yearMonth,
             selectedDate = selectedDate,
             procedureCountByDate = procedureCountByDate,
-            downtimeByDate = emptyMap(),
             onDateClick = { selectedDate = it },
             onMonthChange = { newMonth ->
                 yearMonth = newMonth
-            }
+            },
+            displayMode = CalendarDisplayMode.Normal
         )
     }
 }
@@ -111,11 +110,11 @@ private fun CherrishCalendarDowntimePreview() {
             yearMonth = yearMonth,
             selectedDate = selectedDate,
             procedureCountByDate = procedureCountByDate,
-            downtimeByDate = downtimeByDate,
             onDateClick = { selectedDate = it },
             onMonthChange = { newMonth ->
                 yearMonth = newMonth
-            }
+            },
+            displayMode = CalendarDisplayMode.ShowDowntime(downtimeByDate)
         )
     }
 }

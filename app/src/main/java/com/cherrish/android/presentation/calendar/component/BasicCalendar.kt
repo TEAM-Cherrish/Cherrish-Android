@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.presentation.calendar.model.CalendarDay
+import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.CalendarMonth
-import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.util.daysOfWeek
-import generateMonthData
+import com.cherrish.android.presentation.calendar.util.generateMonthData
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -24,12 +24,17 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun BasicCalendar(
     procedureCountByDate: Map<LocalDate, Int>,
+    displayMode: CalendarDisplayMode,
     modifier: Modifier = Modifier,
     yearMonth: YearMonth = YearMonth.now(),
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
-    downtimeByDate: Map<LocalDate, DownTimeStatus>,
     dayContent: @Composable (CalendarDay) -> Unit
 ) {
+    val downtimeByDate = when (displayMode) {
+        is CalendarDisplayMode.Normal -> emptyMap()
+        is CalendarDisplayMode.ShowDowntime -> displayMode.downtimeByDate
+    }
+
     val monthData = generateMonthData(
         yearMonth = yearMonth,
         firstDayOfWeek = firstDayOfWeek,
@@ -46,7 +51,7 @@ fun BasicCalendar(
             daysOfWeek = daysOfWeek
         )
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(4.dp))
 
         CalendarMonthGrid(
             month = monthData,
