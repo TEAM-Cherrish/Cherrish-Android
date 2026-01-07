@@ -24,6 +24,16 @@ object CherrishTheme {
         get() = LocalCherrishTypographyProvider.current
 }
 
+/**
+ * Supplies a CherrishColors and CherrishTypography instance to the composition for descendant composables.
+ *
+ * This wraps [content] with a CompositionLocalProvider that sets the values for
+ * LocalCherrishColorsProvider and LocalCherrishTypographyProvider.
+ *
+ * @param colors The CherrishColors instance to provide to descendants.
+ * @param typography The CherrishTypography instance to provide to descendants.
+ * @param content Composable content that will read the provided colors and typography.
+ */
 @Composable
 fun ProvideCherrishColorsAndTypography(
     colors: CherrishColors,
@@ -37,6 +47,15 @@ fun ProvideCherrishColorsAndTypography(
     )
 }
 
+/**
+ * Applies the Cherrish design system to the given UI content.
+ *
+ * Provides CherrishColors and CherrishTypography to the composition, applies a MaterialTheme
+ * using the Cherrish color scheme, and sets the system status bar to a light appearance when
+ * running (not in preview/edit mode).
+ *
+ * @param content The composable UI tree to be wrapped by the Cherrish theme.
+ */
 @Composable
 fun CherrishTheme(
     content: @Composable () -> Unit
@@ -63,6 +82,22 @@ fun CherrishTheme(
     }
 }
 
+/**
+ * Produces a Material 3 light ColorScheme by mapping Cherrish color tokens to Material color roles.
+ *
+ * @receiver The source CherrishColors used to derive the scheme (light-oriented).
+ * @return A light ColorScheme where:
+ * - `primary` = CherrishPink
+ * - `onPrimary` = Gray0
+ * - `secondary` = Red700
+ * - `onSecondary` = Gray0
+ * - `background` = Gray0
+ * - `onBackground` = Gray900
+ * - `surface` = Gray900
+ * - `onSurface` = Gray0
+ * - `error` = Red700
+ * - `onError` = Gray0
+ */
 @Composable
 private fun CherrishColors.toMaterialColorScheme(): ColorScheme {
     return lightColorScheme(

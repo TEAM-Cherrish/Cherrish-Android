@@ -98,6 +98,11 @@ val defaultCherrishColors = CherrishColors(
 
 val LocalCherrishColorsProvider = staticCompositionLocalOf { defaultCherrishColors }
 
+/**
+ * Preview that displays the app's red color tokens (Red100–Red800) as labeled text samples.
+ *
+ * Each label is rendered using the theme's body1_m_14 typography and the corresponding color token.
+ */
 @Preview
 @Composable
 fun CherrishRedColorsPreview() {
@@ -115,6 +120,11 @@ fun CherrishRedColorsPreview() {
     }
 }
 
+/**
+ * Shows a vertical preview of the Cherrish gray color tokens.
+ *
+ * Renders a Column of Text items labeled Gray0 through Gray1000 using CherrishTheme typography and each corresponding color token; Gray0 and Gray100 are displayed on a Gray1000 background to illustrate contrast.
+ */
 @Preview
 @Composable
 fun CherrishGrayColorsPreview() {
@@ -137,6 +147,12 @@ fun CherrishGrayColorsPreview() {
     }
 }
 
+/**
+ * Displays a preview of the theme's Green color tokens.
+ *
+ * Renders three text samples labeled "Green1" through "Green3" using the theme's body1_m_14 typography
+ * and the corresponding CherrishTheme color tokens.
+ */
 @Preview
 @Composable
 fun CherrishGreenColorsPreview() {

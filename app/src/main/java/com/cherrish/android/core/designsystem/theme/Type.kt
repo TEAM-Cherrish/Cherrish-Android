@@ -128,6 +128,12 @@ val defaultCherrishTypography = CherrishTypography(
 
 val LocalCherrishTypographyProvider = staticCompositionLocalOf { defaultCherrishTypography }
 
+/**
+ * Preview that renders a sample label for each style in CherrishTypography.
+ *
+ * Displays each typography variant (headline, title, body, caption) using the theme's
+ * typography and Gray900 color so designers can inspect visual appearance in Android Studio.
+ */
 @Preview
 @Composable
 fun CherrishTypographyPreview() {
