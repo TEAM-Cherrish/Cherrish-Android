@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
-val cherrishPink = Color(0xFFEB445B)
-
 val red100 = Color(0xFFFEF7F8)
 val red200 = Color(0xFFFFF4F7)
 val red300 = Color(0xFFFFE4EB)
@@ -39,7 +37,6 @@ val green3 = Color(0xFF9AD342)
 
 @Immutable
 data class CherrishColors(
-    val cherrishPink: Color,
 
     val red100: Color,
     val red200: Color,
@@ -68,7 +65,6 @@ data class CherrishColors(
 )
 
 val defaultCherrishColors = CherrishColors(
-    cherrishPink = cherrishPink,
 
     red100 = red100,
     red200 = red200,
