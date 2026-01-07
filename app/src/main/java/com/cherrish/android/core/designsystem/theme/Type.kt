@@ -22,17 +22,17 @@ val cherrishFontRegular = FontFamily(Font(R.font.pretendard_regular))
 data class CherrishTypography(
 
     val headlineB20: TextStyle,
-    val headlineSb20: TextStyle,
+    val headlineSB20: TextStyle,
 
-    val title1Sb18: TextStyle,
+    val title1SB18: TextStyle,
     val title1M18: TextStyle,
     val title1R18: TextStyle,
 
-    val title2Sb16: TextStyle,
+    val title2SB16: TextStyle,
     val title2M16: TextStyle,
     val title2R16: TextStyle,
 
-    val body1Sb14: TextStyle,
+    val body1SB14: TextStyle,
     val body1M14: TextStyle,
     val body1R14: TextStyle,
 
@@ -52,13 +52,13 @@ val defaultCherrishTypography = CherrishTypography(
         fontSize = 20.sp,
         letterSpacing = 0.01.em
     ),
-    headlineSb20 = TextStyle(
+    headlineSB20 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 20.sp,
         letterSpacing = 0.01.em
     ),
 
-    title1Sb18 = TextStyle(
+    title1SB18 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 18.sp,
         letterSpacing = 0.01.em
@@ -74,7 +74,7 @@ val defaultCherrishTypography = CherrishTypography(
         letterSpacing = 0.01.em
     ),
 
-    title2Sb16 = TextStyle(
+    title2SB16 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 16.sp
     ),
@@ -89,7 +89,7 @@ val defaultCherrishTypography = CherrishTypography(
         fontSize = 16.sp
     ),
 
-    body1Sb14 = TextStyle(
+    body1SB14 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 14.sp
     ),
@@ -139,14 +139,14 @@ private fun CherrishTypographyPreview() {
                 color = CherrishTheme.colors.gray900
             )
             Text(
-                text = "headlineSb20",
-                style = CherrishTheme.typography.headlineSb20,
+                text = "headlineSB20",
+                style = CherrishTheme.typography.headlineSB20,
                 color = CherrishTheme.colors.gray900
             )
 
             Text(
-                text = "title1Sb18",
-                style = CherrishTheme.typography.title1Sb18,
+                text = "title1SB18",
+                style = CherrishTheme.typography.title1SB18,
                 color = CherrishTheme.colors.gray900
             )
             Text(
@@ -161,8 +161,8 @@ private fun CherrishTypographyPreview() {
             )
 
             Text(
-                text = "title2Sb16",
-                style = CherrishTheme.typography.title2Sb16,
+                text = "title2SB16",
+                style = CherrishTheme.typography.title2SB16,
                 color = CherrishTheme.colors.gray900
             )
             Text(
@@ -177,8 +177,8 @@ private fun CherrishTypographyPreview() {
             )
 
             Text(
-                text = "body1Sb14",
-                style = CherrishTheme.typography.body1Sb14,
+                text = "body1SB14",
+                style = CherrishTheme.typography.body1SB14,
                 color = CherrishTheme.colors.gray900
             )
             Text(

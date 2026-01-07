@@ -23,7 +23,7 @@ val gray0 = Color(0xFFFFFFFF)
 val gray100 = Color(0xFFFCFCFC)
 val gray200 = Color(0xFFF7F8F9)
 val gray300 = Color(0xFFEFF1F3)
-val gray400 = Color(0xFF9FA4A9)
+val gray400 = Color(0xFFE9EBED)
 val gray500 = Color(0xFFCACDD1)
 val gray600 = Color(0xFF9FA4A9)
 val gray700 = Color(0xFF73787E)
@@ -145,7 +145,7 @@ private fun CherrishRedColorsPreview() {
 
 @Preview
 @Composable
-fun CherrishGrayColorsPreview() {
+private fun CherrishGrayColorsPreview() {
     CherrishTheme {
         Column {
             Text(
@@ -211,7 +211,7 @@ fun CherrishGrayColorsPreview() {
 
 @Preview
 @Composable
-fun CherrishGreenColorsPreview() {
+private fun CherrishGreenColorsPreview() {
     CherrishTheme {
         Column {
             Text(
