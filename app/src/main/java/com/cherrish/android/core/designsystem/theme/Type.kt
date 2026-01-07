@@ -21,105 +21,105 @@ val cherrishFontRegular = FontFamily(Font(R.font.pretendard_regular))
 @Immutable
 data class CherrishTypography(
 
-    val headline_b_20: TextStyle,
-    val headline_sb_20: TextStyle,
+    val headlineB20: TextStyle,
+    val headlineSb20: TextStyle,
 
-    val title1_sb_18: TextStyle,
-    val title1_m_18: TextStyle,
-    val title1_r_18: TextStyle,
+    val title1Sb18: TextStyle,
+    val title1M18: TextStyle,
+    val title1R18: TextStyle,
 
-    val title2_sb_16: TextStyle,
-    val title2_m_16: TextStyle,
-    val title2_r_16: TextStyle,
+    val title2Sb16: TextStyle,
+    val title2M16: TextStyle,
+    val title2R16: TextStyle,
 
-    val body1_sb_14: TextStyle,
-    val body1_m_14: TextStyle,
-    val body1_r_14: TextStyle,
+    val body1Sb14: TextStyle,
+    val body1M14: TextStyle,
+    val body1R14: TextStyle,
 
-    val body2_r_13: TextStyle,
+    val body2R13: TextStyle,
 
-    val body3_m_12: TextStyle,
-    val body3_r_12: TextStyle,
+    val body3M12: TextStyle,
+    val body3R12: TextStyle,
 
-    val caption_r_11: TextStyle,
+    val captionR11: TextStyle,
 
-)
+    )
 
 val defaultCherrishTypography = CherrishTypography(
 
-    headline_b_20 = TextStyle(
+    headlineB20 = TextStyle(
         fontFamily = cherrishFontBold,
         fontSize = 20.sp,
         letterSpacing = 0.01.em,
     ),
-    headline_sb_20 = TextStyle(
+    headlineSb20 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 20.sp,
         letterSpacing = 0.01.em,
     ),
 
-    title1_sb_18 = TextStyle(
+    title1Sb18 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 18.sp,
         letterSpacing = 0.01.em,
     ),
-    title1_m_18 = TextStyle(
+    title1M18 = TextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 18.sp,
         letterSpacing = 0.01.em,
     ),
-    title1_r_18 = TextStyle(
+    title1R18 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 18.sp,
         letterSpacing = 0.01.em,
     ),
 
-    title2_sb_16 = TextStyle(
+    title2Sb16 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 16.sp,
     ),
 
-    title2_m_16 = TextStyle(
+    title2M16 = TextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 16.sp,
     ),
 
-    title2_r_16 = TextStyle(
+    title2R16 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 16.sp,
     ),
 
-    body1_sb_14 = TextStyle(
+    body1Sb14 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 14.sp,
     ),
 
-    body1_m_14 = TextStyle(
+    body1M14 = TextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 14.sp,
     ),
 
-    body1_r_14 = TextStyle(
+    body1R14 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 14.sp,
     ),
 
-    body2_r_13 = TextStyle(
+    body2R13 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 13.sp,
     ),
 
-    body3_m_12 = TextStyle(
+    body3M12 = TextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 12.sp,
     ),
 
-    body3_r_12 = TextStyle(
+    body3R12 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 12.sp,
     ),
 
-    caption_r_11 = TextStyle(
+    captionR11 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 11.sp,
     ),
@@ -130,89 +130,89 @@ val LocalCherrishTypographyProvider = staticCompositionLocalOf { defaultCherrish
 
 @Preview
 @Composable
-fun CherrishTypographyPreview() {
+private fun CherrishTypographyPreview() {
     CherrishTheme {
         Column {
             Text(
-                "headline_b_20",
-                style = CherrishTheme.typography.headline_b_20,
-                color = CherrishTheme.colors.Gray900
+                text = "headlineB20",
+                style = CherrishTheme.typography.headlineB20,
+                color = CherrishTheme.colors.gray900
             )
             Text(
-                "headline_sb_20",
-                style = CherrishTheme.typography.headline_sb_20,
-                color = CherrishTheme.colors.Gray900
-            )
-
-            Text(
-                "title1_sb_18",
-                style = CherrishTheme.typography.title1_sb_18,
-                color = CherrishTheme.colors.Gray900
-            )
-            Text(
-                "title1_m_18",
-                style = CherrishTheme.typography.title1_m_18,
-                color = CherrishTheme.colors.Gray900
-            )
-            Text(
-                "title1_r_18",
-                style = CherrishTheme.typography.title1_r_18,
-                color = CherrishTheme.colors.Gray900
+                text = "headlineSb20",
+                style = CherrishTheme.typography.headlineSb20,
+                color = CherrishTheme.colors.gray900
             )
 
             Text(
-                "title2_sb_16",
-                style = CherrishTheme.typography.title2_sb_16,
-                color = CherrishTheme.colors.Gray900
+                text = "title1Sb18",
+                style = CherrishTheme.typography.title1Sb18,
+                color = CherrishTheme.colors.gray900
             )
             Text(
-                "title2_m_16",
-                style = CherrishTheme.typography.title2_m_16,
-                color = CherrishTheme.colors.Gray900
+                text = "title1M18",
+                style = CherrishTheme.typography.title1M18,
+                color = CherrishTheme.colors.gray900
             )
             Text(
-                "title2_r_16",
-                style = CherrishTheme.typography.title2_r_16,
-                color = CherrishTheme.colors.Gray900
-            )
-
-            Text(
-                "body1_sb_14",
-                style = CherrishTheme.typography.body1_sb_14,
-                color = CherrishTheme.colors.Gray900
-            )
-            Text(
-                "body1_m_14",
-                style = CherrishTheme.typography.body1_m_14,
-                color = CherrishTheme.colors.Gray900
-            )
-            Text(
-                "body1_r_14",
-                style = CherrishTheme.typography.body1_r_14,
-                color = CherrishTheme.colors.Gray900
+                text = "title1R18",
+                style = CherrishTheme.typography.title1R18,
+                color = CherrishTheme.colors.gray900
             )
 
             Text(
-                "body2_r_13",
-                style = CherrishTheme.typography.body2_r_13,
-                color = CherrishTheme.colors.Gray900
+                text = "title2Sb16",
+                style = CherrishTheme.typography.title2Sb16,
+                color = CherrishTheme.colors.gray900
+            )
+            Text(
+                text = "title2M16",
+                style = CherrishTheme.typography.title2M16,
+                color = CherrishTheme.colors.gray900
+            )
+            Text(
+                text = "title2R16",
+                style = CherrishTheme.typography.title2R16,
+                color = CherrishTheme.colors.gray900
             )
 
             Text(
-                "body3_m_12",
-                style = CherrishTheme.typography.body3_m_12,
-                color = CherrishTheme.colors.Gray900
+                text = "body1Sb14",
+                style = CherrishTheme.typography.body1Sb14,
+                color = CherrishTheme.colors.gray900
             )
             Text(
-                "body3_r_12",
-                style = CherrishTheme.typography.body3_r_12,
-                color = CherrishTheme.colors.Gray900
+                text = "body1M14",
+                style = CherrishTheme.typography.body1M14,
+                color = CherrishTheme.colors.gray900
+            )
+            Text(
+                text = "body1R14",
+                style = CherrishTheme.typography.body1R14,
+                color = CherrishTheme.colors.gray900
             )
 
             Text(
-                "caption_r_11",
-                style = CherrishTheme.typography.caption_r_11,
-                color = CherrishTheme.colors.Gray900
+                text = "body2R13",
+                style = CherrishTheme.typography.body2R13,
+                color = CherrishTheme.colors.gray900
+            )
+
+            Text(
+                text = "body3M12",
+                style = CherrishTheme.typography.body3M12,
+                color = CherrishTheme.colors.gray900
+            )
+            Text(
+                text = "body3R12",
+                style = CherrishTheme.typography.body3R12,
+                color = CherrishTheme.colors.gray900
+            )
+
+            Text(
+                text = "captionR11",
+                style = CherrishTheme.typography.captionR11,
+                color = CherrishTheme.colors.gray900
             )
         }
     }
