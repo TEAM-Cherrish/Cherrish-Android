@@ -38,11 +38,7 @@ fun DaysOfWeekTitle(
                         Locale.getDefault()
                     ),
                     textAlign = TextAlign.Center,
-                    color = when (dayOfWeek) {
-                        DayOfWeek.SUNDAY -> Color.Red
-                        DayOfWeek.SATURDAY -> Color.Blue
-                        else -> Color.Black
-                    }
+                    color = Color.Black
                 )
             }
         }

@@ -55,7 +55,7 @@ fun DayItem(
 
                 val borderModifier = when {
                     showDowntime -> Modifier
-                    day.date == LocalDate.now() -> Modifier.border(
+                    isSelected -> Modifier.border(
                         width = 1.dp,
                         color = Color.Black,
                         shape = RoundedCornerShape(8.dp)
