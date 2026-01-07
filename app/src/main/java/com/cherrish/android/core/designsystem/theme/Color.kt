@@ -64,7 +64,7 @@ data class CherrishColors(
 
     val green1: Color,
     val green2: Color,
-    val green3: Color,
+    val green3: Color
 )
 
 val defaultCherrishColors = CherrishColors(

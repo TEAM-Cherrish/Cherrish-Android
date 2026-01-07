@@ -41,90 +41,90 @@ data class CherrishTypography(
     val body3M12: TextStyle,
     val body3R12: TextStyle,
 
-    val captionR11: TextStyle,
+    val captionR11: TextStyle
 
-    )
+)
 
 val defaultCherrishTypography = CherrishTypography(
 
     headlineB20 = TextStyle(
         fontFamily = cherrishFontBold,
         fontSize = 20.sp,
-        letterSpacing = 0.01.em,
+        letterSpacing = 0.01.em
     ),
     headlineSb20 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 20.sp,
-        letterSpacing = 0.01.em,
+        letterSpacing = 0.01.em
     ),
 
     title1Sb18 = TextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em,
+        letterSpacing = 0.01.em
     ),
     title1M18 = TextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em,
+        letterSpacing = 0.01.em
     ),
     title1R18 = TextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em,
+        letterSpacing = 0.01.em
     ),
 
     title2Sb16 = TextStyle(
         fontFamily = cherrishFontSemiBold,
-        fontSize = 16.sp,
+        fontSize = 16.sp
     ),
 
     title2M16 = TextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 16.sp,
+        fontSize = 16.sp
     ),
 
     title2R16 = TextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 16.sp,
+        fontSize = 16.sp
     ),
 
     body1Sb14 = TextStyle(
         fontFamily = cherrishFontSemiBold,
-        fontSize = 14.sp,
+        fontSize = 14.sp
     ),
 
     body1M14 = TextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 14.sp,
+        fontSize = 14.sp
     ),
 
     body1R14 = TextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 14.sp,
+        fontSize = 14.sp
     ),
 
     body2R13 = TextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 13.sp,
+        fontSize = 13.sp
     ),
 
     body3M12 = TextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 12.sp,
+        fontSize = 12.sp
     ),
 
     body3R12 = TextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 12.sp,
+        fontSize = 12.sp
     ),
 
     captionR11 = TextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 11.sp,
-    ),
-
+        fontSize = 11.sp
     )
+
+)
 
 val LocalCherrishTypographyProvider = staticCompositionLocalOf { defaultCherrishTypography }
 
