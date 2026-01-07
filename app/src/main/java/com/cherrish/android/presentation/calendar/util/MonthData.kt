@@ -1,8 +1,8 @@
+package com.cherrish.android.presentation.calendar.util
+
 import com.cherrish.android.presentation.calendar.model.CalendarDay
 import com.cherrish.android.presentation.calendar.model.CalendarMonth
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
-import com.cherrish.android.presentation.calendar.util.atStartOfMonth
-import com.cherrish.android.presentation.calendar.util.daysUntil
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
