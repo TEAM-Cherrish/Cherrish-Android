@@ -1,6 +1,5 @@
 package com.cherrish.android.core.designsystem.component.button
 
-import android.graphics.Paint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -21,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -29,7 +27,7 @@ import com.cherrish.android.core.designsystem.type.CherrishButtonStyle
 
 @Composable
 fun CherrishBasicButton(
-    title: String,
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -39,10 +37,8 @@ fun CherrishBasicButton(
     val cherrishColor = CherrishTheme.colors
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val pressedScale = 0.95f
-
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) pressedScale else 1f,
+        targetValue = if (isPressed) 0.95f else 1f,
         animationSpec = tween(durationMillis = 80),
         label = "button-scale"
     )
@@ -80,7 +76,7 @@ fun CherrishBasicButton(
             .fillMaxWidth()
             .scale(scale)
             .clip(RoundedCornerShape(12.dp))
-            .background(backgroundColor)
+            .background(color = backgroundColor)
             .clickable(
                 enabled = enabled,
                 indication = null,
@@ -92,7 +88,7 @@ fun CherrishBasicButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = title,
+            text = text,
             style = CherrishTheme.typography.title2SB16,
             color = textColor
         )
@@ -107,11 +103,11 @@ private fun CherrishBasicButtonsPreview() {
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             CherrishBasicButton(
-                title = "다음",
-                onClick = {},
+                text = "다음",
+                onClick = {}
             )
             CherrishBasicButton(
-                title = "다음",
+                text = "다음",
                 onClick = {},
                 enabled = false
             )
@@ -132,14 +128,14 @@ private fun CherrishBasicButtonsInteractionPreview() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             CherrishBasicButton(
-                title = "다운타임 없이 일정 추가",
+                text = "다운타임 없이 일정 추가",
                 onClick = {},
                 style = CherrishButtonStyle.SECONDARY,
                 modifier = Modifier.weight(184f)
             )
 
             CherrishBasicButton(
-                title = "확인",
+                text = "확인",
                 onClick = {},
                 modifier = Modifier.weight(122f)
             )
