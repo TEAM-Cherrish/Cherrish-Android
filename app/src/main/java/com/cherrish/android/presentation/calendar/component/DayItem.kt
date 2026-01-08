@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.noRippleClickable
+import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDay
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import java.time.LocalDate
@@ -36,7 +37,7 @@ fun DayItem(
         modifier = modifier
             .aspectRatio(1f)
             .noRippleClickable(
-                enabled = day is CalendarDay.Date,
+                enabled = day is CalendarDay.Date && !showDowntime,
                 onClick = onClick
             ),
         contentAlignment = Alignment.Center
@@ -45,19 +46,25 @@ fun DayItem(
             CalendarDay.Empty -> { }
 
             is CalendarDay.Date -> {
+                val isDowntimeActive = showDowntime && day.downtimeStatus != DownTimeStatus.NONE
+
+                val downtimeColors = getDowntimeColors(day.downtimeStatus)
+
                 val backgroundColor = when {
-                    showDowntime && day.downtimeStatus != null -> {
-                        getDowntimeColor(day.downtimeStatus)
-                    }
-                    isSelected -> Color(0xFFE5E5E5)
+                    isDowntimeActive -> downtimeColors.background
+                    isSelected -> CherrishTheme.colors.gray0
                     else -> Color.Transparent
                 }
 
                 val borderModifier = when {
-                    showDowntime -> Modifier
+                    isDowntimeActive -> Modifier.border(
+                        width = 1.dp,
+                        color = downtimeColors.border,
+                        shape = CircleShape
+                    )
                     isSelected -> Modifier.border(
                         width = 1.dp,
-                        color = Color.Black,
+                        color = CherrishTheme.colors.gray500,
                         shape = RoundedCornerShape(8.dp)
                     )
                     else -> Modifier
@@ -65,7 +72,7 @@ fun DayItem(
 
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
+                        .aspectRatio(1f)
                         .clip(if (showDowntime) CircleShape else RoundedCornerShape(8.dp))
                         .background(backgroundColor)
                         .then(borderModifier),
@@ -73,7 +80,8 @@ fun DayItem(
                 ) {
                     Text(
                         text = day.date.dayOfMonth.toString(),
-                        color = Color.Black
+                        color = CherrishTheme.colors.gray1000,
+                        style = CherrishTheme.typography.body1R14
                     )
 
                     if (!showDowntime && day.procedureCount > 0) {
@@ -81,7 +89,7 @@ fun DayItem(
                             count = day.procedureCount,
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(bottom = 4.dp)
+                                .padding(bottom = 6.dp)
                         )
                     }
                 }
@@ -114,11 +122,30 @@ private fun ProcedureDots(
     }
 }
 
-private fun getDowntimeColor(status: DownTimeStatus): Color {
+private data class DowntimeColors(
+    val background: Color,
+    val border: Color
+)
+
+@Composable
+private fun getDowntimeColors(status: DownTimeStatus): DowntimeColors {
     return when (status) {
-        DownTimeStatus.CAUTION -> Color(0xFFFF6B9D)
-        DownTimeStatus.SENSITIVE -> Color(0xFFFFB3D1)
-        DownTimeStatus.RECOVERY -> Color(0xFFFFDCEB)
+        DownTimeStatus.CAUTION -> DowntimeColors(
+            background = CherrishTheme.colors.red500,
+            border = CherrishTheme.colors.red700
+        )
+        DownTimeStatus.SENSITIVE -> DowntimeColors(
+            background = CherrishTheme.colors.red300,
+            border = CherrishTheme.colors.red500
+        )
+        DownTimeStatus.RECOVERY -> DowntimeColors(
+            background = CherrishTheme.colors.red200,
+            border = CherrishTheme.colors.red400
+        )
+        DownTimeStatus.NONE -> DowntimeColors(
+            background = Color.Transparent,
+            border = Color.Transparent
+        )
     }
 }
 

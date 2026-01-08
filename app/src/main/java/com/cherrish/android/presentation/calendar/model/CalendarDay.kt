@@ -13,6 +13,6 @@ sealed interface CalendarDay {
     data class Date(
         val date: LocalDate,
         val procedureCount: Int = 0,
-        val downtimeStatus: DownTimeStatus? = null
+        val downtimeStatus: DownTimeStatus = DownTimeStatus.NONE
     ) : CalendarDay
 }

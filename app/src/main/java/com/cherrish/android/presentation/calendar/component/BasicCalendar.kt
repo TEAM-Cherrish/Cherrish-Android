@@ -48,7 +48,7 @@ fun BasicCalendar(
             daysOfWeek = daysOfWeek
         )
 
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(12.dp))
 
         CalendarMonthGrid(
             month = monthData,
@@ -60,14 +60,16 @@ fun BasicCalendar(
 @Composable
 private fun CalendarMonthGrid(
     month: CalendarMonth,
-    dayContent: @Composable (CalendarDay) -> Unit
+    dayContent: @Composable (CalendarDay) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         for (week in month.weekDays) {
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 for (day in week) {

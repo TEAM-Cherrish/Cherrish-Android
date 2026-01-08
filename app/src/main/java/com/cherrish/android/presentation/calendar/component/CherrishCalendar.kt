@@ -39,11 +39,7 @@ fun CherrishCalendar(
             dayContent = { day ->
                 DayItem(
                     day = day,
-                    onClick = {
-                        if (day is CalendarDay.Date) {
-                            onDateClick(day.date)
-                        }
-                    },
+                    onClick = { onDateClick((day as CalendarDay.Date).date) },
                     isSelected = day is CalendarDay.Date && day.date == selectedDate,
                     showDowntime = displayMode is CalendarDisplayMode.Downtime
                 )

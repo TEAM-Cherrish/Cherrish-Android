@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.calendar.util
 import com.cherrish.android.presentation.calendar.model.CalendarDay
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.CalendarMonth
+import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import java.time.DayOfWeek
 import java.time.YearMonth
 
@@ -35,10 +36,10 @@ data class MonthData(
         val (procedureCount, downtimeStatus) = when (displayMode) {
             is CalendarDisplayMode.Normal -> {
                 val count = displayMode.procedureCountByDate[date] ?: 0
-                count to null
+                count to DownTimeStatus.NONE
             }
             is CalendarDisplayMode.Downtime -> {
-                val status = displayMode.downtimeByDate[date]
+                val status = displayMode.downtimeByDate[date] ?: DownTimeStatus.NONE
                 0 to status
             }
         }
