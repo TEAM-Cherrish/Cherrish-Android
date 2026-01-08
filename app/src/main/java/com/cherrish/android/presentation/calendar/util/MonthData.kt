@@ -1,17 +1,16 @@
 package com.cherrish.android.presentation.calendar.util
 
 import com.cherrish.android.presentation.calendar.model.CalendarDay
+import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.CalendarMonth
-import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.YearMonth
+
 
 data class MonthData(
     private val month: YearMonth,
     private val inDays: Int,
-    private val procedureCountByDate: Map<LocalDate, Int>,
-    private val downtimeByDate: Map<LocalDate, DownTimeStatus>
+    private val displayMode: CalendarDisplayMode
 ) {
     private val monthLength = month.lengthOfMonth()
     private val totalDays = inDays + monthLength
@@ -33,8 +32,17 @@ data class MonthData(
         }
 
         val date = firstDay.plusDays((dayOffset - inDays).toLong())
-        val procedureCount = procedureCountByDate[date] ?: 0
-        val downtimeStatus = downtimeByDate[date]
+
+        val (procedureCount, downtimeStatus) = when (displayMode) {
+            is CalendarDisplayMode.Normal -> {
+                val count = displayMode.procedureCountByDate[date] ?: 0
+                count to null
+            }
+            is CalendarDisplayMode.Downtime -> {
+                val status = displayMode.downtimeByDate[date]
+                0 to status
+            }
+        }
 
         return CalendarDay.Date(
             date = date,
@@ -47,10 +55,9 @@ data class MonthData(
 fun generateMonthData(
     yearMonth: YearMonth,
     firstDayOfWeek: DayOfWeek,
-    procedureCountByDate: Map<LocalDate, Int>,
-    downtimeByDate: Map<LocalDate, DownTimeStatus>
+    displayMode: CalendarDisplayMode
 ): MonthData {
     val firstDay = yearMonth.atStartOfMonth()
     val inDays = firstDayOfWeek.daysUntil(firstDay.dayOfWeek)
-    return MonthData(yearMonth, inDays, procedureCountByDate, downtimeByDate)
+    return MonthData(yearMonth, inDays, displayMode)
 }
