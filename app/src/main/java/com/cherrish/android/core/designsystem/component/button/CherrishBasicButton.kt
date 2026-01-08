@@ -47,8 +47,8 @@ fun CherrishBasicButton(
         when (style) {
             CherrishButtonStyle.PRIMARY -> {
                 when {
-                    !enabled -> cherrishColor.gray200
-                    else -> cherrishColor.red700
+                    enabled -> cherrishColor.red700
+                    else -> cherrishColor.gray200
                 }
             }
             CherrishButtonStyle.SECONDARY -> {
@@ -61,8 +61,8 @@ fun CherrishBasicButton(
         when (style) {
             CherrishButtonStyle.PRIMARY -> {
                 when {
-                    !enabled -> cherrishColor.gray600
-                    else -> cherrishColor.gray0
+                    enabled -> cherrishColor.gray0
+                    else -> cherrishColor.gray600
                 }
             }
             CherrishButtonStyle.SECONDARY -> {
