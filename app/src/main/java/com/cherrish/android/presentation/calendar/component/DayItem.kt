@@ -28,15 +28,15 @@ import kotlin.math.min
 @Composable
 fun DayItem(
     day: CalendarDay,
-    isSelected: Boolean,
     onDateClick: (LocalDate) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .noRippleClickable(
-                enabled = day is CalendarDay.Date.Normal,
+                enabled = day is CalendarDay.Date,
                 onClick = { if (day is CalendarDay.Date) onDateClick(day.date) }
             ),
         contentAlignment = Alignment.Center
@@ -59,7 +59,7 @@ fun DayItem(
 @Composable
 private fun NormalDateContent(
     day: CalendarDay.Date.Normal,
-    isSelected: Boolean
+    isSelected: Boolean = false
 ) {
     Box(
         modifier = Modifier
@@ -182,7 +182,6 @@ private fun DayItemPreview() {
 
             DayItem(
                 day = CalendarDay.Date.Normal(date, procedureCount = 0),
-                isSelected = false,
                 onDateClick = {},
                 modifier = Modifier.size(48.dp)
             )
@@ -194,13 +193,11 @@ private fun DayItemPreview() {
             )
             DayItem(
                 day = CalendarDay.Date.Downtime(date.plusDays(2), status = DownTimeStatus.CAUTION),
-                isSelected = false,
                 onDateClick = {},
                 modifier = Modifier.size(48.dp)
             )
             DayItem(
                 day = CalendarDay.Date.Downtime(date.plusDays(3), status = DownTimeStatus.RECOVERY),
-                isSelected = false,
                 onDateClick = {},
                 modifier = Modifier.size(48.dp)
             )
