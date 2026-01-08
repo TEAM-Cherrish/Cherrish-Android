@@ -43,9 +43,9 @@ fun CherrishBasicChip(
     Row(
         modifier = modifier
             .fillMaxSize()
-            .clip(RoundedCornerShape(9.dp))
+            .clip(shape = RoundedCornerShape(size = 9.dp))
             .background(backgroundColor)
-            .border(width = 1.dp, color = lineColor, shape = RoundedCornerShape(10.dp))
+            .border(width = 1.dp, color = lineColor, shape = RoundedCornerShape(size = 10.dp))
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -59,7 +59,7 @@ fun CherrishBasicChip(
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
         val cherrishColor = CherrishTheme.colors
-        var selected by remember { mutableStateOf(false) }
+        var selected by remember { mutableStateOf(value = false) }
         val textColor = if (selected) cherrishColor.gray800 else cherrishColor.gray700
 
         Column(
@@ -70,24 +70,25 @@ private fun CherrishSelectionChipPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             CherrishBasicChip(
                 selected = selected,
-                onClick = { selected = !selected },
-            ) { Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "여드름 ∙ 트러블",
-                    fontSize = 20.sp,
-                    style = CherrishTheme.typography.body1M14,
-                    color = textColor,
+                onClick = { selected = !selected }
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "여드름 ∙ 트러블",
+                        fontSize = 20.sp,
+                        style = CherrishTheme.typography.body1M14,
+                        color = textColor,
 
-                    textAlign = TextAlign.Center
-                )}
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -98,7 +99,7 @@ private fun CherrishSelectionChipPreview() {
 private fun CherrishMissionCardPreview() {
     CherrishTheme {
         val cherrishColor = CherrishTheme.colors
-        var selected by remember { mutableStateOf(false) }
+        var selected by remember { mutableStateOf(value = false) }
         val textColor = if (selected) cherrishColor.gray800 else cherrishColor.gray700
 
         val lineColor = if (selected) cherrishColor.red500 else cherrishColor.gray500
@@ -118,32 +119,33 @@ private fun CherrishMissionCardPreview() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(10.dp)
+                        .padding(all = 10.dp)
                 ) {
                     Text(
                         text = "반신욕 20분",
                         style = CherrishTheme.typography.body1M14,
                         color = textColor,
-                        modifier = Modifier.align(Alignment.BottomStart), fontSize = 15.sp,
+                        modifier = Modifier.align(Alignment.BottomStart),
+                        fontSize = 15.sp
                     )
 
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .size(18.dp)
-                            .clip(RoundedCornerShape(50))
+                            .size(size = 18.dp)
+                            .clip(shape = RoundedCornerShape(percent = 50))
                             .border(
                                 width = 1.dp,
                                 color = lineColor,
-                                shape = RoundedCornerShape(50)
+                                shape = RoundedCornerShape(percent = 50)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
                         if (selected) {
                             Box(
                                 modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(RoundedCornerShape(50))
+                                    .size(size = 8.dp)
+                                    .clip(shape = RoundedCornerShape(percent = 50))
                                     .background(indicatorColor)
                             )
                         }
