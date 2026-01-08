@@ -74,8 +74,8 @@ fun CherrishBasicButton(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .scale(scale)
-            .clip(RoundedCornerShape(12.dp))
+            .scale(scale = scale)
+            .clip(shape = RoundedCornerShape(12.dp))
             .background(color = backgroundColor)
             .clickable(
                 enabled = enabled,
