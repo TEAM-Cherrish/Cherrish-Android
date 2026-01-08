@@ -17,9 +17,9 @@ import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.CalendarMonth
 import com.cherrish.android.presentation.calendar.util.daysOfWeek
 import com.cherrish.android.presentation.calendar.util.generateMonthData
-import kotlinx.collections.immutable.toImmutableList
 import java.time.DayOfWeek
 import java.time.YearMonth
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun BasicCalendar(

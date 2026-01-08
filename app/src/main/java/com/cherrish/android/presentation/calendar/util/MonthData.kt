@@ -6,7 +6,6 @@ import com.cherrish.android.presentation.calendar.model.CalendarMonth
 import java.time.DayOfWeek
 import java.time.YearMonth
 
-
 data class MonthData(
     private val month: YearMonth,
     private val inDays: Int,
