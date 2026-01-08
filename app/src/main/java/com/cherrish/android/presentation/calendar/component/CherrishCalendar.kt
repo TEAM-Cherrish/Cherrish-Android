@@ -21,10 +21,9 @@ import java.time.YearMonth
 fun CherrishCalendar(
     yearMonth: YearMonth,
     selectedDate: LocalDate?,
+    displayMode: CalendarDisplayMode,
     onDateClick: (LocalDate) -> Unit,
     onMonthChange: (YearMonth) -> Unit,
-    procedureCountByDate: Map<LocalDate, Int>,
-    displayMode: CalendarDisplayMode,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -36,7 +35,6 @@ fun CherrishCalendar(
 
         BasicCalendar(
             yearMonth = yearMonth,
-            procedureCountByDate = procedureCountByDate,
             displayMode = displayMode,
             dayContent = { day ->
                 DayItem(
@@ -47,7 +45,7 @@ fun CherrishCalendar(
                         }
                     },
                     isSelected = day is CalendarDay.Date && day.date == selectedDate,
-                    showDowntime = displayMode is CalendarDisplayMode.ShowDowntime
+                    showDowntime = displayMode is CalendarDisplayMode.Downtime
                 )
             }
         )
@@ -61,23 +59,22 @@ private fun CherrishCalendarPreview() {
         var yearMonth by remember { mutableStateOf(YearMonth.now()) }
         var selectedDate by remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
 
-        val procedureCountByDate = remember {
-            mapOf(
-                LocalDate.now() to 2,
-                LocalDate.now().plusDays(1) to 1,
-                LocalDate.now().plusDays(5) to 3
+        val displayMode = remember {
+            CalendarDisplayMode.Normal(
+                procedureCountByDate = mapOf(
+                    LocalDate.now() to 2,
+                    LocalDate.now().plusDays(1) to 1,
+                    LocalDate.now().plusDays(5) to 3
+                )
             )
         }
 
         CherrishCalendar(
             yearMonth = yearMonth,
             selectedDate = selectedDate,
-            procedureCountByDate = procedureCountByDate,
+            displayMode = displayMode,
             onDateClick = { selectedDate = it },
-            onMonthChange = { newMonth ->
-                yearMonth = newMonth
-            },
-            displayMode = CalendarDisplayMode.Normal
+            onMonthChange = { yearMonth = it }
         )
     }
 }
@@ -89,32 +86,23 @@ private fun CherrishCalendarDowntimePreview() {
         var yearMonth by remember { mutableStateOf(YearMonth.now()) }
         var selectedDate by remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
 
-        val procedureCountByDate = remember {
-            mapOf(
-                LocalDate.now() to 2,
-                LocalDate.now().plusDays(1) to 1,
-                LocalDate.now().plusDays(5) to 3
-            )
-        }
-
-        val downtimeByDate = remember {
-            mapOf(
-                LocalDate.now() to DownTimeStatus.CAUTION,
-                LocalDate.now().plusDays(1) to DownTimeStatus.CAUTION,
-                LocalDate.now().plusDays(2) to DownTimeStatus.SENSITIVE,
-                LocalDate.now().plusDays(3) to DownTimeStatus.RECOVERY
+        val displayMode = remember {
+            CalendarDisplayMode.Downtime(
+                downtimeByDate = mapOf(
+                    LocalDate.now() to DownTimeStatus.CAUTION,
+                    LocalDate.now().plusDays(1) to DownTimeStatus.CAUTION,
+                    LocalDate.now().plusDays(2) to DownTimeStatus.SENSITIVE,
+                    LocalDate.now().plusDays(3) to DownTimeStatus.RECOVERY
+                )
             )
         }
 
         CherrishCalendar(
             yearMonth = yearMonth,
             selectedDate = selectedDate,
-            procedureCountByDate = procedureCountByDate,
+            displayMode = displayMode,
             onDateClick = { selectedDate = it },
-            onMonthChange = { newMonth ->
-                yearMonth = newMonth
-            },
-            displayMode = CalendarDisplayMode.ShowDowntime(downtimeByDate)
+            onMonthChange = { yearMonth = it }
         )
     }
 }

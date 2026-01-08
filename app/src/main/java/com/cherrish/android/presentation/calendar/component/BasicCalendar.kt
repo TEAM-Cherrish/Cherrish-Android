@@ -23,16 +23,19 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun BasicCalendar(
-    procedureCountByDate: Map<LocalDate, Int>,
     displayMode: CalendarDisplayMode,
     modifier: Modifier = Modifier,
     yearMonth: YearMonth = YearMonth.now(),
     firstDayOfWeek: DayOfWeek = DayOfWeek.SUNDAY,
     dayContent: @Composable (CalendarDay) -> Unit
 ) {
-    val downtimeByDate = when (displayMode) {
-        is CalendarDisplayMode.Normal -> emptyMap()
-        is CalendarDisplayMode.ShowDowntime -> displayMode.downtimeByDate
+    val (procedureCountByDate, downtimeByDate) = when (displayMode) {
+        is CalendarDisplayMode.Normal -> {
+            displayMode.procedureCountByDate to emptyMap()
+        }
+        is CalendarDisplayMode.Downtime -> {
+            emptyMap<LocalDate, Int>() to displayMode.downtimeByDate
+        }
     }
 
     val monthData = generateMonthData(
