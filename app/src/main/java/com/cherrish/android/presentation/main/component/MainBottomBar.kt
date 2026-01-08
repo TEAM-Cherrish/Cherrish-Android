@@ -87,7 +87,8 @@ private fun RowScope.MainBottomBarItem(
         )
         Text(
             text = tab.label,
-            color = if (selected) CherrishTheme.colors.gray1000 else CherrishTheme.colors.gray500
+            color = if (selected) CherrishTheme.colors.gray1000 else CherrishTheme.colors.gray500,
+            style = CherrishTheme.typography.body3M12
         )
     }
 }
