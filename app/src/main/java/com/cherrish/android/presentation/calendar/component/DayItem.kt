@@ -28,74 +28,95 @@ import kotlin.math.min
 @Composable
 fun DayItem(
     day: CalendarDay,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
-    showDowntime: Boolean = false
+    isSelected: Boolean,
+    onDateClick: (LocalDate) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .noRippleClickable(
-                enabled = day is CalendarDay.Date && !showDowntime,
-                onClick = onClick
+                enabled = day is CalendarDay.Date.Normal,
+                onClick = { if (day is CalendarDay.Date) onDateClick(day.date) }
             ),
         contentAlignment = Alignment.Center
     ) {
         when (day) {
             CalendarDay.Empty -> { }
 
-            is CalendarDay.Date -> {
-                val isDowntimeActive = showDowntime && day.downtimeStatus != DownTimeStatus.NONE
+            is CalendarDay.Date.Normal -> NormalDateContent(
+                day = day,
+                isSelected = isSelected
+            )
 
-                val downtimeColors = getDowntimeColors(day.downtimeStatus)
+            is CalendarDay.Date.Downtime -> DowntimeDateContent(
+                day = day
+            )
+        }
+    }
+}
 
-                val backgroundColor = when {
-                    isDowntimeActive -> downtimeColors.background
-                    isSelected -> CherrishTheme.colors.gray0
-                    else -> Color.Transparent
-                }
-
-                val borderModifier = when {
-                    isDowntimeActive -> Modifier.border(
-                        width = 1.dp,
-                        color = downtimeColors.border,
-                        shape = CircleShape
-                    )
-                    isSelected -> Modifier.border(
+@Composable
+private fun NormalDateContent(
+    day: CalendarDay.Date.Normal,
+    isSelected: Boolean
+) {
+    Box(
+        modifier = Modifier
+            .aspectRatio(1f)
+            .clip(shape = RoundedCornerShape(8.dp))
+            .background(color = if (isSelected) CherrishTheme.colors.gray0 else Color.Transparent)
+            .then(
+                if (isSelected) {
+                    Modifier.border(
                         width = 1.dp,
                         color = CherrishTheme.colors.gray500,
                         shape = RoundedCornerShape(8.dp)
                     )
-                    else -> Modifier
+                } else {
+                    Modifier
                 }
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        DateText(day.date.dayOfMonth)
 
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .clip(if (showDowntime) CircleShape else RoundedCornerShape(8.dp))
-                        .background(backgroundColor)
-                        .then(borderModifier),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = day.date.dayOfMonth.toString(),
-                        color = CherrishTheme.colors.gray1000,
-                        style = CherrishTheme.typography.body1R14
-                    )
-
-                    if (!showDowntime && day.procedureCount > 0) {
-                        ProcedureDots(
-                            count = day.procedureCount,
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 6.dp)
-                        )
-                    }
-                }
-            }
+        if (day.procedureCount > 0) {
+            ProcedureDots(
+                count = day.procedureCount,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 6.dp)
+            )
         }
     }
+}
+
+@Composable
+private fun DowntimeDateContent(
+    day: CalendarDay.Date.Downtime
+) {
+    val colors = getDowntimeColors(day.status)
+
+    Box(
+        modifier = Modifier
+            .aspectRatio(1f)
+            .clip(shape = CircleShape)
+            .background(color = colors.background)
+            .border(width = 1.dp, color = colors.border, shape = CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        DateText(day.date.dayOfMonth)
+    }
+}
+
+@Composable
+private fun DateText(dayOfMonth: Int) {
+    Text(
+        text = dayOfMonth.toString(),
+        color = CherrishTheme.colors.gray1000,
+        style = CherrishTheme.typography.body1R14
+    )
 }
 
 @Composable
@@ -114,18 +135,13 @@ private fun ProcedureDots(
                 modifier = Modifier
                     .size(4.dp)
                     .background(
-                        color = Color(0xFFFF6B9D),
+                        color = CherrishTheme.colors.red700,
                         shape = CircleShape
                     )
             )
         }
     }
 }
-
-private data class DowntimeColors(
-    val background: Color,
-    val border: Color
-)
 
 @Composable
 private fun getDowntimeColors(status: DownTimeStatus): DowntimeColors {
@@ -149,68 +165,44 @@ private fun getDowntimeColors(status: DownTimeStatus): DowntimeColors {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun DayItemPreviewRow() {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        val days = listOf(
-            CalendarDay.Empty,
-            CalendarDay.Empty,
-            CalendarDay.Date(LocalDate.of(2025, 1, 1), procedureCount = 1),
-            CalendarDay.Date(LocalDate.of(2025, 1, 2), procedureCount = 0),
-            CalendarDay.Date(LocalDate.of(2025, 1, 3), procedureCount = 3),
-            CalendarDay.Date(LocalDate.of(2025, 1, 4), procedureCount = 2),
-            CalendarDay.Date(LocalDate.of(2025, 1, 5), procedureCount = 0)
-        )
-
-        days.forEach { day ->
-            DayItem(
-                day = day,
-                isSelected = day is CalendarDay.Date && day.date.dayOfMonth == 3,
-                onClick = {},
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
+private data class DowntimeColors(
+    val background: Color,
+    val border: Color
+)
 
 @Preview(showBackground = true)
 @Composable
-private fun DayItemDowntimePreview() {
-    Row(
-        modifier = Modifier.padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        val days = listOf(
-            CalendarDay.Date(
-                LocalDate.of(2025, 1, 7),
-                downtimeStatus = DownTimeStatus.CAUTION
-            ),
-            CalendarDay.Date(
-                LocalDate.of(2025, 1, 8),
-                downtimeStatus = DownTimeStatus.CAUTION
-            ),
-            CalendarDay.Date(
-                LocalDate.of(2025, 1, 9),
-                downtimeStatus = DownTimeStatus.SENSITIVE
-            ),
-            CalendarDay.Date(
-                LocalDate.of(2025, 1, 10),
-                downtimeStatus = DownTimeStatus.RECOVERY
-            )
-        )
+private fun DayItemPreview() {
+    CherrishTheme {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            val date = LocalDate.of(2026, 1, 8)
 
-        days.forEach { day ->
             DayItem(
-                day = day,
-                onClick = {},
-                showDowntime = true,
-                modifier = Modifier.weight(1f)
+                day = CalendarDay.Date.Normal(date, procedureCount = 0),
+                isSelected = false,
+                onDateClick = {},
+                modifier = Modifier.size(48.dp)
+            )
+            DayItem(
+                day = CalendarDay.Date.Normal(date.plusDays(1), procedureCount = 2),
+                isSelected = true,
+                onDateClick = {},
+                modifier = Modifier.size(48.dp)
+            )
+            DayItem(
+                day = CalendarDay.Date.Downtime(date.plusDays(2), status = DownTimeStatus.CAUTION),
+                isSelected = false,
+                onDateClick = {},
+                modifier = Modifier.size(48.dp)
+            )
+            DayItem(
+                day = CalendarDay.Date.Downtime(date.plusDays(3), status = DownTimeStatus.RECOVERY),
+                isSelected = false,
+                onDateClick = {},
+                modifier = Modifier.size(48.dp)
             )
         }
     }

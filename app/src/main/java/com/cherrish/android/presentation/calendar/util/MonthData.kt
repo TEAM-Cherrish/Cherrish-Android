@@ -33,22 +33,20 @@ data class MonthData(
 
         val date = firstDay.plusDays((dayOffset - inDays).toLong())
 
-        val (procedureCount, downtimeStatus) = when (displayMode) {
+        return when (displayMode) {
             is CalendarDisplayMode.Normal -> {
                 val count = displayMode.procedureCountByDate[date] ?: 0
-                count to DownTimeStatus.NONE
+                CalendarDay.Date.Normal(date = date, procedureCount = count)
             }
             is CalendarDisplayMode.Downtime -> {
                 val status = displayMode.downtimeByDate[date] ?: DownTimeStatus.NONE
-                0 to status
+                if (status != DownTimeStatus.NONE) {
+                    CalendarDay.Date.Downtime(date = date, status = status)
+                } else {
+                    CalendarDay.Date.Normal(date = date, procedureCount = 0)
+                }
             }
         }
-
-        return CalendarDay.Date(
-            date = date,
-            procedureCount = procedureCount,
-            downtimeStatus = downtimeStatus
-        )
     }
 }
 

@@ -10,9 +10,19 @@ sealed interface CalendarDay {
     data object Empty : CalendarDay
 
     @Immutable
-    data class Date(
-        val date: LocalDate,
-        val procedureCount: Int = 0,
-        val downtimeStatus: DownTimeStatus = DownTimeStatus.NONE
-    ) : CalendarDay
+    sealed interface Date : CalendarDay {
+        val date: LocalDate
+
+        @Immutable
+        data class Normal(
+            override val date: LocalDate,
+            val procedureCount: Int = 0
+        ) : Date
+
+        @Immutable
+        data class Downtime(
+            override val date: LocalDate,
+            val status: DownTimeStatus
+        ) : Date
+    }
 }

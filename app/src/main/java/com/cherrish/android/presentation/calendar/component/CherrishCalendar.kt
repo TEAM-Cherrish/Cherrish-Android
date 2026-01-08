@@ -1,6 +1,8 @@
 package com.cherrish.android.presentation.calendar.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDay
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
@@ -33,15 +36,16 @@ fun CherrishCalendar(
             yearMonth = yearMonth
         )
 
+        Spacer(modifier = Modifier.height(4.dp))
+
         BasicCalendar(
             yearMonth = yearMonth,
             displayMode = displayMode,
             dayContent = { day ->
                 DayItem(
                     day = day,
-                    onClick = { onDateClick((day as CalendarDay.Date).date) },
                     isSelected = day is CalendarDay.Date && day.date == selectedDate,
-                    showDowntime = displayMode is CalendarDisplayMode.Downtime
+                    onDateClick = onDateClick
                 )
             }
         )
@@ -54,21 +58,18 @@ private fun CherrishCalendarPreview() {
     CherrishTheme {
         var yearMonth by remember { mutableStateOf(YearMonth.now()) }
         var selectedDate by remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
-
-        val displayMode = remember {
-            CalendarDisplayMode.Normal(
-                procedureCountByDate = mapOf(
-                    LocalDate.now() to 2,
-                    LocalDate.now().plusDays(1) to 1,
-                    LocalDate.now().plusDays(5) to 3
-                )
-            )
-        }
+        val today = LocalDate.now()
 
         CherrishCalendar(
             yearMonth = yearMonth,
             selectedDate = selectedDate,
-            displayMode = displayMode,
+            displayMode = CalendarDisplayMode.Normal(
+                procedureCountByDate = mapOf(
+                    today to 2,
+                    today.plusDays(1) to 1,
+                    today.plusDays(5) to 3
+                )
+            ),
             onDateClick = { selectedDate = it },
             onMonthChange = { yearMonth = it }
         )
@@ -81,22 +82,19 @@ private fun CherrishCalendarDowntimePreview() {
     CherrishTheme {
         var yearMonth by remember { mutableStateOf(YearMonth.now()) }
         var selectedDate by remember { mutableStateOf<LocalDate?>(LocalDate.now()) }
-
-        val displayMode = remember {
-            CalendarDisplayMode.Downtime(
-                downtimeByDate = mapOf(
-                    LocalDate.now() to DownTimeStatus.CAUTION,
-                    LocalDate.now().plusDays(1) to DownTimeStatus.CAUTION,
-                    LocalDate.now().plusDays(2) to DownTimeStatus.SENSITIVE,
-                    LocalDate.now().plusDays(3) to DownTimeStatus.RECOVERY
-                )
-            )
-        }
+        val today = LocalDate.now()
 
         CherrishCalendar(
             yearMonth = yearMonth,
             selectedDate = selectedDate,
-            displayMode = displayMode,
+            displayMode = CalendarDisplayMode.Downtime(
+                downtimeByDate = mapOf(
+                    today to DownTimeStatus.CAUTION,
+                    today.plusDays(1) to DownTimeStatus.CAUTION,
+                    today.plusDays(2) to DownTimeStatus.SENSITIVE,
+                    today.plusDays(3) to DownTimeStatus.RECOVERY
+                )
+            ),
             onDateClick = { selectedDate = it },
             onMonthChange = { yearMonth = it }
         )
