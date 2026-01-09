@@ -14,8 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
@@ -28,6 +30,14 @@ fun MonthPlanBox(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .dropShadow(
+                shape = RoundedCornerShape(20.dp),
+                color = Color(0xFF9098A7).copy(alpha = 0.12f), // TODO: 디자인시스템에 컬러 추가 후 변경 예정
+                blur = 10.dp,
+                offsetX = 0.dp,
+                offsetY = 0.dp,
+                spread = 0.dp
+            )
             .clip(shape = RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
@@ -90,10 +100,16 @@ private fun DdayChip(
 @Composable
 private fun Preview() {
     CherrishTheme {
-        MonthPlanBox(
-            medicalProcedureNameDate = "1월 2일",
-            medicalProcedureName = "IPL(광선치료)",
-            dDay = "D-1"
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 10.dp)
+        ) {
+            MonthPlanBox(
+                medicalProcedureNameDate = "1월 2일",
+                medicalProcedureName = "IPL(광선치료)",
+                dDay = "D-1"
+            )
+        }
     }
 }
