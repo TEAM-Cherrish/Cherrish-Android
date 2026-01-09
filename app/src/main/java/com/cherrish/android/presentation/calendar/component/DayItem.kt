@@ -22,6 +22,7 @@ import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDay
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
+import com.cherrish.android.presentation.calendar.util.getDowntimeColors
 import java.time.LocalDate
 import kotlin.math.min
 
@@ -30,7 +31,7 @@ fun DayItem(
     day: CalendarDay,
     onDateClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
+    isSelected: Boolean = false
 ) {
     Box(
         modifier = modifier
@@ -96,7 +97,7 @@ private fun NormalDateContent(
 private fun DowntimeDateContent(
     day: CalendarDay.Date.Downtime
 ) {
-    val colors = getDowntimeColors(day.status)
+    val colors = getDowntimeColors(day.status, CherrishTheme.colors)
 
     Box(
         modifier = Modifier
@@ -142,33 +143,6 @@ private fun ProcedureDots(
         }
     }
 }
-
-@Composable
-private fun getDowntimeColors(status: DownTimeStatus): DowntimeColors {
-    return when (status) {
-        DownTimeStatus.CAUTION -> DowntimeColors(
-            background = CherrishTheme.colors.red500,
-            border = CherrishTheme.colors.red700
-        )
-        DownTimeStatus.SENSITIVE -> DowntimeColors(
-            background = CherrishTheme.colors.red300,
-            border = CherrishTheme.colors.red500
-        )
-        DownTimeStatus.RECOVERY -> DowntimeColors(
-            background = CherrishTheme.colors.red200,
-            border = CherrishTheme.colors.red400
-        )
-        DownTimeStatus.NONE -> DowntimeColors(
-            background = Color.Transparent,
-            border = Color.Transparent
-        )
-    }
-}
-
-private data class DowntimeColors(
-    val background: Color,
-    val border: Color
-)
 
 @Preview(showBackground = true)
 @Composable
