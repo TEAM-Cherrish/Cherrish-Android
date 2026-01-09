@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -97,7 +98,10 @@ private fun NormalDateContent(
 private fun DowntimeDateContent(
     day: CalendarDay.Date.Downtime
 ) {
-    val colors = getDowntimeColors(day.status, CherrishTheme.colors)
+    val cherrishColors = CherrishTheme.colors
+    val colors = remember(day.status, cherrishColors) {
+        getDowntimeColors(day.status, cherrishColors)
+    }
 
     Box(
         modifier = Modifier
