@@ -74,7 +74,8 @@ private fun RowScope.MainBottomBarItem(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.weight(1f)
+        modifier = Modifier
+            .weight(1f)
             .noRippleClickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
