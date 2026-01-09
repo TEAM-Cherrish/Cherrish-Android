@@ -1,6 +1,5 @@
 package com.cherrish.android.core.designsystem.component.gaugebar
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +24,6 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun CherrishGaugeBar(
     currentStep: Int,
@@ -36,12 +34,12 @@ fun CherrishGaugeBar(
         modifier = modifier.fillMaxWidth()
     ) {
         val baseSegmentWidth = 89.dp
-        val baseSegmentOffest = 67.dp
-        val totalBaseWidth = baseSegmentWidth + baseSegmentOffest * (gauges.size - 1)
+        val baseSegmentOffset = 67.dp
+        val totalBaseWidth = baseSegmentWidth + baseSegmentOffset * (gauges.size - 1)
 
         val screenScale = maxWidth / totalBaseWidth
         val segmentWidth = baseSegmentWidth * screenScale
-        val offsetWidth = baseSegmentOffest * screenScale
+        val offsetWidth = baseSegmentOffset * screenScale
 
         Layout(
             content = {
