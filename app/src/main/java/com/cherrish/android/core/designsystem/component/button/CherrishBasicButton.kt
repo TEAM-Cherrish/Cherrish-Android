@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,22 +21,21 @@ fun CherrishBasicButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(10.dp),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit
 ) {
     Row(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .clickable(
                 enabled = enabled,
+                onClick = onClick,
                 indication = null,
-                interactionSource = interactionSource,
-                onClick = onClick
+                interactionSource = interactionSource
             )
-            .padding(contentPadding),
+            .then(modifier),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         content()
     }
@@ -46,12 +43,13 @@ fun CherrishBasicButton(
 
 @Preview
 @Composable
-private fun CherrishBasicButtonPreview() {
+private fun CherrishBasicButtonPreview1() {
     CherrishTheme {
         CherrishBasicButton(
             onClick = {},
             modifier = Modifier
-                .background(color = CherrishTheme.colors.red700, shape = RoundedCornerShape(8.dp))
+                .background(color = CherrishTheme.colors.red700)
+                .padding(10.dp)
         ) {
             Text(
                 text = "다음",
@@ -60,4 +58,5 @@ private fun CherrishBasicButtonPreview() {
             )
         }
     }
+
 }

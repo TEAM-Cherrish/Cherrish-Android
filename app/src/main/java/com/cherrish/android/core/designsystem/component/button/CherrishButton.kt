@@ -45,38 +45,29 @@ fun CherrishButton(
     val backgroundColor = remember(enabled, style) {
         when (style) {
             CherrishButtonStyle.PRIMARY -> {
-                when {
-                    enabled -> cherrishColor.red700
-                    else -> cherrishColor.gray200
-                }
+                if (enabled) cherrishColor.red700 else cherrishColor.gray200
             }
-            CherrishButtonStyle.SECONDARY -> {
-                cherrishColor.gray400
-            }
+            CherrishButtonStyle.SECONDARY -> cherrishColor.gray400
         }
     }
 
     val textColor = remember(enabled, style) {
         when (style) {
             CherrishButtonStyle.PRIMARY -> {
-                when {
-                    enabled -> cherrishColor.gray0
-                    else -> cherrishColor.gray600
-                }
+                if (enabled) cherrishColor.gray0 else cherrishColor.gray600
             }
-            CherrishButtonStyle.SECONDARY -> {
-                cherrishColor.gray700
-            }
+            CherrishButtonStyle.SECONDARY -> cherrishColor.gray700
         }
     }
 
     CherrishBasicButton(
         onClick = onClick,
-        modifier = modifier
-            .scale(scale = scale)
-            .clip(shape = RoundedCornerShape(12.dp))
-            .background(color = backgroundColor),
         enabled = enabled,
+        modifier = modifier
+            .scale(scale)
+            .clip(RoundedCornerShape(12.dp))
+            .background(backgroundColor)
+            .padding(10.dp),
         interactionSource = interactionSource
     ) {
         Text(
@@ -96,7 +87,7 @@ private fun CherrishButtonsPreview() {
         ) {
             CherrishButton(
                 text = "다음",
-                onClick = {}
+                onClick = {},
             )
             CherrishButton(
                 text = "다음",
