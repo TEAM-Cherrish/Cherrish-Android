@@ -2,10 +2,10 @@ package com.cherrish.android.core.designsystem.component.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,29 +25,61 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 
 @Composable
-fun CherrishBasicChip(
+fun CherrishSelectionChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean,
+
+    style: CherrishSelectionChipStyle = CherrishSelectionChipStyle.SELECTIONCHIP,
     content: @Composable () -> Unit
 ) {
-    val cherrishColor = CherrishTheme.colors
+    val backgroundColor = when (style) {
+        CherrishSelectionChipStyle.SELECTIONCHIP -> {
+            if (selected) CherrishTheme.colors.red200 else CherrishTheme.colors.gray0
+        }
 
-    val backgroundColor = if (selected) cherrishColor.red200 else cherrishColor.gray0
+        CherrishSelectionChipStyle.MISSIONCARD -> {
+            if (selected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
+        }
+    }
 
-    val lineColor = if (selected) cherrishColor.red500 else cherrishColor.gray500
+    val lineColor = when (style) {
+        CherrishSelectionChipStyle.SELECTIONCHIP -> {
+            if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
+        }
+
+        CherrishSelectionChipStyle.MISSIONCARD -> {
+            if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
+        }
+    }
+
+    val cornerRadius = when (style) {
+        CherrishSelectionChipStyle.SELECTIONCHIP -> 10.dp
+        CherrishSelectionChipStyle.MISSIONCARD -> 9.dp
+    }
+
+    val paddingValues = when (style) {
+        CherrishSelectionChipStyle.SELECTIONCHIP -> PaddingValues(10.dp)
+        CherrishSelectionChipStyle.MISSIONCARD -> PaddingValues(horizontal = 7.dp, vertical = 6.dp)
+    }
 
     Row(
         modifier = modifier
             .fillMaxSize()
-            .clip(shape = RoundedCornerShape(size = 9.dp))
+            .clip(shape = RoundedCornerShape(size = cornerRadius))
             .background(backgroundColor)
-            .border(width = 1.dp, color = lineColor, shape = RoundedCornerShape(size = 10.dp))
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 6.dp),
+            .border(
+                width = 1.dp,
+                color = lineColor,
+                shape = RoundedCornerShape(size = cornerRadius)
+            )
+            .noRippleClickable(onClick = onClick)
+            .padding(paddingValues),
         verticalAlignment = Alignment.CenterVertically
     ) {
         content()
@@ -58,9 +90,8 @@ fun CherrishBasicChip(
 @Composable
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
-        val cherrishColor = CherrishTheme.colors
         var selected by remember { mutableStateOf(value = false) }
-        val textColor = if (selected) cherrishColor.gray800 else cherrishColor.gray700
+        val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
         Column(
             modifier = Modifier
@@ -70,7 +101,7 @@ private fun CherrishSelectionChipPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CherrishBasicChip(
+            CherrishSelectionChip(
                 selected = selected,
                 onClick = { selected = !selected }
             ) {
@@ -98,12 +129,12 @@ private fun CherrishSelectionChipPreview() {
 @Composable
 private fun CherrishMissionCardPreview() {
     CherrishTheme {
-        val cherrishColor = CherrishTheme.colors
         var selected by remember { mutableStateOf(value = false) }
-        val textColor = if (selected) cherrishColor.gray800 else cherrishColor.gray700
+        val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
-        val lineColor = if (selected) cherrishColor.red500 else cherrishColor.gray500
-        val indicatorColor = if (selected) cherrishColor.red700 else cherrishColor.gray500
+        val lineColor = if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
+        val indicatorColor =
+            if (selected) CherrishTheme.colors.red700 else CherrishTheme.colors.gray500
 
         Box(
             modifier = Modifier
@@ -111,7 +142,7 @@ private fun CherrishMissionCardPreview() {
                 .padding(vertical = 300.dp, horizontal = 80.dp),
             contentAlignment = Alignment.Center
         ) {
-            CherrishBasicChip(
+            CherrishSelectionChip(
                 selected = selected,
                 onClick = { selected = !selected },
                 modifier = Modifier.fillMaxSize()
