@@ -87,7 +87,7 @@ private fun CherrishButtonsPreview() {
         ) {
             CherrishButton(
                 text = "다음",
-                onClick = {},
+                onClick = {}
             )
             CherrishButton(
                 text = "다음",

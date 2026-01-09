@@ -35,7 +35,7 @@ fun CherrishBasicButton(
             )
             .then(modifier),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         content()
     }
@@ -58,5 +58,4 @@ private fun CherrishBasicButtonPreview1() {
             )
         }
     }
-
 }
