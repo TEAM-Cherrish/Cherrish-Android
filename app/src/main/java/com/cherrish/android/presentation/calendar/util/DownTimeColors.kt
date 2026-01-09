@@ -14,11 +14,11 @@ fun getDowntimeColors(
     colors: CherrishColors
 ): DownTimeColors {
     return when (status) {
-        DownTimeStatus.CAUTION -> DownTimeColors(
+        DownTimeStatus.SENSITIVE -> DownTimeColors(
             background = colors.red500,
             border = colors.red700
         )
-        DownTimeStatus.SENSITIVE -> DownTimeColors(
+        DownTimeStatus.CAUTION -> DownTimeColors(
             background = colors.red300,
             border = colors.red500
         )
