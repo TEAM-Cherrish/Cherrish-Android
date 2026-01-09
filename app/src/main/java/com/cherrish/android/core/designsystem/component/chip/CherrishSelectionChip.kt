@@ -18,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -63,9 +62,7 @@ fun CherrishSelectionChip(
         CherrishSelectionChipStyle.MISSIONCARD -> PaddingValues(horizontal = 7.dp, vertical = 6.dp)
     }
 
-
     Column(
-
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(size = cornerRadius))
@@ -79,7 +76,6 @@ fun CherrishSelectionChip(
             .padding(paddingValues),
 
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
         content()
     }
@@ -88,24 +84,24 @@ fun CherrishSelectionChip(
 @Preview
 @Composable
 private fun CherrishSelectionChipPreview() {
-
     CherrishTheme {
         var selected by remember { mutableStateOf(value = false) }
         val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
         CherrishSelectionChip(
-            selected = selected,
+
             onClick = { selected = !selected },
-            style = CherrishSelectionChipStyle.SELECTIONCHIP,
+            selected = selected,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(60.dp)
+                .padding(60.dp),
+            style = CherrishSelectionChipStyle.SELECTIONCHIP
+
         ) {
             Text(
                 text = "여드름 ∙ 트러블",
-                color = textColor,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                color = textColor
             )
         }
     }
@@ -119,11 +115,12 @@ private fun CherrishMissionCardPreview() {
 
         val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
         val lineColor = if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
-        val indicatorColor = if (selected) CherrishTheme.colors.red700 else CherrishTheme.colors.gray500
+        val indicatorColor =
+            if (selected) CherrishTheme.colors.red700 else CherrishTheme.colors.gray500
 
         CherrishSelectionChip(
-            selected = selected,
             onClick = { selected = !selected },
+            selected = selected,
             modifier = Modifier.fillMaxWidth(),
             style = CherrishSelectionChipStyle.MISSIONCARD
         ) {
@@ -134,8 +131,9 @@ private fun CherrishMissionCardPreview() {
             ) {
                 Text(
                     text = "반신욕 20분",
-                    color = textColor,
-                    modifier = Modifier.align(Alignment.BottomStart)
+                    modifier = Modifier.align(Alignment.BottomStart),
+                    color = textColor
+
                 )
 
                 Box(
