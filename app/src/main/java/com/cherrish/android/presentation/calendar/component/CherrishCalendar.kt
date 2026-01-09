@@ -65,9 +65,9 @@ private fun CherrishCalendarPreview() {
             selectedDate = selectedDate,
             displayMode = CalendarDisplayMode.Normal(
                 procedureCountByDate = mapOf(
-                    today to 2,
-                    today.plusDays(1) to 1,
-                    today.plusDays(5) to 3
+                    today.minusDays(2) to 3,
+                    today to 1,
+                    today.plusDays(10) to 2
                 )
             ),
             onDateClick = { selectedDate = it },
@@ -90,9 +90,11 @@ private fun CherrishCalendarDowntimePreview() {
             displayMode = CalendarDisplayMode.Downtime(
                 downtimeByDate = mapOf(
                     today to DownTimeStatus.CAUTION,
-                    today.plusDays(1) to DownTimeStatus.CAUTION,
-                    today.plusDays(2) to DownTimeStatus.SENSITIVE,
-                    today.plusDays(3) to DownTimeStatus.RECOVERY
+                    today.minusDays(1) to DownTimeStatus.CAUTION,
+                    today.minusDays(2) to DownTimeStatus.CAUTION,
+                    today to DownTimeStatus.SENSITIVE,
+                    today.plusDays(1) to DownTimeStatus.SENSITIVE,
+                    today.plusDays(2) to DownTimeStatus.RECOVERY
                 )
             ),
             onDateClick = { selectedDate = it },
