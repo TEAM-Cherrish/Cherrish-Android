@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.main.MainTab
 import kotlinx.collections.immutable.ImmutableList
@@ -44,25 +44,23 @@ fun MainBottomBar(
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
         exit = fadeOut() + slideOut { IntOffset(0, it.height) }
     ) {
-        Column(
-            modifier = Modifier.background(color = Color.White)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(50.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = CherrishTheme.colors.gray0)
+                .padding(top = 10.dp)
+                .padding(horizontal = 9.dp)
+                .navigationBarsPadding()
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-                    .navigationBarsPadding()
-            ) {
-                tabs.forEach { tab ->
-                    key(tab.route) {
-                        MainBottomBarItem(
-                            tab = tab,
-                            selected = (tab == currentTab),
-                            onClick = { onTabSelected(tab) }
-                        )
-                    }
+            tabs.forEach { tab ->
+                key(tab.route) {
+                    MainBottomBarItem(
+                        tab = tab,
+                        selected = (tab == currentTab),
+                        onClick = { onTabSelected(tab) }
+                    )
                 }
             }
         }
@@ -76,8 +74,9 @@ private fun RowScope.MainBottomBarItem(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.weight(1f)
-            .clickable(onClick = onClick),
+        modifier = Modifier
+            .weight(1f)
+            .noRippleClickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -85,11 +84,12 @@ private fun RowScope.MainBottomBarItem(
             imageVector = ImageVector.vectorResource(id = tab.iconRes),
             modifier = Modifier.size(24.dp),
             contentDescription = null,
-            tint = if (selected) Color.Black else Color.Gray
+            tint = if (selected) Color.Unspecified else CherrishTheme.colors.gray500
         )
         Text(
             text = tab.label,
-            color = if (selected) Color.Black else Color.Gray
+            color = if (selected) CherrishTheme.colors.gray1000 else CherrishTheme.colors.gray500,
+            style = CherrishTheme.typography.body3M12
         )
     }
 }
