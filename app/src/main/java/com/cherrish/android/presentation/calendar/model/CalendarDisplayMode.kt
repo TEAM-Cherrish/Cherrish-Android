@@ -8,6 +8,7 @@ sealed interface CalendarDisplayMode {
     ) : CalendarDisplayMode
 
     data class Downtime(
-        val downtimeByDate: Map<LocalDate, DownTimeStatus>
+        val downtimeByDate: Map<LocalDate, DownTimeStatus>,
+        val selectedProcedureId: Long? = null
     ) : CalendarDisplayMode
 }
