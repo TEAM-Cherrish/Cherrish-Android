@@ -27,12 +27,12 @@ import com.cherrish.android.presentation.calendar.util.getProcedureColors
 
 @Composable
 fun ProcedureInfoItem(
-    procedureType: ProcedureType,
     procedureName: String,
     procedureDay: String,
     downTimeDuration: Int?,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    procedureType: ProcedureType = ProcedureType.ACTIVE,
 ) {
     val colors = getProcedureColors(procedureType, CherrishTheme.colors)
 
@@ -109,7 +109,7 @@ private fun ProcedureScheduleInfo(
         )
         Text(
             text = downTimeDuration?.let { "다운타임 ${it}일" } ?: "-",
-            style = CherrishTheme.typography.body3M12,
+            style = CherrishTheme.typography.body3R12,
             color = colors.text
         )
     }
