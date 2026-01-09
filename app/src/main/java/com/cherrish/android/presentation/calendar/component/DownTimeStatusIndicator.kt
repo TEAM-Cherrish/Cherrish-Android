@@ -20,7 +20,23 @@ import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.util.getDowntimeColors
 
 @Composable
-fun DownTimeStatusItem(
+fun DownTimeStatusIndicator(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        DownTimeStatusItem(status = DownTimeStatus.SENSITIVE)
+
+        DownTimeStatusItem(status = DownTimeStatus.CAUTION)
+
+        DownTimeStatusItem(status = DownTimeStatus.RECOVERY)
+    }
+}
+
+@Composable
+private fun DownTimeStatusItem(
     status: DownTimeStatus,
     modifier: Modifier = Modifier
 ) {
@@ -55,13 +71,6 @@ fun DownTimeStatusItem(
 @Composable
 private fun DownTimeStatusItemPreview() {
     CherrishTheme {
-        Row(
-            modifier = Modifier.background(color = CherrishTheme.colors.gray0),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            DownTimeStatusItem(status = DownTimeStatus.SENSITIVE)
-            DownTimeStatusItem(status = DownTimeStatus.CAUTION)
-            DownTimeStatusItem(status = DownTimeStatus.RECOVERY)
-        }
+        DownTimeStatusIndicator()
     }
 }
