@@ -35,9 +35,12 @@ fun ChallengeChecklist(
     checklistContent: String,
     modifier: Modifier = Modifier
 ) {
-    val checklistIcon = if (isChecked) R.drawable.ic_checkbox_active else R.drawable.ic_checkbox_inactive
-    val contentColor = if (isChecked) CherrishTheme.colors.gray600 else CherrishTheme.colors.gray800
-    val contentDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
+    val checklistIcon =
+        if (isChecked) R.drawable.ic_checkbox_active else R.drawable.ic_checkbox_inactive
+    val contentColor =
+        if (isChecked) CherrishTheme.colors.gray600 else CherrishTheme.colors.gray800
+    val contentDecoration =
+        if (isChecked) TextDecoration.LineThrough else TextDecoration.None
 
     Column(
         modifier = modifier
@@ -84,7 +87,7 @@ private fun Preview() {
 
         ChallengeChecklist(
             isChecked = isChecked,
-            onChecklistClick = { isChecked = !isChecked},
+            onChecklistClick = { isChecked = !isChecked },
             checklistContent = "dddd"
         )
     }
