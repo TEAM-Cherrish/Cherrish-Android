@@ -14,10 +14,10 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun BackAndCloseTopAppBar(
-    modifier: Modifier = Modifier,
     title: String?,
-    onBackClicked: () -> Unit,
-    onCloseClicked: () -> Unit
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CherrishBasicTopAppBar(
         modifier = modifier,
@@ -26,7 +26,7 @@ fun BackAndCloseTopAppBar(
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .noRippleClickable(onClick = onBackClicked),
+                    .noRippleClickable(onClick = onBackClick),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
@@ -36,7 +36,7 @@ fun BackAndCloseTopAppBar(
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .noRippleClickable(onClick = onCloseClicked),
+                    .noRippleClickable(onClick = onCloseClick),
                 imageVector = ImageVector.vectorResource(R.drawable.ic_close),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
@@ -52,8 +52,8 @@ private fun BackAndCloseTopAppBarPreview() {
     CherrishTheme {
         BackAndCloseTopAppBar(
             title = "시술 여부 선택",
-            onBackClicked = {},
-            onCloseClicked = {}
+            onBackClick = {},
+            onCloseClick = {}
         )
     }
 }

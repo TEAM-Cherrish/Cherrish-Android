@@ -14,9 +14,9 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun BackTopAppBar(
-    modifier: Modifier = Modifier,
     title: String?,
-    onBackClicked: () -> Unit
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CherrishBasicTopAppBar(
         modifier = modifier,
@@ -25,7 +25,7 @@ fun BackTopAppBar(
             Icon(
                 modifier = Modifier
                     .size(24.dp)
-                    .noRippleClickable(onClick = onBackClicked),
+                    .noRippleClickable(onClick = onBackClick),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
@@ -40,7 +40,7 @@ private fun BackTopAppBarPreview() {
     CherrishTheme {
         BackTopAppBar(
             title = "시술 여부 선택",
-            onBackClicked = { }
+            onBackClick = { }
         )
     }
 }
