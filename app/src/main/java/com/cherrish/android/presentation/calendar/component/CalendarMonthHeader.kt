@@ -22,7 +22,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun CalendarHeader(
+fun CalendarMonthHeader(
     onLeftArrowClick: () -> Unit,
     onRightArrowClick: () -> Unit,
     yearMonth: YearMonth,
@@ -35,7 +35,7 @@ fun CalendarHeader(
             .padding(12.dp)
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_chevron_left),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_calendar_left),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier.noRippleClickable(onClick = onLeftArrowClick)
@@ -51,7 +51,7 @@ fun CalendarHeader(
         )
 
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_chevron_right),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_calendar_right),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier.noRippleClickable(onClick = onRightArrowClick)
@@ -61,9 +61,9 @@ fun CalendarHeader(
 
 @Preview(showBackground = true)
 @Composable
-private fun CalendarHeaderPreview() {
+private fun CalendarMonthHeaderPreview() {
     CherrishTheme {
-        CalendarHeader(
+        CalendarMonthHeader(
             onLeftArrowClick = {},
             onRightArrowClick = {},
             modifier = Modifier,

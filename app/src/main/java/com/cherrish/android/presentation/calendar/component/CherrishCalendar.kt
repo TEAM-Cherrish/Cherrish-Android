@@ -30,7 +30,7 @@ fun CherrishCalendar(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        CalendarHeader(
+        CalendarMonthHeader(
             onLeftArrowClick = { onMonthChange(yearMonth.previousMonth) },
             onRightArrowClick = { onMonthChange(yearMonth.nextMonth) },
             yearMonth = yearMonth
