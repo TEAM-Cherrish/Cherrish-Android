@@ -1,4 +1,4 @@
-package com.cherrish.android.core.designsystem.component
+package com.cherrish.android.core.designsystem.component.topappbar
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -13,10 +13,11 @@ import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-fun BackTopAppBar(
+fun BackAndCloseTopAppBar(
     modifier: Modifier = Modifier,
     title: String?,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onCloseClicked: () -> Unit
 ) {
     CherrishBasicTopAppBar(
         modifier = modifier,
@@ -26,7 +27,17 @@ fun BackTopAppBar(
                 modifier = Modifier
                     .size(24.dp)
                     .noRippleClickable(onClick = onBackClicked),
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left_24),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left_24),
+                contentDescription = null,
+                tint = CherrishTheme.colors.gray1000
+            )
+        },
+        actions = {
+            Icon(
+                modifier = Modifier
+                    .size(24.dp)
+                    .noRippleClickable(onClick = onCloseClicked),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_close_24),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
             )
@@ -36,11 +47,12 @@ fun BackTopAppBar(
 
 @Preview
 @Composable
-private fun BackTopAppBarPreview() {
+private fun BackAndCloseTopAppBarPreview() {
     CherrishTheme {
-        BackTopAppBar(
+        BackAndCloseTopAppBar(
             title = "시술 여부 선택",
-            onBackClicked = { }
+            onBackClicked = {},
+            onCloseClicked = {}
         )
     }
 }

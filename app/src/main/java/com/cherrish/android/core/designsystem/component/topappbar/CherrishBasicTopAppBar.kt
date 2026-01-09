@@ -1,4 +1,4 @@
-package com.cherrish.android.core.designsystem.component
+package com.cherrish.android.core.designsystem.component.topappbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ fun CherrishBasicTopAppBar(
     title: String? = null,
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable () -> Unit = {},
-    backgroundColor: Color = CherrishTheme.colors.gray0,
+    backgroundColor: Color = CherrishTheme.colors.gray0
 ) {
     Box(
         modifier = modifier
@@ -42,7 +42,7 @@ fun CherrishBasicTopAppBar(
                 modifier = Modifier.align(Alignment.Center),
                 text = title,
                 color = CherrishTheme.colors.gray1000,
-                style = CherrishTheme.typography.title1SB18,
+                style = CherrishTheme.typography.title1SB18
             )
         }
 
@@ -61,7 +61,7 @@ fun CherrishBasicTopAppBar(
 private fun CherrishTopAppBarPreview() {
     CherrishTheme {
         CherrishBasicTopAppBar(
-            title = "시술 여부 선택",
+            title = "시술 여부 선택"
         )
     }
 }
