@@ -26,7 +26,7 @@ fun BackTopAppBar(
                 modifier = Modifier
                     .size(24.dp)
                     .noRippleClickable(onClick = onBackClicked),
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left_24),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
             )

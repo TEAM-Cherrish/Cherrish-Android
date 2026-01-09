@@ -27,7 +27,7 @@ fun BackAndCloseTopAppBar(
                 modifier = Modifier
                     .size(24.dp)
                     .noRippleClickable(onClick = onBackClicked),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left_24),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
             )
@@ -37,13 +37,14 @@ fun BackAndCloseTopAppBar(
                 modifier = Modifier
                     .size(24.dp)
                     .noRippleClickable(onClick = onCloseClicked),
-                imageVector = ImageVector.vectorResource(R.drawable.ic_close_24),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_close),
                 contentDescription = null,
                 tint = CherrishTheme.colors.gray1000
             )
         }
     )
 }
+
 
 @Preview
 @Composable
