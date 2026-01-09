@@ -32,7 +32,7 @@ fun ProcedureInfoItem(
     downTimeDuration: Int?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    procedureType: ProcedureType = ProcedureType.ACTIVE,
+    procedureType: ProcedureType = ProcedureType.ACTIVE
 ) {
     val colors = getProcedureColors(procedureType, CherrishTheme.colors)
 

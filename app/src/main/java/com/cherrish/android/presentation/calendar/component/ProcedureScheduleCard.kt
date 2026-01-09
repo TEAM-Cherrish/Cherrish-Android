@@ -45,7 +45,7 @@ fun ProcedureScheduleCard(
             )
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = CherrishTheme.colors.gray0, shape = RoundedCornerShape(10.dp))
-            .padding(vertical = 18.dp, horizontal = 19.dp),
+            .padding(vertical = 18.dp, horizontal = 19.dp)
     ) {
         ScheduleHeader(displayMode = displayMode)
 
@@ -68,7 +68,7 @@ fun ProcedureScheduleCard(
                 procedureDay = procedure.procedureDay,
                 downTimeDuration = procedure.downTimeDuration,
                 procedureType = procedureType,
-                onClick = { onClick(procedure.procedureId) },
+                onClick = { onClick(procedure.procedureId) }
             )
 
             if (index < procedureInfo.lastIndex) {
@@ -119,19 +119,19 @@ private fun ProcedureScheduleCardNormalPreview() {
                         procedureId = 1L,
                         procedureName = "레이저토닝",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 5,
+                        downTimeDuration = 5
                     ),
                     ProcedureInfoModel(
                         procedureId = 2L,
                         procedureName = "레이저토닝",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 5,
+                        downTimeDuration = 5
                     ),
                     ProcedureInfoModel(
                         procedureId = 3L,
                         procedureName = "울쎄라",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 3,
+                        downTimeDuration = 3
                     )
                 ),
                 onClick = {}
@@ -159,19 +159,19 @@ private fun ProcedureScheduleCardDowntimePreview() {
                         procedureId = 1L,
                         procedureName = "레이저토닝",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 5,
+                        downTimeDuration = 5
                     ),
                     ProcedureInfoModel(
                         procedureId = 2L,
                         procedureName = "레이저토닝",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 10,
+                        downTimeDuration = 10
                     ),
                     ProcedureInfoModel(
                         procedureId = 3L,
                         procedureName = "울쎄라",
                         procedureDay = "1월 7일 수요일",
-                        downTimeDuration = 3,
+                        downTimeDuration = 3
                     )
                 ),
                 onClick = {}
