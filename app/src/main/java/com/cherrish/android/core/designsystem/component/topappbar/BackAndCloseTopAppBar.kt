@@ -45,7 +45,6 @@ fun BackAndCloseTopAppBar(
     )
 }
 
-
 @Preview
 @Composable
 private fun BackAndCloseTopAppBarPreview() {
