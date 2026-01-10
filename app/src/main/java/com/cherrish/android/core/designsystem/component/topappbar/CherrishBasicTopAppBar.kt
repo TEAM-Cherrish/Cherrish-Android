@@ -28,7 +28,6 @@ fun CherrishBasicTopAppBar(
             .background(backgroundColor)
             .padding(horizontal = 19.dp, vertical = 9.dp)
     ) {
-        // 좌측 아이콘
         Row(
             modifier = Modifier.align(Alignment.CenterStart),
             verticalAlignment = Alignment.CenterVertically
@@ -36,7 +35,6 @@ fun CherrishBasicTopAppBar(
             navigationIcon()
         }
 
-        // 타이틀
         if (title != null) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -46,7 +44,6 @@ fun CherrishBasicTopAppBar(
             )
         }
 
-        // 우측 아이콘
         Row(
             modifier = Modifier.align(Alignment.CenterEnd),
             verticalAlignment = Alignment.CenterVertically
