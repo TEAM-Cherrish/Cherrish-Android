@@ -1,5 +1,7 @@
 package com.cherrish.android.core.designsystem.component.chip
 
+import android.media.Image
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -18,9 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
@@ -28,7 +32,6 @@ import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 @Composable
 fun CherrishSelectionChip(
     onClick: () -> Unit,
-
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     style: CherrishSelectionChipStyle = CherrishSelectionChipStyle.SELECTIONCHIP,
@@ -85,16 +88,18 @@ private fun CherrishSelectionChipPreview() {
         CherrishSelectionChip(
 
             onClick = { selected = !selected },
-            isSelected = selected,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 60.dp),
+            isSelected = selected,
             style = CherrishSelectionChipStyle.SELECTIONCHIP
 
         ) {
             Text(
                 text = "여드름 ∙ 트러블",
-                modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 40.dp),
                 color = textColor,
                 textAlign = TextAlign.Center
 
@@ -110,49 +115,35 @@ private fun CherrishMissionCardPreview() {
         var selected by remember { mutableStateOf(value = false) }
 
         val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
-        val lineColor = if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
-        val indicatorColor =
-            if (selected) CherrishTheme.colors.red700 else CherrishTheme.colors.gray500
 
         CherrishSelectionChip(
             onClick = { selected = !selected },
+            modifier = Modifier.fillMaxWidth().padding(all = 30.dp),
             isSelected = selected,
-            modifier = Modifier.fillMaxWidth(),
             style = CherrishSelectionChipStyle.MISSIONCARD
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(all = 10.dp)
+
             ) {
                 Text(
                     text = "반신욕 20분",
-                    modifier = Modifier.align(Alignment.BottomStart),
+                    modifier = Modifier.align(Alignment.BottomStart).padding(vertical = 50.dp),
                     color = textColor
 
                 )
 
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .size(size = 18.dp)
-                        .clip(shape = RoundedCornerShape(size = 10.dp))
-                        .border(
-                            width = 1.dp,
-                            color = lineColor,
-                            shape = RoundedCornerShape(size = 10.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    if (selected) {
-                        Box(
-                            modifier = Modifier
-                                .size(size = 8.dp)
-                                .clip(shape = RoundedCornerShape(size = 10.dp))
-                                .background(indicatorColor)
-                        )
-                    }
-                }
+                Image(
+                    painter = painterResource(
+                        id = if (selected)
+                            R.drawable.ic_radiobtn_selected
+                        else
+                            R.drawable.ic_radiobtn_default
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.align(Alignment.TopEnd)
+                )
             }
         }
     }
