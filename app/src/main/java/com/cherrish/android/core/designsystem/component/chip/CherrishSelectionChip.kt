@@ -31,7 +31,7 @@ import com.cherrish.android.core.designsystem.theme.red700
 import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 
 @Composable
-fun CherrishSelectionChip(
+fun CherrishSelectionBaseChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -60,6 +60,7 @@ fun CherrishSelectionChip(
             horizontal = 10.dp,
             vertical = 30.dp
         )
+
         CherrishSelectionChipStyle.MISSIONCARD -> PaddingValues(horizontal = 7.dp, vertical = 6.dp)
     }
 
@@ -81,33 +82,97 @@ fun CherrishSelectionChip(
     }
 }
 
+@Composable
+fun CherrishSelectionChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
+
+    CherrishSelectionBaseChip(
+        onClick = onClick,
+        modifier = modifier,
+        isSelected = selected,
+        style = CherrishSelectionChipStyle.SELECTIONCHIP
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 40.dp),
+            color = textColor,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun CherrishMissionCardChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val textColor =
+        if (selected) {
+            CherrishTheme.colors.gray800
+        } else {
+            CherrishTheme.colors.gray700
+        }
+
+    CherrishSelectionBaseChip(
+        onClick = onClick,
+        modifier = modifier,
+        isSelected = selected,
+        style = CherrishSelectionChipStyle.MISSIONCARD
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = text,
+                color = textColor,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(
+                        start = 7.dp,
+                        top = 38.dp,
+                        bottom = 6.dp
+                    )
+            )
+
+            Icon(
+                imageVector = ImageVector.vectorResource(
+                    id = if (selected) {
+                        R.drawable.ic_radiobtn_selected
+                    } else {
+                        R.drawable.ic_radiobtn_default
+                    }
+                ),
+                tint = if (selected) red700 else gray500,
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
         var selected by remember { mutableStateOf(value = false) }
-        val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
         CherrishSelectionChip(
-
+            text = "여드름 ∙ 트러블",
+            selected = selected,
             onClick = { selected = !selected },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 60.dp),
-            isSelected = selected,
-            style = CherrishSelectionChipStyle.SELECTIONCHIP
-
-        ) {
-            Text(
-                text = "여드름 ∙ 트러블",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 40.dp),
-                color = textColor,
-                textAlign = TextAlign.Center
-
-            )
-        }
+                .padding(60.dp)
+        )
     }
 }
 
@@ -117,45 +182,13 @@ private fun CherrishMissionCardPreview() {
     CherrishTheme {
         var selected by remember { mutableStateOf(value = false) }
 
-        val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
-
-        CherrishSelectionChip(
+        CherrishMissionCardChip(
+            text = "반신욕 20분",
+            selected = selected,
             onClick = { selected = !selected },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 30.dp),
-            isSelected = selected,
-            style = CherrishSelectionChipStyle.MISSIONCARD
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-
-            ) {
-                Text(
-                    text = "반신욕 20분",
-                    modifier = Modifier.align(Alignment.BottomStart).padding(
-                        start = 7.dp,
-                        bottom = 6.dp,
-                        top = 38.dp
-                    ),
-                    color = textColor
-
-                )
-
-                Icon(
-                    imageVector = ImageVector.vectorResource(
-                        id = if (selected) {
-                            R.drawable.ic_radiobtn_selected
-                        } else {
-                            R.drawable.ic_radiobtn_default
-                        }
-                    ),
-                    tint = if (selected) red700 else gray500,
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.TopEnd)
-                )
-            }
-        }
+                .padding(30.dp)
+        )
     }
 }
