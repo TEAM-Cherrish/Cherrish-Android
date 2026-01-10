@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
@@ -32,7 +31,7 @@ fun MonthPlanBox(
             .fillMaxWidth()
             .dropShadow(
                 shape = RoundedCornerShape(10.dp),
-                color = Color(0xFF9098A7).copy(alpha = 0.12f), // TODO: 디자인시스템에 컬러 추가 후 변경 예정
+                color = CherrishTheme.colors.shadow1.copy(alpha = 0.12f),
                 blur = 10.dp,
                 offsetX = 0.dp,
                 offsetY = 0.dp,
