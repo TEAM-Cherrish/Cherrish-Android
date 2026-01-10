@@ -26,7 +26,7 @@ fun CherrishBasicTopAppBar(
         modifier = modifier
             .fillMaxWidth()
             .background(backgroundColor)
-            .padding(horizontal = 19.dp, vertical = 9.dp)
+            .padding(horizontal = 19.dp, vertical = 10.dp)
     ) {
         Row(
             modifier = Modifier.align(Alignment.CenterStart),
