@@ -14,22 +14,22 @@ enum class MainTab(
     val label: String
 ) {
     HOME(
-        iconRes = R.drawable.ic_launcher_background,
+        iconRes = R.drawable.ic_home,
         route = Home,
         label = "홈"
     ),
     CALENDAR(
-        iconRes = R.drawable.ic_launcher_background,
+        iconRes = R.drawable.ic_calendar,
         route = Calendar,
         label = "캘린더"
     ),
     CHALLENGE(
-        iconRes = R.drawable.ic_launcher_background,
+        iconRes = R.drawable.ic_challenge,
         route = Challenge,
         label = "챌린지"
     ),
     MYPAGE(
-        iconRes = R.drawable.ic_launcher_background,
+        iconRes = R.drawable.ic_mypage,
         route = MyPage,
         label = "마이"
     );
