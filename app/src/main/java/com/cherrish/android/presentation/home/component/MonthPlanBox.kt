@@ -2,16 +2,12 @@ package com.cherrish.android.presentation.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,7 +27,7 @@ fun MonthPlanBox(
         modifier = modifier
             .fillMaxWidth()
             .dropShadow(
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(10.dp),
                 color = Color(0xFF9098A7).copy(alpha = 0.12f), // TODO: 디자인시스템에 컬러 추가 후 변경 예정
                 blur = 10.dp,
                 offsetX = 0.dp,
@@ -48,50 +44,10 @@ fun MonthPlanBox(
             .padding(vertical = 10.dp)
             .padding(start = 10.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = medicalProcedureNameDate,
-                style = CherrishTheme.typography.title2M16,
-                color = CherrishTheme.colors.gray900
-            )
-
-            Text(
-                text = "•",
-                style = CherrishTheme.typography.title2M16,
-                color = CherrishTheme.colors.gray900
-            )
-
-            Text(
-                text = medicalProcedureName,
-                style = CherrishTheme.typography.title2SB16,
-                color = CherrishTheme.colors.gray900
-            )
-
-            DdayChip(
-                dDay = dDay
-            )
-        }
-    }
-}
-
-@Composable
-private fun DdayChip(
-    dDay: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = CherrishTheme.colors.gray300)
-            .padding(horizontal = 10.dp)
-    ) {
-        Text(
-            text = dDay,
-            style = CherrishTheme.typography.body2R13,
-            color = CherrishTheme.colors.gray900
+        MonthPlanContent(
+            medicalProcedureNameDate = medicalProcedureNameDate,
+            medicalProcedureName = medicalProcedureName,
+            dDay = dDay
         )
     }
 }
