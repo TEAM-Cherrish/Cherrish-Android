@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
@@ -42,6 +43,18 @@ fun MonthPlanContent(
 
         DdayChip(
             dDay = dDay
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    CherrishTheme {
+        MonthPlanContent(
+            medicalProcedureNameDate = "1월 2일",
+            medicalProcedureName = "IPL(광선치료)",
+            dDay = "D-1"
         )
     }
 }

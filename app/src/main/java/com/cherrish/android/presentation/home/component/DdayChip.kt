@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
@@ -26,6 +27,16 @@ fun DdayChip(
             text = dDay,
             style = CherrishTheme.typography.body2R13,
             color = CherrishTheme.colors.gray900
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    CherrishTheme {
+        DdayChip(
+            dDay = "D-1"
         )
     }
 }
