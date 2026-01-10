@@ -74,13 +74,15 @@ private fun CalendarScreen(
             selectedDate = uiState.selectedDate,
             displayMode = uiState.calendarDisplayMode,
             onDateClick = onDateClick,
-            onMonthChange = onMonthChange
+            onMonthChange = onMonthChange,
+            modifier = Modifier.padding(horizontal = 5.dp)
         )
 
         ProcedureScheduleCard(
             displayMode = uiState.calendarDisplayMode,
             procedureInfo = uiState.procedureInfoList,
-            onClick = onEventClick
+            onClick = onEventClick,
+            modifier = Modifier.padding(horizontal = 17.dp)
         )
     }
 }
