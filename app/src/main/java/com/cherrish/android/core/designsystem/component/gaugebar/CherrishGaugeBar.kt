@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.Layout
@@ -47,7 +48,14 @@ fun CherrishGaugeBar(
                     key(gauge) {
                         val isActive = gauge.step <= currentStep
                         val isSelected = gauge.step == currentStep
-                        val gaugeStyle = gauge.style(isActive, isSelected)
+                        val cherrishColor = CherrishTheme.colors
+                        val gaugeStyle = remember(gauge, isActive, isSelected) {
+                            gauge.style(
+                                colors = cherrishColor,
+                                isActive = isActive,
+                                isSelected = isSelected
+                            )
+                        }
 
                         Column(
                             verticalArrangement = Arrangement.spacedBy(2.dp)
