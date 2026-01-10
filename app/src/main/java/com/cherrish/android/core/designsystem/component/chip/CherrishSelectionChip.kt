@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,7 +72,7 @@ fun CherrishSelectionChip(
                 shape = RoundedCornerShape(size = cornerRadius)
             )
             .noRippleClickable(onClick = onClick)
-            .padding(paddingValues),
+            .padding(paddingValues)
 
     ) {
         content()
@@ -142,10 +141,11 @@ private fun CherrishMissionCardPreview() {
 
                 Image(
                     painter = painterResource(
-                        id = if (selected)
+                        id = if (selected) {
                             R.drawable.ic_radiobtn_selected
-                        else
+                        } else {
                             R.drawable.ic_radiobtn_default
+                        }
                     ),
                     contentDescription = null,
                     modifier = Modifier.align(Alignment.TopEnd)
