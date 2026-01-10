@@ -35,6 +35,8 @@ val green1 = Color(0xFFFBFFF3)
 val green2 = Color(0xFFBEDCB8)
 val green3 = Color(0xFF9AD342)
 
+val shadow1 = Color(0XFF9098A7)
+
 @Immutable
 data class CherrishColors(
 
@@ -61,7 +63,9 @@ data class CherrishColors(
 
     val green1: Color,
     val green2: Color,
-    val green3: Color
+    val green3: Color,
+
+    val shadow1: Color
 )
 
 val defaultCherrishColors = CherrishColors(
@@ -89,7 +93,9 @@ val defaultCherrishColors = CherrishColors(
 
     green1 = green1,
     green2 = green2,
-    green3 = green3
+    green3 = green3,
+
+    shadow1 = shadow1
 )
 
 val LocalCherrishColorsProvider = staticCompositionLocalOf { defaultCherrishColors }
@@ -228,6 +234,20 @@ private fun CherrishGreenColorsPreview() {
                 text = "Green3",
                 style = CherrishTheme.typography.body1M14,
                 color = CherrishTheme.colors.green3
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun CherrishShadowColorsPreview() {
+    CherrishTheme {
+        Column {
+            Text(
+                text = "Shadow1",
+                style = CherrishTheme.typography.body1M14,
+                color = CherrishTheme.colors.shadow1
             )
         }
     }
