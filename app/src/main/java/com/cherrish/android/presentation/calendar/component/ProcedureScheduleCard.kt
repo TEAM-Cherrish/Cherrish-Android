@@ -50,17 +50,15 @@ fun ProcedureScheduleCard(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        procedureInfo.forEachIndexed { index, procedure ->
-            ProcedureInfoItem(
-                procedureName = procedure.procedureName,
-                procedureDay = procedure.procedureDay,
-                downTimeDuration = procedure.downTimeDuration,
-                procedureType = getProcedureType(displayMode, procedure.procedureId),
-                onClick = { onClick(procedure.procedureId) }
-            )
-
-            if (index < procedureInfo.lastIndex) {
-                Spacer(modifier = Modifier.height(8.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            procedureInfo.forEach { procedure ->
+                ProcedureInfoItem(
+                    procedureName = procedure.procedureName,
+                    procedureDay = procedure.procedureDay,
+                    downTimeDuration = procedure.downTimeDuration,
+                    procedureType = getProcedureType(displayMode, procedure.procedureId),
+                    onClick = { onClick(procedure.procedureId) }
+                )
             }
         }
     }
