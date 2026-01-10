@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -57,7 +58,9 @@ fun CherrishSelectionChip(
     val paddingValues = when (style) {
         CherrishSelectionChipStyle.SELECTIONCHIP -> PaddingValues(10.dp)
         CherrishSelectionChipStyle.MISSIONCARD -> PaddingValues(horizontal = 7.dp, vertical = 6.dp)
-    } // 최소일떄 패딩
+    }
+
+    // 최소일떄 패딩
 
     Column(
         modifier = modifier
@@ -72,7 +75,6 @@ fun CherrishSelectionChip(
             .noRippleClickable(onClick = onClick)
             .padding(paddingValues),
 
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         content()
     }
@@ -129,7 +131,11 @@ private fun CherrishMissionCardPreview() {
             ) {
                 Text(
                     text = "반신욕 20분",
-                    modifier = Modifier.align(Alignment.BottomStart).padding(vertical = 50.dp),
+                    modifier = Modifier.align(Alignment.BottomStart).padding(
+                        start = 7.dp,
+                        bottom = 6.dp,
+                        top = 38.dp
+                    ),
                     color = textColor
 
                 )
