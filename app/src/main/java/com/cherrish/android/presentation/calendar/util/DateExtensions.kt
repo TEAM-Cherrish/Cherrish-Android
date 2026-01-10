@@ -18,7 +18,7 @@ fun firstDayOfWeekFromLocale(locale: Locale = Locale.getDefault()): DayOfWeek =
 fun YearMonth.atStartOfMonth(): LocalDate = this.atDay(1)
 
 val LocalDate.yearMonth: YearMonth
-    get() = YearMonth.of(year, month)
+    get() = YearMonth.from(this)
 
 val YearMonth.nextMonth: YearMonth
     get() = this.plusMonths(1)
