@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import java.time.YearMonth
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalDate
-import java.time.YearMonth
-import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor() : ViewModel() {
@@ -31,11 +31,8 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onDateClick(date: LocalDate) {
-
     }
 
     fun onEventClick(procedureId: Long) {
-
     }
-
 }

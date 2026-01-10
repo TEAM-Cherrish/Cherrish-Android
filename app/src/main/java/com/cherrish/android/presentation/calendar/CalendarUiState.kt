@@ -4,17 +4,17 @@ import androidx.compose.runtime.Immutable
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 import java.time.YearMonth
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
 data class CalendarUiState(
     val selectedYearMonth: YearMonth = YearMonth.now(),
     val calendarDisplayMode: CalendarDisplayMode = CalendarDisplayMode.Normal(),
     val selectedDate: LocalDate? = LocalDate.now(),
-    val procedureInfoList: ImmutableList<ProcedureInfoModel> = persistentListOf(),
+    val procedureInfoList: ImmutableList<ProcedureInfoModel> = persistentListOf()
 ) {
     companion object {
         private val today = LocalDate.of(2026, 1, 7)

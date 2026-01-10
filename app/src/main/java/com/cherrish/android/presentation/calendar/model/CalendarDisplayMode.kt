@@ -1,7 +1,7 @@
 package com.cherrish.android.presentation.calendar.model
 
-import kotlinx.collections.immutable.persistentMapOf
 import java.time.LocalDate
+import kotlinx.collections.immutable.persistentMapOf
 
 sealed interface CalendarDisplayMode {
     data class Normal(

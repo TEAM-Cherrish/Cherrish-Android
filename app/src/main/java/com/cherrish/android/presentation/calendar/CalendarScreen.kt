@@ -30,11 +30,9 @@ fun CalendarRoute(
 
     when (val state = uiState) {
         is UiState.Loading -> {
-
         }
 
         is UiState.Failure -> {
-
         }
 
         is UiState.Success -> {
