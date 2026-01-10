@@ -61,7 +61,7 @@ fun BasicCalendar(
 private fun CalendarMonthGrid(
     month: CalendarMonth,
     modifier: Modifier = Modifier,
-    dayContent: @Composable (CalendarDay) -> Unit,
+    dayContent: @Composable (CalendarDay) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
