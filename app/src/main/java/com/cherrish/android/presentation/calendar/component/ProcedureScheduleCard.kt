@@ -37,7 +37,7 @@ fun ProcedureScheduleCard(
             .fillMaxWidth()
             .dropShadow(
                 shape = RoundedCornerShape(10.dp),
-                color = Color(0xFF9098A7).copy(alpha = 0.12f),
+                color = CherrishTheme.colors.shadow,
                 blur = 10.dp,
                 offsetX = 0.dp,
                 offsetY = 0.dp,
@@ -49,7 +49,7 @@ fun ProcedureScheduleCard(
     ) {
         ScheduleHeader(displayMode = displayMode)
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         procedureInfo.forEachIndexed { index, procedure ->
             val procedureType = when (displayMode) {
