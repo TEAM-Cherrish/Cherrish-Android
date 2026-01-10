@@ -34,6 +34,8 @@ fun CherrishGaugeBar(
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth()
     ) {
+        val reversedGauges = remember(gauges) { gauges.asReversed() }
+
         val baseSegmentWidth = 89.dp
         val baseSegmentOffset = 67.dp
         val totalBaseWidth = baseSegmentWidth + baseSegmentOffset * (gauges.size - 1)
@@ -44,7 +46,7 @@ fun CherrishGaugeBar(
 
         Layout(
             content = {
-                gauges.asReversed().forEach { gauge ->
+                reversedGauges.forEach { gauge ->
                     key(gauge) {
                         val isActive = gauge.step <= currentStep
                         val isSelected = gauge.step == currentStep
@@ -93,7 +95,7 @@ fun CherrishGaugeBar(
             val layoutHeight = segmentPlaceables.maxOfOrNull { it.height } ?: 0
 
             layout(width = constraints.maxWidth, height = layoutHeight) {
-                gauges.asReversed().forEachIndexed { i, gauge ->
+                reversedGauges.forEachIndexed { i, gauge ->
                     val originalIndex = gauge.step - 1
                     val xOffsetPx = (offsetWidth.toPx() * originalIndex).toInt()
 
