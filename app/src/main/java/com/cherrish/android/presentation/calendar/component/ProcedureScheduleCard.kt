@@ -14,14 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
-import com.cherrish.android.presentation.calendar.model.ProcedureType
+import com.cherrish.android.presentation.calendar.util.getProcedureType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -52,22 +51,11 @@ fun ProcedureScheduleCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         procedureInfo.forEachIndexed { index, procedure ->
-            val procedureType = when (displayMode) {
-                is CalendarDisplayMode.Normal -> ProcedureType.ACTIVE
-                is CalendarDisplayMode.Downtime -> {
-                    if (displayMode.selectedProcedureId == procedure.procedureId) {
-                        ProcedureType.ACTIVE
-                    } else {
-                        ProcedureType.INACTIVE
-                    }
-                }
-            }
-
             ProcedureInfoItem(
                 procedureName = procedure.procedureName,
                 procedureDay = procedure.procedureDay,
                 downTimeDuration = procedure.downTimeDuration,
-                procedureType = procedureType,
+                procedureType = getProcedureType(displayMode, procedure.procedureId),
                 onClick = { onClick(procedure.procedureId) }
             )
 

@@ -2,6 +2,7 @@ package com.cherrish.android.presentation.calendar.util
 
 import androidx.compose.ui.graphics.Color
 import com.cherrish.android.core.designsystem.theme.CherrishColors
+import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.ProcedureType
 
 data class ProcedureColors(
@@ -28,5 +29,19 @@ fun getProcedureColors(
             text = colors.gray500,
             divider = colors.gray500
         )
+    }
+}
+
+fun getProcedureType(
+    displayMode: CalendarDisplayMode,
+    procedureId: Long
+): ProcedureType = when (displayMode) {
+    is CalendarDisplayMode.Normal -> ProcedureType.ACTIVE
+    is CalendarDisplayMode.Downtime -> {
+        if (displayMode.selectedProcedureId == procedureId) {
+            ProcedureType.ACTIVE
+        } else {
+            ProcedureType.INACTIVE
+        }
     }
 }
