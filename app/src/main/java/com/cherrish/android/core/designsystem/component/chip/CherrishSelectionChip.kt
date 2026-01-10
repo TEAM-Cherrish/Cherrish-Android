@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -27,30 +28,23 @@ import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 @Composable
 fun CherrishSelectionChip(
     onClick: () -> Unit,
-    selected: Boolean,
+
     modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
     style: CherrishSelectionChipStyle = CherrishSelectionChipStyle.SELECTIONCHIP,
     content: @Composable () -> Unit
 ) {
     val backgroundColor = when (style) {
         CherrishSelectionChipStyle.SELECTIONCHIP -> {
-            if (selected) CherrishTheme.colors.red200 else CherrishTheme.colors.gray0
+            if (isSelected) CherrishTheme.colors.red200 else CherrishTheme.colors.gray0
         }
 
         CherrishSelectionChipStyle.MISSIONCARD -> {
-            if (selected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
+            if (isSelected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
         }
     }
 
-    val lineColor = when (style) {
-        CherrishSelectionChipStyle.SELECTIONCHIP -> {
-            if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
-        }
-
-        CherrishSelectionChipStyle.MISSIONCARD -> {
-            if (selected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
-        }
-    }
+    val lineColor = if (isSelected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500
 
     val cornerRadius = when (style) {
         CherrishSelectionChipStyle.SELECTIONCHIP -> 10.dp
@@ -60,7 +54,7 @@ fun CherrishSelectionChip(
     val paddingValues = when (style) {
         CherrishSelectionChipStyle.SELECTIONCHIP -> PaddingValues(10.dp)
         CherrishSelectionChipStyle.MISSIONCARD -> PaddingValues(horizontal = 7.dp, vertical = 6.dp)
-    }
+    } // 최소일떄 패딩
 
     Column(
         modifier = modifier
@@ -91,17 +85,19 @@ private fun CherrishSelectionChipPreview() {
         CherrishSelectionChip(
 
             onClick = { selected = !selected },
-            selected = selected,
+            isSelected = selected,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(60.dp),
+                .padding(all = 60.dp),
             style = CherrishSelectionChipStyle.SELECTIONCHIP
 
         ) {
             Text(
                 text = "여드름 ∙ 트러블",
-                modifier = Modifier.fillMaxWidth(),
-                color = textColor
+                modifier = Modifier.fillMaxWidth().padding(vertical = 40.dp),
+                color = textColor,
+                textAlign = TextAlign.Center
+
             )
         }
     }
@@ -120,7 +116,7 @@ private fun CherrishMissionCardPreview() {
 
         CherrishSelectionChip(
             onClick = { selected = !selected },
-            selected = selected,
+            isSelected = selected,
             modifier = Modifier.fillMaxWidth(),
             style = CherrishSelectionChipStyle.MISSIONCARD
         ) {
