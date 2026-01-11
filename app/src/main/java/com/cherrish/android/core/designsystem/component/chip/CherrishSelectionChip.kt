@@ -2,11 +2,14 @@ package com.cherrish.android.core.designsystem.component.chip
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -15,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,7 +68,6 @@ fun CherrishSelectionBaseChip(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
             .clip(shape = RoundedCornerShape(size = cornerRadius))
             .background(backgroundColor)
             .border(
@@ -85,16 +86,16 @@ fun CherrishSelectionBaseChip(
 @Composable
 fun CherrishSelectionChip(
     text: String,
-    selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false
 ) {
-    val textColor = if (selected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
+    val textColor = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
     CherrishSelectionBaseChip(
         onClick = onClick,
         modifier = modifier,
-        isSelected = selected,
+        isSelected = isSelected,
         style = CherrishSelectionChipStyle.SELECTIONCHIP
     ) {
         Text(
@@ -111,49 +112,39 @@ fun CherrishSelectionChip(
 @Composable
 fun CherrishMissionCardChip(
     text: String,
-    selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false
 ) {
-    val textColor =
-        if (selected) {
-            CherrishTheme.colors.gray800
-        } else {
-            CherrishTheme.colors.gray700
-        }
+    val textColor = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
     CherrishSelectionBaseChip(
         onClick = onClick,
         modifier = modifier,
-        isSelected = selected,
+        isSelected = isSelected,
         style = CherrishSelectionChipStyle.MISSIONCARD
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
         ) {
-            Text(
-                text = text,
-                color = textColor,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(
-                        start = 7.dp,
-                        top = 38.dp,
-                        bottom = 6.dp
-                    )
-            )
-
             Icon(
                 imageVector = ImageVector.vectorResource(
-                    id = if (selected) {
+                    id = if (isSelected) {
                         R.drawable.ic_radiobtn_selected
                     } else {
                         R.drawable.ic_radiobtn_default
                     }
                 ),
-                tint = if (selected) red700 else gray500,
+                tint = if (isSelected) red700 else gray500,
                 contentDescription = null,
-                modifier = Modifier.align(Alignment.TopEnd)
+                modifier = Modifier.weight(1f).padding(start = 110.dp)
+            )
+
+            Text(
+                text = text,
+                color = textColor,
+                modifier = Modifier
+                    .weight(weight = 1f)
             )
         }
     }
@@ -163,15 +154,16 @@ fun CherrishMissionCardChip(
 @Composable
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
-        var selected by remember { mutableStateOf(value = false) }
+        var isSelected by remember { mutableStateOf(value = false) }
 
         CherrishSelectionChip(
             text = "여드름 ∙ 트러블",
-            selected = selected,
-            onClick = { selected = !selected },
+
+            onClick = { isSelected = !isSelected },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(60.dp)
+                .padding(60.dp),
+            isSelected = isSelected
         )
     }
 }
@@ -180,15 +172,48 @@ private fun CherrishSelectionChipPreview() {
 @Composable
 private fun CherrishMissionCardPreview() {
     CherrishTheme {
-        var selected by remember { mutableStateOf(value = false) }
+        var isSelected by remember { mutableStateOf(value = false) }
 
         CherrishMissionCardChip(
             text = "반신욕 20분",
-            selected = selected,
-            onClick = { selected = !selected },
+
+            onClick = { isSelected = !isSelected },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(30.dp)
+                .width(width = 148.dp)
+                .height(height = 80.dp),
+            isSelected = isSelected
         )
+    }
+}
+
+@Preview
+@Composable
+private fun CherrishMissionCardRowPreview() {
+    CherrishTheme {
+        var isSelected by remember { mutableStateOf(value = false) }
+
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(space = 12.dp)
+        ) {
+            CherrishMissionCardChip(
+                text = "반신욕 20분",
+
+                onClick = { isSelected = !isSelected },
+                modifier = Modifier
+                    .width(width = 148.dp)
+                    .height(height = 80.dp),
+                isSelected = isSelected
+            )
+            CherrishMissionCardChip(
+                text = "반신욕 30분",
+                onClick = { isSelected = !isSelected },
+                modifier = Modifier
+                    .width(width = 148.dp)
+                    .height(height = 80.dp),
+                isSelected = isSelected
+
+            )
+        }
     }
 }
