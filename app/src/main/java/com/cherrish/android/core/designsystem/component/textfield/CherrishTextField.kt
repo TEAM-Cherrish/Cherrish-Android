@@ -58,7 +58,7 @@ fun CherrishTextField(
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
-            imeAction = keyboardImeAction,
+            imeAction = keyboardImeAction
         ),
         keyboardActions = KeyboardActions(
             onDone = { onDoneAction() }
