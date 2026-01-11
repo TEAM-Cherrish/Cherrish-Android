@@ -44,9 +44,7 @@ fun CherrishTextField(
 ) {
     BasicTextField(
         value = value,
-        onValueChange = {
-            onValueChanged(it)
-        },
+        onValueChange = onValueChanged,
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(color = CherrishTheme.colors.gray0)
