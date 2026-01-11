@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,7 +35,10 @@ fun ProcedureInfoItem(
     modifier: Modifier = Modifier,
     procedureType: ProcedureType = ProcedureType.ACTIVE
 ) {
-    val colors = getProcedureColors(procedureType, CherrishTheme.colors)
+    val themeColors = CherrishTheme.colors
+    val colors = remember(procedureType, themeColors) {
+        getProcedureColors(procedureType, themeColors)
+    }
 
     Row(
         modifier = modifier
