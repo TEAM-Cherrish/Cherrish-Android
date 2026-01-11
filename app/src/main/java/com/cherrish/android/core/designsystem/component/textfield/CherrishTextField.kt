@@ -87,7 +87,7 @@ fun CherrishTextField(
 
 @Preview(showBackground = true, backgroundColor = 0xFF212121)
 @Composable
-private fun CherrishBasicTextFieldPadding16Preview() {
+private fun CherrishTextFieldPreview() {
     var text by remember { mutableStateOf("") }
     CherrishTheme {
         CherrishTextField(
