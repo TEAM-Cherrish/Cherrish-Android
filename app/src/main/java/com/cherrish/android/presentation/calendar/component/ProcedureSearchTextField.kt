@@ -84,7 +84,7 @@ fun ProcedureTextField(
     )
 }
 
-@Preview()
+@Preview
 @Composable
 private fun ProcedureTextFieldPreview() {
     CherrishTheme {
