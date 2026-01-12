@@ -3,7 +3,6 @@ package com.cherrish.android.core.designsystem.component.textfield
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -66,21 +65,18 @@ fun CherrishTextField(
             color = inputTextColor
         ),
         decorationBox = { innerTextField ->
-            Column(
-                modifier = Modifier.padding(paddingValues)
+            Box(
+                modifier = Modifier.padding(paddingValues),
+                contentAlignment = Alignment.CenterStart
             ) {
-                Box(
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (value.isEmpty()) {
-                        Text(
-                            text = placeholder,
-                            color = placeholderTextColor,
-                            style = placeholderTextStyle
-                        )
-                    }
-                    innerTextField()
+                if (value.isEmpty()) {
+                    Text(
+                        text = placeholder,
+                        color = placeholderTextColor,
+                        style = placeholderTextStyle
+                    )
                 }
+                innerTextField()
             }
         }
     )
