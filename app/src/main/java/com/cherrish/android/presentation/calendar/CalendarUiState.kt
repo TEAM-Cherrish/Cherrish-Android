@@ -37,6 +37,24 @@ data class CalendarUiState(
                 procedureName = "울쎄라",
                 procedureDay = "1월 7일 수요일",
                 downTimeDuration = 3
+            ),
+            ProcedureInfoModel(
+                procedureId = 4L,
+                procedureName = "레이저 토닝",
+                procedureDay = "1월 7일 수요일",
+                downTimeDuration = 5
+            ),
+            ProcedureInfoModel(
+                procedureId = 5L,
+                procedureName = "레이저 토닝",
+                procedureDay = "1월 7일 수요일",
+                downTimeDuration = 5
+            ),
+            ProcedureInfoModel(
+                procedureId = 6L,
+                procedureName = "울쎄라",
+                procedureDay = "1월 7일 수요일",
+                downTimeDuration = 3
             )
         )
 

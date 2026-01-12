@@ -41,7 +41,8 @@ fun CalendarRoute(
                 paddingValues = paddingValues,
                 onMonthChange = viewModel::onMonthChanged,
                 onDateClick = viewModel::onDateClick,
-                onEventClick = viewModel::onEventClick
+                onEventClick = viewModel::onEventClick,
+                onAddButtonClick = { /*TODO: 시술 선택 플로우로 이동*/ }
             )
         }
 
@@ -56,6 +57,7 @@ private fun CalendarScreen(
     onMonthChange: (YearMonth) -> Unit,
     onDateClick: (LocalDate) -> Unit,
     onEventClick: (Long) -> Unit,
+    onAddButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -79,7 +81,8 @@ private fun CalendarScreen(
         ProcedureScheduleCard(
             displayMode = uiState.calendarDisplayMode,
             procedureInfo = uiState.procedureInfoList,
-            onClick = onEventClick,
+            onProcedureClick = onEventClick,
+            onAddProcedureClick = onAddButtonClick,
             modifier = Modifier.padding(horizontal = 17.dp)
         )
     }
@@ -94,7 +97,8 @@ private fun CalendarScreenNormalPreview() {
             uiState = CalendarUiState.FakeNormal,
             onDateClick = { },
             onMonthChange = { },
-            onEventClick = { }
+            onEventClick = { },
+            onAddButtonClick = { }
         )
     }
 }
@@ -108,7 +112,8 @@ private fun CalendarScreenDowntimePreview() {
             uiState = CalendarUiState.FakeDowntime,
             onDateClick = { },
             onMonthChange = { },
-            onEventClick = { }
+            onEventClick = { },
+            onAddButtonClick = { }
         )
     }
 }
@@ -122,7 +127,8 @@ private fun CalendarScreenNoSchedulePreview() {
             uiState = CalendarUiState.FakeEmpty,
             onDateClick = { },
             onMonthChange = { },
-            onEventClick = { }
+            onEventClick = { },
+            onAddButtonClick = { }
         )
     }
 }
