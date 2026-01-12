@@ -29,7 +29,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 @Composable
 fun CherrishTextField(
     value: String,
-    onValueChanged: (String) -> Unit,
+    onValueChange: (String) -> Unit,
     roundedCornerShape: RoundedCornerShape,
     placeholder: String,
     placeholderTextStyle: TextStyle,
@@ -49,7 +49,7 @@ fun CherrishTextField(
 
     BasicTextField(
         value = value,
-        onValueChange = onValueChanged,
+        onValueChange = onValueChange,
         modifier = modifier
             .clip(roundedCornerShape)
             .background(color = CherrishTheme.colors.gray0)
@@ -93,7 +93,7 @@ private fun CherrishTextFieldPreview() {
     CherrishTheme {
         CherrishTextField(
             value = text,
-            onValueChanged = { text = it },
+            onValueChange = { text = it },
             roundedCornerShape = RoundedCornerShape(10.dp),
             placeholder = "김체리",
             placeholderTextStyle = CherrishTheme.typography.body1R14,
