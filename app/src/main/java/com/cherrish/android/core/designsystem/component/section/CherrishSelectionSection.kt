@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.calendar.procedure.component
+package com.cherrish.android.core.designsystem.component.section
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionCh
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-fun SelectionSection(
+fun CherrishSelectionSection(
     title: String,
     items: List<String>,
     modifier: Modifier = Modifier,
@@ -48,7 +48,7 @@ fun SelectionSection(
 }
 
 @Composable
-fun SelectionChipGrid(
+private fun SelectionChipGrid(
     items: List<String>,
     modifier: Modifier = Modifier,
     selectedIndex: Int? = null,
@@ -100,11 +100,11 @@ private fun TitleDescriptionSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun SelectionGridSectionPreview_TwoOptions() {
+private fun CherrishSelectionSectionPreview_TwoOptions() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
-        SelectionSection(
+        CherrishSelectionSection(
             title = "시술 일정을 추가해볼게요.\n이미 생각해둔 시술이 있나요?",
             description = "시술을 선택하셨는지 확인할게요.",
             items = listOf("선택한 시술이 있어요", "아직 선택 전이에요"),
@@ -116,11 +116,11 @@ private fun SelectionGridSectionPreview_TwoOptions() {
 
 @Preview(showBackground = true)
 @Composable
-private fun SelectionGridSectionPreview_SixOptions() {
+private fun CherrishSelectionSectionPreview_SixOptions() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
-        SelectionSection(
+        CherrishSelectionSection(
             title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
             description = "선택한 고민 기준으로 시술 정보를 정리해드려요.",
             items = listOf("피부결·각질", "색소·잡티", "홍조", "탄력·주름", "모공", "트러블"),
