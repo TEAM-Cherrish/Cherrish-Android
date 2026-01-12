@@ -55,10 +55,10 @@ internal fun ProcedureCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .noRippleClickable(onClick = onCardClick)
             .clip(shape)
             .background(color = containerColor, shape = shape)
             .border(width = 1.dp, color = borderColor, shape = shape)
+            .noRippleClickable(onClick = onCardClick)
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
