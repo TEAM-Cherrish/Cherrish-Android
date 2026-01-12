@@ -46,11 +46,11 @@ fun ChallengeChecklist(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(10.dp))
+            .clip(shape = RoundedCornerShape(size = 10.dp))
             .border(
                 width = 1.dp,
                 color = CherrishTheme.colors.gray500,
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(size= 10.dp)
             )
             .background(color = CherrishTheme.colors.gray0)
             .padding(vertical = 12.dp)
@@ -77,7 +77,7 @@ private fun ChallengeChecklistItem(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -102,7 +102,7 @@ private fun ChallengeChecklistItem(
 @Composable
 private fun Preview() {
     CherrishTheme {
-        var isChecked by remember { mutableStateOf(false) }
+        var isChecked by remember { mutableStateOf(value = false) }
 
         ChallengeChecklist(
             isChecked = isChecked,
