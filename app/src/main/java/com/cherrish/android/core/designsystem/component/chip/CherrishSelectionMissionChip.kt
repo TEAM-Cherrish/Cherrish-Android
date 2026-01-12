@@ -24,7 +24,6 @@ import com.cherrish.android.core.designsystem.theme.gray500
 import com.cherrish.android.core.designsystem.theme.red700
 import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 
-
 @Composable
 fun CherrishMissionCardChip(
     text: String,
@@ -41,7 +40,7 @@ fun CherrishMissionCardChip(
         style = CherrishSelectionChipStyle.MISSIONCARD
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp, horizontal = 7.dp),
+            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp, horizontal = 7.dp)
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(
@@ -55,13 +54,16 @@ fun CherrishMissionCardChip(
                 contentDescription = null,
                 modifier = modifier.align(Alignment.TopEnd)
 
-
             )
 
             Text(
                 text = text,
                 color = textColor,
-                modifier = modifier.align(Alignment.BottomStart).padding(top = 44.dp, start = 8.dp, bottom = 6.dp)
+                modifier = modifier.align(Alignment.BottomStart).padding(
+                    top = 44.dp,
+                    start = 8.dp,
+                    bottom = 6.dp
+                )
             )
         }
     }
