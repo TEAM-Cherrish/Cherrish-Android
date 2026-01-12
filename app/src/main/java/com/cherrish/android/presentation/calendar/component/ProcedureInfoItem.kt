@@ -89,7 +89,7 @@ private fun ProcedureLabel(
         Text(
             text = procedureName,
             style = CherrishTheme.typography.body1SB14,
-            color = colors.text,
+            color = colors.procedureNameText,
             modifier = Modifier.padding(vertical = 7.dp)
         )
     }
@@ -109,12 +109,12 @@ private fun ProcedureScheduleInfo(
         Text(
             text = procedureDay,
             style = CherrishTheme.typography.body3R12,
-            color = colors.text
+            color = colors.procedureDateText
         )
         Text(
             text = downTimeDuration?.let { "다운타임 ${it}일" } ?: "-",
             style = CherrishTheme.typography.body3R12,
-            color = colors.text
+            color = colors.procedureDateText
         )
     }
 }
@@ -134,6 +134,15 @@ private fun ProcedureInfoItemPreview() {
                 downTimeDuration = 5,
                 onClick = {}
             )
+
+            ProcedureInfoItem(
+                procedureType = ProcedureType.ACTIVE_NO_DOWNTIME,
+                procedureName = "레이저토닝",
+                procedureDay = "1월 7일 수요일",
+                downTimeDuration = 5,
+                onClick = {}
+            )
+
             ProcedureInfoItem(
                 procedureType = ProcedureType.INACTIVE,
                 procedureName = "레이저토닝",
