@@ -13,8 +13,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cherrish.android.presentation.challenge.component.ChallengeRoutineBottom
-import com.cherrish.android.presentation.challenge.component.ChallengeRoutineHeader
+import com.cherrish.android.core.designsystem.component.button.CherrishButton
+import com.cherrish.android.core.designsystem.component.topappbar.CherrishBasicTopAppBar
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
 import com.cherrish.android.presentation.challenge.model.ChallengeRoutineCategory
 
@@ -34,10 +34,13 @@ private fun ChallengeScreen(
         mutableStateOf<ChallengeRoutineCategory?>(value = null)
     }
 
-    Column(modifier = modifier.padding(start = 26.dp, bottom = 64.dp, end = 26.dp)) {
-        ChallengeRoutineHeader()
+    Column(modifier = modifier
+        .padding(start = 26.dp, bottom = 64.dp, end = 26.dp)
+    ) {
 
-        Spacer(modifier = Modifier.height(70.dp))
+        CherrishBasicTopAppBar()
+
+        Spacer(modifier = Modifier.height(height = 70.dp))
 
         ChallengeRoutineOnboardingBody(
             selectedCategory = selectedCategory,
@@ -46,7 +49,10 @@ private fun ChallengeScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ChallengeRoutineBottom()
+        CherrishButton(
+            text = "다음",
+            onClick = {},
+        )
     }
 }
 
