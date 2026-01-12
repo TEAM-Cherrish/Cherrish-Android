@@ -21,7 +21,6 @@ fun CautionDescription(
     ) {
         Text(
             text = "◎",
-            modifier = modifier,
             style = CherrishTheme.typography.body3R12,
             color = CherrishTheme.colors.gray600
         )
@@ -31,7 +30,6 @@ fun CautionDescription(
         Text(
             text = "본 정보는 인터넷 빅데이터 검색 및 분석을 통해 " +
                 "수집된 정보\n이며, 공식적인 의료 정보가 아닙니다.",
-            modifier = modifier,
             style = CherrishTheme.typography.body3R12,
             color = CherrishTheme.colors.gray600
         )

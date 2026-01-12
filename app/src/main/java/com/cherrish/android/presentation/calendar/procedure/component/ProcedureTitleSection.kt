@@ -20,13 +20,11 @@ fun ProcedureTitleSection(
     modifier: Modifier = Modifier
 ) {
     HorizontalDivider(
-        modifier = Modifier
-            .fillMaxWidth(),
         thickness = 1.dp,
         color = CherrishTheme.colors.gray500
     )
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(color = CherrishTheme.colors.gray100)
             .padding(horizontal = 25.dp, vertical = 20.dp)
@@ -42,8 +40,6 @@ fun ProcedureTitleSection(
         CautionDescription()
     }
     HorizontalDivider(
-        modifier = Modifier
-            .fillMaxWidth(),
         thickness = 1.dp,
         color = CherrishTheme.colors.gray500
     )
