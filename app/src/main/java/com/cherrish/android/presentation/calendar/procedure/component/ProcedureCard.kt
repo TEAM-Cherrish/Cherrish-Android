@@ -52,22 +52,6 @@ internal fun ProcedureCard(
 
     val shape = RoundedCornerShape(10.dp)
 
-    val resolvedTopRightContent: (@Composable () -> Unit)? = when {
-        topRightContent != null -> topRightContent
-        showCheckIcon -> {
-            {
-                Icon(
-                    imageVector = ImageVector.vectorResource(
-                        id = if (isSelected) selectedCheckIconResId else unselectedCheckIconResId
-                    ),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-            }
-        }
-        else -> null
-    }
-
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -89,8 +73,23 @@ internal fun ProcedureCard(
                     color = CherrishTheme.colors.gray1000
                 )
 
-                if (resolvedTopRightContent != null) {
-                    resolvedTopRightContent()
+                when {
+                    topRightContent != null -> {
+                        topRightContent()
+                    }
+                    showCheckIcon -> {
+                        val checkIconResId = if (isSelected) {
+                            selectedCheckIconResId
+                        } else {
+                            unselectedCheckIconResId
+                        }
+
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = checkIconResId),
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
+                    }
                 }
             }
 
