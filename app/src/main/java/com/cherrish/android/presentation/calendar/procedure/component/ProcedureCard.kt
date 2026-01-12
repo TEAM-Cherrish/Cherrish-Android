@@ -31,7 +31,7 @@ import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-internal fun TreatmentCard(
+internal fun ProcedureCard(
     title: String,
     description: String,
     durationText: String,
@@ -126,11 +126,11 @@ internal fun TreatmentCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun TreatmentCardPreview_Basic() {
+private fun ProcedureCardPreview_Basic() {
     CherrishTheme {
         var isSelected by remember { mutableStateOf(false) }
 
-        TreatmentCard(
+        ProcedureCard(
             title = "레이저 토닝",
             description = "색소 개선 | 토닝",
             durationText = "다운타임* 3-5일",
@@ -148,11 +148,11 @@ private fun TreatmentCardPreview_Basic() {
 
 @Preview(showBackground = true)
 @Composable
-private fun TreatmentCardPreview_WithCheck() {
+private fun ProcedureCardPreview_WithCheck() {
     CherrishTheme {
         var isSelected by remember { mutableStateOf(false) }
 
-        TreatmentCard(
+        ProcedureCard(
             title = "레이저 토닝",
             description = "색소 개선 | 토닝",
             durationText = "다운타임* 3-5일",
