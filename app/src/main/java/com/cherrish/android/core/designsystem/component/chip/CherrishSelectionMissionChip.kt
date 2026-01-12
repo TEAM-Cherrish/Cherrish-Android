@@ -25,7 +25,7 @@ import com.cherrish.android.core.designsystem.theme.red700
 import com.cherrish.android.core.designsystem.type.CherrishSelectionChipStyle
 
 @Composable
-fun CherrishMissionCardChip(
+fun CherrishMissionCard(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -75,7 +75,7 @@ private fun CherrishMissionCardPreview() {
     CherrishTheme {
         var isSelected by remember { mutableStateOf(value = false) }
 
-        CherrishMissionCardChip(
+        CherrishMissionCard(
             text = "반신욕 20분",
             onClick = { isSelected = !isSelected },
             isSelected = isSelected
@@ -95,13 +95,13 @@ private fun CherrishMissionCardRowPreview() {
                 .padding(vertical = 6.dp, horizontal = 7.dp),
             horizontalArrangement = Arrangement.spacedBy(space = 12.dp)
         ) {
-            CherrishMissionCardChip(
+            CherrishMissionCard(
                 text = "반신욕 20분",
                 onClick = { isSelected = !isSelected },
                 isSelected = isSelected
             )
 
-            CherrishMissionCardChip(
+            CherrishMissionCard(
                 text = "반신욕 30분",
                 onClick = { isSelected = !isSelected },
                 isSelected = isSelected
