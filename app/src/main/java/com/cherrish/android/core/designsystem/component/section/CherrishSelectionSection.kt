@@ -17,17 +17,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.designsystem.component.chip.CherrishMissionCard
 import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionChip
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+
+enum class CherrishSectionChipType {
+    SELECTION_CHIP,
+    MISSION_CARD
+}
 
 @Composable
 fun CherrishSelectionSection(
     title: String,
     items: List<String>,
+    chipType: CherrishSectionChipType,
+    onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     description: String? = null,
-    selectedIndex: Int? = null,
-    onItemClick: (index: Int) -> Unit
+    selectedIndex: Int? = null
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -42,7 +49,8 @@ fun CherrishSelectionSection(
         SelectionChipGrid(
             items = items,
             selectedIndex = selectedIndex,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
+            chipType = chipType
         )
     }
 }
@@ -50,9 +58,10 @@ fun CherrishSelectionSection(
 @Composable
 private fun SelectionChipGrid(
     items: List<String>,
+    chipType: CherrishSectionChipType,
+    onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
-    selectedIndex: Int? = null,
-    onItemClick: (index: Int) -> Unit
+    selectedIndex: Int? = null
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
@@ -62,12 +71,25 @@ private fun SelectionChipGrid(
         userScrollEnabled = false
     ) {
         itemsIndexed(items) { index, text ->
-            CherrishSelectionChip(
-                text = text,
-                onClick = { onItemClick(index) },
-                modifier = Modifier.fillMaxWidth(),
-                isSelected = selectedIndex == index
-            )
+            when (chipType) {
+                CherrishSectionChipType.SELECTION_CHIP -> {
+                    CherrishSelectionChip(
+                        text = text,
+                        onClick = { onItemClick(index) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isSelected = selectedIndex == index
+                    )
+                }
+
+                CherrishSectionChipType.MISSION_CARD -> {
+                    CherrishMissionCard(
+                        text = text,
+                        onClick = { onItemClick(index) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isSelected = selectedIndex == index
+                    )
+                }
+            }
         }
     }
 }
@@ -100,32 +122,34 @@ private fun TitleDescriptionSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun CherrishSelectionSectionPreview_TwoOptions() {
+private fun CherrishSelectionSectionPreview_SelectionChip() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
         CherrishSelectionSection(
-            title = "시술 일정을 추가해볼게요.\n이미 생각해둔 시술이 있나요?",
-            description = "시술을 선택하셨는지 확인할게요.",
-            items = listOf("선택한 시술이 있어요", "아직 선택 전이에요"),
+            title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
+            description = "선택한 고민을 기준으로 시술 정보를 정리해줘요.",
+            items = listOf("피부결·각질", "색소·잡티", "홍조", "탄력·주름", "모공", "트러블"),
             selectedIndex = isSelected,
-            onItemClick = { isSelected = it }
+            onItemClick = { isSelected = it },
+            chipType = CherrishSectionChipType.SELECTION_CHIP
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CherrishSelectionSectionPreview_SixOptions() {
+private fun CherrishSelectionSectionPreview_MissionCard() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
         CherrishSelectionSection(
-            title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
-            description = "선택한 고민 기준으로 시술 정보를 정리해드려요.",
-            items = listOf("피부결·각질", "색소·잡티", "홍조", "탄력·주름", "모공", "트러블"),
+            title = "챌린지 기간 동안\n진행할 미션을 선택해주세요.",
+            description = "복수 선택이 가능해요.",
+            items = listOf("반신욕 20분", "진정 토너+세럼", "피부결 정돈", "괄사", "톤 개선", "선크림 바르기"),
             selectedIndex = isSelected,
-            onItemClick = { isSelected = it }
+            onItemClick = { isSelected = it },
+            chipType = CherrishSectionChipType.MISSION_CARD
         )
     }
 }
