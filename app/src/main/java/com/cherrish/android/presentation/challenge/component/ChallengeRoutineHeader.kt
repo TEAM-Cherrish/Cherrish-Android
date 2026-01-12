@@ -6,7 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 
 @Composable
-fun ChallengeRoutineHeader(){
+fun ChallengeRoutineHeader(modifier: Modifier= Modifier){
     BackAndCloseTopAppBar(
         title = "루틴 챌린지 선택",
         onBackClick= {},
