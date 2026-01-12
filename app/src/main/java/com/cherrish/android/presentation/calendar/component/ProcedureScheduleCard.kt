@@ -17,7 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -72,14 +74,15 @@ fun ProcedureScheduleCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 18.dp, horizontal = 19.dp)
+                .padding(horizontal = 19.dp)
+                .padding(top = 8.dp, bottom = 18.dp)
         ) {
             ScheduleHeader(
                 displayMode = displayMode,
                 onClick = onAddProcedureClick
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             LazyColumn(
                 state = listState,
@@ -124,11 +127,13 @@ fun ProcedureScheduleCard(
 @Composable
 private fun ScheduleHeader(
     displayMode: CalendarDisplayMode,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(40.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
