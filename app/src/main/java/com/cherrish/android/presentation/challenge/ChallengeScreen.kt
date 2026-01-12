@@ -34,10 +34,10 @@ private fun ChallengeScreen(
         mutableStateOf<ChallengeRoutineCategory?>(value = null)
     }
 
-    Column(modifier = modifier
-        .padding(start = 26.dp, bottom = 64.dp, end = 26.dp)
+    Column(
+        modifier = modifier
+            .padding(start = 26.dp, bottom = 64.dp, end = 26.dp)
     ) {
-
         CherrishBasicTopAppBar()
 
         Spacer(modifier = Modifier.height(height = 70.dp))
@@ -51,7 +51,7 @@ private fun ChallengeScreen(
 
         CherrishButton(
             text = "다음",
-            onClick = {},
+            onClick = {}
         )
     }
 }
