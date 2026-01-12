@@ -35,6 +35,9 @@ val green1 = Color(0xFFFBFFF3)
 val green2 = Color(0xFFBEDCB8)
 val green3 = Color(0xFF9AD342)
 
+val gradation = Color(0xFFFFFDFD)
+val gradation2 = Color(0xFFFAE0E6)
+
 @Immutable
 data class CherrishColors(
 
@@ -61,7 +64,10 @@ data class CherrishColors(
 
     val green1: Color,
     val green2: Color,
-    val green3: Color
+    val green3: Color,
+
+    val gradation: Color,
+    val gradation2: Color
 )
 
 val defaultCherrishColors = CherrishColors(
@@ -89,7 +95,10 @@ val defaultCherrishColors = CherrishColors(
 
     green1 = green1,
     green2 = green2,
-    green3 = green3
+    green3 = green3,
+
+    gradation = gradation,
+    gradation2 = gradation2
 )
 
 val LocalCherrishColorsProvider = staticCompositionLocalOf { defaultCherrishColors }
