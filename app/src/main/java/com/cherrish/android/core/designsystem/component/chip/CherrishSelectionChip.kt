@@ -45,7 +45,6 @@ fun CherrishSelectionChip(
 @Composable
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
-
         var isSelected by remember { mutableStateOf(value = false) }
 
         CherrishSelectionChip(

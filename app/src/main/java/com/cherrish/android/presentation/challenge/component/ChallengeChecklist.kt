@@ -50,7 +50,7 @@ fun ChallengeChecklist(
             .border(
                 width = 1.dp,
                 color = CherrishTheme.colors.gray500,
-                shape = RoundedCornerShape(size= 10.dp)
+                shape = RoundedCornerShape(size = 10.dp)
             )
             .background(color = CherrishTheme.colors.gray0)
             .padding(vertical = 12.dp)

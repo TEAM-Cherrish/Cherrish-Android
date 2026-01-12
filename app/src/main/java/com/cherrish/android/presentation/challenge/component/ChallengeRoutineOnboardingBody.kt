@@ -21,7 +21,6 @@ import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionCh
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.model.ChallengeRoutineCategory
 
-
 @Composable
 fun ChallengeRoutineOnboardingBody(
     selectedCategory: ChallengeRoutineCategory?,
@@ -57,7 +56,6 @@ private fun ChallengeRoutineCategoryChip(
         onClick = { onClick(category) },
         isSelected = isSelected
     )
-
 }
 
 @Composable
@@ -80,7 +78,6 @@ private fun ChallengeRoutineSelectionChipGroup(
                 isSelected = selectedCategory == category,
                 onClick = onCategoryClick
             )
-
         }
     }
 }
