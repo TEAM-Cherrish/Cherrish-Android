@@ -35,12 +35,12 @@ fun CherrishTextField(
     placeholderTextStyle: TextStyle,
     inputTextStyle: TextStyle,
     inputTextColor: Color,
-    onDoneAction: () -> Unit = {},
     paddingValues: PaddingValues,
+    modifier: Modifier = Modifier,
+    onDoneAction: () -> Unit = {},
     keyboardImeAction: ImeAction = ImeAction.Done,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
-    placeholderTextColor: Color = CherrishTheme.colors.gray500,
-    modifier: Modifier = Modifier
+    placeholderTextColor: Color = CherrishTheme.colors.gray500
 ) {
     BasicTextField(
         value = value,
