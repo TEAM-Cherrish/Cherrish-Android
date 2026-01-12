@@ -37,8 +37,9 @@ fun CherrishTextField(
     inputTextColor: Color,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
-    onDoneAction: () -> Unit = {},
     keyboardImeAction: ImeAction = ImeAction.Done,
+    onNextAction: () -> Unit = {},
+    onDoneAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     placeholderTextColor: Color = CherrishTheme.colors.gray500
 ) {
@@ -63,6 +64,7 @@ fun CherrishTextField(
             imeAction = keyboardImeAction
         ),
         keyboardActions = KeyboardActions(
+            onNext = { onNextAction() },
             onDone = { onDoneAction() }
         ),
         textStyle = textStyle,
