@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -48,6 +49,13 @@ fun ProcedureScheduleCard(
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
+
+    val isFirstItemVisible = remember {
+        derivedStateOf {
+            val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
+            firstVisibleItem?.index == 0
+        }
+    }
 
     val isLastItemVisible = remember {
         derivedStateOf {
@@ -96,11 +104,35 @@ fun ProcedureScheduleCard(
                         procedureName = procedure.procedureName,
                         procedureDay = procedure.procedureDay,
                         downTimeDuration = procedure.downTimeDuration,
-                        procedureType = getProcedureType(displayMode, procedure.procedureId),
+                        procedureType = getProcedureType(
+                            displayMode,
+                            procedure.procedureId,
+                            procedure.downTimeDuration
+                        ),
                         onClick = { onProcedureClick(procedure.procedureId) }
                     )
                 }
             }
+        }
+
+        if (!isFirstItemVisible.value) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth()
+                    .padding(top = 40.dp)
+                    .height(70.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = persistentListOf(
+                                CherrishTheme.colors.gray0,
+                                CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                Color.Transparent
+                            )
+                        )
+                    )
+            )
         }
 
         if (!isLastItemVisible.value) {
@@ -108,7 +140,7 @@ fun ProcedureScheduleCard(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .padding(top = 146.dp)
+                    .height(70.dp)
                     .background(
                         Brush.verticalGradient(
                             colors = persistentListOf(
@@ -139,7 +171,9 @@ private fun ScheduleHeader(
     ) {
         Text(
             text = "일정",
-            style = CherrishTheme.typography.body1M14,
+            style = CherrishTheme.typography.body1M14.copy(
+                fontSize = 14.sp
+            ),
             color = CherrishTheme.colors.gray1000
         )
 
