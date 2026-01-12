@@ -20,5 +20,4 @@ fun ChallengeRoutineHeader(){
 @Composable
 private fun ChallengeRoutineHeaderPreview(){
     ChallengeRoutineHeader()
-
 }
