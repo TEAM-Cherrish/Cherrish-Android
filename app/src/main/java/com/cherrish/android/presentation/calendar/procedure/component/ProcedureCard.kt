@@ -75,7 +75,7 @@ internal fun ProcedureCard(
             .clip(shape)
             .background(color = containerColor, shape = shape)
             .border(width = 1.dp, color = borderColor, shape = shape)
-            .padding(horizontal = 14.dp, vertical = 10.dp)
+            .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
