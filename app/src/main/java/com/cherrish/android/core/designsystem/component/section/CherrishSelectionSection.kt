@@ -19,12 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.component.chip.CherrishMissionCard
 import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionChip
+import com.cherrish.android.core.designsystem.component.type.CherrishSectionChipType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-
-enum class CherrishSectionChipType {
-    SELECTION_CHIP,
-    MISSION_CARD
-}
 
 @Composable
 fun CherrishSelectionSection(
