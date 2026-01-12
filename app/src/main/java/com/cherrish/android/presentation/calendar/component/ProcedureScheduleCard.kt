@@ -108,10 +108,10 @@ fun ProcedureScheduleCard(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
-                    .height(70.dp)
+                    .padding(top = 146.dp)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(
+                            colors = persistentListOf(
                                 Color.Transparent,
                                 CherrishTheme.colors.gray0.copy(alpha = 0.5f),
                                 CherrishTheme.colors.gray0.copy(alpha = 0.8f),

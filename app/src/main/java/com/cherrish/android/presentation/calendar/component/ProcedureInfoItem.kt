@@ -108,7 +108,7 @@ private fun ProcedureScheduleInfo(
     ) {
         Text(
             text = procedureDay,
-            style = CherrishTheme.typography.body3M12,
+            style = CherrishTheme.typography.body3R12,
             color = colors.text
         )
         Text(
