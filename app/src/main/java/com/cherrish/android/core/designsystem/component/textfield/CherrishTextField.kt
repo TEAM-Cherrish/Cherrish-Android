@@ -31,6 +31,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 fun CherrishTextField(
     value: String,
     onValueChanged: (String) -> Unit,
+    roundedCornerShape: RoundedCornerShape,
     placeholder: String,
     placeholderTextStyle: TextStyle,
     inputTextStyle: TextStyle,
@@ -46,12 +47,12 @@ fun CherrishTextField(
         value = value,
         onValueChange = onValueChanged,
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
+            .clip(roundedCornerShape)
             .background(color = CherrishTheme.colors.gray0)
             .border(
                 width = 1.dp,
                 color = CherrishTheme.colors.gray500,
-                shape = RoundedCornerShape(10.dp)
+                shape = roundedCornerShape
             ),
         singleLine = true,
         keyboardOptions = KeyboardOptions(
@@ -93,6 +94,7 @@ private fun CherrishTextFieldPreview() {
         CherrishTextField(
             value = text,
             onValueChanged = { text = it },
+            roundedCornerShape = RoundedCornerShape(10.dp),
             placeholder = "김체리",
             placeholderTextStyle = CherrishTheme.typography.body1R14,
             placeholderTextColor = CherrishTheme.colors.gray500,
