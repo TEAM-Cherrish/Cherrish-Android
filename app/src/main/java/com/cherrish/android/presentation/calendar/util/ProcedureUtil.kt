@@ -20,7 +20,7 @@ fun getProcedureColors(
         ProcedureType.ACTIVE -> ProcedureColors(
             background = colors.gray0,
             border = colors.gray500,
-            text = colors.gray900,
+            text = colors.gray800,
             divider = colors.red600
         )
         ProcedureType.INACTIVE -> ProcedureColors(

@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -31,20 +30,22 @@ fun DaysOfWeekTitle(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         daysOfWeek.forEach { dayOfWeek ->
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = dayOfWeek.getDisplayName(
-                        TextStyle.SHORT,
-                        Locale.getDefault()
-                    ),
-                    textAlign = TextAlign.Center,
-                    color = Color.Black
-                )
+            key(dayOfWeek) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = dayOfWeek.getDisplayName(
+                            TextStyle.SHORT,
+                            Locale.getDefault()
+                        ),
+                        color = CherrishTheme.colors.gray800,
+                        style = CherrishTheme.typography.body1R14
+                    )
+                }
             }
         }
     }

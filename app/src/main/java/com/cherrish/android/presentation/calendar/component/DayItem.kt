@@ -133,7 +133,7 @@ private fun ProcedureDots(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         repeat(displayCount) {
             Box(

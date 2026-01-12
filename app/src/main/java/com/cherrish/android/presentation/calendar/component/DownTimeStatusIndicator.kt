@@ -25,7 +25,8 @@ fun DownTimeStatusIndicator(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         DownTimeStatusItem(status = DownTimeStatus.SENSITIVE)
 
@@ -43,7 +44,7 @@ private fun DownTimeStatusItem(
     val colors = getDowntimeColors(status, CherrishTheme.colors)
 
     Row(
-        modifier = modifier.padding(vertical = 3.dp, horizontal = 4.dp),
+        modifier = modifier.padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
@@ -57,7 +58,6 @@ private fun DownTimeStatusItem(
                     color = colors.border,
                     shape = CircleShape
                 )
-                .padding(vertical = 3.dp)
         )
         Text(
             text = status.label,

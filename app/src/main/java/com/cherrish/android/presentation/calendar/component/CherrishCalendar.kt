@@ -89,10 +89,10 @@ private fun CherrishCalendarDowntimePreview() {
             selectedDate = selectedDate,
             displayMode = CalendarDisplayMode.Downtime(
                 downtimeByDate = mapOf(
-                    today.minusDays(1) to DownTimeStatus.CAUTION,
-                    today.minusDays(2) to DownTimeStatus.CAUTION,
-                    today to DownTimeStatus.SENSITIVE,
-                    today.plusDays(1) to DownTimeStatus.SENSITIVE,
+                    today.minusDays(1) to DownTimeStatus.SENSITIVE,
+                    today.minusDays(2) to DownTimeStatus.SENSITIVE,
+                    today to DownTimeStatus.CAUTION,
+                    today.plusDays(1) to DownTimeStatus.CAUTION,
                     today.plusDays(2) to DownTimeStatus.RECOVERY
                 )
             ),
