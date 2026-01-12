@@ -31,8 +31,8 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 fun ProcedureTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    onSearchAction: () -> Unit
+    onSearchAction: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
