@@ -45,13 +45,13 @@ fun CherrishSelectionChip(
 @Composable
 private fun CherrishSelectionChipPreview() {
     CherrishTheme {
+
         var isSelected by remember { mutableStateOf(value = false) }
 
         CherrishSelectionChip(
             text = "여드름 ∙ 트러블",
             onClick = { isSelected = !isSelected },
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             isSelected = isSelected
         )
     }
