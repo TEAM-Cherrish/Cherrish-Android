@@ -40,7 +40,9 @@ fun CherrishMissionCardChip(
         style = CherrishSelectionChipStyle.MISSIONCARD
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp, horizontal = 7.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 6.dp, horizontal = 8.dp)
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(
@@ -52,18 +54,16 @@ fun CherrishMissionCardChip(
                 ),
                 tint = if (isSelected) red700 else gray500,
                 contentDescription = null,
-                modifier = modifier.align(Alignment.TopEnd)
+                modifier = Modifier.align(Alignment.TopEnd)
 
             )
 
             Text(
                 text = text,
                 color = textColor,
-                modifier = modifier.align(Alignment.BottomStart).padding(
-                    top = 44.dp,
-                    start = 8.dp,
-                    bottom = 6.dp
-                )
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(top = 44.dp, start = 8.dp, bottom = 6.dp)
             )
         }
     }
@@ -78,7 +78,6 @@ private fun CherrishMissionCardPreview() {
         CherrishMissionCardChip(
             text = "반신욕 20분",
             onClick = { isSelected = !isSelected },
-            modifier = Modifier,
             isSelected = isSelected
         )
     }
@@ -91,20 +90,20 @@ private fun CherrishMissionCardRowPreview() {
         var isSelected by remember { mutableStateOf(value = false) }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp, horizontal = 7.dp),
-
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 6.dp, horizontal = 7.dp),
             horizontalArrangement = Arrangement.spacedBy(space = 12.dp)
         ) {
             CherrishMissionCardChip(
                 text = "반신욕 20분",
                 onClick = { isSelected = !isSelected },
-                modifier = Modifier,
                 isSelected = isSelected
             )
+
             CherrishMissionCardChip(
                 text = "반신욕 30분",
                 onClick = { isSelected = !isSelected },
-                modifier = Modifier,
                 isSelected = isSelected
 
             )

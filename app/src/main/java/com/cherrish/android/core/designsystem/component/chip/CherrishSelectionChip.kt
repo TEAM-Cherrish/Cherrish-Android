@@ -33,7 +33,8 @@ fun CherrishSelectionChip(
         Text(
             text = text,
             modifier = Modifier
-                .fillMaxWidth().padding(vertical = 30.dp, horizontal = 10.dp),
+                .fillMaxWidth()
+                .padding(vertical = 30.dp, horizontal = 10.dp),
             color = textColor,
             textAlign = TextAlign.Center
         )
