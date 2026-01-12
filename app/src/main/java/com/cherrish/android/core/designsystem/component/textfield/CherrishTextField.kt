@@ -42,6 +42,10 @@ fun CherrishTextField(
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     placeholderTextColor: Color = CherrishTheme.colors.gray500
 ) {
+    val textStyle = remember(inputTextStyle, inputTextColor) {
+        inputTextStyle.copy(color = inputTextColor)
+    }
+
     BasicTextField(
         value = value,
         onValueChange = onValueChanged,
@@ -61,9 +65,7 @@ fun CherrishTextField(
         keyboardActions = KeyboardActions(
             onDone = { onDoneAction() }
         ),
-        textStyle = inputTextStyle.copy(
-            color = inputTextColor
-        ),
+        textStyle = textStyle,
         decorationBox = { innerTextField ->
             Box(
                 modifier = Modifier.padding(paddingValues),
