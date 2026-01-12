@@ -13,7 +13,6 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun CautionDescription(
-    text: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -30,7 +29,8 @@ fun CautionDescription(
         Spacer(modifier = Modifier.size(4.dp))
 
         Text(
-            text = text,
+            text = "본 정보는 인터넷 빅데이터 검색 및 분석을 통해 " +
+                "수집된 정보\n이며, 공식적인 의료 정보가 아닙니다.",
             modifier = modifier,
             style = CherrishTheme.typography.body3R12,
             color = CherrishTheme.colors.gray600
@@ -42,9 +42,6 @@ fun CautionDescription(
 @Composable
 private fun CautionDescriptionPreview() {
     CherrishTheme {
-        CautionDescription(
-            text = "본 정보는 인터넷 빅데이터 검색 및 분석을 통해 " +
-                "수집된 정보\n이며, 공식적인 의료 정보가 아닙니다."
-        )
+        CautionDescription()
     }
 }
