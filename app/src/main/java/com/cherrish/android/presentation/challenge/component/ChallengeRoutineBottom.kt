@@ -10,6 +10,7 @@ fun ChallengeRoutineBottom (modifier :Modifier = Modifier){
     CherrishButton(
         text = "다음",
         onClick = {},
+        modifier = modifier
     )
 }
 
