@@ -1,8 +1,8 @@
 package com.cherrish.android.presentation.challenge.model
 
 data class ChallengeRoutineModel(
-    val id: Int,
-    val title : String,
-    val category : String,
-    val isSelected: Boolean = false
-)
+    override val id: Int,
+    override val title : String,
+    override val category : String,
+    override val isSelected: Boolean = false
+) : ChallengeRoutineItem
