@@ -107,6 +107,7 @@ private fun TitleDescriptionSection(
 
         if (!description.isNullOrBlank()) {
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = description,
                 style = CherrishTheme.typography.body1R14,
@@ -118,7 +119,7 @@ private fun TitleDescriptionSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun CherrishSelectionSectionPreview_SelectionChip() {
+private fun SelectionSectionSelectionChipPreview() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
@@ -135,7 +136,7 @@ private fun CherrishSelectionSectionPreview_SelectionChip() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CherrishSelectionSectionPreview_MissionCard() {
+private fun SelectionSectionMissionCardPreview() {
     CherrishTheme {
         var isSelected by remember { mutableIntStateOf(-1) }
 
