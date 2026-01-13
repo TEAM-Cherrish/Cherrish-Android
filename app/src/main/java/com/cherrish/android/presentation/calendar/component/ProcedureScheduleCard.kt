@@ -86,6 +86,7 @@ fun ProcedureScheduleCard(
                 .padding(top = 8.dp, bottom = 18.dp)
         ) {
             ScheduleHeader(
+                eventCount = procedureInfo.size,
                 displayMode = displayMode,
                 onClick = onAddProcedureClick
             )
@@ -159,6 +160,7 @@ fun ProcedureScheduleCard(
 @Composable
 private fun ScheduleHeader(
     displayMode: CalendarDisplayMode,
+    eventCount: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -169,12 +171,8 @@ private fun ScheduleHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "일정",
-            style = CherrishTheme.typography.body1M14.copy(
-                fontSize = 14.sp
-            ),
-            color = CherrishTheme.colors.gray1000
+        ScheduleTitle(
+            eventCount = eventCount
         )
 
         when (displayMode) {
@@ -188,6 +186,36 @@ private fun ScheduleHeader(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ScheduleTitle(
+    eventCount: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "일정",
+            style = CherrishTheme.typography.body1M14,
+            color = CherrishTheme.colors.gray1000
+        )
+
+        Text(
+            text = "・",
+            style = CherrishTheme.typography.body1R14,
+            color = CherrishTheme.colors.gray1000
+        )
+
+        Text(
+            text = "${eventCount}개",
+            style = CherrishTheme.typography.body1R14,
+            color = CherrishTheme.colors.gray1000
+        )
     }
 }
 
