@@ -29,26 +29,52 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.calendar.procedure.model.BasicProcedureCardTokens
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardTokens
+import com.cherrish.android.presentation.calendar.procedure.model.SelectableProcedureCardTokens
 
 @Composable
-internal fun ProcedureCard(
+private fun procedureCardTokens(displayMode: ProcedureCardDisplayMode): ProcedureCardTokens {
+    return when (displayMode) {
+        ProcedureCardDisplayMode.Basic -> {
+            BasicProcedureCardTokens(
+                selectedContainerColor = CherrishTheme.colors.gray300,
+                unselectedContainerColor = CherrishTheme.colors.gray0,
+                selectedBorderColor = CherrishTheme.colors.gray500,
+                unselectedBorderColor = CherrishTheme.colors.gray500
+            )
+        }
+
+        ProcedureCardDisplayMode.Selectable -> {
+            SelectableProcedureCardTokens(
+                selectedContainerColor = CherrishTheme.colors.green1,
+                unselectedContainerColor = CherrishTheme.colors.gray0,
+                selectedBorderColor = CherrishTheme.colors.green3,
+                unselectedBorderColor = CherrishTheme.colors.gray500,
+                selectedCheckIconResId = R.drawable.icon_check_circular_green,
+                unselectedCheckIconResId = R.drawable.ic_check_circular
+            )
+        }
+    }
+}
+
+@Composable
+fun ProcedureCard(
     title: String,
     description: String,
     durationText: String,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
-    selectedContainerColor: Color = CherrishTheme.colors.gray500,
-    unselectedContainerColor: Color = CherrishTheme.colors.gray0,
-    selectedBorderColor: Color = CherrishTheme.colors.gray700,
-    unselectedBorderColor: Color = CherrishTheme.colors.gray700,
-    showCheckIcon: Boolean = false,
-    selectedCheckIconResId: Int = R.drawable.icon_check_circular_green,
-    unselectedCheckIconResId: Int = R.drawable.ic_check_circular,
-    topRightContent: (@Composable () -> Unit)? = null
+    displayMode: ProcedureCardDisplayMode = ProcedureCardDisplayMode.Basic
 ) {
-    val containerColor = if (isSelected) selectedContainerColor else unselectedContainerColor
-    val borderColor = if (isSelected) selectedBorderColor else unselectedBorderColor
+    val tokens = procedureCardTokens(displayMode)
+
+    val containerColor =
+        if (isSelected) tokens.selectedContainerColor else tokens.unselectedContainerColor
+    val borderColor =
+        if (isSelected) tokens.selectedBorderColor else tokens.unselectedBorderColor
 
     val shape = RoundedCornerShape(10.dp)
 
@@ -62,43 +88,11 @@ internal fun ProcedureCard(
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = title,
-                    style = CherrishTheme.typography.title1SB18,
-                    color = CherrishTheme.colors.gray1000
-                )
-
-                when {
-                    topRightContent != null -> {
-                        topRightContent()
-                    }
-                    showCheckIcon -> {
-                        val checkIconResId = if (isSelected) {
-                            selectedCheckIconResId
-                        } else {
-                            unselectedCheckIconResId
-                        }
-
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = checkIconResId),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.size(2.dp))
-
-            Text(
-                text = description,
-                style = CherrishTheme.typography.body3R12,
-                color = CherrishTheme.colors.gray700
+            ProcedureCardTitle(
+                title = title,
+                description = description,
+                isSelected = isSelected,
+                tokens = tokens
             )
 
             Spacer(modifier = Modifier.size(8.dp))
@@ -108,19 +102,68 @@ internal fun ProcedureCard(
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
-                Text(
-                    text = durationText,
-                    style = CherrishTheme.typography.body2R13,
-                    color = CherrishTheme.colors.gray700
-                )
+                ProcedureCardDuration(durationText = durationText)
             }
         }
     }
+}
+
+@Composable
+private fun ProcedureCardTitle(
+    title: String,
+    description: String,
+    isSelected: Boolean,
+    tokens: ProcedureCardTokens
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = CherrishTheme.typography.title1SB18,
+            color = CherrishTheme.colors.gray1000
+        )
+
+        if (tokens is SelectableProcedureCardTokens) {
+            val checkIconResId = if (isSelected) {
+                tokens.selectedCheckIconResId
+            } else {
+                tokens.unselectedCheckIconResId
+            }
+
+            Icon(
+                imageVector = ImageVector.vectorResource(id = checkIconResId),
+                contentDescription = null,
+                tint = Color.Unspecified
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(2.dp))
+
+    Text(
+        text = description,
+        style = CherrishTheme.typography.body3R12,
+        color = CherrishTheme.colors.gray700
+    )
+}
+
+@Composable
+private fun ProcedureCardDuration(
+    durationText: String
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
+        contentDescription = null,
+        tint = CherrishTheme.colors.gray700
+    )
+    Text(
+        text = durationText,
+        style = CherrishTheme.typography.body2R13,
+        color = CherrishTheme.colors.gray700
+    )
 }
 
 @Preview(showBackground = true)
@@ -135,12 +178,7 @@ private fun ProcedureCardPreview_Basic() {
             durationText = "다운타임* 3-5일",
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
-            showCheckIcon = false,
-            topRightContent = null,
-            selectedContainerColor = CherrishTheme.colors.gray300,
-            unselectedContainerColor = CherrishTheme.colors.gray0,
-            selectedBorderColor = CherrishTheme.colors.gray500,
-            unselectedBorderColor = CherrishTheme.colors.gray500
+            displayMode = ProcedureCardDisplayMode.Basic
         )
     }
 }
@@ -157,13 +195,7 @@ private fun ProcedureCardPreview_WithCheck() {
             durationText = "다운타임* 3-5일",
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
-            showCheckIcon = true,
-            selectedContainerColor = CherrishTheme.colors.green1,
-            unselectedContainerColor = CherrishTheme.colors.gray0,
-            selectedBorderColor = CherrishTheme.colors.green3,
-            unselectedBorderColor = CherrishTheme.colors.gray500,
-            selectedCheckIconResId = R.drawable.icon_check_circular_green,
-            unselectedCheckIconResId = R.drawable.ic_check_circular
+            displayMode = ProcedureCardDisplayMode.Selectable
         )
     }
 }
