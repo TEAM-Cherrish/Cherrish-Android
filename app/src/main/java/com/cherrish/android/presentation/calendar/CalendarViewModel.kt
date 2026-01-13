@@ -9,6 +9,11 @@ import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.YearMonth
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,11 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.YearMonth
-import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
@@ -95,7 +95,7 @@ class CalendarViewModel @Inject constructor(
                         }.toImmutableList()
                     )
                 }
-            }.onLogFailure {  }
+            }.onLogFailure { }
         }
     }
 
@@ -116,7 +116,6 @@ class CalendarViewModel @Inject constructor(
             DayOfWeek.SUNDAY -> "일요일"
             else -> ""
         }
-        return "${month}월 ${day}일 ${dayOfWeek}"
+        return "${month}월 ${day}일 $dayOfWeek"
     }
-
 }

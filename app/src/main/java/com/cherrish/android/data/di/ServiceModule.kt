@@ -1,7 +1,6 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
-import com.cherrish.android.data.remote.service.DummyService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

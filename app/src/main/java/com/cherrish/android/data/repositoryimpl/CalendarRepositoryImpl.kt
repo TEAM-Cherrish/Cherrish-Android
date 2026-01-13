@@ -5,7 +5,6 @@ import com.cherrish.android.data.model.CalendarMonthlyResponseModel
 import com.cherrish.android.data.model.toModel
 import com.cherrish.android.data.remote.datasource.CalendarDataSource
 import com.cherrish.android.data.repository.CalendarRepository
-import java.time.LocalDate
 import javax.inject.Inject
 
 class CalendarRepositoryImpl @Inject constructor(

@@ -8,7 +8,7 @@ data class CalendarDailyResponseDto(
     @SerialName("eventCount")
     val eventCount: Int,
     @SerialName("events")
-    val events: List<EventDto>,
+    val events: List<EventDto>
 )
 
 @Serializable
@@ -24,5 +24,5 @@ data class EventDto(
     @SerialName("scheduledAt")
     val scheduledAt: String,
     @SerialName("downtimeDays")
-    val downtimeDays: Int,
+    val downtimeDays: Int
 )

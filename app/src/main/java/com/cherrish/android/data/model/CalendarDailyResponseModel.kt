@@ -14,7 +14,7 @@ data class EventModel(
     val procedureId: Long,
     val name: String,
     val scheduledAt: String,
-    val downtimeDays: Int,
+    val downtimeDays: Int
 )
 
 fun CalendarDailyResponseDto.toModel() = CalendarDailyResponseModel(
@@ -28,5 +28,5 @@ fun EventDto.toModel() = EventModel(
     procedureId = this.procedureId,
     name = this.name,
     scheduledAt = this.scheduledAt,
-    downtimeDays = this.downtimeDays,
+    downtimeDays = this.downtimeDays
 )
