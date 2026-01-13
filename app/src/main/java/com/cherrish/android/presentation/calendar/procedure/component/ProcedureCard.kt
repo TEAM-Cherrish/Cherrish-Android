@@ -168,7 +168,7 @@ private fun ProcedureCardDuration(
 
 @Preview(showBackground = true)
 @Composable
-private fun ProcedureCardPreview_Basic() {
+private fun BasicProcedureCardPreview() {
     CherrishTheme {
         var isSelected by remember { mutableStateOf(false) }
 
@@ -185,7 +185,7 @@ private fun ProcedureCardPreview_Basic() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ProcedureCardPreview_WithCheck() {
+private fun SelectableProcedureCardPreview() {
     CherrishTheme {
         var isSelected by remember { mutableStateOf(false) }
 
