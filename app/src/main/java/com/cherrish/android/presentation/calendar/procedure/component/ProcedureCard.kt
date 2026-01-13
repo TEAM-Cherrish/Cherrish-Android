@@ -54,7 +54,7 @@ private fun procedureCardTokens(
                 unselectedContainerColor = CherrishTheme.colors.gray0,
                 selectedBorderColor = CherrishTheme.colors.green2,
                 unselectedBorderColor = CherrishTheme.colors.gray500,
-                selectedCheckIconResId = R.drawable.icon_check_circular_green,
+                selectedCheckIconResId = R.drawable.ic_check_circular_green,
                 unselectedCheckIconResId = R.drawable.ic_check_circular
             )
         }
