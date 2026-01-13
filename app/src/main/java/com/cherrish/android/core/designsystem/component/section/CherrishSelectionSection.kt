@@ -21,11 +21,13 @@ import com.cherrish.android.core.designsystem.component.chip.CherrishMissionCard
 import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionChip
 import com.cherrish.android.core.designsystem.component.type.CherrishSectionChipType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CherrishSelectionSection(
     title: String,
-    items: List<String>,
+    items: ImmutableList<String>,
     chipType: CherrishSectionChipType,
     onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -53,7 +55,7 @@ fun CherrishSelectionSection(
 
 @Composable
 private fun SelectionChipGrid(
-    items: List<String>,
+    items: ImmutableList<String>,
     chipType: CherrishSectionChipType,
     onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -126,7 +128,7 @@ private fun SelectionSectionSelectionChipPreview() {
         CherrishSelectionSection(
             title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
             description = "선택한 고민을 기준으로 시술 정보를 정리해줘요.",
-            items = listOf("피부결·각질", "색소·잡티", "홍조", "탄력·주름", "모공", "트러블"),
+            items = persistentListOf("여드름 ∙ 트러블", "진정 토너+세럼", "피부결 정돈"),
             selectedIndex = isSelected,
             onItemClick = { isSelected = it },
             chipType = CherrishSectionChipType.SELECTION_CHIP
@@ -143,7 +145,7 @@ private fun SelectionSectionMissionCardPreview() {
         CherrishSelectionSection(
             title = "챌린지 기간 동안\n진행할 미션을 선택해주세요.",
             description = "복수 선택이 가능해요.",
-            items = listOf("반신욕 20분", "진정 토너+세럼", "피부결 정돈", "괄사", "톤 개선", "선크림 바르기"),
+            items = persistentListOf("반신욕 20분", "진정 토너+세럼", "피부결 정돈", "괄사", "톤 개선", "선크림 바르기"),
             selectedIndex = isSelected,
             onItemClick = { isSelected = it },
             chipType = CherrishSectionChipType.MISSION_CARD
