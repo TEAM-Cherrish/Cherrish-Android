@@ -7,17 +7,20 @@ import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
-import com.cherrish.android.presentation.calendar.util.yearMonth
+import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.time.YearMonth
-import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.YearMonth
+import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
@@ -69,8 +72,51 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun onDateClick(date: LocalDate) {
+        _uiState.updateSuccess { currentState ->
+            currentState.copy(selectedDate = date)
+        }
+        loadDailyCalendar(date)
+    }
+
+    private fun loadDailyCalendar(date: LocalDate) {
+        viewModelScope.launch {
+            calendarRepository.getCalendarDaily(
+                date = date.toString()
+            ).onSuccess { response ->
+                _uiState.updateSuccess { currentState ->
+                    currentState.copy(
+                        procedureInfoList = response.events.map { event ->
+                            ProcedureInfoModel(
+                                procedureId = event.userProcedureId,
+                                procedureName = event.name,
+                                procedureDay = formatProcedureDay(event.scheduledAt),
+                                downTimeDuration = event.downtimeDays
+                            )
+                        }.toImmutableList()
+                    )
+                }
+            }.onLogFailure {  }
+        }
     }
 
     fun onEventClick(procedureId: Long) {
     }
+
+    private fun formatProcedureDay(scheduledAt: String): String {
+        val dateTime = LocalDateTime.parse(scheduledAt)
+        val month = dateTime.month.value
+        val day = dateTime.dayOfMonth
+        val dayOfWeek = when (dateTime.dayOfWeek) {
+            DayOfWeek.MONDAY -> "월요일"
+            DayOfWeek.TUESDAY -> "화요일"
+            DayOfWeek.WEDNESDAY -> "수요일"
+            DayOfWeek.THURSDAY -> "목요일"
+            DayOfWeek.FRIDAY -> "금요일"
+            DayOfWeek.SATURDAY -> "토요일"
+            DayOfWeek.SUNDAY -> "일요일"
+            else -> ""
+        }
+        return "${month}월 ${day}일 ${dayOfWeek}"
+    }
+
 }
