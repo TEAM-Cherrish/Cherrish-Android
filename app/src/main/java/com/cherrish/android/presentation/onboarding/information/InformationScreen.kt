@@ -31,7 +31,7 @@ import com.cherrish.android.core.common.extension.addFocusCleaner
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.onboarding.information.extensioin.AgeSuffixTransformation
+import com.cherrish.android.presentation.onboarding.information.extension.AgeSuffixTransformation
 
 @Composable
 fun InformationRoute(

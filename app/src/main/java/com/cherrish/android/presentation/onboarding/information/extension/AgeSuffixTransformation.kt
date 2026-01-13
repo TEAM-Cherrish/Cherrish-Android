@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.onboarding.information.extensioin
+package com.cherrish.android.presentation.onboarding.information.extension
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
