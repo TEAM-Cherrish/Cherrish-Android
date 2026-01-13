@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
@@ -77,6 +78,14 @@ fun SelectedProcedureBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(sheetHeight)
+                .dropShadow(
+                    shape = RoundedCornerShape(10.dp),
+                    color = CherrishTheme.colors.shadow,
+                    blur = 10.dp,
+                    offsetX = 0.dp,
+                    offsetY = 0.dp,
+                    spread = 0.dp
+                )
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
