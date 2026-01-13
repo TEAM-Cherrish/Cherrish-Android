@@ -57,6 +57,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun DowntimeBottomSheet(
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
+    validationType: DowntimeValidationType,
     downtimeDay: Int,
     spareTimeDay: Int,
     downtimeStartDay: String,
@@ -82,13 +83,6 @@ fun DowntimeBottomSheet(
             dragHandle = { DowntimeDragHandle() },
             modifier = modifier.fillMaxWidth()
         ) {
-            val validationType: DowntimeValidationType =
-                if (downtimeStartDay + downtimeDay > downtimeEndDay) {
-                    DowntimeValidationType.EXCEEDS_GOAL
-                } else {
-                    DowntimeValidationType.VALID
-                }
-
             val downtimeGuideBubbleText = when (validationType) {
                 DowntimeValidationType.VALID -> "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
                 DowntimeValidationType.EXCEEDS_GOAL -> "설정한 다운타임은 목표일을 넘깁니다."
@@ -480,6 +474,7 @@ private fun Preview() {
         DowntimeBottomSheet(
             onDismissRequest = {},
             sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            validationType = DowntimeValidationType.VALID,
             downtimeDay = 10,
             spareTimeDay = 15,
             downtimeStartDay = "2023.08.01",
