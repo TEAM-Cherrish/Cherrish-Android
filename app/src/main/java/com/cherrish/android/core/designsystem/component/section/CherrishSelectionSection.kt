@@ -67,7 +67,10 @@ private fun SelectionChipGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        itemsIndexed(items) { index, text ->
+        itemsIndexed(
+            items = items,
+            key = { index, item -> "$item-$index" }
+        ) { index, text ->
             when (chipType) {
                 CherrishSectionChipType.SELECTION_CHIP -> {
                     CherrishSelectionChip(
