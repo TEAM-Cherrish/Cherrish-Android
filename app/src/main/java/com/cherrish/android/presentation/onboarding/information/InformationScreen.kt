@@ -13,11 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -66,6 +69,8 @@ private fun InformationScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val ageFocusRequester = remember { FocusRequester() }
 
+    var isAgeFocused by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -104,8 +109,18 @@ private fun InformationScreen(
                 focusManager.clearFocus()
             },
             keyboardType = KeyboardType.Number,
-            visualTransformation = AgeSuffixTransformation(" 세"),
-            modifier = Modifier.focusRequester(ageFocusRequester)
+            visualTransformation = if (isAgeFocused) {
+                VisualTransformation.None
+            } else {
+                AgeSuffixTransformation(
+                    " 세"
+                )
+            },
+            modifier = Modifier
+                .focusRequester(ageFocusRequester)
+                .onFocusChanged { state ->
+                    isAgeFocused = state.isFocused
+                }
         )
 
         Spacer(modifier = Modifier.weight(200f))
