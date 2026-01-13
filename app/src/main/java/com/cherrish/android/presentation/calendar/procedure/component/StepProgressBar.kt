@@ -42,8 +42,7 @@ fun StepProgressBar(
     ) {
         repeat(totalStep) { index ->
             val target = when {
-                index < safeStep -> 1f
-                index == safeStep -> 1f
+                index <= safeStep -> 1f
                 else -> 0f
             }
 
