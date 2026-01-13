@@ -17,9 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +27,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -79,79 +76,90 @@ fun ProcedureScheduleCard(
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = CherrishTheme.colors.gray0, shape = RoundedCornerShape(10.dp))
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 19.dp)
-                .padding(top = 8.dp, bottom = 18.dp)
-        ) {
-            ScheduleHeader(
-                displayMode = displayMode,
+        if (procedureInfo.isEmpty()) {
+            EmptyCardView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 64.dp, bottom = 24.dp),
                 onClick = onAddProcedureClick
             )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            LazyColumn(
-                state = listState,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 19.dp)
+                    .padding(top = 8.dp, bottom = 18.dp)
             ) {
-                items(
-                    items = procedureInfo,
-                    key = { it.procedureId }
-                ) { procedure ->
-                    ProcedureInfoItem(
-                        procedureName = procedure.procedureName,
-                        procedureDay = procedure.procedureDay,
-                        downTimeDuration = procedure.downTimeDuration,
-                        procedureType = getProcedureType(
-                            displayMode,
-                            procedure.procedureId,
-                            procedure.downTimeDuration
-                        ),
-                        onClick = { onProcedureClick(procedure.procedureId) }
-                    )
+                ScheduleHeader(
+                    eventCount = procedureInfo.size,
+                    displayMode = displayMode,
+                    onClick = onAddProcedureClick
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                LazyColumn(
+                    state = listState,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(
+                        items = procedureInfo,
+                        key = { it.procedureId }
+                    ) { procedure ->
+                        ProcedureInfoItem(
+                            procedureName = procedure.procedureName,
+                            procedureDay = procedure.procedureDay,
+                            downTimeDuration = procedure.downTimeDuration,
+                            procedureType = getProcedureType(
+                                displayMode,
+                                procedure.procedureId,
+                                procedure.downTimeDuration
+                            ),
+                            onClick = { onProcedureClick(procedure.procedureId) }
+                        )
+                    }
                 }
             }
-        }
 
-        if (!isFirstItemVisible.value) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-                    .padding(top = 40.dp)
-                    .height(70.dp)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = persistentListOf(
-                                CherrishTheme.colors.gray0,
-                                CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                Color.Transparent
+            if (!isFirstItemVisible.value) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                        .padding(top = 40.dp)
+                        .height(70.dp)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = persistentListOf(
+                                    CherrishTheme.colors.gray0,
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                    Color.Transparent
+                                )
                             )
                         )
-                    )
-            )
-        }
+                )
+            }
 
-        if (!isLastItemVisible.value) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = persistentListOf(
-                                Color.Transparent,
-                                CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                CherrishTheme.colors.gray0
+            if (!isLastItemVisible.value) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(70.dp)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = persistentListOf(
+                                    Color.Transparent,
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                    CherrishTheme.colors.gray0
+                                )
                             )
                         )
-                    )
-            )
+                )
+            }
         }
     }
 }
@@ -159,6 +167,7 @@ fun ProcedureScheduleCard(
 @Composable
 private fun ScheduleHeader(
     displayMode: CalendarDisplayMode,
+    eventCount: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -169,12 +178,8 @@ private fun ScheduleHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = "일정",
-            style = CherrishTheme.typography.body1M14.copy(
-                fontSize = 14.sp
-            ),
-            color = CherrishTheme.colors.gray1000
+        ScheduleTitle(
+            eventCount = eventCount
         )
 
         when (displayMode) {
@@ -188,6 +193,62 @@ private fun ScheduleHeader(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun ScheduleTitle(
+    eventCount: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "일정",
+            style = CherrishTheme.typography.body1M14,
+            color = CherrishTheme.colors.gray1000
+        )
+
+        Text(
+            text = "・",
+            style = CherrishTheme.typography.body1R14,
+            color = CherrishTheme.colors.gray1000
+        )
+
+        Text(
+            text = "${eventCount}개",
+            style = CherrishTheme.typography.body1R14,
+            color = CherrishTheme.colors.gray1000
+        )
+    }
+}
+
+@Composable
+private fun EmptyCardView(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        /*TODO: 엠티뷰 디자인 확정 시 수정, 일단 패딩으로 사이즈 맞추기*/
+        Spacer(modifier = Modifier.height(72.dp))
+
+        Text(
+            text = "오늘 예정된 일정이 없어요.",
+            color = CherrishTheme.colors.gray600,
+            style = CherrishTheme.typography.body1R14
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        AddProcedureButton(
+            onClick = onClick
+        )
     }
 }
 
@@ -325,6 +386,27 @@ private fun ProcedureScheduleCardDowntimePreview() {
                         downTimeDuration = 3
                     )
                 ),
+                onProcedureClick = {},
+                onAddProcedureClick = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ProcedureScheduleCardEmptyPreview() {
+    CherrishTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            ProcedureScheduleCard(
+                displayMode = CalendarDisplayMode.Normal(
+                    procedureCountByDate = mapOf()
+                ),
+                procedureInfo = persistentListOf(),
                 onProcedureClick = {},
                 onAddProcedureClick = {}
             )
