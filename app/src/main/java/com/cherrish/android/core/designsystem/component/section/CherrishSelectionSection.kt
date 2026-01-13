@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.component.chip.CherrishMissionCard
@@ -27,6 +28,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun CherrishSelectionSection(
     title: String,
+    descriptionTextStyle: TextStyle,
     items: ImmutableList<String>,
     chipType: CherrishSectionChipType,
     onItemClick: (index: Int) -> Unit,
@@ -39,6 +41,7 @@ fun CherrishSelectionSection(
     ) {
         TitleDescriptionSection(
             title = title,
+            descriptionTextStyle = descriptionTextStyle,
             description = description
         )
 
@@ -97,6 +100,7 @@ private fun SelectionChipGrid(
 @Composable
 private fun TitleDescriptionSection(
     title: String,
+    descriptionTextStyle: TextStyle,
     modifier: Modifier = Modifier,
     description: String? = null
 ) {
@@ -114,7 +118,7 @@ private fun TitleDescriptionSection(
 
             Text(
                 text = description,
-                style = CherrishTheme.typography.body1R14,
+                style = descriptionTextStyle,
                 color = CherrishTheme.colors.gray700
             )
         }
@@ -130,6 +134,7 @@ private fun SelectionSectionSelectionChipPreview() {
         CherrishSelectionSection(
             title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
             description = "선택한 고민을 기준으로 시술 정보를 정리해줘요.",
+            descriptionTextStyle = CherrishTheme.typography.body1R14,
             items = persistentListOf("여드름 ∙ 트러블", "진정 토너+세럼", "피부결 정돈"),
             selectedIndex = isSelected,
             onItemClick = { isSelected = it },
@@ -147,6 +152,7 @@ private fun SelectionSectionMissionCardPreview() {
         CherrishSelectionSection(
             title = "챌린지 기간 동안\n진행할 미션을 선택해주세요.",
             description = "복수 선택이 가능해요.",
+            descriptionTextStyle = CherrishTheme.typography.body1M14,
             items = persistentListOf("반신욕 20분", "진정 토너+세럼", "피부결 정돈", "괄사", "톤 개선", "선크림 바르기"),
             selectedIndex = isSelected,
             onItemClick = { isSelected = it },
