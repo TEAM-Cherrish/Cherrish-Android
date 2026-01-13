@@ -1,10 +1,17 @@
 package com.cherrish.android.data.repository
 
+import com.cherrish.android.data.model.CalendarDailyResponseModel
 import com.cherrish.android.data.model.CalendarMonthlyResponseModel
+import java.time.LocalDate
+
 
 interface CalendarRepository {
     suspend fun getCalendarMonthly(
         year: Int,
         month: Int
     ): Result<CalendarMonthlyResponseModel>
+
+    suspend fun getCalendarDaily(
+        date: String
+    ): Result<CalendarDailyResponseModel>
 }
