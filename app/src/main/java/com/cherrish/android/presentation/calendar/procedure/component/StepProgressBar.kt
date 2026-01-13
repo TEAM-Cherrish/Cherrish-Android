@@ -30,16 +30,17 @@ private val FigmaGentleEasing = CubicBezierEasing(0.4f, 0.0f, 0.2f, 1.0f)
 
 @Composable
 fun StepProgressBar(
+    totalStep: Int,
     currentStep: Int,
     modifier: Modifier = Modifier
 ) {
-    val safeStep = currentStep.coerceIn(0, 2)
+    val safeStep = currentStep.coerceIn(0, totalStep - 1)
 
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        repeat(3) { index ->
+        repeat(totalStep) { index ->
             val target = when {
                 index < safeStep -> 1f
                 index == safeStep -> 1f
@@ -92,7 +93,10 @@ private fun StepProgressBarPreview() {
     var step by remember { mutableIntStateOf(0) }
 
     Column(modifier = Modifier.padding(24.dp)) {
-        StepProgressBar(currentStep = step)
+        StepProgressBar(
+            totalStep = 4,
+            currentStep = step
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
