@@ -1,5 +1,6 @@
 package com.cherrish.android.data.remote.service
 
+import com.cherrish.android.core.network.BaseResponse
 import com.cherrish.android.data.remote.dto.response.CalendarMonthlyResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -9,5 +10,5 @@ interface CalendarService {
     suspend fun getCalendarMonthly(
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): CalendarMonthlyResponseDto
+    ): BaseResponse<CalendarMonthlyResponseDto>
 }
