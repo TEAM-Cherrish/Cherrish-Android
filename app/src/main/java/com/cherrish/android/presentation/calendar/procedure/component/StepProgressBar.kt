@@ -60,7 +60,7 @@ fun StepProgressBar(
 private fun StepSegment(
     targetProgress: Float,
     animate: Boolean,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     val progress by animateFloatAsState(
         targetValue = targetProgress.coerceIn(0f, 1f),
