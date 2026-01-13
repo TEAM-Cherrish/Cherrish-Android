@@ -64,7 +64,7 @@ private fun StepSegment(
     val progress by animateFloatAsState(
         targetValue = targetProgress.coerceIn(0f, 1f),
         animationSpec = if (animate) {
-            tween(durationMillis = 1200, easing = FigmaGentleEasing)
+            tween(durationMillis = 800, easing = FigmaGentleEasing)
         } else {
             tween(durationMillis = 0)
         }
