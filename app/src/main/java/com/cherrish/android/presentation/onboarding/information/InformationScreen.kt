@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -20,6 +22,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +31,7 @@ import com.cherrish.android.core.common.extension.addFocusCleaner
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.onboarding.information.extensioin.AgeSuffixTransformation
 
 @Composable
 fun InformationRoute(
@@ -100,6 +104,7 @@ private fun InformationScreen(
                 focusManager.clearFocus()
             },
             keyboardType = KeyboardType.Number,
+            visualTransformation = AgeSuffixTransformation(" 세"),
             modifier = Modifier.focusRequester(ageFocusRequester)
         )
 
@@ -147,7 +152,8 @@ private fun UserInfoTextField(
     keyboardType: KeyboardType,
     modifier: Modifier = Modifier,
     onNextAction: () -> Unit = {},
-    onDoneAction: () -> Unit = {}
+    onDoneAction: () -> Unit = {},
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     Column(
         modifier = modifier
@@ -161,21 +167,28 @@ private fun UserInfoTextField(
             color = CherrishTheme.colors.gray1000
         )
 
-        CherrishTextField(
-            value = value,
-            onValueChange = onValueChange,
-            roundedCornerShape = RoundedCornerShape(10.dp),
-            placeholder = placeholder,
-            placeholderTextStyle = CherrishTheme.typography.body1R14,
-            inputTextStyle = CherrishTheme.typography.body1M14,
-            inputTextColor = CherrishTheme.colors.gray1000,
-            paddingValues = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-            keyboardImeAction = keyboardImeAction,
-            onNextAction = onNextAction,
-            onDoneAction = onDoneAction,
-            keyboardType = keyboardType,
-            modifier = Modifier.fillMaxWidth()
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            CherrishTextField(
+                value = value,
+                onValueChange = onValueChange,
+                roundedCornerShape = RoundedCornerShape(10.dp),
+                placeholder = placeholder,
+                placeholderTextStyle = CherrishTheme.typography.body1R14,
+                inputTextStyle = CherrishTheme.typography.body1M14,
+                inputTextColor = CherrishTheme.colors.gray1000,
+                paddingValues = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+                keyboardImeAction = keyboardImeAction,
+                onNextAction = onNextAction,
+                onDoneAction = onDoneAction,
+                keyboardType = keyboardType,
+                visualTransformation = visualTransformation,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
