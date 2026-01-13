@@ -65,8 +65,7 @@ private fun SelectionChipGrid(
         modifier = modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        userScrollEnabled = false
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         itemsIndexed(items) { index, text ->
             when (chipType) {
