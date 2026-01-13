@@ -64,7 +64,8 @@ private fun procedureCardTokens(
 fun ProcedureCard(
     title: String,
     description: String,
-    durationText: String,
+    minDowntimeDay: Int,
+    maxDowntimeDay: Int,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -102,7 +103,10 @@ fun ProcedureCard(
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProcedureCardDuration(durationText = durationText)
+            ProcedureCardDuration(
+                minDowntimeDay = minDowntimeDay,
+                maxDowntimeDay = maxDowntimeDay
+            )
         }
     }
 }
@@ -151,18 +155,24 @@ private fun ProcedureCardTitle(
 
 @Composable
 private fun ProcedureCardDuration(
-    durationText: String
+    minDowntimeDay: Int,
+    maxDowntimeDay: Int
 ) {
-    Icon(
-        imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
-        contentDescription = null,
-        tint = CherrishTheme.colors.gray700
-    )
-    Text(
-        text = durationText,
-        style = CherrishTheme.typography.body2R13,
-        color = CherrishTheme.colors.gray700
-    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
+            contentDescription = null,
+            tint = CherrishTheme.colors.gray700
+        )
+
+        Text(
+            text = "다운타임* $minDowntimeDay-${maxDowntimeDay}일",
+            style = CherrishTheme.typography.body2R13,
+            color = CherrishTheme.colors.gray700
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -174,7 +184,8 @@ private fun BasicProcedureCardPreview() {
         ProcedureCard(
             title = "레이저 토닝",
             description = "색소 개선 | 토닝",
-            durationText = "다운타임* 3-5일",
+            minDowntimeDay = 3,
+            maxDowntimeDay = 5,
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
             displayMode = ProcedureCardDisplayMode.Basic
@@ -191,7 +202,8 @@ private fun SelectableProcedureCardPreview() {
         ProcedureCard(
             title = "레이저 토닝",
             description = "색소 개선 | 토닝",
-            durationText = "다운타임* 3-5일",
+            minDowntimeDay = 3,
+            maxDowntimeDay = 5,
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
             displayMode = ProcedureCardDisplayMode.Selectable
