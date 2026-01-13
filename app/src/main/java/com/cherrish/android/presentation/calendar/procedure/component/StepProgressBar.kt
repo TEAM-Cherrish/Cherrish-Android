@@ -101,8 +101,8 @@ private fun StepProgressBarPreview() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { step = (step + 1).coerceAtMost(2) },
-            enabled = step < 2
+            onClick = { step = (step + 1).coerceAtMost(3) },
+            enabled = step < 3
         ) {
             Text(text = "다음")
         }
