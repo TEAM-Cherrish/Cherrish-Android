@@ -43,7 +43,7 @@ fun CherrishTextField(
     onDoneAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     placeholderTextColor: Color = CherrishTheme.colors.gray500,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     val textStyle = remember(inputTextStyle, inputTextColor) {
         inputTextStyle.copy(color = inputTextColor)

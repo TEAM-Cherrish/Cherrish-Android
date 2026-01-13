@@ -47,7 +47,7 @@ fun InformationRoute(
         age = uiState.age,
         onAgeChange = viewModel::onAgeChanged,
         onNextClick = viewModel::onNextClicked,
-        enabled = uiState.buttonEnabled,
+        enabled = uiState.buttonEnabled
     )
 }
 
@@ -60,7 +60,7 @@ private fun InformationScreen(
     onAgeChange: (String) -> Unit,
     onNextClick: () -> Unit,
     enabled: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -88,7 +88,7 @@ private fun InformationScreen(
             onNextAction = {
                 ageFocusRequester.requestFocus()
             },
-            keyboardType = KeyboardType.Text,
+            keyboardType = KeyboardType.Text
         )
 
         Spacer(modifier = Modifier.weight(30f))
@@ -153,7 +153,7 @@ private fun UserInfoTextField(
     modifier: Modifier = Modifier,
     onNextAction: () -> Unit = {},
     onDoneAction: () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     Column(
         modifier = modifier
