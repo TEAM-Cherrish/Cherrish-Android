@@ -29,37 +29,10 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.calendar.procedure.model.BasicProcedureCardTokens
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardTokens
 import com.cherrish.android.presentation.calendar.procedure.model.SelectableProcedureCardTokens
-
-@Composable
-private fun procedureCardTokens(
-    displayMode: ProcedureCardDisplayMode
-): ProcedureCardTokens {
-    return when (displayMode) {
-        ProcedureCardDisplayMode.Basic -> {
-            BasicProcedureCardTokens(
-                selectedContainerColor = CherrishTheme.colors.gray300,
-                unselectedContainerColor = CherrishTheme.colors.gray0,
-                selectedBorderColor = CherrishTheme.colors.gray500,
-                unselectedBorderColor = CherrishTheme.colors.gray500
-            )
-        }
-
-        ProcedureCardDisplayMode.Selectable -> {
-            SelectableProcedureCardTokens(
-                selectedContainerColor = CherrishTheme.colors.green1,
-                unselectedContainerColor = CherrishTheme.colors.gray0,
-                selectedBorderColor = CherrishTheme.colors.green2,
-                unselectedBorderColor = CherrishTheme.colors.gray500,
-                selectedCheckIconResId = R.drawable.ic_check_circular_green,
-                unselectedCheckIconResId = R.drawable.ic_check_circular
-            )
-        }
-    }
-}
+import com.cherrish.android.presentation.calendar.procedure.model.procedureCardTokens
 
 @Composable
 fun ProcedureCard(
