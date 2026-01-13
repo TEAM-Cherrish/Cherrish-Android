@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -41,7 +42,8 @@ fun CherrishTextField(
     onNextAction: () -> Unit = {},
     onDoneAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Unspecified,
-    placeholderTextColor: Color = CherrishTheme.colors.gray500
+    placeholderTextColor: Color = CherrishTheme.colors.gray500,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val textStyle = remember(inputTextStyle, inputTextColor) {
         inputTextStyle.copy(color = inputTextColor)
@@ -50,6 +52,7 @@ fun CherrishTextField(
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
+        visualTransformation = visualTransformation,
         modifier = modifier
             .clip(roundedCornerShape)
             .background(color = CherrishTheme.colors.gray0)
