@@ -21,20 +21,26 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun MypageHeader(
-    profileIcon: Int, nicknameText: String, skinCareDay: Int, modifier: Modifier = Modifier
+    profileIcon: Int,
+    nicknameText: String,
+    skinCareDay: Int,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = profileIcon),
             contentDescription = "ProfileImage",
-            modifier = Modifier.clip(CircleShape),
+            modifier = Modifier.clip(CircleShape)
         )
 
-        Spacer(Modifier.width(width = 14.dp))
+        Spacer(modifier = Modifier.width(width = 14.dp))
 
-        Column(modifier = Modifier.fillMaxWidth()) {
-
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = "안녕하세요, $nicknameText 님",
                 modifier = Modifier,
@@ -48,7 +54,6 @@ fun MypageHeader(
                 color = CherrishTheme.colors.gray800,
                 style = CherrishTheme.typography.body1M14
             )
-
         }
     }
 }
