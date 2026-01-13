@@ -12,6 +12,7 @@ import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph
 import com.cherrish.android.presentation.home.navigation.homeNavGraph
 import com.cherrish.android.presentation.main.component.MainBottomBar
 import com.cherrish.android.presentation.mypage.navigation.myPageNavGraph
+import com.cherrish.android.presentation.splash.navigation.splashNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -39,6 +40,11 @@ fun MainScreen(
             navController = appState.navController,
             startDestination = appState.startDestination
         ) {
+            splashNavGraph(
+                navigateToOnboarding = {}, // TODO: 로직 넣어서 바꿀 예정
+                paddingValues = innerPadding
+            )
+
             homeNavGraph(paddingValues = innerPadding)
 
             calendarNavGraph(paddingValues = innerPadding)
