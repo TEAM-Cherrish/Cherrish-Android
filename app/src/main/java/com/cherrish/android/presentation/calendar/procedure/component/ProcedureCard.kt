@@ -3,7 +3,6 @@ package com.cherrish.android.presentation.calendar.procedure.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +34,9 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardT
 import com.cherrish.android.presentation.calendar.procedure.model.SelectableProcedureCardTokens
 
 @Composable
-private fun procedureCardTokens(displayMode: ProcedureCardDisplayMode): ProcedureCardTokens {
+private fun procedureCardTokens(
+    displayMode: ProcedureCardDisplayMode
+): ProcedureCardTokens {
     return when (displayMode) {
         ProcedureCardDisplayMode.Basic -> {
             BasicProcedureCardTokens(
@@ -78,7 +79,7 @@ fun ProcedureCard(
 
     val shape = RoundedCornerShape(10.dp)
 
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape)
@@ -87,23 +88,21 @@ fun ProcedureCard(
             .noRippleClickable(onClick = onCardClick)
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            ProcedureCardTitle(
-                title = title,
-                description = description,
-                isSelected = isSelected,
-                tokens = tokens
-            )
+        ProcedureCardTitle(
+            title = title,
+            description = description,
+            isSelected = isSelected,
+            tokens = tokens
+        )
 
-            Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(8.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ProcedureCardDuration(durationText = durationText)
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProcedureCardDuration(durationText = durationText)
         }
     }
 }
