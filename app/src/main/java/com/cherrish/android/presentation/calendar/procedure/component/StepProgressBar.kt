@@ -90,21 +90,23 @@ private fun StepSegment(
 @Preview(showBackground = true)
 @Composable
 private fun StepProgressBarPreview() {
-    var step by remember { mutableIntStateOf(0) }
+    CherrishTheme {
+        var step by remember { mutableIntStateOf(0) }
 
-    Column(modifier = Modifier.padding(24.dp)) {
-        StepProgressBar(
-            totalStep = 4,
-            currentStep = step
-        )
+        Column(modifier = Modifier.padding(24.dp)) {
+            StepProgressBar(
+                totalStep = 4,
+                currentStep = step
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = { step = (step + 1).coerceAtMost(3) },
-            enabled = step < 3
-        ) {
-            Text(text = "다음")
+            Button(
+                onClick = { step = (step + 1).coerceAtMost(3) },
+                enabled = step < 3
+            ) {
+                Text(text = "다음")
+            }
         }
     }
 }
