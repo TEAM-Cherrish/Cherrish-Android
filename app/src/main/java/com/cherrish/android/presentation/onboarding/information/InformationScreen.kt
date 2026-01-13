@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -141,7 +139,8 @@ private fun UserInfoHeader() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp)
+            .padding(horizontal = 26.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
             text = "이름과 나이를 입력해주세요.",
@@ -182,28 +181,22 @@ private fun UserInfoTextField(
             color = CherrishTheme.colors.gray1000
         )
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            CherrishTextField(
-                value = value,
-                onValueChange = onValueChange,
-                roundedCornerShape = RoundedCornerShape(10.dp),
-                placeholder = placeholder,
-                placeholderTextStyle = CherrishTheme.typography.body1R14,
-                inputTextStyle = CherrishTheme.typography.body1M14,
-                inputTextColor = CherrishTheme.colors.gray1000,
-                paddingValues = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
-                keyboardImeAction = keyboardImeAction,
-                onNextAction = onNextAction,
-                onDoneAction = onDoneAction,
-                keyboardType = keyboardType,
-                visualTransformation = visualTransformation,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        CherrishTextField(
+            value = value,
+            onValueChange = onValueChange,
+            roundedCornerShape = RoundedCornerShape(10.dp),
+            placeholder = placeholder,
+            placeholderTextStyle = CherrishTheme.typography.body1R14,
+            inputTextStyle = CherrishTheme.typography.body1M14,
+            inputTextColor = CherrishTheme.colors.gray1000,
+            paddingValues = PaddingValues(horizontal = 16.dp, vertical = 10.dp),
+            keyboardImeAction = keyboardImeAction,
+            onNextAction = onNextAction,
+            onDoneAction = onDoneAction,
+            keyboardType = keyboardType,
+            visualTransformation = visualTransformation,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
