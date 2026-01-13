@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.persistentMapOf
 sealed interface CalendarDisplayMode {
     @Immutable
     data class Normal(
-        val procedureCountByDate: Map<LocalDate, Int> = persistentMapOf()
+        val procedureCountByDate: Map<LocalDate, Int>? = persistentMapOf()
     ) : CalendarDisplayMode
 
     @Immutable
