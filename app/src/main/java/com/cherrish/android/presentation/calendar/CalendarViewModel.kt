@@ -34,7 +34,19 @@ class CalendarViewModel @Inject constructor(
         loadMonthlyCalendar(yearMonth = YearMonth.now())
     }
 
-    private fun loadMonthlyCalendar(yearMonth: YearMonth) {
+    fun onDateClick(date: LocalDate) {
+        _uiState.updateSuccess { currentState ->
+            if (currentState.calendarDisplayMode is CalendarDisplayMode.Downtime) {
+                loadMonthlyCalendarWithDate(currentState.selectedYearMonth, date)
+                currentState
+            } else {
+                loadDailyCalendar(date)
+                currentState.copy(selectedDate = date)
+            }
+        }
+    }
+
+    private fun loadMonthlyCalendarWithDate(yearMonth: YearMonth, selectedDate: LocalDate) {
         viewModelScope.launch {
             calendarRepository.getCalendarMonthly(
                 year = yearMonth.year,
@@ -49,13 +61,18 @@ class CalendarViewModel @Inject constructor(
                         CalendarUiState(
                             selectedYearMonth = yearMonth,
                             calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
-                            selectedDate = LocalDate.now(),
+                            selectedDate = selectedDate,
                             procedureInfoList = persistentListOf()
                         )
                     )
                 }
+                loadDailyCalendar(selectedDate)
             }.onLogFailure { }
         }
+    }
+
+    private fun loadMonthlyCalendar(yearMonth: YearMonth) {
+        loadMonthlyCalendarWithDate(yearMonth, LocalDate.now())
     }
 
     fun onMonthChanged(yearMonth: YearMonth) {
@@ -74,16 +91,6 @@ class CalendarViewModel @Inject constructor(
         }
 
         loadDailyCalendar(newSelectedDate)
-    }
-
-    fun onDateClick(date: LocalDate) {
-        _uiState.updateSuccess { currentState ->
-            if (currentState.calendarDisplayMode is CalendarDisplayMode.Downtime) {
-                loadMonthlyCalendar(currentState.selectedYearMonth)
-            }
-            currentState.copy(selectedDate = date)
-        }
-        loadDailyCalendar(date)
     }
 
     private fun loadDailyCalendar(date: LocalDate) {
