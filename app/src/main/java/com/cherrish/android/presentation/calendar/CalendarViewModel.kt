@@ -27,9 +27,7 @@ import kotlinx.coroutines.launch
 class CalendarViewModel @Inject constructor(
     private val calendarRepository: CalendarRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(
-        UiState.Success(CalendarUiState.FakeNormal)
-    )
+    private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CalendarUiState>> = _uiState.asStateFlow()
 
     init {
@@ -61,13 +59,21 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun onMonthChanged(yearMonth: YearMonth) {
+        val newSelectedDate = if (yearMonth == YearMonth.now()) {
+            LocalDate.now()
+        } else {
+            yearMonth.atDay(1)
+        }
+
         _uiState.updateSuccess { currentState ->
             currentState.copy(
                 selectedYearMonth = yearMonth,
-                selectedDate = null,
+                selectedDate = newSelectedDate,
                 procedureInfoList = persistentListOf()
             )
         }
+
+        loadDailyCalendar(newSelectedDate)
     }
 
     fun onDateClick(date: LocalDate) {
