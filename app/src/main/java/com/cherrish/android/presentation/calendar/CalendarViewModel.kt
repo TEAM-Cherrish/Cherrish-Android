@@ -106,7 +106,8 @@ class CalendarViewModel @Inject constructor(
             val currentMode = currentState.calendarDisplayMode
 
             if (currentMode is CalendarDisplayMode.Downtime &&
-                currentMode.selectedProcedureId == procedureId) {
+                currentMode.selectedProcedureId == procedureId
+            ) {
                 loadMonthlyCalendar(currentState.selectedYearMonth)
                 currentState
             } else {
@@ -139,7 +140,7 @@ class CalendarViewModel @Inject constructor(
                         )
                     )
                 }
-            }.onLogFailure {  }
+            }.onLogFailure { }
         }
     }
 
