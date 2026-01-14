@@ -4,7 +4,7 @@ import com.cherrish.android.data.remote.dto.response.CalendarDownTimeResponseDto
 
 data class CalendarDownTimeResponseModel(
     val userProcedureId: Long,
-    val scheduleAt: String,
+    val scheduledAt: String,
     val downtimeDays: Int,
     val sensitiveDays: List<String>,
     val cautionDays: List<String>,
@@ -13,7 +13,7 @@ data class CalendarDownTimeResponseModel(
 
 fun CalendarDownTimeResponseDto.toModel() = CalendarDownTimeResponseModel(
     userProcedureId = this.userProcedureId,
-    scheduleAt = this.scheduleAt,
+    scheduledAt = this.scheduledAt,
     downtimeDays = this.downtimeDays,
     sensitiveDays = this.sensitiveDays,
     cautionDays = this.cautionDays,

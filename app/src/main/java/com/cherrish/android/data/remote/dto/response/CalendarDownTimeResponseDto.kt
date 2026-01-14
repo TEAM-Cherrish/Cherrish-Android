@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 data class CalendarDownTimeResponseDto(
     @SerialName("userProcedureId")
     val userProcedureId: Long,
-    @SerialName("scheduleAt")
-    val scheduleAt: String,
+    @SerialName("scheduledAt")
+    val scheduledAt: String,
     @SerialName("downtimeDays")
     val downtimeDays: Int,
     @SerialName("sensitiveDays")
