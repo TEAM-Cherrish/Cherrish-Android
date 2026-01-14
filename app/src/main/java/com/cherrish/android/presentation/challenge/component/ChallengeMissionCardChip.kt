@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+
 @Composable
 fun ChallengeMissionCardChip(
     text: String,
@@ -39,26 +40,30 @@ fun ChallengeMissionCardChip(
             .clip(shape = RoundedCornerShape(size = 10.dp))
             .border(
                 width = 1.dp,
-                color = if (isSelected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500,
+                color =
+                if (isSelected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500,
                 shape = RoundedCornerShape(size = 10.dp)
             )
             .background(
-             color = if (isSelected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
+                color = if (isSelected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
             )
-            .padding(top= 14.dp, start = 14.dp, bottom = 14.dp, end = 44.dp)
+            .padding(top = 14.dp, start = 14.dp, bottom = 14.dp, end = 44.dp)
             .noRippleClickable(onClick = onClick),
 
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp),
 
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Icon(
             imageVector = ImageVector.vectorResource(
-                id = if (isSelected) R.drawable.ic_radiobtn_selected else R.drawable.ic_radiobtn_default
+                id = if (isSelected) {
+                    R.drawable.ic_radiobtn_selected
+                } else {
+                    R.drawable.ic_radiobtn_default
+                }
             ),
             tint = if (isSelected) CherrishTheme.colors.red700 else CherrishTheme.colors.gray500,
-            contentDescription = null,
+            contentDescription = null
         )
 
         Text(
@@ -68,7 +73,6 @@ fun ChallengeMissionCardChip(
             modifier = Modifier.fillMaxWidth()
         )
     }
-
 }
 
 @Preview(showBackground = true)
@@ -100,7 +104,7 @@ private fun ChallengeMissionCardChipsPreview() {
         var selectedIndex by remember { mutableStateOf<Int?>(value = null) }
 
         LazyColumn(
-            modifier = Modifier.padding(all =16.dp),
+            modifier = Modifier.padding(all = 16.dp),
             verticalArrangement = Arrangement.spacedBy(space = 8.dp)
         ) {
             itemsIndexed(items = dummyMissions) { index, text ->
