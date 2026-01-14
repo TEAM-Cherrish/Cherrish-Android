@@ -201,7 +201,7 @@ private fun NoScheduleRecoveryScheduleContentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun ScheduleRecoveryScheduleContentPreview() {
+private fun RecoveryScheduleContentPreview() {
     CherrishTheme {
         var selectedIndex by remember { mutableIntStateOf(1) }
         var year by remember { mutableStateOf("") }
