@@ -174,7 +174,7 @@ private fun DateInputBasicRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun RecoveryScheduleContentPreview_SelectedNoSchedule() {
+private fun NoScheduleRecoveryScheduleContentPreview() {
     CherrishTheme {
         var selectedIndex by remember { mutableIntStateOf(0) }
         var year by remember { mutableStateOf("2026") }
@@ -197,7 +197,7 @@ private fun RecoveryScheduleContentPreview_SelectedNoSchedule() {
 
 @Preview(showBackground = true)
 @Composable
-private fun RecoveryScheduleContentPreview_SelectedHasSchedule() {
+private fun ScheduleRecoveryScheduleContentPreview() {
     CherrishTheme {
         var selectedIndex by remember { mutableIntStateOf(1) }
         var year by remember { mutableStateOf("") }
