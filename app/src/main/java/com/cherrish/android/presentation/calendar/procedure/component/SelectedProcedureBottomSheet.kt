@@ -19,8 +19,12 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -39,26 +43,37 @@ import kotlinx.collections.immutable.persistentListOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectedProcedureBottomSheet(
+    isVisible: Boolean,
     selectedProcedure: ImmutableList<SelectedProcedureModel>,
     onDismiss: () -> Unit,
     onDeletedClick: (Long) -> Unit,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: SheetState = rememberModalBottomSheetState()
+    sheetState: SheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 ) {
+    LaunchedEffect(isVisible) {
+        if (isVisible) {
+            sheetState.show()
+        } else {
+            sheetState.hide()
+        }
+    }
+
     val configuration = LocalConfiguration.current
     val screenHeightDp = configuration.screenHeightDp.dp
     val sheetHeight = screenHeightDp * 0.36f
     val listState = rememberLazyListState()
 
-    val isFirstItemVisible = remember {
+    val isFirstItemVisible = remember(selectedProcedure.size) {
         derivedStateOf {
             val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
             firstVisibleItem?.index == 0
         }
     }
 
-    val isLastItemVisible = remember {
+    val isLastItemVisible = remember(selectedProcedure.size) {
         derivedStateOf {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
             val lastItemIndex = selectedProcedure.size - 1
@@ -66,18 +81,12 @@ fun SelectedProcedureBottomSheet(
         }
     }
 
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        sheetState = sheetState,
-        modifier = modifier.fillMaxWidth(),
-        containerColor = CherrishTheme.colors.gray0,
-        shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-        dragHandle = null
-    ) {
-        Box(
-            modifier = Modifier
+    if (sheetState.isVisible) {
+        ModalBottomSheet(
+            onDismissRequest = onDismiss,
+            sheetState = sheetState,
+            modifier = modifier
                 .fillMaxWidth()
-                .height(sheetHeight)
                 .dropShadow(
                     shape = RoundedCornerShape(10.dp),
                     color = CherrishTheme.colors.shadow,
@@ -85,102 +94,111 @@ fun SelectedProcedureBottomSheet(
                     offsetX = 0.dp,
                     offsetY = 0.dp,
                     spread = 0.dp
-                )
+                ),
+            containerColor = CherrishTheme.colors.gray0,
+            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
+            dragHandle = null
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(sheetHeight)
             ) {
-                Text(
-                    text = "선택한 시술",
-                    color = CherrishTheme.colors.gray600,
-                    style = CherrishTheme.typography.body1SB14,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 9.dp, horizontal = 24.dp),
-                    textAlign = TextAlign.Start
-                )
-
-                HorizontalDivider(
-                    thickness = 1.dp,
-                    color = CherrishTheme.colors.gray400
-                )
-
-                Spacer(modifier = Modifier.height(14.dp))
-
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .padding(horizontal = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(
-                        items = selectedProcedure,
-                        key = { it.procedureId }
-                    ) { procedure ->
-                        SelectedProcedureItem(
-                            procedureId = procedure.procedureId,
-                            procedureName = procedure.procedureName,
-                            minDowntimeDays = procedure.minDowntimeDays,
-                            maxDowntimeDays = procedure.maxDowntimeDays,
-                            onDeletedClick = { onDeletedClick(procedure.procedureId) }
-                        )
+                    Text(
+                        text = "선택한 시술",
+                        color = CherrishTheme.colors.gray600,
+                        style = CherrishTheme.typography.body1SB14,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 9.dp, horizontal = 24.dp),
+                        textAlign = TextAlign.Start
+                    )
+
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = CherrishTheme.colors.gray400
+                    )
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(horizontal = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(
+                            items = selectedProcedure,
+                            key = { it.procedureId }
+                        ) { procedure ->
+                            SelectedProcedureItem(
+                                procedureId = procedure.procedureId,
+                                procedureName = procedure.procedureName,
+                                minDowntimeDays = procedure.minDowntimeDays,
+                                maxDowntimeDays = procedure.maxDowntimeDays,
+                                onDeletedClick = { onDeletedClick(procedure.procedureId) }
+                            )
+                        }
                     }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    CherrishButton(
+                        text = "다음",
+                        onClick = onButtonClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                            .padding(bottom = 20.dp)
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(14.dp))
-
-                CherrishButton(
-                    text = "다음",
-                    onClick = onButtonClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
-                        .padding(bottom = 20.dp)
-                )
-            }
-
-            if (!isFirstItemVisible.value) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth()
-                        .padding(top = 49.dp)
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    CherrishTheme.colors.gray0,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                    Color.Transparent
+                if (!isFirstItemVisible.value) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .fillMaxWidth()
+                            .padding(top = 49.dp)
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        CherrishTheme.colors.gray0,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        Color.Transparent
+                                    )
                                 )
                             )
-                        )
-                )
-            }
+                    )
+                }
 
-            if (!isLastItemVisible.value) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .padding(bottom = 68.dp)
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0
+                if (!isLastItemVisible.value) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .padding(bottom = 68.dp)
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0
+                                    )
                                 )
                             )
-                        )
-                )
+                    )
+                }
             }
         }
     }
@@ -191,7 +209,10 @@ fun SelectedProcedureBottomSheet(
 @Composable
 private fun SelectedProcedureBottomSheetPreview() {
     CherrishTheme {
+        var isSheetVisible by remember { mutableStateOf(true) }
+
         SelectedProcedureBottomSheet(
+            isVisible = isSheetVisible,
             selectedProcedure = persistentListOf(
                 SelectedProcedureModel(
                     procedureId = 1L,
@@ -242,9 +263,9 @@ private fun SelectedProcedureBottomSheetPreview() {
                     maxDowntimeDays = 3
                 )
             ),
-            onDismiss = {},
+            onDismiss = { isSheetVisible = false },
             onDeletedClick = {},
-            onButtonClick = {}
+            onButtonClick = { isSheetVisible = false }
         )
     }
 }
