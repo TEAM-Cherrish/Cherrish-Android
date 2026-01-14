@@ -1,15 +1,15 @@
 package com.cherrish.android.presentation.mypage
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.mypage.component.MyPageHeader
-import com.cherrish.android.presentation.mypage.navigation.MyPage
 
 @Composable
 fun MyPageRoute(
@@ -33,27 +32,30 @@ private fun MyPageScreen(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(paddingValues)) {
-
-        MyPageHeader(profileIcon = R.drawable.ic_launcher_foreground ,
+        MyPageHeader(
+            profileIcon = R.drawable.ic_launcher_foreground,
             nicknameText = "",
             skinCareDay = 0,
             modifier = Modifier
         )
-    // 조 ㅁ있다 uiState로 만들기
+        // 조 ㅁ있다 uiState로 만들기
         HorizontalDivider(
             color = CherrishTheme.colors.gray100,
             modifier = Modifier.height(height = 10.dp)
         )
 
-        Spacer(Modifier.weight(weight = 1f))
-
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            modifier = Modifier,
-        )
-
-        Spacer(Modifier.weight( weight = 1f))
+        Box(
+            modifier = Modifier
+                .weight(weight = 1f)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+                modifier = Modifier.padding(horizontal = 52.dp)
+            )
+        }
 
         HorizontalDivider(
             color = CherrishTheme.colors.gray100,
@@ -62,9 +64,8 @@ private fun MyPageScreen(
     }
 }
 
-@Preview(showBackground = true,
-    backgroundColor =  0xFFFFF6F8)
+@Preview(showBackground = true, backgroundColor = 0xFFFFF6F8)
 @Composable
-private fun MyPageScreenPreview(){
+private fun MyPageScreenPreview() {
     MyPageScreen(paddingValues = PaddingValues())
 }
