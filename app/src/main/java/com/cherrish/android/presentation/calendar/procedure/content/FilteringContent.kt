@@ -1,6 +1,5 @@
 package com.cherrish.android.presentation.calendar.procedure.content
 
-import android.R.attr.name
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
