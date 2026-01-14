@@ -95,7 +95,6 @@ fun FilteringWithSearchContent(
 
     Column(
         modifier = modifier.fillMaxWidth()
-            .padding(horizontal = 24.dp)
     ) {
         ProcedureTextField(
             value = text,
