@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.mypage.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +22,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun MypageHeader(
-    profileIcon: Int,
+    @DrawableRes profileIcon: Int,
     nicknameText: String,
     skinCareDay: Int,
     modifier: Modifier = Modifier
@@ -32,7 +33,7 @@ fun MypageHeader(
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = profileIcon),
-            contentDescription = "ProfileImage",
+            contentDescription = null,
             modifier = Modifier.clip(CircleShape)
         )
 
@@ -43,14 +44,12 @@ fun MypageHeader(
         ) {
             Text(
                 text = "안녕하세요, $nicknameText 님",
-                modifier = Modifier,
                 color = CherrishTheme.colors.gray1000,
                 style = CherrishTheme.typography.title1SB18
             )
 
             Text(
-                text = "관리 시작 D+ $skinCareDay",
-                modifier = Modifier,
+                text = "관리 시작 D + $skinCareDay",
                 color = CherrishTheme.colors.gray800,
                 style = CherrishTheme.typography.body1M14
             )
@@ -60,7 +59,7 @@ fun MypageHeader(
 
 @Preview(showBackground = true)
 @Composable
-private fun MyPageHeaderPreview() {
+private fun MypageHeaderPreview() {
     MypageHeader(
         profileIcon = R.drawable.ic_launcher_foreground,
         nicknameText = "김체체",
