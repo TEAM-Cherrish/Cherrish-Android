@@ -47,10 +47,10 @@ fun getProcedureColors(
 fun getProcedureType(
     displayMode: CalendarDisplayMode,
     procedureId: Long,
-    downTimeDuration: Int?
+    downTimeDuration: Int
 ): ProcedureType = when (displayMode) {
     is CalendarDisplayMode.Normal -> {
-        if (downTimeDuration == null) {
+        if (downTimeDuration == 0) {
             ProcedureType.ACTIVE_NO_DOWNTIME
         } else {
             ProcedureType.ACTIVE
