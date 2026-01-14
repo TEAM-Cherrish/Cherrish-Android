@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CalendarMonthlyResponseDto(
     @SerialName("dailyProcedureCounts")
-    val dailyProcedureCounts: Map<Int, Long>?
+    val dailyProcedureCounts: Map<Int, Long>
 )
