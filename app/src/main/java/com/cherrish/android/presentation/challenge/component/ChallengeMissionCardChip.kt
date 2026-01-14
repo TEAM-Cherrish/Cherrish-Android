@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -73,12 +75,41 @@ fun ChallengeMissionCardChip(
 @Composable
 private fun ChallengeMissionCardChipPreview() {
     CherrishTheme {
-        var selected by remember { mutableStateOf(false) }
+        var selected by remember { mutableStateOf(value = false) }
 
         ChallengeMissionCardChip(
             text = "선크림 3번 바르기",
             isSelected = selected,
             onClick = { selected = !selected }
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ChallengeMissionCardChipsPreview() {
+    CherrishTheme {
+        val dummyMissions = listOf(
+            "아침 세안 후 토너 바르기",
+            "수분 에센스 2-3방울 흡수",
+            "보습 크림으로 마무리",
+            "저녁 클렌징 꼼꼼히 하기",
+            "수분 마스크팩 (주 2-3회)"
+        )
+
+        var selectedIndex by remember { mutableStateOf<Int?>(value = null) }
+
+        LazyColumn(
+            modifier = Modifier.padding(all =16.dp),
+            verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+        ) {
+            itemsIndexed(items = dummyMissions) { index, text ->
+                ChallengeMissionCardChip(
+                    text = text,
+                    isSelected = selectedIndex == index,
+                    onClick = { selectedIndex = index }
+                )
+            }
+        }
     }
 }
