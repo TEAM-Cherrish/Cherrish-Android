@@ -13,6 +13,5 @@ data class MyPageUiState(
                 nicknameText = "홍길동",
                 skinCareDay = 3
             )
-
     }
 }

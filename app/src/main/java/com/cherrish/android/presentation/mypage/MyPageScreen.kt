@@ -30,22 +30,22 @@ fun MyPageRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    when (val state = uiState){
+    when (val state = uiState) {
         is UiState.Loading -> {
-
         }
+
         is UiState.Failure -> {
-
         }
+
         is UiState.Success -> {
             MyPageScreen(
                 paddingValues = paddingValues,
                 uiState = state.data
             )
         }
+
         else -> {}
     }
-
 }
 
 @Composable
@@ -59,7 +59,7 @@ private fun MyPageScreen(
             profileIcon = R.drawable.ic_launcher_foreground,
             nicknameText = uiState.nicknameText,
             skinCareDay = uiState.skinCareDay,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
         )
 
         HorizontalDivider(
@@ -90,6 +90,8 @@ private fun MyPageScreen(
 @Preview(showBackground = true, backgroundColor = 0xFFFFF6F8)
 @Composable
 private fun MyPageScreenPreview() {
-    MyPageScreen(paddingValues = PaddingValues(),
-        uiState = MyPageUiState.FakeUsers)
+    MyPageScreen(
+        paddingValues = PaddingValues(),
+        uiState = MyPageUiState.FakeUsers
+    )
 }
