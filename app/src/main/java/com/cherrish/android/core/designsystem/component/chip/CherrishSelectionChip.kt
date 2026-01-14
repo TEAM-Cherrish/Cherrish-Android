@@ -32,6 +32,7 @@ fun CherrishSelectionChip(
     ) {
         Text(
             text = text,
+            style = CherrishTheme.typography.body1SB14,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 30.dp, horizontal = 10.dp),
