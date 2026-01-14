@@ -72,6 +72,9 @@ class CalendarViewModel @Inject constructor(
 
     fun onDateClick(date: LocalDate) {
         _uiState.updateSuccess { currentState ->
+            if (currentState.calendarDisplayMode is CalendarDisplayMode.Downtime) {
+                loadMonthlyCalendar(currentState.selectedYearMonth)
+            }
             currentState.copy(selectedDate = date)
         }
         loadDailyCalendar(date)
@@ -100,11 +103,16 @@ class CalendarViewModel @Inject constructor(
 
     fun onEventClick(procedureId: Long) {
         _uiState.updateSuccess { currentState ->
-            currentState.copy(
-                calendarDisplayMode = CalendarDisplayMode.Normal(
-                    procedureCountByDate = emptyMap()
-                )
-            )
+            val currentMode = currentState.calendarDisplayMode
+
+            if (currentMode is CalendarDisplayMode.Downtime &&
+                currentMode.selectedProcedureId == procedureId) {
+                loadMonthlyCalendar(currentState.selectedYearMonth)
+                currentState
+            } else {
+                loadDowntimeDetail(procedureId)
+                currentState
+            }
         }
     }
 
