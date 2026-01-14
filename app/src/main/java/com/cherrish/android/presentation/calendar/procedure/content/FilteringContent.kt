@@ -82,7 +82,6 @@ private val mockProcedureCardItems = listOf(
 
 @Composable
 fun FilteringContent(
-    id: Long,
     name: String,
     cardItems: List<ProcedureCardItemUiModel>,
     selectedCardId: Long?,
@@ -94,7 +93,6 @@ fun FilteringContent(
     ) {
         item {
             ProcedureTitleSection(
-                id = id,
                 content = name
             )
         }
@@ -130,7 +128,6 @@ private fun FilteringContentPreview() {
         var selectedCardId by remember { mutableStateOf<Long?>(null) }
 
         FilteringContent(
-            id = 1L,
             name = "색소침착",
             cardItems = mockProcedureCardItems,
             selectedCardId = selectedCardId,
