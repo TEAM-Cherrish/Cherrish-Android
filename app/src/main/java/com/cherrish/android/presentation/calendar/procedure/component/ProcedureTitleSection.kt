@@ -15,7 +15,6 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun ProcedureTitleSection(
-    id: Long,
     content: String
 ) {
     Column(
@@ -27,7 +26,6 @@ fun ProcedureTitleSection(
         )
 
         ProcedureTitleWithCaution(
-            id = id,
             content = content
         )
 
@@ -40,7 +38,6 @@ fun ProcedureTitleSection(
 
 @Composable
 private fun ProcedureTitleWithCaution(
-    id: Long,
     content: String
 ) {
     Column(
@@ -65,7 +62,6 @@ private fun ProcedureTitleWithCaution(
 private fun ProcedureTitleSectionPreview() {
     CherrishTheme {
         ProcedureTitleSection(
-            id = 1L,
             content = "모공"
         )
     }
