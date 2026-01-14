@@ -36,10 +36,10 @@ import com.cherrish.android.presentation.calendar.procedure.model.procedureCardT
 
 @Composable
 fun ProcedureCard(
-    title: String,
-    description: String,
-    minDowntimeDay: Int,
-    maxDowntimeDay: Int,
+    name: String,
+    category: String,
+    minDowntimeDays: Int,
+    maxDowntimeDays: Int,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
@@ -64,8 +64,8 @@ fun ProcedureCard(
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         ProcedureCardTitle(
-            title = title,
-            description = description,
+            title = name,
+            description = category,
             isSelected = isSelected,
             tokens = tokens
         )
@@ -78,8 +78,8 @@ fun ProcedureCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             ProcedureCardDuration(
-                minDowntimeDay = minDowntimeDay,
-                maxDowntimeDay = maxDowntimeDay
+                minDowntimeDay = minDowntimeDays,
+                maxDowntimeDay = maxDowntimeDays
             )
         }
     }
@@ -156,10 +156,10 @@ private fun BasicProcedureCardPreview() {
         var isSelected by remember { mutableStateOf(false) }
 
         ProcedureCard(
-            title = "레이저 토닝",
-            description = "색소 개선 | 토닝",
-            minDowntimeDay = 3,
-            maxDowntimeDay = 5,
+            name = "레이저 토닝",
+            category = "색소 개선 | 토닝",
+            minDowntimeDays = 3,
+            maxDowntimeDays = 5,
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
             displayMode = ProcedureCardDisplayMode.Basic
@@ -174,10 +174,10 @@ private fun SelectableProcedureCardPreview() {
         var isSelected by remember { mutableStateOf(false) }
 
         ProcedureCard(
-            title = "레이저 토닝",
-            description = "색소 개선 | 토닝",
-            minDowntimeDay = 3,
-            maxDowntimeDay = 5,
+            name = "레이저 토닝",
+            category = "색소 개선 | 토닝",
+            minDowntimeDays = 3,
+            maxDowntimeDays = 5,
             onCardClick = { isSelected = !isSelected },
             isSelected = isSelected,
             displayMode = ProcedureCardDisplayMode.Selectable
