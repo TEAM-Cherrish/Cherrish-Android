@@ -1,11 +1,10 @@
 package com.cherrish.android.presentation.mypage.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -29,15 +28,14 @@ fun MyPageHeader(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(space = 14.dp)
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = profileIcon),
             contentDescription = null,
             modifier = Modifier.clip(CircleShape)
         )
-
-        Spacer(modifier = Modifier.width(width = 14.dp))
 
         Column(
             modifier = Modifier.fillMaxWidth()
