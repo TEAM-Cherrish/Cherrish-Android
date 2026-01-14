@@ -1,8 +1,6 @@
 package com.cherrish.android.presentation.mypage
 
 import androidx.compose.runtime.Immutable
-import com.cherrish.android.presentation.mypage.model.MyPageInfo
-import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
 data class MyPageUiState(
@@ -10,7 +8,7 @@ data class MyPageUiState(
     val skinCareDay: Int = 0
 ) {
     companion object {
-        val Users =
+        val FakeUsers =
             MyPageUiState(
                 nicknameText = "홍길동",
                 skinCareDay = 3
