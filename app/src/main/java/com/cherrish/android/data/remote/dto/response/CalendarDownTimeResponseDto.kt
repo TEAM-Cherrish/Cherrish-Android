@@ -9,10 +9,12 @@ data class CalendarDownTimeResponseDto(
     val userProcedureId: Long,
     @SerialName("scheduleAt")
     val scheduleAt: String,
+    @SerialName("downtimeDays")
+    val downtimeDays: Int,
     @SerialName("sensitiveDays")
     val sensitiveDays: List<String>,
     @SerialName("cautionDays")
     val cautionDays: List<String>,
-    @SerialName("downtimeDays")
-    val downtimeDays: List<String>
+    @SerialName("recoveryDays")
+    val recoveryDays: List<String>
 )
