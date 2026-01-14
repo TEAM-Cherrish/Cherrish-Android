@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ChallengeMissionCardChip(
@@ -93,7 +94,7 @@ private fun ChallengeMissionCardChipPreview() {
 @Composable
 private fun ChallengeMissionCardChipsPreview() {
     CherrishTheme {
-        val dummyMissions = listOf(
+        val dummyMissions = persistentListOf(
             "아침 세안 후 토너 바르기",
             "수분 에센스 2-3방울 흡수",
             "보습 크림으로 마무리",
