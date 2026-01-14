@@ -7,6 +7,7 @@ import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
+import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.DayOfWeek
@@ -37,22 +38,20 @@ class CalendarViewModel @Inject constructor(
 
     private fun loadMonthlyCalendar(yearMonth: YearMonth) {
         viewModelScope.launch {
-            _uiState.update { UiState.Loading }
-
             calendarRepository.getCalendarMonthly(
                 year = yearMonth.year,
                 month = yearMonth.monthValue
             ).onSuccess { response ->
-                val procedureCountByDate = response.dailyProcedureCounts?.mapKeys { (day, _) ->
+                val procedureCountByDate = response.dailyProcedureCounts.mapKeys { (day, _) ->
                     yearMonth.atDay(day)
-                }?.mapValues { it.value.toInt() }
+                }.mapValues { it.value.toInt() }
 
                 _uiState.update {
                     UiState.Success(
                         CalendarUiState(
                             selectedYearMonth = yearMonth,
                             calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
-                            selectedDate = null,
+                            selectedDate = LocalDate.now(),
                             procedureInfoList = persistentListOf()
                         )
                     )
@@ -100,6 +99,40 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun onEventClick(procedureId: Long) {
+        _uiState.updateSuccess { currentState ->
+            currentState.copy(
+                calendarDisplayMode = CalendarDisplayMode.Normal(
+                    procedureCountByDate = emptyMap()
+                )
+            )
+        }
+    }
+
+    private fun loadDowntimeDetail(userProcedureId: Long) {
+        viewModelScope.launch {
+            calendarRepository.getCalendarEventDowntime(userProcedureId).onSuccess { response ->
+                _uiState.updateSuccess { currentState ->
+                    val downtimeByDate = buildMap<LocalDate, DownTimeStatus> {
+                        response.sensitiveDays.forEach { dateString ->
+                            put(LocalDate.parse(dateString), DownTimeStatus.SENSITIVE)
+                        }
+                        response.cautionDays.forEach { dateString ->
+                            put(LocalDate.parse(dateString), DownTimeStatus.CAUTION)
+                        }
+                        response.recoveryDays.forEach { dateString ->
+                            put(LocalDate.parse(dateString), DownTimeStatus.RECOVERY)
+                        }
+                    }
+
+                    currentState.copy(
+                        calendarDisplayMode = CalendarDisplayMode.Downtime(
+                            downtimeByDate = downtimeByDate,
+                            selectedProcedureId = userProcedureId
+                        )
+                    )
+                }
+            }.onLogFailure {  }
+        }
     }
 
     private fun formatProcedureDay(scheduledAt: String): String {
