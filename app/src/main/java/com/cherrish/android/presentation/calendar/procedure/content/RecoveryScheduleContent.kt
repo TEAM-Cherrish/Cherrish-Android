@@ -58,7 +58,9 @@ fun RecoveryScheduleContent(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically(),
         ) {
-            Column(modifier = Modifier.padding(top = 28.dp)) {
+            Column(
+                modifier = Modifier.padding(top = 56.dp)
+            ) {
                 val sectionTitle = if (selectedIndex == 0) {
                     "대략적인 회복 목표일을 정해볼까요?"
                 } else {
@@ -190,7 +192,7 @@ private fun NoScheduleRecoveryScheduleContentPreview() {
             onYearChange = { year = it },
             onMonthChange = { month = it },
             onDayChange = { day = it },
-            modifier = Modifier.padding(26.dp),
+            modifier = Modifier.padding(25.dp),
         )
     }
 }
@@ -213,7 +215,7 @@ private fun ScheduleRecoveryScheduleContentPreview() {
             onYearChange = { year = it },
             onMonthChange = { month = it },
             onDayChange = { day = it },
-            modifier = Modifier.padding(26.dp),
+            modifier = Modifier.padding(25.dp),
         )
     }
 }
