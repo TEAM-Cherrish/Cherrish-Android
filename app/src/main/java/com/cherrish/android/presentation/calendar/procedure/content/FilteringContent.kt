@@ -1,9 +1,10 @@
 package com.cherrish.android.presentation.calendar.procedure.content
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import android.R.attr.name
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -23,7 +24,7 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardI
 /* TODO: 삭제 예정 */
 private val mockProcedureCardItems = listOf(
     ProcedureCardItemUiModel(
-        id = "1",
+        id = 1L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 3,
@@ -31,7 +32,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "2",
+        id = 2L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 2,
@@ -39,7 +40,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "3",
+        id = 3L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 5,
@@ -47,7 +48,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "4",
+        id = 4L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 3,
@@ -55,7 +56,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "5",
+        id = 5L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 3,
@@ -63,7 +64,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "6",
+        id = 6L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 3,
@@ -71,7 +72,7 @@ private val mockProcedureCardItems = listOf(
         displayMode = ProcedureCardDisplayMode.Basic
     ),
     ProcedureCardItemUiModel(
-        id = "7",
+        id = 7L,
         name = "레이저 토닝",
         category = "색소 개선 | 토닝",
         minDowntimeDays = 3,
@@ -82,34 +83,43 @@ private val mockProcedureCardItems = listOf(
 
 @Composable
 fun FilteringContent(
+    id: Long,
+    name: String,
     cardItems: List<ProcedureCardItemUiModel>,
-    selectedCardId: String?,
-    onCardClick: (String) -> Unit,
+    selectedCardId: Long?,
+    onCardClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
-        ProcedureTitleSection(
-            procedureName = "색소 ∙ 잡티"
-        )
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 19.dp)
-        ) {
-            itemsIndexed(
-                items = cardItems,
-                key = { _, item -> item.id }
-            ) { _, item ->
-                ProcedureCard(
-                    name = item.name,
-                    category = item.category,
-                    minDowntimeDays = item.minDowntimeDays,
-                    maxDowntimeDays = item.maxDowntimeDays,
-                    onCardClick = { onCardClick(item.id) },
-                    isSelected = selectedCardId == item.id,
-                    displayMode = item.displayMode
-                )
-            }
+    LazyColumn(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        item {
+            ProcedureTitleSection(
+                id = id,
+                content = name
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(19.dp))
+        }
+
+        itemsIndexed(
+            items = cardItems,
+            key = { _, item -> item.id }
+        ) { _, item ->
+            ProcedureCard(
+                name = item.name,
+                category = item.category,
+                minDowntimeDays = item.minDowntimeDays,
+                maxDowntimeDays = item.maxDowntimeDays,
+                onCardClick = { onCardClick(item.id) },
+                isSelected = selectedCardId == item.id,
+                displayMode = item.displayMode,
+                modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .padding(horizontal = 24.dp)
+            )
         }
     }
 }
@@ -118,9 +128,11 @@ fun FilteringContent(
 @Composable
 private fun FilteringContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<String?>(null) }
+        var selectedCardId by remember { mutableStateOf<Long?>(null) }
 
         FilteringContent(
+            id = 1L,
+            name = "색소침착",
             cardItems = mockProcedureCardItems,
             selectedCardId = selectedCardId,
             onCardClick = { clickedId ->
