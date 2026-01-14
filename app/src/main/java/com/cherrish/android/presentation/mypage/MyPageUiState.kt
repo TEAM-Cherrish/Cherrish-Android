@@ -10,12 +10,11 @@ data class MyPageUiState(
     val skinCareDay: Int = 0
 ) {
     companion object {
-        val Users = persistentListOf({
-            MyPageInfo(
+        val Users =
+            MyPageUiState(
                 nicknameText = "홍길동",
                 skinCareDay = 3
             )
 
-        })
     }
 }
