@@ -17,6 +17,7 @@ import java.time.YearMonth
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,8 +38,11 @@ class CalendarViewModel @Inject constructor(
     fun onDateClick(date: LocalDate) {
         _uiState.updateSuccess { currentState ->
             if (currentState.calendarDisplayMode is CalendarDisplayMode.Downtime) {
-                loadMonthlyCalendarWithDate(currentState.selectedYearMonth, date)
-                currentState
+                loadDailyCalendar(date)
+                currentState.copy(
+                    selectedDate = date,
+                    calendarDisplayMode = CalendarDisplayMode.Normal(currentState.cachedProcedureCountByDate)
+                )
             } else {
                 loadDailyCalendar(date)
                 currentState.copy(selectedDate = date)
@@ -48,6 +52,10 @@ class CalendarViewModel @Inject constructor(
 
     private fun loadMonthlyCalendarWithDate(yearMonth: YearMonth, selectedDate: LocalDate) {
         viewModelScope.launch {
+            val dailyDeferred = async {
+                calendarRepository.getCalendarDaily(date = selectedDate.toString())
+            }
+
             calendarRepository.getCalendarMonthly(
                 year = yearMonth.year,
                 month = yearMonth.monthValue
@@ -56,17 +64,26 @@ class CalendarViewModel @Inject constructor(
                     yearMonth.atDay(day)
                 }.mapValues { it.value.toInt() }
 
-                _uiState.update {
-                    UiState.Success(
-                        CalendarUiState(
-                            selectedYearMonth = yearMonth,
-                            calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
-                            selectedDate = selectedDate,
-                            procedureInfoList = persistentListOf()
+                dailyDeferred.await().onSuccess { dailyResponse ->
+                    _uiState.update {
+                        UiState.Success(
+                            CalendarUiState(
+                                selectedYearMonth = yearMonth,
+                                calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
+                                selectedDate = selectedDate,
+                                procedureInfoList = dailyResponse.events.map { event ->
+                                    ProcedureInfoModel(
+                                        procedureId = event.userProcedureId,
+                                        procedureName = event.name,
+                                        procedureDay = formatProcedureDay(event.scheduledAt),
+                                        downTimeDuration = event.downtimeDays
+                                    )
+                                }.toImmutableList(),
+                                cachedProcedureCountByDate = procedureCountByDate
+                            )
                         )
-                    )
+                    }
                 }
-                loadDailyCalendar(selectedDate)
             }.onLogFailure { }
         }
     }
@@ -90,7 +107,7 @@ class CalendarViewModel @Inject constructor(
             )
         }
 
-        loadDailyCalendar(newSelectedDate)
+        loadMonthlyCalendar(yearMonth)
     }
 
     private fun loadDailyCalendar(date: LocalDate) {
@@ -121,8 +138,9 @@ class CalendarViewModel @Inject constructor(
             if (currentMode is CalendarDisplayMode.Downtime &&
                 currentMode.selectedProcedureId == procedureId
             ) {
-                loadMonthlyCalendar(currentState.selectedYearMonth)
-                currentState
+                currentState.copy(
+                    calendarDisplayMode = CalendarDisplayMode.Normal(currentState.cachedProcedureCountByDate)
+                )
             } else {
                 loadDowntimeDetail(procedureId)
                 currentState

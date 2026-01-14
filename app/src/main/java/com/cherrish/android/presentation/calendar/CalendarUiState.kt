@@ -14,7 +14,8 @@ data class CalendarUiState(
     val selectedYearMonth: YearMonth = YearMonth.now(),
     val calendarDisplayMode: CalendarDisplayMode = CalendarDisplayMode.Normal(),
     val selectedDate: LocalDate? = LocalDate.now(),
-    val procedureInfoList: ImmutableList<ProcedureInfoModel> = persistentListOf()
+    val procedureInfoList: ImmutableList<ProcedureInfoModel> = persistentListOf(),
+    val cachedProcedureCountByDate: Map<LocalDate, Int> = emptyMap()
 ) {
     companion object {
         private val today = LocalDate.of(2026, 1, 7)
