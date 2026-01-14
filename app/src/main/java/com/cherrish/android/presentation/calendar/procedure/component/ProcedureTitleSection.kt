@@ -17,10 +17,27 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 fun ProcedureTitleSection(
     procedureName: String
 ) {
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = CherrishTheme.colors.gray500
-    )
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = CherrishTheme.colors.gray500
+        )
+
+        ProcedureTitleWithCaution(procedureName)
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = CherrishTheme.colors.gray500
+        )
+    }
+}
+
+@Composable
+private fun ProcedureTitleWithCaution(
+    procedureName: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,13 +53,9 @@ fun ProcedureTitleSection(
 
         CautionDescription()
     }
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = CherrishTheme.colors.gray500
-    )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ProcedureTitleSectionPreview() {
     CherrishTheme {

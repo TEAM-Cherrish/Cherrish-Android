@@ -41,7 +41,7 @@ fun RecoveryScheduleContent(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val hasSelection = selectedIndex != null && selectedIndex >= 0
 
@@ -50,13 +50,13 @@ fun RecoveryScheduleContent(
             title = "회복을 계획할 때 고려해야 할\n중요한 일정이 있나요?",
             items = persistentListOf("아직 없어요", "네, 있어요"),
             selectedIndex = selectedIndex,
-            onItemClick = onItemClick,
+            onItemClick = onItemClick
         )
 
         AnimatedVisibility(
             visible = hasSelection,
             enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically(),
+            exit = fadeOut() + shrinkVertically()
         ) {
             Column(
                 modifier = Modifier.padding(top = 56.dp)
@@ -74,7 +74,7 @@ fun RecoveryScheduleContent(
                     day = day,
                     onYearChange = onYearChange,
                     onMonthChange = onMonthChange,
-                    onDayChange = onDayChange,
+                    onDayChange = onDayChange
                 )
             }
         }
@@ -90,13 +90,13 @@ private fun ScheduleSettingSection(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         Text(
             text = title,
             style = CherrishTheme.typography.title1SB18,
-            color = CherrishTheme.colors.gray1000,
+            color = CherrishTheme.colors.gray1000
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -104,14 +104,14 @@ private fun ScheduleSettingSection(
         Text(
             text = "날짜",
             style = CherrishTheme.typography.body1SB14,
-            color = CherrishTheme.colors.gray1000,
+            color = CherrishTheme.colors.gray1000
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             DateInputBasicRow(
                 date = year,
@@ -144,7 +144,7 @@ private fun DateInputBasicRow(
     suffix: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -157,10 +157,12 @@ private fun DateInputBasicRow(
             onValueChange = onValueChange,
             roundedCornerShape = RoundedCornerShape(8.dp),
             placeholderTextStyle = CherrishTheme.typography.title2R16.copy(
-                textAlign = TextAlign.Center),
+                textAlign = TextAlign.Center
+            ),
             placeholderTextColor = CherrishTheme.colors.gray500,
             inputTextStyle = CherrishTheme.typography.title2M16.copy(
-                textAlign = TextAlign.Center),
+                textAlign = TextAlign.Center
+            ),
             inputTextColor = CherrishTheme.colors.gray800,
             paddingValues = PaddingValues(horizontal = 19.dp, vertical = 8.dp),
             modifier = Modifier.weight(1f)
@@ -192,7 +194,7 @@ private fun NoScheduleRecoveryScheduleContentPreview() {
             onYearChange = { year = it },
             onMonthChange = { month = it },
             onDayChange = { day = it },
-            modifier = Modifier.padding(25.dp),
+            modifier = Modifier.padding(25.dp)
         )
     }
 }
@@ -215,7 +217,7 @@ private fun ScheduleRecoveryScheduleContentPreview() {
             onYearChange = { year = it },
             onMonthChange = { month = it },
             onDayChange = { day = it },
-            modifier = Modifier.padding(25.dp),
+            modifier = Modifier.padding(25.dp)
         )
     }
 }

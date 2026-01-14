@@ -21,7 +21,7 @@ fun CategoryContent(
         descriptionTextStyle = CherrishTheme.typography.body1M14,
         items = persistentListOf("피부결 ∙ 각질", "색소 ∙ 잡티", "홍조", "탄력 ∙ 주름", "모공", "트러블"),
         selectedIndex = selectedIndex,
-        onItemClick = onItemClick,
+        onItemClick = onItemClick
     )
 }
 
