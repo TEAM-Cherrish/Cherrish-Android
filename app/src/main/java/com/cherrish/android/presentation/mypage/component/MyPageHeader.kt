@@ -21,7 +21,7 @@ import com.cherrish.android.R
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-fun MypageHeader(
+fun MyPageHeader(
     @DrawableRes profileIcon: Int,
     nicknameText: String,
     skinCareDay: Int,
@@ -59,8 +59,8 @@ fun MypageHeader(
 
 @Preview(showBackground = true)
 @Composable
-private fun MypageHeaderPreview() {
-    MypageHeader(
+private fun MyPageHeaderPreview() {
+    MyPageHeader(
         profileIcon = R.drawable.ic_launcher_foreground,
         nicknameText = "김체체",
         skinCareDay = 13
