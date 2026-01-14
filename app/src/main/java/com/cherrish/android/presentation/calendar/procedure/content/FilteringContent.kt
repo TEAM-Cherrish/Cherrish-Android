@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -101,10 +101,10 @@ fun FilteringContent(
             Spacer(modifier = Modifier.height(19.dp))
         }
 
-        itemsIndexed(
+        items(
             items = cardItems,
-            key = { _, item -> item.id }
-        ) { _, item ->
+            key = { it.id }
+        ) { item ->
             ProcedureCard(
                 name = item.name,
                 category = item.category,
