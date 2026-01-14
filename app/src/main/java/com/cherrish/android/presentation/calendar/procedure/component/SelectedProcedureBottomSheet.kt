@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,6 +40,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +65,7 @@ fun SelectedProcedureBottomSheet(
 
     val configuration = LocalConfiguration.current
     val screenHeightDp = configuration.screenHeightDp.dp
-    val sheetHeight = screenHeightDp * 0.36f
+    val maxSheetHeight = screenHeightDp * 0.36f
     val listState = rememberLazyListState()
 
     val isFirstItemVisible = remember(selectedProcedure.size) {
@@ -100,12 +102,12 @@ fun SelectedProcedureBottomSheet(
             dragHandle = null
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(sheetHeight)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = maxSheetHeight),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -129,7 +131,7 @@ fun SelectedProcedureBottomSheet(
                         state = listState,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f)
+                            .weight(1f, fill = false)
                             .padding(horizontal = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -210,61 +212,76 @@ fun SelectedProcedureBottomSheet(
 private fun SelectedProcedureBottomSheetPreview() {
     CherrishTheme {
         var isSheetVisible by remember { mutableStateOf(true) }
+        var selectedProcedures by remember {
+            mutableStateOf(
+                persistentListOf(
+                    SelectedProcedureModel(
+                        procedureId = 1L,
+                        procedureName = "레이저 토닝",
+                        minDowntimeDays = 3,
+                        maxDowntimeDays = 5
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 2L,
+                        procedureName = "보톡스",
+                        minDowntimeDays = 2,
+                        maxDowntimeDays = 4
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 3L,
+                        procedureName = "울쎄라",
+                        minDowntimeDays = 5,
+                        maxDowntimeDays = 7
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 4L,
+                        procedureName = "필러",
+                        minDowntimeDays = 3,
+                        maxDowntimeDays = 6
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 5L,
+                        procedureName = "리프팅 레이저",
+                        minDowntimeDays = 7,
+                        maxDowntimeDays = 10
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 6L,
+                        procedureName = "피코토닝",
+                        minDowntimeDays = 2,
+                        maxDowntimeDays = 4
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 7L,
+                        procedureName = "쥬베룩",
+                        minDowntimeDays = 4,
+                        maxDowntimeDays = 6
+                    ),
+                    SelectedProcedureModel(
+                        procedureId = 8L,
+                        procedureName = "스킨보톡스",
+                        minDowntimeDays = 2,
+                        maxDowntimeDays = 3
+                    )
+                )
+            )
+        }
 
         SelectedProcedureBottomSheet(
             isVisible = isSheetVisible,
-            selectedProcedure = persistentListOf(
-                SelectedProcedureModel(
-                    procedureId = 1L,
-                    procedureName = "레이저 토닝",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5
-                ),
-                SelectedProcedureModel(
-                    procedureId = 2L,
-                    procedureName = "보톡스",
-                    minDowntimeDays = 2,
-                    maxDowntimeDays = 4
-                ),
-                SelectedProcedureModel(
-                    procedureId = 3L,
-                    procedureName = "울쎄라",
-                    minDowntimeDays = 5,
-                    maxDowntimeDays = 7
-                ),
-                SelectedProcedureModel(
-                    procedureId = 4L,
-                    procedureName = "필러",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 6
-                ),
-                SelectedProcedureModel(
-                    procedureId = 5L,
-                    procedureName = "리프팅 레이저",
-                    minDowntimeDays = 7,
-                    maxDowntimeDays = 10
-                ),
-                SelectedProcedureModel(
-                    procedureId = 6L,
-                    procedureName = "피코토닝",
-                    minDowntimeDays = 2,
-                    maxDowntimeDays = 4
-                ),
-                SelectedProcedureModel(
-                    procedureId = 7L,
-                    procedureName = "쥬베룩",
-                    minDowntimeDays = 4,
-                    maxDowntimeDays = 6
-                ),
-                SelectedProcedureModel(
-                    procedureId = 8L,
-                    procedureName = "스킨보톡스",
-                    minDowntimeDays = 2,
-                    maxDowntimeDays = 3
-                )
-            ),
+            selectedProcedure = selectedProcedures,
             onDismiss = { isSheetVisible = false },
-            onDeletedClick = {},
+            onDeletedClick = { procedureId ->
+                val newList = selectedProcedures
+                    .filter { it.procedureId != procedureId }
+                    .toPersistentList()
+
+                selectedProcedures = newList
+
+                if (newList.isEmpty()) {
+                    isSheetVisible = false
+                }
+            },
             onButtonClick = { isSheetVisible = false }
         )
     }
