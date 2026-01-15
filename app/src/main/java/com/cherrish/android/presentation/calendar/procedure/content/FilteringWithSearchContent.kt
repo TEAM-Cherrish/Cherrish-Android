@@ -89,17 +89,18 @@ fun FilteringWithSearchContent(
     cardItems: List<ProcedureCardItemUiModel>,
     selectedCardId: Long?,
     onCardClick: (Long) -> Unit,
+    onSearchAction: (String) -> Unit,
+    query: String,
+    onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var text by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         ProcedureTextField(
-            value = text,
-            onValueChange = { text = it },
-            onSearchAction = {},
+            value = query,
+            onValueChange = onQueryChange,
+            onSearchAction = { onSearchAction(query) },
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -140,13 +141,17 @@ fun FilteringWithSearchContent(
 private fun FilteringWithSearchContentPreview() {
     CherrishTheme {
         var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var query by remember { mutableStateOf("") }
 
         FilteringWithSearchContent(
             cardItems = mockProcedureCardItems,
             selectedCardId = selectedCardId,
             onCardClick = { clickedId ->
                 selectedCardId = if (selectedCardId == clickedId) null else clickedId
-            }
+            },
+            onSearchAction = {},
+            query = query,
+            onQueryChange = { query = it }
         )
     }
 }
