@@ -180,7 +180,7 @@ private fun UpcomingPlanSection(
             .fillMaxWidth()
             .dropShadow(
                 shape = RoundedCornerShape(10.dp),
-                color = CherrishTheme.colors.shadow1,
+                color = CherrishTheme.colors.shadow,
                 blur = 10.dp,
                 offsetX = 0.dp,
                 offsetY = 0.dp,
