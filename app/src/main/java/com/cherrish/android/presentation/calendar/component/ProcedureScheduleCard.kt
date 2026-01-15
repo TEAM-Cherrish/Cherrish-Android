@@ -47,7 +47,6 @@ fun ProcedureScheduleCard(
     onAddProcedureClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
 
     val listState = rememberLazyListState()
