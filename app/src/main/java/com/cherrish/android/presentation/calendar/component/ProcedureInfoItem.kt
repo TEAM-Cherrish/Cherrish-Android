@@ -33,12 +33,15 @@ fun ProcedureInfoItem(
     downTimeDuration: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    procedureType: ProcedureType = ProcedureType.ACTIVE
+    procedureType: ProcedureType = ProcedureType.ACTIVE,
+    isDowntimeMode: Boolean = false
 ) {
     val themeColors = CherrishTheme.colors
     val colors = remember(procedureType, themeColors) {
         getProcedureColors(procedureType, themeColors)
     }
+
+    val isClickable = isDowntimeMode || downTimeDuration != 0
 
     Row(
         modifier = modifier
@@ -51,7 +54,7 @@ fun ProcedureInfoItem(
                 shape = RoundedCornerShape(6.dp)
             )
             .then(
-                if (downTimeDuration != 0) {
+                if (isClickable) {
                     Modifier.noRippleClickable(onClick = onClick)
                 } else {
                     Modifier

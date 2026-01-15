@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,9 @@ fun ProcedureScheduleCard(
     onAddProcedureClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
+
     val listState = rememberLazyListState()
 
     val isFirstItemVisible = remember {
@@ -115,6 +119,7 @@ fun ProcedureScheduleCard(
                                 procedure.procedureId,
                                 procedure.downTimeDuration
                             ),
+                            isDowntimeMode = isDowntimeMode,
                             onClick = { onProcedureClick(procedure.procedureId) }
                         )
                     }

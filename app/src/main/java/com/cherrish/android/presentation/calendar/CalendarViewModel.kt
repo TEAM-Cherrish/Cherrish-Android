@@ -80,9 +80,7 @@ class CalendarViewModel @Inject constructor(
         _uiState.updateSuccess { currentState ->
             val currentMode = currentState.calendarDisplayMode
 
-            if (currentMode is CalendarDisplayMode.Downtime &&
-                currentMode.selectedProcedureId == procedureId
-            ) {
+            if (currentMode is CalendarDisplayMode.Downtime) {
                 currentState.copy(
                     calendarDisplayMode = CalendarDisplayMode.Normal(
                         procedureCountByDate = currentState.cachedProcedureCountByDate
