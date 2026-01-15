@@ -34,12 +34,6 @@ fun CherrishSelectionChip(
 
     val textColor = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
 
-    val textStyle = if (isSelected) {
-        CherrishTheme.typography.body1SB14
-    } else {
-        CherrishTheme.typography.body1M14
-    }
-
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(size = 10.dp))
@@ -54,7 +48,7 @@ fun CherrishSelectionChip(
     ) {
         Text(
             text = text,
-            style = textStyle,
+            style = CherrishTheme.typography.body1M14,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 30.dp, horizontal = 10.dp),
