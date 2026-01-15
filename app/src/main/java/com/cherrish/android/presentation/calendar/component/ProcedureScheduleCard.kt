@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.calendar.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -81,7 +83,7 @@ fun ProcedureScheduleCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(top = 64.dp, bottom = 24.dp),
+                    .padding(top = 50.dp, bottom = 24.dp),
                 onClick = onAddProcedureClick
             )
         } else {
@@ -234,8 +236,11 @@ private fun EmptyCardView(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /*TODO: 엠티뷰 디자인 확정 시 수정, 일단 패딩으로 사이즈 맞추기*/
-        Spacer(modifier = Modifier.height(72.dp))
+        Image(
+            painter = painterResource(id = R.drawable.img_calendar_empty_view),
+            contentDescription = null,
+            modifier = Modifier.padding(8.dp)
+        )
 
         Text(
             text = "오늘 예정된 일정이 없어요.",
