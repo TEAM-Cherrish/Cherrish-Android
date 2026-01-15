@@ -5,10 +5,10 @@ import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.presentation.home.model.PlanUiModel
 import com.cherrish.android.presentation.home.model.UpcomingPlanUiModel
 import com.cherrish.android.presentation.home.type.DowntimePhase
-import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import java.time.LocalDate
 
 @Immutable
 data class HomeUiState(
@@ -23,30 +23,14 @@ data class HomeUiState(
         val fake = HomeUiState(
             currentStep = 1,
             gauges = CherrishGaugeType.entries.toImmutableList(),
-            todayDate = "2025.1.18",
-            plans = persistentListOf(
-                PlanUiModel(
-                    procedureName = "슈링크",
-                    daysSince = 2,
-                    downtimePhase = DowntimePhase.SENSITIVE
-                ),
-                PlanUiModel(
-                    procedureName = "슈링크",
-                    daysSince = 2,
-                    downtimePhase = DowntimePhase.SENSITIVE
-                ),
-                PlanUiModel(
-                    procedureName = "슈링크",
-                    daysSince = 2,
-                    downtimePhase = DowntimePhase.SENSITIVE
-                ),
+            todayDate = "2026년 1월 1일 (목)",
+            plans = List(10) {
                 PlanUiModel(
                     procedureName = "슈링크",
                     daysSince = 2,
                     downtimePhase = DowntimePhase.SENSITIVE
                 )
-
-            ),
+            }.toImmutableList(),
             upcomingPlans = persistentListOf(
                 UpcomingPlanUiModel(
                     upcomingPlanDate = LocalDate.now().plusDays(3),
@@ -60,12 +44,6 @@ data class HomeUiState(
                     procedureCount = 2,
                     dDay = 3
                 ),
-                UpcomingPlanUiModel(
-                    upcomingPlanDate = LocalDate.now().plusDays(3),
-                    procedureName = "써마지",
-                    procedureCount = 2,
-                    dDay = 3
-                )
             ),
             selectedIndex = 0
         )
