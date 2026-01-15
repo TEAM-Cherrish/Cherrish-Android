@@ -21,9 +21,11 @@ import com.cherrish.android.presentation.calendar.procedure.component.CautionDes
 import com.cherrish.android.presentation.calendar.procedure.component.ProcedureCard
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 /* TODO: 삭제 예정 */
-private val mockProcedureCardItems = listOf(
+private val mockProcedureCardItems = persistentListOf(
     ProcedureCardItemUiModel(
         id = 1L,
         name = "레이저 토닝",
@@ -84,7 +86,7 @@ private val mockProcedureCardItems = listOf(
 
 @Composable
 fun DowntimeContent(
-    cardItems: List<ProcedureCardItemUiModel>,
+    cardItems: ImmutableList<ProcedureCardItemUiModel>,
     selectedCardId: Long?,
     onCardClick: (Long) -> Unit,
     modifier: Modifier = Modifier
