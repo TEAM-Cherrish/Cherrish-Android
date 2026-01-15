@@ -46,7 +46,7 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
 @Composable
 fun Modifier.dropShadow(
     shape: Shape,
-    color: Color = CherrishTheme.colors.shadow1,
+    color: Color = CherrishTheme.colors.shadow,
     blur: Dp = 1.dp,
     offsetY: Dp = 1.dp,
     offsetX: Dp = 1.dp,
