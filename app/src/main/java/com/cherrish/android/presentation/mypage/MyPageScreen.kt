@@ -1,10 +1,10 @@
 package com.cherrish.android.presentation.mypage
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -54,35 +54,37 @@ private fun MyPageScreen(
     uiState: MyPageUiState,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.padding(paddingValues)) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .background(color = CherrishTheme.colors.gray0),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
         MyPageHeader(
             profileIcon = R.drawable.ic_launcher_foreground,
             nicknameText = uiState.nicknameText,
-            skinCareDay = uiState.skinCareDay,
-            modifier = Modifier.fillMaxWidth()
+            skinCareDay = uiState.skinCareDay
         )
 
         HorizontalDivider(
             color = CherrishTheme.colors.gray100,
-            modifier = Modifier.height(height = 10.dp)
+            thickness = 10.dp
         )
 
-        Box(
-            modifier = Modifier
-                .weight(weight = 1f)
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                modifier = Modifier.padding(horizontal = 52.dp)
-            )
-        }
+        Spacer(Modifier.weight(weight = 1f))
+
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
+            contentDescription = null
+        )
+
+        Spacer(Modifier.weight(weight = 1f))
 
         HorizontalDivider(
             color = CherrishTheme.colors.gray100,
-            modifier = Modifier.height(height = 10.dp)
+            thickness = 10.dp
         )
     }
 }

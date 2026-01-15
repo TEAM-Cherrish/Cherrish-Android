@@ -4,6 +4,6 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class MyPageInfo(
-    val nicknameText: String,
+    val nickname: String,
     val skinCareDay: Int
 )
