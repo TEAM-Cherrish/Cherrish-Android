@@ -28,6 +28,6 @@ fun UpcomingPlanTimelineType.style(size: Int, colors: CherrishColors): UpcomingP
 
         UpcomingPlanTimelineType.THIRD -> UpcomingPlanTimelineStyle(
             circleColor = colors.red300,
-            barBrush = Brush.linearGradient(listOf(colors.red300, gray0))
+            barBrush = Brush.linearGradient(listOf(colors.red300, colors.gray0))
         )
     }
