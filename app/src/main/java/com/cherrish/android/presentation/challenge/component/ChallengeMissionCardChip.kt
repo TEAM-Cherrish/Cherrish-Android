@@ -48,11 +48,10 @@ fun ChallengeMissionCardChip(
             .background(
                 color = if (isSelected) CherrishTheme.colors.red100 else CherrishTheme.colors.gray0
             )
-            .padding(top = 14.dp, start = 14.dp, bottom = 14.dp, end = 44.dp)
+            .padding(vertical = 14.dp)
+            .padding(start = 14.dp, end = 44.dp)
             .noRippleClickable(onClick = onClick),
-
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp),
-
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -70,8 +69,7 @@ fun ChallengeMissionCardChip(
         Text(
             text = text,
             style = CherrishTheme.typography.body1R14,
-            color = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700,
-            modifier = Modifier.fillMaxWidth()
+            color = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
         )
     }
 }
