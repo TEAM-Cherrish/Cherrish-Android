@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -117,7 +118,6 @@ fun SelectedProcedureBottomSheet(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 9.dp, horizontal = 24.dp),
-                        textAlign = TextAlign.Start
                     )
 
                     HorizontalDivider(
@@ -125,14 +125,13 @@ fun SelectedProcedureBottomSheet(
                         color = CherrishTheme.colors.gray400
                     )
 
-                    Spacer(modifier = Modifier.height(14.dp))
-
                     LazyColumn(
                         state = listState,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f, fill = false)
                             .padding(horizontal = 24.dp),
+                        contentPadding = PaddingValues(top = 14.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {

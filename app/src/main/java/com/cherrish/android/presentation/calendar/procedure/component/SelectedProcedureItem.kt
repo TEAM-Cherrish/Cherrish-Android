@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,20 +31,19 @@ fun SelectedProcedureItem(
     onDeletedClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier
+    Row(
+        modifier = modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(6.dp))
             .background(color = CherrishTheme.colors.gray200)
-            .padding(horizontal = 11.dp)
+            .padding(horizontal = 11.dp, vertical = 5.dp),
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         SelectedProcedureTitle(
             procedureName = procedureName,
             minDowntimeDays = minDowntimeDays,
             maxDowntimeDays = maxDowntimeDays,
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(vertical = 7.dp)
         )
 
         Icon(
@@ -51,9 +51,8 @@ fun SelectedProcedureItem(
             contentDescription = null,
             tint = CherrishTheme.colors.gray600,
             modifier = Modifier
-                .align(Alignment.CenterEnd)
                 .noRippleClickable(onClick = { onDeletedClick(procedureId) })
-                .padding(vertical = 5.dp)
+
         )
     }
 }
@@ -66,9 +65,8 @@ private fun SelectedProcedureTitle(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+        verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
