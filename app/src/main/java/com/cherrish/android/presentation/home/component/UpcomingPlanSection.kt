@@ -47,9 +47,9 @@ import com.cherrish.android.presentation.home.model.UpcomingPlanUiModel
 import com.cherrish.android.presentation.home.type.UpcomingPlanTimelineType
 import com.cherrish.android.presentation.home.type.style
 import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDate
 import kotlin.math.abs
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun UpcomingPlanSection(
