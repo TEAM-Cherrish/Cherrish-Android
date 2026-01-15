@@ -100,7 +100,7 @@ fun FilteringContent(
         }
 
         item {
-            Spacer(modifier = Modifier.height(19.dp))
+            Spacer(modifier = Modifier.height(18.dp))
         }
 
         items(
