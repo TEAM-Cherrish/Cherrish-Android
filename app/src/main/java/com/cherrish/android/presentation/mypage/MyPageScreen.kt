@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.mypage
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,13 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,14 +57,16 @@ private fun MyPageScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(paddingValues)
+            .padding(top = 44.dp)
             .background(color = CherrishTheme.colors.gray0),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
         MyPageHeader(
-            profileIcon = R.drawable.ic_launcher_foreground,
+            profileIcon = R.drawable.img_mypage_profile,
             nicknameText = uiState.nicknameText,
-            skinCareDay = uiState.skinCareDay
+            skinCareDay = uiState.skinCareDay,
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
 
         HorizontalDivider(
@@ -75,9 +76,11 @@ private fun MyPageScreen(
 
         Spacer(Modifier.weight(weight = 1f))
 
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = null
+        Image(
+            painter = painterResource(id = R.drawable.img_mypage_preparing),
+            contentDescription = null,
+            modifier = Modifier.padding(horizontal = 26.dp)
+
         )
 
         Spacer(Modifier.weight(weight = 1f))
