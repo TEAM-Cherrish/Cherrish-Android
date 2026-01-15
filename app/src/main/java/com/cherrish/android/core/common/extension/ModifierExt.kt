@@ -20,6 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 inline fun Modifier.noRippleClickable(
@@ -45,7 +46,7 @@ fun Modifier.addFocusCleaner(focusManager: FocusManager): Modifier {
 @Composable
 fun Modifier.dropShadow(
     shape: Shape,
-    color: Color = Color.Black.copy(0.25f),
+    color: Color = CherrishTheme.colors.shadow1,
     blur: Dp = 1.dp,
     offsetY: Dp = 1.dp,
     offsetX: Dp = 1.dp,

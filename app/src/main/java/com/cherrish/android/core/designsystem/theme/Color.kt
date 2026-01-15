@@ -35,7 +35,7 @@ val green1 = Color(0xFFFBFFF3)
 val green2 = Color(0xFFBEDCB8)
 val green3 = Color(0xFF9AD342)
 
-val shadow1 = Color(0XFF9098A7)
+val shadow1 = Color(0xFF9098A7).copy(alpha = 0.12f)
 
 @Immutable
 data class CherrishColors(
