@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.overscroll
-import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -53,7 +51,6 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -201,7 +198,7 @@ private fun ChallengeSection(
         ) {
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
-                contentDescription = null,
+                contentDescription = null
             )
 
             Spacer(modifier = Modifier.height(10.dp)) // 10? 20?
@@ -418,7 +415,7 @@ private fun UpcomingPlanSection(
         Text(
             text = "다가오는 일정",
             style = CherrishTheme.typography.body1M14,
-            color = CherrishTheme.colors.gray700,
+            color = CherrishTheme.colors.gray700
         )
 
         HorizontalDivider(
@@ -677,7 +674,7 @@ private fun UpcomingNoPlan(
 
         CherrishButton(
             text = "관리 일정을 추가해보세요 !",
-            onClick = onAddPlanClick,
+            onClick = onAddPlanClick
         )
     }
 }
