@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
@@ -117,7 +116,7 @@ fun SelectedProcedureBottomSheet(
                         style = CherrishTheme.typography.body1SB14,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 9.dp, horizontal = 24.dp),
+                            .padding(vertical = 9.dp, horizontal = 24.dp)
                     )
 
                     HorizontalDivider(
