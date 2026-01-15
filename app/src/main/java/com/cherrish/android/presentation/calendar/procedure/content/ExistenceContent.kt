@@ -16,7 +16,8 @@ fun ExistenceContent(
     onItemClick: (Int) -> Unit
 ) {
     SelectionSection(
-        title = "시술 일정을 추가해볼게요.",
+        title = "시술 일정을 추가해볼게요.\n" +
+            "이미 생각해둔 시술이 있나요?",
         description = "시술을 선택하셨는지 확인할게요.",
         descriptionTextStyle = CherrishTheme.typography.body1R14,
         items = persistentListOf("선택한 시술이 있어요", "아직 선택 전이에요"),
