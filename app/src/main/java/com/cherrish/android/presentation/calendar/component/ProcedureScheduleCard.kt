@@ -52,15 +52,13 @@ fun ProcedureScheduleCard(
     val isFirstItemVisible = remember {
         derivedStateOf {
             val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
-            firstVisibleItem?.index == 0
+            firstVisibleItem?.index == 0 && !listState.canScrollBackward
         }
     }
 
     val isLastItemVisible = remember {
         derivedStateOf {
-            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            val lastItemIndex = procedureInfo.size - 1
-            lastVisibleItem?.index == lastItemIndex
+            !listState.canScrollForward
         }
     }
 
