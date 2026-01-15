@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,13 +42,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
+import com.cherrish.android.core.designsystem.component.gaugebar.CherrishGaugeBar
+import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.home.component.PlanBox
 import com.cherrish.android.presentation.home.component.PlanBoxState
@@ -55,10 +62,11 @@ import com.cherrish.android.presentation.home.type.DowntimePhase
 import com.cherrish.android.presentation.home.type.UpcomingPlanTimelineType
 import com.cherrish.android.presentation.home.type.style
 import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
-import java.time.LocalDate
-import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import java.time.LocalDate
+import kotlin.math.abs
 
 @Composable
 fun HomeRoute(
@@ -79,6 +87,99 @@ private fun HomeScreen(
 }
 
 @Composable
+private fun ChallengeSection(
+    currentStep: Int,
+    gauges: ImmutableList<CherrishGaugeType>,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_home_cherry),
+            contentDescription = null,
+            modifier = Modifier
+                .size(width = 91.dp, height = 118.dp)
+                .padding(end = 13.dp)
+                .align(Alignment.End)
+                .offset(y = 79.dp)
+                .zIndex(1f)
+        )
+
+        Image(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
+            contentDescription = null,
+            modifier = Modifier.padding(start = 7.dp)
+        )
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        Challenge(
+            currentStep = currentStep,
+            gauges = gauges
+        )
+    }
+}
+
+@Composable
+private fun Challenge(
+    currentStep: Int,
+    gauges: ImmutableList<CherrishGaugeType>,
+    modifier: Modifier = Modifier
+) {
+    val isStart = currentStep <= 0
+    val safeStep = currentStep.coerceIn(1, gauges.size)
+    val gauge = gauges[safeStep - 1]
+
+    val verticalPadding = if (isStart) 18.dp else 22.dp
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .dropShadow(shape = RoundedCornerShape(14.dp))
+            .clip(shape = RoundedCornerShape(14.dp))
+            .background(color = CherrishTheme.colors.gray0)
+            .padding(horizontal = 16.dp, vertical = verticalPadding),
+        verticalArrangement = Arrangement.spacedBy(18.dp)
+    ) {
+        if (isStart) {
+            Text(
+                text = "챌린지를 시작해봐요!",
+                style = CherrishTheme.typography.body1M14,
+                color = CherrishTheme.colors.gray700
+            )
+        } else {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = "피부 컨디션 챌린지",
+                    style = CherrishTheme.typography.title2M16,
+                    color = CherrishTheme.colors.gray700
+                )
+
+                Text(
+                    text = "${gauge.percent}%",
+                    style = CherrishTheme.typography.title2M16,
+                    color = CherrishTheme.colors.gray1000
+                )
+
+                Text(
+                    text = "달성",
+                    style = CherrishTheme.typography.title2M16,
+                    color = CherrishTheme.colors.gray700
+                )
+            }
+        }
+
+        CherrishGaugeBar(
+            currentStep = safeStep,
+            gauges = gauges,
+        )
+    }
+}
+
+@Composable
 private fun PlanBoxSection(
     todayDate: String,
     plans: ImmutableList<PlanUiModel>,
@@ -95,13 +196,14 @@ private fun PlanBoxSection(
             .fillMaxWidth()
             .dropShadow(
                 shape = RoundedCornerShape(14.dp),
-                color = CherrishTheme.colors.gray0,
+                color = CherrishTheme.colors.shadow,
                 blur = 10.dp,
                 offsetX = 0.dp,
                 offsetY = 0.dp,
                 spread = 0.dp
             )
             .clip(shape = RoundedCornerShape(14.dp))
+            .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 15.dp)
             .padding(top = 18.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -555,6 +657,17 @@ private fun Preview3() {
             onAddPlanClick = {},
             plans = sampleNoPlans,
             onUpcomingPlanClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview4() {
+    CherrishTheme {
+        ChallengeSection(
+            currentStep = 1,
+            gauges = CherrishGaugeType.entries.toImmutableList()
         )
     }
 }
