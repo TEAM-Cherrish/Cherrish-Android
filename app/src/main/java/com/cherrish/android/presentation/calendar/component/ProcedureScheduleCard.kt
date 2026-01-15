@@ -93,15 +93,14 @@ fun ProcedureScheduleCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 19.dp)
-                    .padding(top = 8.dp, bottom = 18.dp)
+                    .padding(top = 8.dp, bottom = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 ScheduleHeader(
                     eventCount = procedureInfo.size,
                     displayMode = displayMode,
                     onClick = onAddProcedureClick
                 )
-
-                Spacer(modifier = Modifier.height(6.dp))
 
                 LazyColumn(
                     state = listState,
