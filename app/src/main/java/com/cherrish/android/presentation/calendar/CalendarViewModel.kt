@@ -9,13 +9,11 @@ import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
+import com.cherrish.android.presentation.calendar.util.formatProcedureDay
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.YearMonth
 import javax.inject.Inject
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,16 +36,67 @@ class CalendarViewModel @Inject constructor(
     fun onDateClick(date: LocalDate) {
         _uiState.updateSuccess { currentState ->
             if (currentState.calendarDisplayMode is CalendarDisplayMode.Downtime) {
-                loadDailyCalendar(date)
-                currentState.copy(
-                    selectedDate = date,
-                    calendarDisplayMode = CalendarDisplayMode.Normal(currentState.cachedProcedureCountByDate)
-                )
+                viewModelScope.launch {
+                    calendarRepository.getCalendarDaily(
+                        date = date.toString()
+                    ).onSuccess { response ->
+                        _uiState.updateSuccess { state ->
+                            state.copy(
+                                calendarDisplayMode = CalendarDisplayMode.Normal(
+                                    procedureCountByDate = state.cachedProcedureCountByDate
+                                ),
+                                selectedDate = date,
+                                procedureInfoList = response.events.map { event ->
+                                    ProcedureInfoModel(
+                                        procedureId = event.userProcedureId,
+                                        procedureName = event.name,
+                                        procedureDay = formatProcedureDay(event.scheduledAt),
+                                        downTimeDuration = event.downtimeDays
+                                    )
+                                }.toImmutableList()
+                            )
+                        }
+                    }.onLogFailure { }
+                }
+                currentState
             } else {
                 loadDailyCalendar(date)
                 currentState.copy(selectedDate = date)
             }
         }
+    }
+
+    fun onMonthChanged(yearMonth: YearMonth) {
+        val newSelectedDate = if (yearMonth == YearMonth.now()) {
+            LocalDate.now()
+        } else {
+            yearMonth.atDay(1)
+        }
+
+        loadMonthlyCalendarWithDate(yearMonth, newSelectedDate)
+    }
+
+    fun onEventClick(procedureId: Long) {
+        _uiState.updateSuccess { currentState ->
+            val currentMode = currentState.calendarDisplayMode
+
+            if (currentMode is CalendarDisplayMode.Downtime &&
+                currentMode.selectedProcedureId == procedureId
+            ) {
+                currentState.copy(
+                    calendarDisplayMode = CalendarDisplayMode.Normal(
+                        procedureCountByDate = currentState.cachedProcedureCountByDate
+                    )
+                )
+            } else {
+                loadDowntimeDetail(procedureId)
+                currentState
+            }
+        }
+    }
+
+    private fun loadMonthlyCalendar(yearMonth: YearMonth) {
+        loadMonthlyCalendarWithDate(yearMonth, LocalDate.now())
     }
 
     private fun loadMonthlyCalendarWithDate(yearMonth: YearMonth, selectedDate: LocalDate) {
@@ -69,7 +118,9 @@ class CalendarViewModel @Inject constructor(
                         UiState.Success(
                             CalendarUiState(
                                 selectedYearMonth = yearMonth,
-                                calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
+                                calendarDisplayMode = CalendarDisplayMode.Normal(
+                                    procedureCountByDate
+                                ),
                                 selectedDate = selectedDate,
                                 procedureInfoList = dailyResponse.events.map { event ->
                                     ProcedureInfoModel(
@@ -86,28 +137,6 @@ class CalendarViewModel @Inject constructor(
                 }
             }.onLogFailure { }
         }
-    }
-
-    private fun loadMonthlyCalendar(yearMonth: YearMonth) {
-        loadMonthlyCalendarWithDate(yearMonth, LocalDate.now())
-    }
-
-    fun onMonthChanged(yearMonth: YearMonth) {
-        val newSelectedDate = if (yearMonth == YearMonth.now()) {
-            LocalDate.now()
-        } else {
-            yearMonth.atDay(1)
-        }
-
-        _uiState.updateSuccess { currentState ->
-            currentState.copy(
-                selectedYearMonth = yearMonth,
-                selectedDate = newSelectedDate,
-                procedureInfoList = persistentListOf()
-            )
-        }
-
-        loadMonthlyCalendar(yearMonth)
     }
 
     private fun loadDailyCalendar(date: LocalDate) {
@@ -128,23 +157,6 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
             }.onLogFailure { }
-        }
-    }
-
-    fun onEventClick(procedureId: Long) {
-        _uiState.updateSuccess { currentState ->
-            val currentMode = currentState.calendarDisplayMode
-
-            if (currentMode is CalendarDisplayMode.Downtime &&
-                currentMode.selectedProcedureId == procedureId
-            ) {
-                currentState.copy(
-                    calendarDisplayMode = CalendarDisplayMode.Normal(currentState.cachedProcedureCountByDate)
-                )
-            } else {
-                loadDowntimeDetail(procedureId)
-                currentState
-            }
         }
     }
 
@@ -173,22 +185,5 @@ class CalendarViewModel @Inject constructor(
                 }
             }.onLogFailure { }
         }
-    }
-
-    private fun formatProcedureDay(scheduledAt: String): String {
-        val dateTime = LocalDateTime.parse(scheduledAt)
-        val month = dateTime.month.value
-        val day = dateTime.dayOfMonth
-        val dayOfWeek = when (dateTime.dayOfWeek) {
-            DayOfWeek.MONDAY -> "월요일"
-            DayOfWeek.TUESDAY -> "화요일"
-            DayOfWeek.WEDNESDAY -> "수요일"
-            DayOfWeek.THURSDAY -> "목요일"
-            DayOfWeek.FRIDAY -> "금요일"
-            DayOfWeek.SATURDAY -> "토요일"
-            DayOfWeek.SUNDAY -> "일요일"
-            else -> ""
-        }
-        return "${month}월 ${day}일 $dayOfWeek"
     }
 }
