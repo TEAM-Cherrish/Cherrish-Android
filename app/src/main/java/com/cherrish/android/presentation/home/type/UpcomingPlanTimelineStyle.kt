@@ -10,16 +10,20 @@ data class UpcomingPlanTimelineStyle(
     val barBrush: Brush
 )
 
-fun UpcomingPlanTimelineType.style(colors: CherrishColors): UpcomingPlanTimelineStyle =
+fun UpcomingPlanTimelineType.style(size: Int, colors: CherrishColors): UpcomingPlanTimelineStyle =
     when (this) {
         UpcomingPlanTimelineType.FIRST -> UpcomingPlanTimelineStyle(
             circleColor = colors.red600,
-            barBrush = Brush.linearGradient(listOf(colors.red600, colors.red500))
+            barBrush = Brush.linearGradient(
+                listOf(colors.red600, if (size >= 2)colors.red500 else colors.gray0)
+            )
         )
 
         UpcomingPlanTimelineType.SECOND -> UpcomingPlanTimelineStyle(
             circleColor = colors.red500,
-            barBrush = Brush.linearGradient(listOf(colors.red500, colors.red300))
+            barBrush = Brush.linearGradient(
+                listOf(colors.red500, if (size >= 3) colors.red300 else colors.gray0)
+            )
         )
 
         UpcomingPlanTimelineType.THIRD -> UpcomingPlanTimelineStyle(
