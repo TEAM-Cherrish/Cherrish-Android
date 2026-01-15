@@ -1,9 +1,12 @@
 package com.cherrish.android.presentation.home
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,9 +24,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.overscroll
+import androidx.compose.foundation.rememberOverscrollEffect
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -49,6 +53,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -68,14 +73,12 @@ import com.cherrish.android.presentation.home.component.PlanBox
 import com.cherrish.android.presentation.home.component.PlanBoxState
 import com.cherrish.android.presentation.home.model.PlanUiModel
 import com.cherrish.android.presentation.home.model.UpcomingPlanUiModel
-import com.cherrish.android.presentation.home.type.DowntimePhase
 import com.cherrish.android.presentation.home.type.UpcomingPlanTimelineType
 import com.cherrish.android.presentation.home.type.style
 import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
+import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDate
 import kotlin.math.abs
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HomeRoute(
@@ -112,13 +115,12 @@ private fun HomeScreen(
     onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberScrollState()
+    val overscroll = rememberOverscrollEffect()
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(color = CherrishTheme.colors.graEnd)
-            .verticalScroll(scrollState)
     ) {
         Box(
             modifier = Modifier
@@ -134,32 +136,41 @@ private fun HomeScreen(
                 )
         )
 
-        Column(
+        LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(paddingValues)
-                .padding(top = 40.dp)
-                .padding(horizontal = 24.dp)
-                .padding(top = 10.dp),
+                .fillMaxSize()
+                .overscroll(overscroll)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(
+                start = 24.dp,
+                end = 24.dp,
+                top = 50.dp,
+                bottom = 20.dp
+            ),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            ChallengeSection(
-                imageRes = uiState.gauges[uiState.selectedIndex].image,
-                currentStep = uiState.currentStep,
-                gauges = uiState.gauges
-            )
+            item {
+                ChallengeSection(
+                    imageRes = uiState.gauges[uiState.selectedIndex].image,
+                    currentStep = uiState.currentStep,
+                    gauges = uiState.gauges
+                )
+            }
 
-            PlanBoxSection(
-                todayDate = uiState.todayDate,
-                plans = uiState.plans
-            )
+            item {
+                PlanBoxSection(
+                    todayDate = uiState.todayDate,
+                    plans = uiState.plans
+                )
+            }
 
-            UpcomingPlanSection(
-                onAddPlanClick = onAddPlanClick,
-                plans = uiState.upcomingPlans,
-                onUpcomingPlanClick = onUpcomingPlanClick
-            )
+            item {
+                UpcomingPlanSection(
+                    onAddPlanClick = onAddPlanClick,
+                    plans = uiState.upcomingPlans,
+                    onUpcomingPlanClick = onUpcomingPlanClick
+                )
+            }
         }
     }
 }
@@ -220,7 +231,13 @@ private fun Challenge(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .dropShadow(shape = RoundedCornerShape(14.dp))
+            .dropShadow(
+                shape = RoundedCornerShape(14.dp),
+                blur = 10.dp,
+                offsetX = 0.dp,
+                offsetY = 0.dp,
+                spread = 0.dp
+            )
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 16.dp, vertical = verticalPadding),
@@ -273,7 +290,6 @@ private fun PlanBoxSection(
 
     val previewCount = 3
     val hasMore = plans.size > previewCount
-    val visiblePlans = if (expanded) plans else plans.take(previewCount)
 
     Column(
         modifier = modifier
@@ -303,20 +319,13 @@ private fun PlanBoxSection(
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize(
-                    animationSpec = tween(
-                        durationMillis = 70,
-                        easing = FastOutLinearInEasing
-                    )
-                ),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             if (plans.isEmpty()) {
                 PlanBox(state = PlanBoxState.Empty)
             } else {
-                visiblePlans.forEachIndexed { index, plan ->
+                plans.take(previewCount).forEachIndexed { index, plan ->
                     key("${plan.procedureName}-${plan.daysSince}-${plan.downtimePhase}-$index") {
                         PlanBox(
                             state = PlanBoxState.Filled(
@@ -327,28 +336,57 @@ private fun PlanBoxSection(
                         )
                     }
                 }
+
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = expandVertically(
+                        expandFrom = Alignment.Top,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutLinearInEasing
+                        )
+                    ),
+                    exit = shrinkVertically(
+                        shrinkTowards = Alignment.Bottom,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutSlowInEasing
+                        )
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        plans.drop(previewCount).forEachIndexed { extraIndex, plan ->
+                            key(
+                                "${plan.procedureName}-${plan.daysSince}-${plan.downtimePhase}"
+                            ) {
+                                PlanBox(
+                                    state = PlanBoxState.Filled(
+                                        medicalProcedureName = plan.procedureName,
+                                        medicalProcedureNameDate = plan.daysSince,
+                                        downtimePhase = plan.downtimePhase
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        if (hasMore && !expanded) {
+        if (hasMore) {
             Text(
-                text = "더보기",
+                text = if (expanded) "접기" else "더보기",
                 style = CherrishTheme.typography.body2R13,
                 color = CherrishTheme.colors.gray500,
-                modifier = Modifier.noRippleClickable {
-                    expanded = true
-                }
-            )
-        }
-
-        if (expanded) {
-            Text(
-                text = "접기",
-                style = CherrishTheme.typography.body2R13,
-                color = CherrishTheme.colors.gray500,
-                modifier = Modifier.noRippleClickable {
-                    expanded = false
-                }
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable {
+                        expanded = !expanded
+                    }
             )
         }
     }
@@ -618,7 +656,7 @@ private fun UpcomingNoPlan(
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(70f))
+        Spacer(modifier = Modifier.height(70.dp))
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -637,7 +675,7 @@ private fun UpcomingNoPlan(
             )
         }
 
-        Spacer(modifier = Modifier.weight(60f))
+        Spacer(modifier = Modifier.height(40.dp))
 
         CherrishButton(
             text = "관리 일정을 추가해보세요 !",
@@ -649,108 +687,7 @@ private fun UpcomingNoPlan(
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
-    CherrishTheme {
-        val samplePlans = persistentListOf(
-            PlanUiModel(
-                procedureName = "슈링크",
-                daysSince = 2,
-                downtimePhase = DowntimePhase.SENSITIVE
-            ),
-            PlanUiModel(
-                procedureName = "인모드",
-                daysSince = 5,
-                downtimePhase = DowntimePhase.RECOVERY
-            ),
-            PlanUiModel(
-                procedureName = "리쥬란",
-                daysSince = 10,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            ),
-            PlanUiModel(
-                procedureName = "피코토닝",
-                daysSince = 14,
-                downtimePhase = DowntimePhase.CAUTION
-            )
-
-        )
-
-        PlanBoxSection(
-            todayDate = "2026.01.15",
-            plans = samplePlans
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview2() {
-    CherrishTheme {
-        val sampleUpcomingPlans = persistentListOf(
-            UpcomingPlanUiModel(
-                upcomingPlanDate = LocalDate.now().plusDays(3),
-                procedureName = "슈링크",
-                procedureCount = 2,
-                dDay = 3
-            )
-
-        )
-
-        UpcomingPlanSection(
-            onAddPlanClick = {},
-            plans = sampleUpcomingPlans,
-            onUpcomingPlanClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview3() {
-    CherrishTheme {
-        val sampleNoPlans = persistentListOf<UpcomingPlanUiModel>()
-
-        UpcomingPlanSection(
-            onAddPlanClick = {},
-            plans = sampleNoPlans,
-            onUpcomingPlanClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview4() {
+private fun Preview() {
     CherrishTheme {
         HomeScreen(
             uiState = HomeUiState.fake,

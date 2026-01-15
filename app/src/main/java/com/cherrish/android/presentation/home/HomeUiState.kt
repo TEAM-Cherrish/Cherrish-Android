@@ -5,10 +5,10 @@ import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.presentation.home.model.PlanUiModel
 import com.cherrish.android.presentation.home.model.UpcomingPlanUiModel
 import com.cherrish.android.presentation.home.type.DowntimePhase
+import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDate
 
 @Immutable
 data class HomeUiState(
@@ -43,7 +43,7 @@ data class HomeUiState(
                     procedureName = "써마지",
                     procedureCount = 2,
                     dDay = 3
-                ),
+                )
             ),
             selectedIndex = 0
         )
