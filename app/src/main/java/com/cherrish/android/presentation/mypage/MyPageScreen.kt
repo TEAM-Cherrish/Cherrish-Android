@@ -60,18 +60,13 @@ private fun MyPageScreen(
             .background(color = CherrishTheme.colors.gray0)
             .padding(paddingValues)
             .padding(top = 44.dp),
-
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
         MyPageHeader(
             profileIcon = R.drawable.img_mypage_profile,
             nicknameText = uiState.nicknameText,
             skinCareDay = uiState.skinCareDay,
-            modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 12.dp
-            )
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
 
         HorizontalDivider(
