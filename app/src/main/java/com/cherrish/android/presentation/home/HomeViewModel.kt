@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDate
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
@@ -16,9 +17,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     )
     val uiState: StateFlow<UiState<HomeUiState>> = _uiState.asStateFlow()
 
-    fun onUpcomingPlanClicked(index: Int) {
+    fun onUpcomingPlanClick(date: LocalDate) {
     }
 
-    fun onAddPlanClicked() {
+    fun onAddPlanClick() {
     }
 }

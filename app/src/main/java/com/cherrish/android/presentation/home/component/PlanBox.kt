@@ -82,7 +82,7 @@ private fun PlanContent(
 
         Text(
             text = "•",
-            style = CherrishTheme.typography.title2M16,
+            style = CherrishTheme.typography.body1M14,
             color = CherrishTheme.colors.gray900
         )
 
@@ -116,7 +116,7 @@ private fun DowntimePhaseChip(
     ) {
         Text(
             text = downtimePhase.phaseName,
-            style = CherrishTheme.typography.body2R13,
+            style = CherrishTheme.typography.body3R12,
             color = CherrishTheme.colors.gray700
         )
     }

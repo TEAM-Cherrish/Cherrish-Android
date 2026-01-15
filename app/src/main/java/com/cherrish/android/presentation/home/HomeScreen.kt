@@ -53,6 +53,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -79,6 +80,7 @@ import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
 import java.time.LocalDate
 import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HomeRoute(
@@ -98,8 +100,8 @@ fun HomeRoute(
             HomeScreen(
                 uiState = state.data,
                 paddingValues = paddingValues,
-                onUpcomingPlanClick = viewModel::onUpcomingPlanClicked,
-                onAddPlanClick = viewModel::onAddPlanClicked
+                onUpcomingPlanClick = viewModel::onUpcomingPlanClick,
+                onAddPlanClick = viewModel::onAddPlanClick
             )
         }
 
@@ -111,12 +113,10 @@ fun HomeRoute(
 private fun HomeScreen(
     uiState: HomeUiState,
     paddingValues: PaddingValues,
-    onUpcomingPlanClick: (Int) -> Unit,
+    onUpcomingPlanClick: (LocalDate) -> Unit,
     onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val overscroll = rememberOverscrollEffect()
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -128,7 +128,7 @@ private fun HomeScreen(
                 .height(270.dp)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(
+                        colors = persistentListOf(
                             graStart,
                             graEnd
                         )
@@ -139,15 +139,14 @@ private fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .overscroll(overscroll)
                 .padding(paddingValues),
             contentPadding = PaddingValues(
-                start = 24.dp,
-                end = 24.dp,
+                start = 17.dp,
+                end = 17.dp,
                 top = 50.dp,
                 bottom = 20.dp
             ),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
                 ChallengeSection(
@@ -203,10 +202,9 @@ private fun ChallengeSection(
             Image(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
                 contentDescription = null,
-                modifier = Modifier.padding(start = 7.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp)) // 10? 20?
 
             Challenge(
                 currentStep = currentStep,
@@ -226,7 +224,7 @@ private fun Challenge(
     val safeStep = currentStep.coerceIn(1, gauges.size)
     val gauge = gauges[safeStep - 1]
 
-    val verticalPadding = if (isStart) 18.dp else 22.dp
+    val verticalPadding = if (isStart) 22.dp else 18.dp
 
     Column(
         modifier = modifier
@@ -240,7 +238,7 @@ private fun Challenge(
             )
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
-            .padding(horizontal = 16.dp, vertical = verticalPadding),
+            .padding(horizontal = 18.dp, vertical = verticalPadding),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         if (isStart) {
@@ -291,6 +289,8 @@ private fun PlanBoxSection(
     val previewCount = 3
     val hasMore = plans.size > previewCount
 
+    val bottomPadding = if (plans.isEmpty()) 18.dp else 10.dp
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -305,7 +305,7 @@ private fun PlanBoxSection(
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 15.dp)
-            .padding(top = 18.dp, bottom = 16.dp),
+            .padding(top = 18.dp, bottom = bottomPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -320,7 +320,7 @@ private fun PlanBoxSection(
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (plans.isEmpty()) {
                 PlanBox(state = PlanBoxState.Empty)
@@ -396,7 +396,7 @@ private fun PlanBoxSection(
 private fun UpcomingPlanSection(
     onAddPlanClick: () -> Unit,
     plans: ImmutableList<UpcomingPlanUiModel>,
-    onUpcomingPlanClick: (Int) -> Unit,
+    onUpcomingPlanClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -412,14 +412,13 @@ private fun UpcomingPlanSection(
             )
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = CherrishTheme.colors.gray0)
-            .padding(top = 11.dp, bottom = 16.dp),
+            .padding(horizontal = 15.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "다가오는 일정",
             style = CherrishTheme.typography.body1M14,
             color = CherrishTheme.colors.gray700,
-            modifier = Modifier.padding(start = 20.dp)
         )
 
         HorizontalDivider(
@@ -447,7 +446,7 @@ private fun UpcomingPlanSection(
 @Composable
 private fun UpcomingPlan(
     plans: ImmutableList<UpcomingPlanUiModel>,
-    onUpcomingPlanClick: (Int) -> Unit,
+    onUpcomingPlanClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -474,7 +473,7 @@ private fun UpcomingPlanContent(
     planCount: Int,
     planModel: UpcomingPlanUiModel,
     index: Int,
-    onUpcomingPlanClick: (Int) -> Unit,
+    onUpcomingPlanClick: (LocalDate) -> Unit,
     type: UpcomingPlanTimelineType,
     modifier: Modifier = Modifier
 ) {
@@ -485,10 +484,9 @@ private fun UpcomingPlanContent(
         modifier = modifier
             .wrapContentHeight()
             .onSizeChanged { heightPx = it.height }
-            .noRippleClickable(onClick = { onUpcomingPlanClick(index) }),
+            .noRippleClickable(onClick = { onUpcomingPlanClick(planModel.upcomingPlanDate) }),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         verticalAlignment = Alignment.Top
-
     ) {
         UpcomingPlanTimeline(
             planCount = planCount,
@@ -653,10 +651,10 @@ private fun UpcomingNoPlan(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 9.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(50.dp))
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -680,7 +678,6 @@ private fun UpcomingNoPlan(
         CherrishButton(
             text = "관리 일정을 추가해보세요 !",
             onClick = onAddPlanClick,
-            modifier = Modifier.padding(bottom = 8.dp)
         )
     }
 }
