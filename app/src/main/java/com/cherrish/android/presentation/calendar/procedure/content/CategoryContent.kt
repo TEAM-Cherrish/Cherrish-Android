@@ -43,8 +43,7 @@ fun CategoryContent(
         items = items,
         selectedIndex = selectedIndex,
         onItemClick = { index ->
-            val clickedId = worries[index].id
-            onWorryClick(clickedId)
+            onWorryClick(worries[index].id)
         }
     )
 }
