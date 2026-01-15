@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -56,9 +57,10 @@ private fun MyPageScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = CherrishTheme.colors.gray0)
             .padding(paddingValues)
-            .padding(top = 44.dp)
-            .background(color = CherrishTheme.colors.gray0),
+            .padding(top = 44.dp),
+
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -66,7 +68,10 @@ private fun MyPageScreen(
             profileIcon = R.drawable.img_mypage_profile,
             nicknameText = uiState.nicknameText,
             skinCareDay = uiState.skinCareDay,
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 12.dp
+            )
         )
 
         HorizontalDivider(
@@ -74,16 +79,21 @@ private fun MyPageScreen(
             thickness = 10.dp
         )
 
-        Spacer(Modifier.weight(weight = 1f))
+        Spacer(Modifier.weight(weight = 110f))
 
         Image(
             painter = painterResource(id = R.drawable.img_mypage_preparing),
             contentDescription = null,
             modifier = Modifier.padding(horizontal = 26.dp)
-
         )
 
-        Spacer(Modifier.weight(weight = 1f))
+        Text(
+            text = "앗! 아직 준비중이에요.",
+            color = CherrishTheme.colors.gray600,
+            modifier = Modifier.padding(top = 20.dp)
+        )
+
+        Spacer(Modifier.weight(weight = 120f))
 
         HorizontalDivider(
             color = CherrishTheme.colors.gray100,
@@ -92,7 +102,7 @@ private fun MyPageScreen(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFFF6F8)
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun MyPageScreenPreview() {
     MyPageScreen(
