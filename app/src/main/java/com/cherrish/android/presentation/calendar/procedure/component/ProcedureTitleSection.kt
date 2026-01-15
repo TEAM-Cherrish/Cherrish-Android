@@ -15,12 +15,31 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun ProcedureTitleSection(
-    procedureName: String
+    worryName: String
 ) {
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = CherrishTheme.colors.gray500
-    )
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = CherrishTheme.colors.gray500
+        )
+
+        ProcedureTitleWithCaution(
+            worryName = worryName
+        )
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = CherrishTheme.colors.gray500
+        )
+    }
+}
+
+@Composable
+private fun ProcedureTitleWithCaution(
+    worryName: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,25 +48,21 @@ fun ProcedureTitleSection(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = "$procedureName 관련 시술 리스트",
+            text = "$worryName 관련 시술 리스트",
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )
 
         CautionDescription()
     }
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = CherrishTheme.colors.gray500
-    )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ProcedureTitleSectionPreview() {
     CherrishTheme {
         ProcedureTitleSection(
-            procedureName = "색소 ∙ 잡티"
+            worryName = "모공"
         )
     }
 }
