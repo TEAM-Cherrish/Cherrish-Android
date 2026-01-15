@@ -62,11 +62,11 @@ import com.cherrish.android.presentation.home.type.DowntimePhase
 import com.cherrish.android.presentation.home.type.UpcomingPlanTimelineType
 import com.cherrish.android.presentation.home.type.style
 import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
+import java.time.LocalDate
+import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDate
-import kotlin.math.abs
 
 @Composable
 fun HomeRoute(
@@ -174,7 +174,7 @@ private fun Challenge(
 
         CherrishGaugeBar(
             currentStep = safeStep,
-            gauges = gauges,
+            gauges = gauges
         )
     }
 }
