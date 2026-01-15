@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.tween
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -19,7 +21,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -37,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
@@ -47,13 +52,18 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
+import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.gaugebar.CherrishGaugeBar
 import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.core.designsystem.theme.graEnd
+import com.cherrish.android.core.designsystem.theme.graStart
 import com.cherrish.android.presentation.home.component.PlanBox
 import com.cherrish.android.presentation.home.component.PlanBoxState
 import com.cherrish.android.presentation.home.model.PlanUiModel
@@ -66,58 +76,132 @@ import java.time.LocalDate
 import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun HomeRoute(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    HomeScreen(paddingValues = paddingValues)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    when (val state = uiState) {
+        is UiState.Loading -> {
+        }
+
+        is UiState.Failure -> {
+        }
+
+        is UiState.Success -> {
+            HomeScreen(
+                uiState = state.data,
+                paddingValues = paddingValues,
+                onUpcomingPlanClick = viewModel::onUpcomingPlanClicked,
+                onAddPlanClick = viewModel::onAddPlanClicked
+            )
+        }
+
+        else -> {}
+    }
 }
 
 @Composable
 private fun HomeScreen(
+    uiState: HomeUiState,
     paddingValues: PaddingValues,
+    onUpcomingPlanClick: (Int) -> Unit,
+    onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Text(
-        text = "Home",
-        modifier = modifier.padding(paddingValues)
-    )
+    val scrollState = rememberScrollState()
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = CherrishTheme.colors.graEnd)
+            .verticalScroll(scrollState)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(270.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            graStart,
+                            graEnd
+                        )
+                    )
+                )
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(paddingValues)
+                .padding(top = 40.dp)
+                .padding(horizontal = 24.dp)
+                .padding(top = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            ChallengeSection(
+                imageRes = uiState.gauges[uiState.selectedIndex].image,
+                currentStep = uiState.currentStep,
+                gauges = uiState.gauges
+            )
+
+            PlanBoxSection(
+                todayDate = uiState.todayDate,
+                plans = uiState.plans
+            )
+
+            UpcomingPlanSection(
+                onAddPlanClick = onAddPlanClick,
+                plans = uiState.upcomingPlans,
+                onUpcomingPlanClick = onUpcomingPlanClick
+            )
+        }
+    }
 }
 
 @Composable
 private fun ChallengeSection(
+    @DrawableRes imageRes: Int,
     currentStep: Int,
     gauges: ImmutableList<CherrishGaugeType>,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth()
+    Box(
+        modifier = modifier
     ) {
         Image(
-            painter = painterResource(id = R.drawable.img_home_cherry),
+            painter = painterResource(id = imageRes),
             contentDescription = null,
             modifier = Modifier
-                .size(width = 91.dp, height = 118.dp)
+                .fillMaxWidth()
+                .size(122.dp)
                 .padding(end = 13.dp)
-                .align(Alignment.End)
-                .offset(y = 79.dp)
-                .zIndex(1f)
+                .offset(y = (-42).dp)
+                .zIndex(1f),
+            alignment = Alignment.TopEnd
         )
 
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
-            contentDescription = null,
-            modifier = Modifier.padding(start = 7.dp)
-        )
+        Column(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
+                contentDescription = null,
+                modifier = Modifier.padding(start = 7.dp)
+            )
 
-        Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        Challenge(
-            currentStep = currentStep,
-            gauges = gauges
-        )
+            Challenge(
+                currentStep = currentStep,
+                gauges = gauges
+            )
+        }
     }
 }
 
@@ -290,7 +374,7 @@ private fun UpcomingPlanSection(
             )
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = CherrishTheme.colors.gray0)
-            .padding(vertical = 16.dp),
+            .padding(top = 11.dp, bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
@@ -336,6 +420,7 @@ private fun UpcomingPlan(
         plans.forEachIndexed { index, plan ->
             key("${plan.upcomingPlanDate}-$index") {
                 UpcomingPlanContent(
+                    planCount = plans.size,
                     planModel = plan,
                     index = index,
                     onUpcomingPlanClick = onUpcomingPlanClick,
@@ -348,6 +433,7 @@ private fun UpcomingPlan(
 
 @Composable
 private fun UpcomingPlanContent(
+    planCount: Int,
     planModel: UpcomingPlanUiModel,
     index: Int,
     onUpcomingPlanClick: (Int) -> Unit,
@@ -367,6 +453,7 @@ private fun UpcomingPlanContent(
 
     ) {
         UpcomingPlanTimeline(
+            planCount = planCount,
             type = type,
             heightPx = heightPx,
             isFirst = index == 0,
@@ -385,13 +472,14 @@ private fun UpcomingPlanContent(
 
 @Composable
 private fun UpcomingPlanTimeline(
+    planCount: Int,
     type: UpcomingPlanTimelineType,
     heightPx: Int,
     isFirst: Boolean,
     dotTopPx: Float,
     modifier: Modifier = Modifier
 ) {
-    val timelineStyle = type.style(colors = CherrishTheme.colors)
+    val timelineStyle = type.style(size = planCount, colors = CherrishTheme.colors)
     val density = LocalDensity.current
 
     val totalHeightDp = with(density) { heightPx.toDp() }
@@ -447,6 +535,7 @@ private fun UpcomingPlanBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
+            modifier = Modifier.padding(top = 5.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             Text(
@@ -633,19 +722,8 @@ private fun Preview2() {
                 procedureName = "슈링크",
                 procedureCount = 2,
                 dDay = 3
-            ),
-            UpcomingPlanUiModel(
-                upcomingPlanDate = LocalDate.now().plusDays(10),
-                procedureName = "인모드",
-                procedureCount = 2,
-                dDay = 10
-            ),
-            UpcomingPlanUiModel(
-                upcomingPlanDate = LocalDate.now().plusDays(21),
-                procedureName = "리쥬란",
-                procedureCount = 1,
-                dDay = 21
             )
+
         )
 
         UpcomingPlanSection(
@@ -674,9 +752,11 @@ private fun Preview3() {
 @Composable
 private fun Preview4() {
     CherrishTheme {
-        ChallengeSection(
-            currentStep = 1,
-            gauges = CherrishGaugeType.entries.toImmutableList()
+        HomeScreen(
+            uiState = HomeUiState.fake,
+            paddingValues = PaddingValues(0.dp),
+            onUpcomingPlanClick = {},
+            onAddPlanClick = {}
         )
     }
 }
