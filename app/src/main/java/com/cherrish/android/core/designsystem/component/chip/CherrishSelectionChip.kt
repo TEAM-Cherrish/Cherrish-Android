@@ -23,6 +23,11 @@ fun CherrishSelectionChip(
     isSelected: Boolean = false
 ) {
     val textColor = if (isSelected) CherrishTheme.colors.gray800 else CherrishTheme.colors.gray700
+    val textStyle = if (isSelected) {
+        CherrishTheme.typography.body1SB14
+    } else {
+        CherrishTheme.typography.body1M14
+    }
 
     CherrishSelectionBaseChip(
         onClick = onClick,
@@ -32,7 +37,7 @@ fun CherrishSelectionChip(
     ) {
         Text(
             text = text,
-            style = CherrishTheme.typography.body1SB14,
+            style = textStyle,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 30.dp, horizontal = 10.dp),
