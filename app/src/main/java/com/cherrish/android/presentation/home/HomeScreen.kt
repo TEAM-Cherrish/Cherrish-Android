@@ -96,7 +96,7 @@ private fun ChallengeSection(
         modifier = modifier.fillMaxWidth()
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_home_cherry),
+            painter = painterResource(id = R.drawable.img_home_cherry),
             contentDescription = null,
             modifier = Modifier
                 .size(width = 91.dp, height = 118.dp)
@@ -531,13 +531,22 @@ private fun UpcomingNoPlan(
     ) {
         Spacer(modifier = Modifier.weight(70f))
 
-        // TODO: 추후 이미지 들어갈 예정
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_home_no_plan),
+                contentDescription = null,
+                modifier = Modifier.size(width = 98.dp, height = 80.dp)
+            )
 
-        Text(
-            text = "아직 진행 중인 관리가 없어요.",
-            style = CherrishTheme.typography.body1R14,
-            color = CherrishTheme.colors.gray600
-        )
+            Text(
+                text = "아직 진행 중인 관리가 없어요.",
+                style = CherrishTheme.typography.body1R14,
+                color = CherrishTheme.colors.gray600
+            )
+        }
 
         Spacer(modifier = Modifier.weight(60f))
 
