@@ -1,10 +1,5 @@
 package com.cherrish.android.presentation.calendar.procedure.content
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -53,11 +48,7 @@ fun RecoveryScheduleContent(
             onItemClick = onItemClick
         )
 
-        AnimatedVisibility(
-            visible = hasSelection,
-            enter = fadeIn() + expandVertically(),
-            exit = fadeOut() + shrinkVertically()
-        ) {
+        if (hasSelection) {
             Column(
                 modifier = Modifier.padding(top = 56.dp)
             ) {
@@ -178,32 +169,9 @@ private fun DateInputBasicSection(
 
 @Preview(showBackground = true)
 @Composable
-private fun NoScheduleRecoveryScheduleContentPreview() {
-    CherrishTheme {
-        var selectedIndex by remember { mutableIntStateOf(0) }
-        var year by remember { mutableStateOf("2026") }
-        var month by remember { mutableStateOf("01") }
-        var day by remember { mutableStateOf("01") }
-
-        RecoveryScheduleContent(
-            selectedIndex = selectedIndex,
-            onItemClick = { selectedIndex = it },
-            year = year,
-            month = month,
-            day = day,
-            onYearChange = { year = it },
-            onMonthChange = { month = it },
-            onDayChange = { day = it },
-            modifier = Modifier.padding(25.dp)
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
 private fun RecoveryScheduleContentPreview() {
     CherrishTheme {
-        var selectedIndex by remember { mutableIntStateOf(1) }
+        var selectedIndex by remember { mutableIntStateOf(-1) }
         var year by remember { mutableStateOf("") }
         var month by remember { mutableStateOf("") }
         var day by remember { mutableStateOf("") }
@@ -216,8 +184,7 @@ private fun RecoveryScheduleContentPreview() {
             day = day,
             onYearChange = { year = it },
             onMonthChange = { month = it },
-            onDayChange = { day = it },
-            modifier = Modifier.padding(25.dp)
+            onDayChange = { day = it }
         )
     }
 }
