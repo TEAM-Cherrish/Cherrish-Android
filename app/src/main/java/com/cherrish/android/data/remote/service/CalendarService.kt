@@ -20,7 +20,7 @@ interface CalendarService {
         @Query("date") date: String
     ): BaseResponse<CalendarDailyResponseDto>
 
-    @GET("/api/calendar/events/{id}/downtime")
+    @GET("api/calendar/events/{id}/downtime")
     suspend fun getCalendarEventDowntime(
         @Path("id") id: Long
     ): BaseResponse<CalendarDownTimeResponseDto>
