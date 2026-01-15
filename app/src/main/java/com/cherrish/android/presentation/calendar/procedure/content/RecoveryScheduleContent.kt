@@ -113,21 +113,21 @@ private fun ScheduleSettingSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            DateInputBasicRow(
+            DateInputBasicSection(
                 date = year,
                 suffix = "년",
                 placeholder = "YYYY",
                 onValueChange = onYearChange,
                 modifier = Modifier.weight(1f)
             )
-            DateInputBasicRow(
+            DateInputBasicSection(
                 date = month,
                 suffix = "월",
                 placeholder = "MM",
                 onValueChange = onMonthChange,
                 modifier = Modifier.weight(1f)
             )
-            DateInputBasicRow(
+            DateInputBasicSection(
                 date = day,
                 suffix = "일",
                 placeholder = "DD",
@@ -139,7 +139,7 @@ private fun ScheduleSettingSection(
 }
 
 @Composable
-private fun DateInputBasicRow(
+private fun DateInputBasicSection(
     date: String,
     suffix: String,
     placeholder: String,

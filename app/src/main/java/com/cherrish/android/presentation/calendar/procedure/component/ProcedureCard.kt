@@ -36,7 +36,7 @@ import com.cherrish.android.presentation.calendar.procedure.model.procedureCardT
 
 @Composable
 fun ProcedureCard(
-    name: String,
+    procedureName: String,
     category: String,
     minDowntimeDays: Int,
     maxDowntimeDays: Int,
@@ -64,7 +64,7 @@ fun ProcedureCard(
             .padding(horizontal = 14.dp, vertical = 12.dp)
     ) {
         ProcedureCardTitle(
-            title = name,
+            title = procedureName,
             description = category,
             isSelected = isSelected,
             tokens = tokens
@@ -156,7 +156,7 @@ private fun BasicProcedureCardPreview() {
         var isSelected by remember { mutableStateOf(false) }
 
         ProcedureCard(
-            name = "레이저 토닝",
+            procedureName = "레이저 토닝",
             category = "색소 개선 | 토닝",
             minDowntimeDays = 3,
             maxDowntimeDays = 5,
@@ -174,7 +174,7 @@ private fun SelectableProcedureCardPreview() {
         var isSelected by remember { mutableStateOf(false) }
 
         ProcedureCard(
-            name = "레이저 토닝",
+            procedureName = "레이저 토닝",
             category = "색소 개선 | 토닝",
             minDowntimeDays = 3,
             maxDowntimeDays = 5,

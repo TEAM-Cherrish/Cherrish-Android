@@ -15,7 +15,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun ProcedureTitleSection(
-    content: String
+    worryName: String
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -26,7 +26,7 @@ fun ProcedureTitleSection(
         )
 
         ProcedureTitleWithCaution(
-            content = content
+            worryName = worryName
         )
 
         HorizontalDivider(
@@ -38,7 +38,7 @@ fun ProcedureTitleSection(
 
 @Composable
 private fun ProcedureTitleWithCaution(
-    content: String
+    worryName: String
 ) {
     Column(
         modifier = Modifier
@@ -48,7 +48,7 @@ private fun ProcedureTitleWithCaution(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = "$content 관련 시술 리스트",
+            text = "$worryName 관련 시술 리스트",
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )
@@ -62,7 +62,7 @@ private fun ProcedureTitleWithCaution(
 private fun ProcedureTitleSectionPreview() {
     CherrishTheme {
         ProcedureTitleSection(
-            content = "모공"
+            worryName = "모공"
         )
     }
 }

@@ -109,7 +109,7 @@ fun DowntimeContent(
             key = { _, item -> item.id }
         ) { _, item ->
             ProcedureCard(
-                name = item.name,
+                procedureName = item.name,
                 category = item.category,
                 minDowntimeDays = item.minDowntimeDays,
                 maxDowntimeDays = item.maxDowntimeDays,
