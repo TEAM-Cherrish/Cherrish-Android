@@ -71,7 +71,7 @@ data class CherrishColors(
     val shadow: Color,
 
     val graStart: Color,
-    val graEnd: Color,
+    val graEnd: Color
 )
 
 val defaultCherrishColors = CherrishColors(
@@ -104,7 +104,7 @@ val defaultCherrishColors = CherrishColors(
     shadow = shadow,
 
     graStart = graStart,
-    graEnd = graEnd,
+    graEnd = graEnd
 )
 
 val LocalCherrishColorsProvider = staticCompositionLocalOf { defaultCherrishColors }
