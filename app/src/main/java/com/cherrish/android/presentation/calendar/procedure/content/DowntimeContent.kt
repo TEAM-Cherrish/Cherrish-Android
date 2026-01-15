@@ -98,7 +98,8 @@ fun DowntimeContent(
         item {
             Text(
                 text = "필요에 맞게 다운타임을 조정할 수 있어요.",
-                style = CherrishTheme.typography.title1SB18
+                style = CherrishTheme.typography.title1SB18,
+                color = CherrishTheme.colors.gray1000
             )
         }
 
