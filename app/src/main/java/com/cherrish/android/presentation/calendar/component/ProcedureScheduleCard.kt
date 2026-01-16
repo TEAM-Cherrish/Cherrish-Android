@@ -1,6 +1,7 @@
 package com.cherrish.android.presentation.calendar.component
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,7 +22,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,32 +54,31 @@ fun ProcedureScheduleCard(
     modifier: Modifier = Modifier
 ) {
     val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
-
     val listState = rememberLazyListState()
+    var isInitialRender by remember { mutableStateOf(true) }
 
-    val isFirstItemVisible = remember {
+    val showTopGradient by remember {
         derivedStateOf {
-            val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
-            firstVisibleItem?.index == 0 && !listState.canScrollBackward
+            listState.canScrollBackward.also { if (it) isInitialRender = false }
         }
     }
 
-    val isLastItemVisible = remember {
+    val showBottomGradient by remember {
         derivedStateOf {
-            !listState.canScrollForward
+            listState.canScrollForward.also { if (it) isInitialRender = false }
         }
     }
 
-    val topGradientAlpha by animateFloatAsState(
-        targetValue = if (isFirstItemVisible.value) 0f else 1f,
-        animationSpec = tween(durationMillis = 300),
-        label = "topGradientAlpha"
+    val topAlpha by animateFloatAsState(
+        targetValue = if (showTopGradient) 1f else 0f,
+        animationSpec = if (isInitialRender) snap() else tween(300),
+        label = "topAlpha"
     )
 
-    val bottomGradientAlpha by animateFloatAsState(
-        targetValue = if (isLastItemVisible.value) 0f else 1f,
-        animationSpec = tween(durationMillis = 300),
-        label = "bottomGradientAlpha"
+    val bottomAlpha by animateFloatAsState(
+        targetValue = if (showBottomGradient) 1f else 0f,
+        animationSpec = if (isInitialRender) snap() else tween(300),
+        label = "bottomAlpha"
     )
 
     Box(
@@ -139,7 +141,7 @@ fun ProcedureScheduleCard(
                 }
             }
 
-            if (topGradientAlpha > 0f) {
+            if (topAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -149,15 +151,9 @@ fun ProcedureScheduleCard(
                         .background(
                             Brush.verticalGradient(
                                 colors = persistentListOf(
-                                    CherrishTheme.colors.gray0.copy(
-                                        alpha = topGradientAlpha
-                                    ),
-                                    CherrishTheme.colors.gray0.copy(
-                                        alpha = 0.8f * topGradientAlpha
-                                    ),
-                                    CherrishTheme.colors.gray0.copy(
-                                        alpha = 0.5f * topGradientAlpha
-                                    ),
+                                    CherrishTheme.colors.gray0.copy(alpha = topAlpha),
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f * topAlpha),
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f * topAlpha),
                                     Color.Transparent
                                 )
                             )
@@ -165,7 +161,7 @@ fun ProcedureScheduleCard(
                 )
             }
 
-            if (bottomGradientAlpha > 0f) {
+            if (bottomAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -175,13 +171,9 @@ fun ProcedureScheduleCard(
                             Brush.verticalGradient(
                                 colors = persistentListOf(
                                     Color.Transparent,
-                                    CherrishTheme.colors.gray0.copy(
-                                        alpha = 0.5f * bottomGradientAlpha
-                                    ),
-                                    CherrishTheme.colors.gray0.copy(
-                                        alpha = 0.8f * bottomGradientAlpha
-                                    ),
-                                    CherrishTheme.colors.gray0.copy(alpha = bottomGradientAlpha)
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f * bottomAlpha),
+                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f * bottomAlpha),
+                                    CherrishTheme.colors.gray0.copy(alpha = bottomAlpha)
                                 )
                             )
                         )
