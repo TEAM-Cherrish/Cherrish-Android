@@ -106,14 +106,13 @@ fun ChallengeMissionProgressCherrygrowth(
             .background(
                 brush = Brush.linearGradient(
                     colors = colors, // red200 -> gray0
-                    start = Offset(0f, 0f),
-                    end = Offset(0f, 230f)
+                    start = Offset(x = 0f, y = 0f),
+                    end = Offset(x = 0f, y = 230f)
                 )
             )
             .padding(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         CherryGrowthSection(cherryType = cherryType)
 
         Image(

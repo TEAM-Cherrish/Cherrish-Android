@@ -79,7 +79,6 @@ private fun ChallengeChecklistItem(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Icon(
             imageVector = ImageVector.vectorResource(id = checklistIcon),
             contentDescription = null,

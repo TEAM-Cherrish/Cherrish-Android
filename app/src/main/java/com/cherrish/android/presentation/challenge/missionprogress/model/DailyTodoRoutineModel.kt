@@ -3,8 +3,8 @@ package com.cherrish.android.presentation.challenge.missionprogress.model
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class ChallengeInfoModel(
+data class DailyTodoRoutineModel(
     val id: Long,
-    val title: String,
-    val totalDays: Int
+    val name: String,
+    val isCompleted: Boolean
 )

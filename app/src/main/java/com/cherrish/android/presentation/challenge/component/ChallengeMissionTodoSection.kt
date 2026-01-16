@@ -23,13 +23,12 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.missionprogress.ChallengeMissionProgressUiState
 import com.cherrish.android.presentation.challenge.missionprogress.CherryType
-import com.cherrish.android.presentation.challenge.missionprogress.RoutineItemUiState
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
-import com.cherrish.android.presentation.challenge.missionprogress.model.TemporaryRoutineModel
+import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
 
 @Composable
 private fun ChallengeMissionTodoList(
-    routines: List<RoutineItemUiState>,
+    routines: List<DailyTodoRoutineModel>,
     onRoutineClick: (Int) -> Unit
 ) {
     LazyColumn(
@@ -37,12 +36,12 @@ private fun ChallengeMissionTodoList(
     ) {
         items(
             items = routines,
-            key = { it.routine.id }
+            key = { it.id }
         ) { item ->
             ChallengeChecklist(
                 isChecked = item.isCompleted,
-                onChecklistClick = { onRoutineClick(item.routine.id) },
-                checklistContent = item.routine.name
+                onChecklistClick = { onRoutineClick(item.id.toInt()) },
+                checklistContent = item.name
             )
         }
     }
@@ -87,7 +86,6 @@ fun ChallengeMissionTodoSection(
         CherrishButton(
             text = "오늘 미션 종료하기",
             onClick = onCompleteClick,
-            enabled = uiState.isCompleteButtonEnabled,
             modifier = Modifier.padding(top = 10.dp)
         )
     }
@@ -96,47 +94,50 @@ fun ChallengeMissionTodoSection(
 @Preview(showBackground = true)
 @Composable
 private fun ChallengeMissionTodoSectionPreview() {
-    var uiState by remember {
+    var routines by remember {
         mutableStateOf(
-            ChallengeMissionProgressUiState(
-                challenge = ChallengeInfoModel(
+            listOf(
+                DailyTodoRoutineModel(
                     id = 1,
-                    title = "웰니스 챌린지",
-                    totalDays = 7
+                    name = "선크림 바르기",
+                    isCompleted = false
                 ),
-                currentDay = 3,
-                cherryType = CherryType.PPODUK,
-                remainingCount = 2,
-                routines = listOf(
-                    RoutineItemUiState(
-                        routine = TemporaryRoutineModel(1, "dddd"),
-                        isCompleted = false
-                    ),
-                    RoutineItemUiState(
-                        routine = TemporaryRoutineModel(2, "미션 1 수행하기"),
-                        isCompleted = false
-                    ),
-                    RoutineItemUiState(
-                        routine = TemporaryRoutineModel(3, "미션 2 완료하기"),
-                        isCompleted = false
-                    )
+                DailyTodoRoutineModel(
+                    id = 2,
+                    name = "진정 토너 + 세럼",
+                    isCompleted = false
+                ),
+                DailyTodoRoutineModel(
+                    id = 3,
+                    name = "미끄덩 거리는 로션",
+                    isCompleted = false
                 )
             )
         )
     }
 
+    val uiState = ChallengeMissionProgressUiState(
+        challenge = ChallengeInfoModel(
+            id = 1,
+            title = "웰니스 챌린지",
+            totalDays = 7
+        ),
+        currentDay = 3,
+        cherryType = CherryType.PPODUK,
+        remainingCount = 2,
+        routines = routines
+    )
+
     ChallengeMissionTodoSection(
         uiState = uiState,
         onRoutineClick = { routineId ->
-            uiState = uiState.copy(
-                routines = uiState.routines.map {
-                    if (it.routine.id == routineId) {
-                        it.copy(isCompleted = !it.isCompleted)
-                    } else {
-                        it
-                    }
+            routines = routines.map {
+                if (it.id.toInt() == routineId) {
+                    it.copy(isCompleted = !it.isCompleted)
+                } else {
+                    it
                 }
-            )
+            }
         },
         onCompleteClick = {},
         modifier = Modifier.padding(20.dp)
