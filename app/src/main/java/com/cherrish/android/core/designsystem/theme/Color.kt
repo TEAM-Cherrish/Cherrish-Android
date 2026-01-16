@@ -223,7 +223,7 @@ private fun CherrishGrayColorsPreview() {
                 color = CherrishTheme.colors.shadow
             )
             Text(
-                text = "Shadow",
+                text = "BottomSheetScrimColor",
                 style = CherrishTheme.typography.body1M14,
                 color = CherrishTheme.colors.bottomSheetScrimColor
             )

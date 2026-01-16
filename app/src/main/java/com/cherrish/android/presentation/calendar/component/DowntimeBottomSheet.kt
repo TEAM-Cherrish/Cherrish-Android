@@ -65,6 +65,8 @@ fun DowntimeBottomSheet(
     state: LazyListState,
     onAddWithoutDowntimeClick: () -> Unit,
     onConfirmClick: () -> Unit,
+    minDowntimeDays: Int,
+    maxDowntimeDays: Int,
     modifier: Modifier = Modifier,
     scrimColor: Color = CherrishTheme.colors.bottomSheetScrimColor,
     showBottomSheet: Boolean = false
@@ -89,7 +91,7 @@ fun DowntimeBottomSheet(
             }
 
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 32.dp, bottom = 20.dp)
             ) {
@@ -108,6 +110,8 @@ fun DowntimeBottomSheet(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 DowntimeDayPickerSection(
+                    minDowntimeDays = minDowntimeDays,
+                    maxDowntimeDays = maxDowntimeDays,
                     state = state,
                     flingBehavior = flingBehavior
                 )
@@ -163,7 +167,12 @@ private fun DowntimeProgressBarSection(
 ) {
     val downtimeWeight by remember(downtimeDay, spareTimeDay) {
         derivedStateOf {
-            downtimeDay.toFloat() / (downtimeDay + spareTimeDay)
+            val totalDay = downtimeDay + spareTimeDay
+            if (totalDay == 0) {
+                0f
+            } else {
+                downtimeDay.toFloat() / (downtimeDay + spareTimeDay)
+            }
         }
     }
 
@@ -240,12 +249,12 @@ private fun DowntimeGuideBubble(
                     offsetX = 0.dp,
                     offsetY = 0.dp
                 )
-                .clip(shape = RoundedCornerShape(8.dp))
+                .clip(shape = RoundedCornerShape(10.dp))
                 .background(CherrishTheme.colors.gray0)
                 .border(
                     width = 1.dp,
                     color = CherrishTheme.colors.gray200,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(10.dp)
                 )
                 .padding(vertical = 12.dp),
             text = text,
@@ -259,7 +268,7 @@ private fun DowntimeGuideBubble(
             contentDescription = null,
             tint = CherrishTheme.colors.gray0,
             modifier = Modifier
-                .offset(y = -5.dp)
+                .offset(y = (-5).dp)
                 .padding(end = 45.dp)
                 .align(Alignment.End)
         )
@@ -271,23 +280,16 @@ private fun DowntimeProgressBar(
     downtimeWeight: Float,
     modifier: Modifier = Modifier
 ) {
-    BoxWithConstraints(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .height(8.dp)
+            .clip(shape = RoundedCornerShape(24.dp))
+            .background(color = CherrishTheme.colors.gray400)
     ) {
-        val totalWidth = maxWidth
-
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .clip(shape = RoundedCornerShape(24.dp))
-                .background(color = CherrishTheme.colors.gray400)
-        )
-
-        Box(
-            modifier = Modifier
-                .width(totalWidth * downtimeWeight)
+                .fillMaxWidth(fraction = downtimeWeight)
                 .fillMaxHeight()
                 .clip(shape = RoundedCornerShape(24.dp))
                 .background(color = CherrishTheme.colors.red600)
@@ -297,6 +299,8 @@ private fun DowntimeProgressBar(
 
 @Composable
 private fun DowntimeDayPickerSection(
+    minDowntimeDays: Int,
+    maxDowntimeDays: Int,
     state: LazyListState,
     flingBehavior: FlingBehavior,
     modifier: Modifier = Modifier
@@ -309,6 +313,8 @@ private fun DowntimeDayPickerSection(
         DowntimeDayPickerOutline()
 
         DowntimeDayPicker(
+            minDowntimeDays= minDowntimeDays,
+            maxDowntimeDays = maxDowntimeDays,
             state = state,
             flingBehavior = flingBehavior
         )
@@ -319,6 +325,8 @@ private fun DowntimeDayPickerSection(
 
 @Composable
 private fun DowntimeDayPicker(
+    minDowntimeDays: Int,
+    maxDowntimeDays: Int,
     state: LazyListState,
     flingBehavior: FlingBehavior,
     modifier: Modifier = Modifier
@@ -339,7 +347,7 @@ private fun DowntimeDayPicker(
             )
 
             Text(
-                text = "보통 3-5일",
+                text = "보통 ${minDowntimeDays}-${maxDowntimeDays}일",
                 color = CherrishTheme.colors.gray600,
                 style = CherrishTheme.typography.title2M16
             )
@@ -483,7 +491,9 @@ private fun Preview() {
             state = state,
             onAddWithoutDowntimeClick = {},
             onConfirmClick = {},
-            showBottomSheet = true
+            showBottomSheet = true,
+            minDowntimeDays = 3,
+            maxDowntimeDays = 5
         )
     }
 }

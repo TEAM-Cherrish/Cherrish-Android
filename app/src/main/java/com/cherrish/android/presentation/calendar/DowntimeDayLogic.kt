@@ -15,10 +15,10 @@ class DowntimeDayLogic(
         get() {
             val diffDays = ChronoUnit.DAYS.between(startDate, endDate).toInt()
 
-            if (diffDays <= downtimeDay) {
-                return DowntimeValidationType.VALID
+            return if (downtimeDay >= diffDays) {
+                DowntimeValidationType.EXCEEDS_GOAL
             } else {
-                return DowntimeValidationType.EXCEEDS_GOAL
+                DowntimeValidationType.VALID
             }
         }
 }
