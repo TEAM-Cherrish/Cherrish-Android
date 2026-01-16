@@ -46,7 +46,8 @@ fun CategoryContent(
         selectedIndex = selectedIndex,
         onItemClick = { index ->
             onWorryClick(worries[index].id)
-        }
+        },
+        modifier = modifier
     )
 }
 

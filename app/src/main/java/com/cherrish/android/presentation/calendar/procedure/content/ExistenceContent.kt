@@ -24,7 +24,8 @@ fun ExistenceContent(
         descriptionTextStyle = CherrishTheme.typography.body1R14,
         items = persistentListOf("선택한 시술이 있어요", "아직 선택 전이에요"),
         selectedIndex = selectedIndex,
-        onItemClick = onItemClick
+        onItemClick = onItemClick,
+        modifier = modifier
     )
 }
 
