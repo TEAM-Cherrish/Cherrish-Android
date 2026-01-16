@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.component.SelectionSection
@@ -29,7 +30,8 @@ private val mockWorries: ImmutableList<ProcedureWorryUiModel> = persistentListOf
 fun CategoryContent(
     worries: ImmutableList<ProcedureWorryUiModel>,
     selectedWorryId: Long?,
-    onWorryClick: (Long) -> Unit
+    onWorryClick: (Long) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val items = worries.map { it.content }.toImmutableList()
 
