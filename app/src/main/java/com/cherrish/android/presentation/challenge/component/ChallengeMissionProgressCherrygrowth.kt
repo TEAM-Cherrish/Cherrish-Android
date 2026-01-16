@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.gaugebar.CherrishGaugeBar
 import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -92,18 +93,27 @@ fun ChallengeMissionProgressCherrygrowth(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(10.dp))
+            .dropShadow(
+                shape = RoundedCornerShape(10.dp),
+                blur = 10.dp,
+                offsetX = 0.dp,
+                offsetY = 0.dp,
+                spread = 0.dp,
+                color = CherrishTheme.colors.shadow
+            )
+            .clip(RoundedCornerShape(10.dp))
+            .background(CherrishTheme.colors.gray0)
             .background(
                 brush = Brush.linearGradient(
-                    colors = colors,
-                    start = Offset(x = 0f, y = 0f),
-                    end = Offset(x = 0f, y = 230f)
+                    colors = colors, // red200 -> gray0
+                    start = Offset(0f, 0f),
+                    end = Offset(0f, 230f)
                 )
-
             )
-            .padding(vertical = 16.dp, horizontal = 12.dp),
+            .padding(18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         CherryGrowthSection(cherryType = cherryType)
 
         Image(
