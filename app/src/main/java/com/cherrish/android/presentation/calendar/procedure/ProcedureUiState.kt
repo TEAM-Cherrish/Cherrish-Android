@@ -74,8 +74,8 @@ data class ProcedureUiState(
 
     val totalSteps: Int = when (flow) {
         ProcedureFlow.Entry -> 0
-        ProcedureFlow.Treat -> 3  // RecoverySchedule -> FilteringWithSearch -> Downtime
-        ProcedureFlow.NoTreat -> 4  // Category -> RecoverySchedule -> Filtering -> Downtime
+        ProcedureFlow.Treat -> 3 // RecoverySchedule -> FilteringWithSearch -> Downtime
+        ProcedureFlow.NoTreat -> 4 // Category -> RecoverySchedule -> Filtering -> Downtime
     }
 
     val currentStepIndex: Int = when (flow) {
