@@ -23,12 +23,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.home.model.PlanUiModel
+import com.cherrish.android.presentation.home.type.DowntimePhase
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun PlanBoxSection(
@@ -141,5 +144,42 @@ fun PlanBoxSection(
                     }
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview() {
+    CherrishTheme {
+        PlanBoxSection(
+            todayDate = "2026년 1월 1일 (목)",
+            plans = persistentListOf(
+                PlanUiModel(
+                    procedureName = "슈링크",
+                    daysSince = 2,
+                    downtimePhase = DowntimePhase.SENSITIVE
+                ),
+                PlanUiModel(
+                    procedureName = "필러",
+                    daysSince = 5,
+                    downtimePhase = DowntimePhase.RECOVERY
+                ),
+                PlanUiModel(
+                    procedureName = "인모드",
+                    daysSince = 9,
+                    downtimePhase = DowntimePhase.CAUTION
+                ),
+                PlanUiModel(
+                    procedureName = "보톡스",
+                    daysSince = 12,
+                    downtimePhase = DowntimePhase.CAUTION
+                ),
+                PlanUiModel(
+                    procedureName = "레이저",
+                    daysSince = 16,
+                    downtimePhase = DowntimePhase.RECOVERY
+                )
+            )
+        )
     }
 }
