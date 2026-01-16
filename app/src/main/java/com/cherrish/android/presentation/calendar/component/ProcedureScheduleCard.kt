@@ -155,6 +155,7 @@ fun ProcedureScheduleCard(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(bottom = 18.dp)
                             .height(70.dp)
                             .background(
                                 Brush.verticalGradient(
