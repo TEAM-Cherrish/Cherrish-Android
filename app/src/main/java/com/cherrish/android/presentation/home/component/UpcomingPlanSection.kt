@@ -74,12 +74,12 @@ fun UpcomingPlanSection(
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 15.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "다가오는 일정",
             style = CherrishTheme.typography.body1M14,
-            color = CherrishTheme.colors.gray700
+            color = CherrishTheme.colors.gray700,
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 5.dp)
         )
 
         HorizontalDivider(
@@ -312,7 +312,8 @@ private fun UpcomingNoPlan(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 9.dp),
+            .padding(horizontal = 9.dp)
+            .padding(bottom = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(24.dp))
@@ -328,13 +329,14 @@ private fun UpcomingNoPlan(
         Text(
             text = "아직 진행 중인 관리가 없어요.",
             style = CherrishTheme.typography.body1R14,
-            color = CherrishTheme.colors.gray600
+            color = CherrishTheme.colors.gray600,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         CherrishButton(
-            text = "관리 일정을 추가해보세요 !",
+            text = "관리 일정을 추가하기",
             onClick = onAddPlanClick
         )
     }

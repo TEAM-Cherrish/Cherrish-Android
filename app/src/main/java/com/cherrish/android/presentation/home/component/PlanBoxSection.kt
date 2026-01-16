@@ -111,7 +111,7 @@ fun PlanBoxSection(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        plans.drop(previewCount).forEachIndexed { extraIndex, plan ->
+                        plans.drop(previewCount).forEachIndexed { _, plan ->
                             key(
                                 "${plan.procedureName}-${plan.daysSince}-${plan.downtimePhase}"
                             ) {
