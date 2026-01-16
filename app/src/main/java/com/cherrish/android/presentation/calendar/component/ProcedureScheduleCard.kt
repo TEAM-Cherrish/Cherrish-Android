@@ -1,5 +1,7 @@
 package com.cherrish.android.presentation.calendar.component
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,6 +66,18 @@ fun ProcedureScheduleCard(
             !listState.canScrollForward
         }
     }
+
+    val topGradientAlpha by animateFloatAsState(
+        targetValue = if (isFirstItemVisible.value) 0f else 1f,
+        animationSpec = tween(durationMillis = 300),
+        label = "topGradientAlpha"
+    )
+
+    val bottomGradientAlpha by animateFloatAsState(
+        targetValue = if (isLastItemVisible.value) 0f else 1f,
+        animationSpec = tween(durationMillis = 300),
+        label = "bottomGradientAlpha"
+    )
 
     Box(
         modifier = modifier
@@ -124,7 +139,7 @@ fun ProcedureScheduleCard(
                 }
             }
 
-            if (!isFirstItemVisible.value) {
+            if (topGradientAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -134,9 +149,15 @@ fun ProcedureScheduleCard(
                         .background(
                             Brush.verticalGradient(
                                 colors = persistentListOf(
-                                    CherrishTheme.colors.gray0,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                    CherrishTheme.colors.gray0.copy(
+                                        alpha = topGradientAlpha
+                                    ),
+                                    CherrishTheme.colors.gray0.copy(
+                                        alpha = 0.8f * topGradientAlpha
+                                    ),
+                                    CherrishTheme.colors.gray0.copy(
+                                        alpha = 0.5f * topGradientAlpha
+                                    ),
                                     Color.Transparent
                                 )
                             )
@@ -144,7 +165,7 @@ fun ProcedureScheduleCard(
                 )
             }
 
-            if (!isLastItemVisible.value) {
+            if (bottomGradientAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
@@ -154,9 +175,13 @@ fun ProcedureScheduleCard(
                             Brush.verticalGradient(
                                 colors = persistentListOf(
                                     Color.Transparent,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0
+                                    CherrishTheme.colors.gray0.copy(
+                                        alpha = 0.5f * bottomGradientAlpha
+                                    ),
+                                    CherrishTheme.colors.gray0.copy(
+                                        alpha = 0.8f * bottomGradientAlpha
+                                    ),
+                                    CherrishTheme.colors.gray0.copy(alpha = bottomGradientAlpha)
                                 )
                             )
                         )
