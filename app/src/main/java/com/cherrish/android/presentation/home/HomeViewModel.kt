@@ -20,8 +20,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     fun onUpcomingPlanClick(date: LocalDate) {
     }
 
-    fun onAddChallengeClick(){
-
+    fun onAddChallengeClick() {
     }
 
     fun onAddPlanClick() {
