@@ -46,6 +46,7 @@ fun HomeRoute(
                 uiState = state.data,
                 paddingValues = paddingValues,
                 onUpcomingPlanClick = viewModel::onUpcomingPlanClick,
+                onChallengeStartClick = viewModel::onAddChallengeClick,
                 onAddPlanClick = viewModel::onAddPlanClick
             )
         }
@@ -59,6 +60,7 @@ private fun HomeScreen(
     uiState: HomeUiState,
     paddingValues: PaddingValues,
     onUpcomingPlanClick: (LocalDate) -> Unit,
+    onChallengeStartClick: () -> Unit,
     onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -88,7 +90,7 @@ private fun HomeScreen(
             contentPadding = PaddingValues(
                 start = 17.dp,
                 end = 17.dp,
-                top = 50.dp,
+                top = 30.dp,
                 bottom = 20.dp
             ),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -97,7 +99,9 @@ private fun HomeScreen(
                 ChallengeSection(
                     imageRes = uiState.gauges[uiState.selectedIndex].image,
                     currentStep = uiState.currentStep,
-                    gauges = uiState.gauges
+                    gauges = uiState.gauges,
+                    onChallengeStartClick = onChallengeStartClick,
+                    challengeName = uiState.challengeName
                 )
             }
 
@@ -127,7 +131,8 @@ private fun Preview() {
             uiState = HomeUiState.fake,
             paddingValues = PaddingValues(0.dp),
             onUpcomingPlanClick = {},
-            onAddPlanClick = {}
+            onAddPlanClick = {},
+            onChallengeStartClick = {}
         )
     }
 }

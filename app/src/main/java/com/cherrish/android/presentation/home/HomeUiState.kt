@@ -14,6 +14,7 @@ import kotlinx.collections.immutable.toImmutableList
 data class HomeUiState(
     val currentStep: Int,
     val gauges: ImmutableList<CherrishGaugeType>,
+    val challengeName: String,
     val todayDate: String,
     val plans: ImmutableList<PlanUiModel>,
     val upcomingPlans: ImmutableList<UpcomingPlanUiModel>,
@@ -23,6 +24,7 @@ data class HomeUiState(
         val fake = HomeUiState(
             currentStep = 1,
             gauges = CherrishGaugeType.entries.toImmutableList(),
+            challengeName = "웰니스 • 마음챙김",
             todayDate = "2026년 1월 1일 (목)",
             plans = List(10) {
                 PlanUiModel(
