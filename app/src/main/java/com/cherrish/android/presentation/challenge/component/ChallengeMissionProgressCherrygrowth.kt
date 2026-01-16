@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -25,11 +27,10 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 private fun CherryGrowthSection(
-    modifier: Modifier = Modifier,
     cherryType: CherryType
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
@@ -47,7 +48,6 @@ private fun CherryGrowthSection(
 
 @Composable
 private fun CherryGrowthProgressSection(
-    modifier: Modifier = Modifier,
     challengeProgress: Int,
     cherryType: CherryType
 ) {
@@ -62,50 +62,46 @@ private fun CherryGrowthProgressSection(
             color = CherrishTheme.colors.gray900,
             style = CherrishTheme.typography.body1M14
         )
+
         Text(
             text = "$challengeProgress%",
             color = CherrishTheme.colors.gray900,
             style = CherrishTheme.typography.body1M14
         )
     }
+
     CherrishGaugeBar(
         currentStep = cherryType.step,
         gauges = CherrishGaugeType.entries.toImmutableList()
     )
 }
 
-
 @Composable
 fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,
     remainingRoutines: Int,
-    modifier: Modifier = Modifier,
     challengeProgress: Int,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp)),
+            .clip(shape = RoundedCornerShape(size = 10.dp)),
        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CherryGrowthSection(
-            cherryType = cherryType
-        )
+
+        CherryGrowthSection(cherryType = cherryType)
+
         Image(
             painter = painterResource(id = cherryType.imageRes),
             contentDescription = null,
         )
 
-
-
-
         Text(
             text = "체리가 크려면 ${remainingRoutines}개의 미션을 수행해야 해요!",
             color = CherrishTheme.colors.gray800,
             style = CherrishTheme.typography.body2R13,
-            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
-
         )
 
         HorizontalDivider(
@@ -120,58 +116,41 @@ fun ChallengeMissionProgressCherrygrowth(
             challengeProgress = challengeProgress,
             cherryType = cherryType
         )
-
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun ChallengeMissionProgressCherrygrowthLv0Preview() {
-    ChallengeMissionProgressCherrygrowth(
-        cherryType = CherryType.MONGRONG,
-        remainingRoutines = 0,
-        challengeProgress = 0,
-        modifier = Modifier.padding(18.dp)
-    )
-}
-@Preview(showBackground = true)
-@Composable
-private fun ChallengeMissionProgressCherrygrowthLv1Preview() {
-    ChallengeMissionProgressCherrygrowth(
-        cherryType = CherryType.PPODUK,
-        remainingRoutines = 0,
-        challengeProgress = 25,
-        modifier = Modifier.padding(18.dp)
-    )
-}
+private fun ChallengeMissionProgressCherrygrowthPreview() {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(space = 12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 18.dp)
+    ) {
+        items(
+            items = listOf(
+                Triple(first = CherryType.MONGRONG, second = 4, third = 0),
+                Triple(first = CherryType.PPODUK, second = 3, third = 25),
+                Triple(first = CherryType.CHOKCHOK, second = 2, third = 50),
+                Triple(first = CherryType.BBANGBBANG, second = 2, third = 75),
+                Triple(first = CherryType.KKUKKU, second = 0, third = 100),
+            )
+        ) { (type, remain, progress) ->
 
-@Preview(showBackground = true)
-@Composable
-private fun ChallengeMissionProgressCherrygrowthLv2Preview() {
-    ChallengeMissionProgressCherrygrowth(
-        cherryType = CherryType.CHOKCHOK,
-        remainingRoutines = 2,
-        challengeProgress = 50,
-        modifier = Modifier.padding(18.dp)
-    )
-}
-@Preview(showBackground = true)
-@Composable
-private fun ChallengeMissionProgressCherrygrowthLv3Preview() {
-    ChallengeMissionProgressCherrygrowth(
-        cherryType = CherryType.BBANGBBANG,
-        remainingRoutines = 2,
-        challengeProgress = 75,
-        modifier = Modifier.padding(18.dp)
-    )
-}
-@Preview(showBackground = true)
-@Composable
-private fun ChallengeMissionProgressCherrygrowthLv4Preview() {
-    ChallengeMissionProgressCherrygrowth(
-        cherryType = CherryType.KKUKKU,
-        remainingRoutines = 2,
-        challengeProgress = 100,
-        modifier = Modifier.padding(18.dp)
-    )
+            ChallengeMissionProgressCherrygrowth(
+                cherryType = type,
+                remainingRoutines = remain,
+                challengeProgress = progress,
+            )
+
+            HorizontalDivider(
+                color = CherrishTheme.colors.gray800,
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 12.dp)
+            )
+
+        }
+    }
+
 }
