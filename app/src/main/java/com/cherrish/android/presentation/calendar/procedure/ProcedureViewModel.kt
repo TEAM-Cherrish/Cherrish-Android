@@ -3,6 +3,8 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.persistentListOf

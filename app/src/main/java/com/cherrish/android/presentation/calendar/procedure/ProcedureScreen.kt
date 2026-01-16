@@ -27,6 +27,8 @@ import com.cherrish.android.presentation.calendar.procedure.content.ExistenceCon
 import com.cherrish.android.presentation.calendar.procedure.content.FilteringContent
 import com.cherrish.android.presentation.calendar.procedure.content.FilteringWithSearchContent
 import com.cherrish.android.presentation.calendar.procedure.content.RecoveryScheduleContent
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 
 @Composable
 fun ProcedureRoute(

@@ -5,18 +5,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import kotlin.Long
 import kotlin.String
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-
-@Immutable
-sealed interface ProcedureFlow {
-    data object Entry : ProcedureFlow
-    data object Treat : ProcedureFlow
-    data object NoTreat : ProcedureFlow
-}
 
 @Immutable
 data class ProcedureUiState(
@@ -211,13 +206,4 @@ data class ProcedureUiState(
             )
         )
     }
-}
-
-@Immutable
-sealed interface ProcedureStep {
-    data object Category : ProcedureStep
-    data object RecoverySchedule : ProcedureStep
-    data object Downtime : ProcedureStep
-    data object Filtering : ProcedureStep
-    data object FilteringWithSearch : ProcedureStep
 }
