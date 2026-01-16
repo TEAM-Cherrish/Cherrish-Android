@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -35,17 +34,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.type.CherrishButtonStyle
+import com.cherrish.android.core.util.rememberFixedDpFontSize
 import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -355,7 +353,6 @@ private fun DowntimeDayPicker(
 
         NumberPicker(
             list = (1..30).toPersistentList(),
-            fontSize = CherrishTheme.typography.headlineSB20.fontSize,
             state = state,
             flingBehavior = flingBehavior
         )
@@ -378,7 +375,6 @@ private fun DowntimeDayPickerOutline(
 @Composable
 fun NumberPicker(
     list: ImmutableList<Int>,
-    fontSize: TextUnit,
     state: LazyListState,
     flingBehavior: FlingBehavior,
     modifier: Modifier = Modifier
@@ -388,11 +384,16 @@ fun NumberPicker(
 
     val paddedList: ImmutableList<Int?> =
         remember(list) { listOf(null) + list + listOf(null) }.toPersistentList()
-    val dpBasedSp = with(LocalDensity.current) { fontSize.toDp().toSp() }
 
     val selectedIndex by remember(state) {
         derivedStateOf { state.firstVisibleItemIndex + 1 }
     }
+
+    val fixedFontSizeSelected =
+        rememberFixedDpFontSize(CherrishTheme.typography.title1M18.fontSize)
+
+    val fixedFontSizeUnselected =
+        rememberFixedDpFontSize(CherrishTheme.typography.title2M16.fontSize)
 
     Box(
         modifier = modifier
@@ -429,11 +430,11 @@ fun NumberPicker(
                         },
                         style = if (isSelected) {
                             CherrishTheme.typography.title1M18.copy(
-                                fontSize = dpBasedSp
+                                fontSize = fixedFontSizeSelected
                             )
                         } else {
                             CherrishTheme.typography.title2M16.copy(
-                                fontSize = dpBasedSp
+                                fontSize = fixedFontSizeUnselected
                             )
                         }
                     )
