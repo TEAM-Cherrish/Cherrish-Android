@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.calendar.component
+package com.cherrish.android.presentation.calendar.procedure.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
