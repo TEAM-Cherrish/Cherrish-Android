@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -34,7 +32,6 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.gaugebar.CherrishGaugeBar
 import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.core.designsystem.theme.shadow
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -45,7 +42,7 @@ fun ChallengeSection(
     modifier: Modifier = Modifier,
     @DrawableRes imageRes: Int = R.drawable.img_lv1,
     onChallengeStartClick: () -> Unit = {},
-    challengeName: String = "웰니스 • 마음챙김",
+    challengeName: String = "웰니스 • 마음챙김"
 ) {
     Box(
         modifier = modifier.fillMaxWidth()
@@ -83,7 +80,7 @@ fun ChallengeSection(
                 Challenge(
                     currentStep = currentStep,
                     gauges = gauges,
-                    challengeName = challengeName,
+                    challengeName = challengeName
                 )
             }
         }
@@ -112,7 +109,7 @@ private fun Challenge(
             )
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
-            .padding(18.dp),
+            .padding(18.dp)
     ) {
         Text(
             text = "진행중인 챌린지",
@@ -152,7 +149,7 @@ private fun ChallengeChip(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = "${percent}%",
+        text = "$percent%",
         style = CherrishTheme.typography.body3M12,
         color = CherrishTheme.colors.red700,
         modifier = modifier
