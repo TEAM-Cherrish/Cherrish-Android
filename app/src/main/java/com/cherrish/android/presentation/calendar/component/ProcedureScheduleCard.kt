@@ -111,9 +111,9 @@ fun ProcedureScheduleCard(
                                 procedureDay = procedure.procedureDay,
                                 downTimeDuration = procedure.downTimeDuration,
                                 procedureType = getProcedureType(
-                                    displayMode,
-                                    procedure.procedureId,
-                                    procedure.downTimeDuration
+                                    displayMode = displayMode,
+                                    procedureId = procedure.procedureId,
+                                    downTimeDuration = procedure.downTimeDuration
                                 ),
                                 isDowntimeMode = isDowntimeMode,
                                 onClick = { onProcedureClick(procedure.procedureId) }
