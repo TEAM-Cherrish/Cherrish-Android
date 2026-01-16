@@ -29,7 +29,7 @@ import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTo
 @Composable
 private fun ChallengeMissionTodoList(
     routines: List<DailyTodoRoutineModel>,
-    onRoutineClick: (Int) -> Unit
+    onRoutineClick: (Long) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -40,7 +40,7 @@ private fun ChallengeMissionTodoList(
         ) { item ->
             ChallengeChecklist(
                 isChecked = item.isCompleted,
-                onChecklistClick = { onRoutineClick(item.id.toInt()) },
+                onChecklistClick = { onRoutineClick(item.id) },
                 checklistContent = item.name
             )
         }
@@ -50,7 +50,7 @@ private fun ChallengeMissionTodoList(
 @Composable
 fun ChallengeMissionTodoSection(
     uiState: ChallengeMissionProgressUiState,
-    onRoutineClick: (Int) -> Unit,
+    onRoutineClick: (Long) -> Unit,
     onCompleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -132,7 +132,7 @@ private fun ChallengeMissionTodoSectionPreview() {
         uiState = uiState,
         onRoutineClick = { routineId ->
             routines = routines.map {
-                if (it.id.toInt() == routineId) {
+                if (it.id == routineId) {
                     it.copy(isCompleted = !it.isCompleted)
                 } else {
                     it
