@@ -1,7 +1,8 @@
 package com.cherrish.android.presentation.calendar.component
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,37 +52,6 @@ fun ProcedureScheduleCard(
     modifier: Modifier = Modifier
 ) {
     val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
-    val listState = rememberLazyListState()
-
-    val canActuallyScroll by remember {
-        derivedStateOf {
-            listState.canScrollForward || listState.canScrollBackward
-        }
-    }
-
-    val showTopGradient by remember {
-        derivedStateOf {
-            canActuallyScroll && listState.canScrollBackward
-        }
-    }
-
-    val showBottomGradient by remember {
-        derivedStateOf {
-            canActuallyScroll && listState.canScrollForward
-        }
-    }
-
-    val topAlpha by animateFloatAsState(
-        targetValue = if (showTopGradient) 1f else 0f,
-        animationSpec = tween(300),
-        label = "topAlpha"
-    )
-
-    val bottomAlpha by animateFloatAsState(
-        targetValue = if (showBottomGradient) 1f else 0f,
-        animationSpec = tween(300),
-        label = "bottomAlpha"
-    )
 
     Box(
         modifier = modifier
@@ -106,80 +76,98 @@ fun ProcedureScheduleCard(
                 onClick = onAddProcedureClick
             )
         } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 19.dp)
-                    .padding(top = 8.dp, bottom = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                ScheduleHeader(
-                    eventCount = procedureInfo.size,
-                    displayMode = displayMode,
-                    onClick = onAddProcedureClick
-                )
+            key(procedureInfo) {
+                val listState = rememberLazyListState()
+                val showTopGradient = remember {
+                    derivedStateOf { listState.canScrollBackward }
+                }
+                val showBottomGradient = remember {
+                    derivedStateOf { listState.canScrollForward }
+                }
 
-                LazyColumn(
-                    state = listState,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 19.dp)
+                        .padding(top = 8.dp, bottom = 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    items(
-                        items = procedureInfo,
-                        key = { it.procedureId }
-                    ) { procedure ->
-                        ProcedureInfoItem(
-                            procedureName = procedure.procedureName,
-                            procedureDay = procedure.procedureDay,
-                            downTimeDuration = procedure.downTimeDuration,
-                            procedureType = getProcedureType(
-                                displayMode,
-                                procedure.procedureId,
-                                procedure.downTimeDuration
-                            ),
-                            isDowntimeMode = isDowntimeMode,
-                            onClick = { onProcedureClick(procedure.procedureId) }
-                        )
+                    ScheduleHeader(
+                        eventCount = procedureInfo.size,
+                        displayMode = displayMode,
+                        onClick = onAddProcedureClick
+                    )
+
+                    LazyColumn(
+                        state = listState,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(
+                            items = procedureInfo,
+                            key = { it.procedureId }
+                        ) { procedure ->
+                            ProcedureInfoItem(
+                                procedureName = procedure.procedureName,
+                                procedureDay = procedure.procedureDay,
+                                downTimeDuration = procedure.downTimeDuration,
+                                procedureType = getProcedureType(
+                                    displayMode,
+                                    procedure.procedureId,
+                                    procedure.downTimeDuration
+                                ),
+                                isDowntimeMode = isDowntimeMode,
+                                onClick = { onProcedureClick(procedure.procedureId) }
+                            )
+                        }
                     }
                 }
-            }
 
-            if (canActuallyScroll && topAlpha > 0f) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth()
-                        .padding(top = 40.dp)
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = persistentListOf(
-                                    CherrishTheme.colors.gray0.copy(alpha = topAlpha),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f * topAlpha),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f * topAlpha),
-                                    Color.Transparent
+                AnimatedVisibility(
+                    visible = showTopGradient.value,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.align(Alignment.TopCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 40.dp)
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = persistentListOf(
+                                        CherrishTheme.colors.gray0,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        Color.Transparent
+                                    )
                                 )
                             )
-                        )
-                )
-            }
+                    )
+                }
 
-            if (canActuallyScroll && bottomAlpha > 0f) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = persistentListOf(
-                                    Color.Transparent,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f * bottomAlpha),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f * bottomAlpha),
-                                    CherrishTheme.colors.gray0.copy(alpha = bottomAlpha)
+                AnimatedVisibility(
+                    visible = showBottomGradient.value,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = persistentListOf(
+                                        Color.Transparent,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0
+                                    )
                                 )
                             )
-                        )
-                )
+                    )
+                }
             }
         }
     }
