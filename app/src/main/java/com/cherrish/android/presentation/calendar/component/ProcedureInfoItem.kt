@@ -30,15 +30,18 @@ import com.cherrish.android.presentation.calendar.util.getProcedureColors
 fun ProcedureInfoItem(
     procedureName: String,
     procedureDay: String,
-    downTimeDuration: Int?,
+    downTimeDuration: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    procedureType: ProcedureType = ProcedureType.ACTIVE
+    procedureType: ProcedureType = ProcedureType.ACTIVE,
+    isDowntimeMode: Boolean = false
 ) {
     val themeColors = CherrishTheme.colors
     val colors = remember(procedureType, themeColors) {
         getProcedureColors(procedureType, themeColors)
     }
+
+    val isClickable = isDowntimeMode || downTimeDuration != 0
 
     Row(
         modifier = modifier
@@ -50,7 +53,13 @@ fun ProcedureInfoItem(
                 color = colors.border,
                 shape = RoundedCornerShape(6.dp)
             )
-            .noRippleClickable(onClick = onClick)
+            .then(
+                if (isClickable) {
+                    Modifier.noRippleClickable(onClick = onClick)
+                } else {
+                    Modifier
+                }
+            )
             .padding(vertical = 11.dp, horizontal = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -112,7 +121,9 @@ private fun ProcedureScheduleInfo(
             color = colors.procedureDateText
         )
         Text(
-            text = downTimeDuration?.let { "다운타임 ${it}일" } ?: "-",
+            text = downTimeDuration.let {
+                if (it == 0) "-" else "다운타임 ${it}일"
+            },
             style = CherrishTheme.typography.body3R12,
             color = colors.procedureDateText
         )
@@ -147,7 +158,7 @@ private fun ProcedureInfoItemPreview() {
                 procedureType = ProcedureType.INACTIVE,
                 procedureName = "레이저토닝",
                 procedureDay = "1월 7일 수요일",
-                downTimeDuration = null,
+                downTimeDuration = 0,
                 onClick = {}
             )
         }
