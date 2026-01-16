@@ -42,7 +42,7 @@ fun ChallengeMissionCardChip(
             .border(
                 width = 1.dp,
                 color =
-                    if (isSelected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500,
+                if (isSelected) CherrishTheme.colors.red500 else CherrishTheme.colors.gray500,
                 shape = RoundedCornerShape(size = 10.dp)
             )
             .background(
