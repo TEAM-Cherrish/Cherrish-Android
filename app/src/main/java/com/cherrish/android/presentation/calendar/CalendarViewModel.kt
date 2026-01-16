@@ -29,6 +29,8 @@ class CalendarViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CalendarUiState>> = _uiState.asStateFlow()
 
+    private val monthlyCache = mutableMapOf<YearMonth, CalendarUiState>()
+
     init {
         loadMonthlyCalendar(yearMonth = YearMonth.now())
     }
@@ -40,21 +42,26 @@ class CalendarViewModel @Inject constructor(
                     calendarRepository.getCalendarDaily(
                         date = date.toString()
                     ).onSuccess { response ->
+                        val procedureList = response.events.map { event ->
+                            ProcedureInfoModel(
+                                procedureId = event.userProcedureId,
+                                procedureName = event.name,
+                                procedureDay = formatProcedureDay(event.scheduledAt),
+                                downTimeDuration = event.downtimeDays
+                            )
+                        }.toImmutableList()
+
                         _uiState.updateSuccess { state ->
-                            state.copy(
+                            val newState = state.copy(
                                 calendarDisplayMode = CalendarDisplayMode.Normal(
                                     procedureCountByDate = state.cachedProcedureCountByDate
                                 ),
                                 selectedDate = date,
-                                procedureInfoList = response.events.map { event ->
-                                    ProcedureInfoModel(
-                                        procedureId = event.userProcedureId,
-                                        procedureName = event.name,
-                                        procedureDay = formatProcedureDay(event.scheduledAt),
-                                        downTimeDuration = event.downtimeDays
-                                    )
-                                }.toImmutableList()
+                                procedureInfoList = procedureList
                             )
+
+                            monthlyCache[newState.selectedYearMonth] = newState
+                            newState
                         }
                     }.onLogFailure { }
                 }
@@ -98,6 +105,27 @@ class CalendarViewModel @Inject constructor(
     }
 
     private fun loadMonthlyCalendarWithDate(yearMonth: YearMonth, selectedDate: LocalDate) {
+        val cached = monthlyCache[yearMonth]
+        if (cached != null) {
+            _uiState.update {
+                UiState.Success(
+                    cached.copy(
+                        selectedDate = selectedDate,
+                        procedureInfoList = if (cached.selectedDate == selectedDate) {
+                            cached.procedureInfoList
+                        } else {
+                            cached.procedureInfoList
+                        }
+                    )
+                )
+            }
+
+            if (cached.selectedDate != selectedDate) {
+                loadDailyCalendar(selectedDate)
+            }
+            return
+        }
+
         viewModelScope.launch {
             val dailyDeferred = async {
                 calendarRepository.getCalendarDaily(date = selectedDate.toString())
@@ -112,26 +140,26 @@ class CalendarViewModel @Inject constructor(
                 }.mapValues { it.value.toInt() }
 
                 dailyDeferred.await().onSuccess { dailyResponse ->
-                    _uiState.update {
-                        UiState.Success(
-                            CalendarUiState(
-                                selectedYearMonth = yearMonth,
-                                calendarDisplayMode = CalendarDisplayMode.Normal(
-                                    procedureCountByDate
-                                ),
-                                selectedDate = selectedDate,
-                                procedureInfoList = dailyResponse.events.map { event ->
-                                    ProcedureInfoModel(
-                                        procedureId = event.userProcedureId,
-                                        procedureName = event.name,
-                                        procedureDay = formatProcedureDay(event.scheduledAt),
-                                        downTimeDuration = event.downtimeDays
-                                    )
-                                }.toImmutableList(),
-                                cachedProcedureCountByDate = procedureCountByDate
-                            )
+                    val procedureList = dailyResponse.events.map { event ->
+                        ProcedureInfoModel(
+                            procedureId = event.userProcedureId,
+                            procedureName = event.name,
+                            procedureDay = formatProcedureDay(event.scheduledAt),
+                            downTimeDuration = event.downtimeDays
                         )
-                    }
+                    }.toImmutableList()
+
+                    val newState = CalendarUiState(
+                        selectedYearMonth = yearMonth,
+                        calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
+                        selectedDate = selectedDate,
+                        procedureInfoList = procedureList,
+                        cachedProcedureCountByDate = procedureCountByDate
+                    )
+
+                    monthlyCache[yearMonth] = newState
+
+                    _uiState.update { UiState.Success(newState) }
                 }
             }.onLogFailure { }
         }
@@ -142,17 +170,19 @@ class CalendarViewModel @Inject constructor(
             calendarRepository.getCalendarDaily(
                 date = date.toString()
             ).onSuccess { response ->
-                _uiState.updateSuccess { currentState ->
-                    currentState.copy(
-                        procedureInfoList = response.events.map { event ->
-                            ProcedureInfoModel(
-                                procedureId = event.userProcedureId,
-                                procedureName = event.name,
-                                procedureDay = formatProcedureDay(event.scheduledAt),
-                                downTimeDuration = event.downtimeDays
-                            )
-                        }.toImmutableList()
+                val procedureList = response.events.map { event ->
+                    ProcedureInfoModel(
+                        procedureId = event.userProcedureId,
+                        procedureName = event.name,
+                        procedureDay = formatProcedureDay(event.scheduledAt),
+                        downTimeDuration = event.downtimeDays
                     )
+                }.toImmutableList()
+
+                _uiState.updateSuccess { currentState ->
+                    val newState = currentState.copy(procedureInfoList = procedureList)
+                    monthlyCache[currentState.selectedYearMonth] = newState
+                    newState
                 }
             }.onLogFailure { }
         }
