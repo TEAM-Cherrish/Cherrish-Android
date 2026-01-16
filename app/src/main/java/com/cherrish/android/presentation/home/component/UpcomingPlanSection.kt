@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
@@ -50,6 +51,7 @@ import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
 import java.time.LocalDate
 import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun UpcomingPlanSection(
@@ -69,7 +71,7 @@ fun UpcomingPlanSection(
                 offsetY = 0.dp,
                 spread = 0.dp
             )
-            .clip(shape = RoundedCornerShape(10.dp))
+            .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 15.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -313,30 +315,70 @@ private fun UpcomingNoPlan(
             .padding(horizontal = 9.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_home_no_plan),
-                contentDescription = null,
-                modifier = Modifier.size(width = 98.dp, height = 80.dp)
-            )
+        Image(
+            painter = painterResource(id = R.drawable.img_home_no_plan),
+            contentDescription = null,
+            modifier = Modifier.size(width = 98.dp, height = 80.dp)
+        )
 
-            Text(
-                text = "아직 진행 중인 관리가 없어요.",
-                style = CherrishTheme.typography.body1R14,
-                color = CherrishTheme.colors.gray600
-            )
-        }
+        Spacer(modifier = Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Text(
+            text = "아직 진행 중인 관리가 없어요.",
+            style = CherrishTheme.typography.body1R14,
+            color = CherrishTheme.colors.gray600
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         CherrishButton(
             text = "관리 일정을 추가해보세요 !",
             onClick = onAddPlanClick
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview_UpcomingPlanSection_Empty() {
+    CherrishTheme {
+        UpcomingPlanSection(
+            onAddPlanClick = {},
+            plans = persistentListOf(),
+            onUpcomingPlanClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun Preview_UpcomingPlanSection_Filled() {
+    CherrishTheme {
+        UpcomingPlanSection(
+            onAddPlanClick = {},
+            plans = persistentListOf(
+                UpcomingPlanUiModel(
+                    upcomingPlanDate = LocalDate.of(2026, 1, 20),
+                    procedureName = "슈링크",
+                    procedureCount = 1,
+                    dDay = 3
+                ),
+                UpcomingPlanUiModel(
+                    upcomingPlanDate = LocalDate.of(2026, 1, 25),
+                    procedureName = "보톡스",
+                    procedureCount = 0,
+                    dDay = 8
+                ),
+                UpcomingPlanUiModel(
+                    upcomingPlanDate = LocalDate.of(2026, 2, 1),
+                    procedureName = "필러",
+                    procedureCount = 2,
+                    dDay = 15
+                )
+            ),
+            onUpcomingPlanClick = {}
         )
     }
 }
