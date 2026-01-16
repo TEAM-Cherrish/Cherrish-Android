@@ -3,20 +3,18 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
+import kotlin.Long
+import kotlin.String
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Immutable
 sealed interface ProcedureFlow {
-    /** 첫 화면(프로그레스바/헤더 없음) */
     data object Entry : ProcedureFlow
-
-    /** "선택한 시술이 있어요" 선택 시: RecoverySchedule -> FilteringWithSearch -> Downtime */
     data object Treat : ProcedureFlow
-
-    /** "아직 선택 전이에요" 선택 시: Category -> RecoverySchedule -> Filtering -> Downtime */
     data object NoTreat : ProcedureFlow
 }
 
@@ -42,10 +40,7 @@ data class ProcedureUiState(
 
     val selectedWorryName: String = ""
 ) {
-    /** Entry 화면에서는 프로그레스 바를 숨김 */
     val showStepProgressBar: Boolean = flow != ProcedureFlow.Entry
-
-    /** 상단 탑 앱 바 타이틀 */
     val title: String = when (flow) {
         ProcedureFlow.Entry -> "시술 여부 선택"
 
@@ -66,16 +61,17 @@ data class ProcedureUiState(
     }
 
     val contentTopPadding: Dp = when {
-        !showStepProgressBar -> 84.dp
+        flow == ProcedureFlow.Entry -> 84.dp
         step == ProcedureStep.Filtering -> 20.dp
         step == ProcedureStep.FilteringWithSearch -> 24.dp
+        step == ProcedureStep.Downtime -> 20.dp
         else -> 60.dp
     }
 
     val totalSteps: Int = when (flow) {
         ProcedureFlow.Entry -> 0
-        ProcedureFlow.Treat -> 3 // RecoverySchedule -> FilteringWithSearch -> Downtime
-        ProcedureFlow.NoTreat -> 4 // Category -> RecoverySchedule -> Filtering -> Downtime
+        ProcedureFlow.Treat -> 3
+        ProcedureFlow.NoTreat -> 4
     }
 
     val currentStepIndex: Int = when (flow) {
@@ -106,6 +102,7 @@ data class ProcedureUiState(
                 val hasDate = year.isNotBlank() && month.isNotBlank() && day.isNotBlank()
                 hasChoice && hasDate
             }
+
             ProcedureStep.FilteringWithSearch -> selectedProcedureCardId != null
             ProcedureStep.Downtime -> selectedDowntime != null
             else -> false
@@ -118,6 +115,7 @@ data class ProcedureUiState(
                 val hasDate = year.isNotBlank() && month.isNotBlank() && day.isNotBlank()
                 hasChoice && hasDate
             }
+
             ProcedureStep.Filtering -> selectedProcedureCardId != null
             ProcedureStep.Downtime -> selectedDowntime != null
             else -> false
@@ -133,6 +131,83 @@ data class ProcedureUiState(
                 ProcedureWorryUiModel(id = 4L, content = "탄력 ∙ 주름"),
                 ProcedureWorryUiModel(id = 5L, content = "모공"),
                 ProcedureWorryUiModel(id = 6L, content = "트러블")
+            )
+        )
+
+        val FakeProcedureCardItems = ProcedureUiState(
+            procedureItems = persistentListOf(
+                ProcedureCardItemUiModel(
+                    id = 1L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 2L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 1,
+                    maxDowntimeDays = 3,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 3L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 5,
+                    maxDowntimeDays = 10,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 4L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 5L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 6L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 7L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 8L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                ),
+                ProcedureCardItemUiModel(
+                    id = 9L,
+                    name = "레이저 토닝",
+                    category = "색소 개선 | 톤업",
+                    minDowntimeDays = 3,
+                    maxDowntimeDays = 5,
+                    displayMode = ProcedureCardDisplayMode.Basic
+                )
             )
         )
     }

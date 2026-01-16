@@ -14,15 +14,15 @@ import kotlinx.coroutines.flow.asStateFlow
 class ProcedureViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
-        UiState.Success(ProcedureUiState.FakeNormal)
+        UiState.Success(
+            ProcedureUiState.FakeNormal.copy(
+                procedureItems = ProcedureUiState.FakeProcedureCardItems.procedureItems
+            )
+        )
     )
+
     val uiState: StateFlow<UiState<ProcedureUiState>> = _uiState.asStateFlow()
 
-    /**
-     * Entry(시술 여부 선택)에서 칩을 누르면 즉시 flow/step이 결정되어 다음 화면으로 진입합니다.
-     * - 0: 아직 선택 전이에요 -> NoTreat (Category부터 시작)
-     * - 1: 선택한 시술이 있어요 -> Treat (RecoverySchedule부터 시작)
-     */
     fun onExistenceClick(index: Int) {
         _uiState.updateSuccess { current ->
             current.copy(
@@ -81,9 +81,6 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
             if (current.flow == ProcedureFlow.Entry) {
                 val selected = current.existenceSelectedIndex ?: return@updateSuccess current
-
-                // 0: 선택 전 -> NoTreat (Category부터)
-                // 1: 선택 있음 -> Treat (RecoverySchedule부터)
                 val nextFlow = if (selected == 1) ProcedureFlow.NoTreat else ProcedureFlow.Treat
                 val nextStep = if (nextFlow == ProcedureFlow.NoTreat) {
                     ProcedureStep.Category
@@ -121,7 +118,6 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
     }
 }
 
-/** Entry로 돌아갈 때 상태 초기화 */
 private fun ProcedureUiState.toEntryState(): ProcedureUiState {
     return copy(
         flow = ProcedureFlow.Entry,
@@ -136,10 +132,8 @@ private fun ProcedureUiState.toEntryState(): ProcedureUiState {
     )
 }
 
-/** 다음 스텝 계산 */
 private fun ProcedureUiState.nextStep(): ProcedureStep {
     return when (flow) {
-        // NoTreat: Category -> RecoverySchedule -> Filtering -> Downtime
         ProcedureFlow.NoTreat -> when (step) {
             ProcedureStep.Category -> ProcedureStep.RecoverySchedule
             ProcedureStep.RecoverySchedule -> ProcedureStep.Filtering
@@ -148,7 +142,6 @@ private fun ProcedureUiState.nextStep(): ProcedureStep {
             else -> step
         }
 
-        // Treat: RecoverySchedule -> FilteringWithSearch -> Downtime
         ProcedureFlow.Treat -> when (step) {
             ProcedureStep.RecoverySchedule -> ProcedureStep.FilteringWithSearch
             ProcedureStep.FilteringWithSearch -> ProcedureStep.Downtime
@@ -160,16 +153,13 @@ private fun ProcedureUiState.nextStep(): ProcedureStep {
     }
 }
 
-/** 뒤로가기 결과 타입 */
 private sealed interface PrevResult {
     data object ToEntry : PrevResult
     data class ToStep(val step: ProcedureStep) : PrevResult
 }
 
-/** 이전 스텝 계산 */
 private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
     return when (flow) {
-        // NoTreat: Category -> RecoverySchedule -> Filtering -> Downtime
         ProcedureFlow.NoTreat -> when (step) {
             ProcedureStep.Category -> PrevResult.ToEntry
             ProcedureStep.RecoverySchedule -> PrevResult.ToStep(ProcedureStep.Category)
@@ -178,7 +168,6 @@ private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
             else -> PrevResult.ToEntry
         }
 
-        // Treat: RecoverySchedule -> FilteringWithSearch -> Downtime
         ProcedureFlow.Treat -> when (step) {
             ProcedureStep.RecoverySchedule -> PrevResult.ToEntry
             ProcedureStep.FilteringWithSearch -> PrevResult.ToStep(ProcedureStep.RecoverySchedule)
