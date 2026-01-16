@@ -39,7 +39,7 @@ fun CalendarRoute(
             CalendarScreen(
                 uiState = state.data,
                 paddingValues = paddingValues,
-                onMonthChange = viewModel::onMonthChanged,
+                onMonthChange = viewModel::onMonthChange,
                 onDateClick = viewModel::onDateClick,
                 onEventClick = viewModel::onEventClick,
                 onAddButtonClick = { /*TODO: 시술 선택 플로우로 이동*/ }

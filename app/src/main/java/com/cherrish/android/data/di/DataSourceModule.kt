@@ -1,7 +1,7 @@
 package com.cherrish.android.data.di
 
-import com.cherrish.android.data.remote.datasource.DummyDataSource
-import com.cherrish.android.data.remote.datasourceimpl.DummyDataSourceImpl
+import com.cherrish.android.data.remote.datasource.CalendarDataSource
+import com.cherrish.android.data.remote.datasourceimpl.CalendarDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 abstract class DataSourceModule {
     @Binds
     @Singleton
-    abstract fun bindDummyDataSource(
-        dummyDataSourceImpl: DummyDataSourceImpl
-    ): DummyDataSource
+    abstract fun bindCalendarDataSource(
+        calendarDataSourceImpl: CalendarDataSourceImpl
+    ): CalendarDataSource
 }
