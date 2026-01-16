@@ -79,11 +79,10 @@ private fun ChallengeRoutineOnboarding_RoutinePreview() {
             onItemClick = { clickedIndex ->
                 routineItems = routineItems
                     .mapIndexed {
-                                index, item ->
-                        if(index == clickedIndex){
+                            index, item ->
+                        if (index == clickedIndex) {
                             item.copy(isSelected = !item.isSelected)
-                        }
-                        else{
+                        } else {
                             item.copy(isSelected = false)
                         }
                     }
