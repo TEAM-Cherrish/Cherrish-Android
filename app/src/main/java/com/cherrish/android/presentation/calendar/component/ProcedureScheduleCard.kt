@@ -37,6 +37,7 @@ import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.core.util.rememberFixedDpFontSize
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
 import com.cherrish.android.presentation.calendar.util.getProcedureType
@@ -211,6 +212,9 @@ private fun ScheduleTitle(
     eventCount: Int,
     modifier: Modifier = Modifier
 ) {
+    val fixedTitleFontSize = rememberFixedDpFontSize(CherrishTheme.typography.body1M14.fontSize)
+    val fixedCountFontSize = rememberFixedDpFontSize(CherrishTheme.typography.body1R14.fontSize)
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
@@ -218,19 +222,25 @@ private fun ScheduleTitle(
     ) {
         Text(
             text = "일정",
-            style = CherrishTheme.typography.body1M14,
+            style = CherrishTheme.typography.body1M14.copy(
+                fontSize = fixedTitleFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
 
         Text(
             text = "・",
-            style = CherrishTheme.typography.body1R14,
+            style = CherrishTheme.typography.body1R14.copy(
+                fontSize = fixedCountFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
 
         Text(
             text = "${eventCount}개",
-            style = CherrishTheme.typography.body1R14,
+            style = CherrishTheme.typography.body1R14.copy(
+                fontSize = fixedCountFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
     }
