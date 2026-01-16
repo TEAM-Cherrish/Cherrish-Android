@@ -73,7 +73,7 @@ fun UpcomingPlanSection(
             )
             .clip(shape = RoundedCornerShape(14.dp))
             .background(color = CherrishTheme.colors.gray0)
-            .padding(horizontal = 15.dp, vertical = 16.dp),
+            .padding(horizontal = 15.dp, vertical = 16.dp)
     ) {
         Text(
             text = "다가오는 일정",

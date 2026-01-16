@@ -149,7 +149,7 @@ private fun ChallengeChip(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = "${percent}%",
+        text = "$percent%",
         style = CherrishTheme.typography.body3M12,
         color = CherrishTheme.colors.red700,
         modifier = modifier
