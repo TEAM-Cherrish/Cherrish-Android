@@ -1,6 +1,6 @@
 package com.cherrish.android.presentation.challenge.mission.model
 
-data class ChallengeRoutineMissionModel(
+data class ChallengeMissionModel(
     val id: Int,
     val missionContent: String
 )
