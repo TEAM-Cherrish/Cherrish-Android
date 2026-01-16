@@ -1,7 +1,6 @@
 package com.cherrish.android.presentation.calendar.component
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,9 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,29 +52,34 @@ fun ProcedureScheduleCard(
 ) {
     val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
     val listState = rememberLazyListState()
-    var isInitialRender by remember { mutableStateOf(true) }
+
+    val canActuallyScroll by remember {
+        derivedStateOf {
+            listState.canScrollForward || listState.canScrollBackward
+        }
+    }
 
     val showTopGradient by remember {
         derivedStateOf {
-            listState.canScrollBackward.also { if (it) isInitialRender = false }
+            canActuallyScroll && listState.canScrollBackward
         }
     }
 
     val showBottomGradient by remember {
         derivedStateOf {
-            listState.canScrollForward.also { if (it) isInitialRender = false }
+            canActuallyScroll && listState.canScrollForward
         }
     }
 
     val topAlpha by animateFloatAsState(
         targetValue = if (showTopGradient) 1f else 0f,
-        animationSpec = if (isInitialRender) snap() else tween(300),
+        animationSpec = tween(300),
         label = "topAlpha"
     )
 
     val bottomAlpha by animateFloatAsState(
         targetValue = if (showBottomGradient) 1f else 0f,
-        animationSpec = if (isInitialRender) snap() else tween(300),
+        animationSpec = tween(300),
         label = "bottomAlpha"
     )
 
@@ -141,7 +143,7 @@ fun ProcedureScheduleCard(
                 }
             }
 
-            if (topAlpha > 0f) {
+            if (canActuallyScroll && topAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -161,7 +163,7 @@ fun ProcedureScheduleCard(
                 )
             }
 
-            if (bottomAlpha > 0f) {
+            if (canActuallyScroll && bottomAlpha > 0f) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
