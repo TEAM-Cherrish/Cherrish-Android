@@ -78,8 +78,14 @@ private fun ChallengeRoutineOnboarding_RoutinePreview() {
             items = routineItems,
             onItemClick = { clickedIndex ->
                 routineItems = routineItems
-                    .mapIndexed { index, item ->
-                        item.copy(isSelected = index == clickedIndex)
+                    .mapIndexed {
+                                index, item ->
+                        if(index == clickedIndex){
+                            item.copy(isSelected = !item.isSelected)
+                        }
+                        else{
+                            item.copy(isSelected = false)
+                        }
                     }
                     .toPersistentList()
             },
