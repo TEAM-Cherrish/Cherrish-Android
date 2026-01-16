@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.calendar.util
+package com.cherrish.android.core.util
 
 import java.time.DayOfWeek
 import java.time.LocalDateTime
