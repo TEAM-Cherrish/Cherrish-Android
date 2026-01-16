@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.util.formatProcedureDay
 import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
-import com.cherrish.android.presentation.calendar.util.formatProcedureDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -75,14 +75,14 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun onMonthChanged(yearMonth: YearMonth) {
+    fun onMonthChange(yearMonth: YearMonth) {
         val newSelectedDate = if (yearMonth == YearMonth.now()) {
             LocalDate.now()
         } else {
             yearMonth.atDay(1)
         }
 
-        loadMonthlyCalendarWithDate(yearMonth, newSelectedDate)
+        loadMonthlyCalendar(yearMonth, newSelectedDate)
     }
 
     fun onEventClick(procedureId: Long) {
@@ -102,11 +102,10 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    private fun loadMonthlyCalendar(yearMonth: YearMonth) {
-        loadMonthlyCalendarWithDate(yearMonth, LocalDate.now())
-    }
-
-    private fun loadMonthlyCalendarWithDate(yearMonth: YearMonth, selectedDate: LocalDate) {
+    private fun loadMonthlyCalendar(
+        yearMonth: YearMonth,
+        selectedDate: LocalDate = LocalDate.now()
+    ) {
         val cachedMonthlyData = monthlyCache[yearMonth]
         val cachedDailyData = dailyCache[selectedDate]
 
@@ -160,7 +159,9 @@ class CalendarViewModel @Inject constructor(
                         UiState.Success(
                             CalendarUiState(
                                 selectedYearMonth = yearMonth,
-                                calendarDisplayMode = CalendarDisplayMode.Normal(procedureCountByDate),
+                                calendarDisplayMode = CalendarDisplayMode.Normal(
+                                    procedureCountByDate
+                                ),
                                 selectedDate = selectedDate,
                                 procedureInfoList = procedureList,
                                 cachedProcedureCountByDate = procedureCountByDate

@@ -1,5 +1,6 @@
 package com.cherrish.android.data.repositoryimpl
 
+import com.cherrish.android.core.util.suspendRunCatching
 import com.cherrish.android.data.model.CalendarDailyResponseModel
 import com.cherrish.android.data.model.CalendarDownTimeResponseModel
 import com.cherrish.android.data.model.CalendarMonthlyResponseModel
@@ -15,17 +16,17 @@ class CalendarRepositoryImpl @Inject constructor(
         year: Int,
         month: Int
     ): Result<CalendarMonthlyResponseModel> =
-        runCatching {
+        suspendRunCatching {
             calendarDataSource.getCalendarMonthly(year = year, month = month).data!!.toModel()
         }
 
     override suspend fun getCalendarDaily(date: String): Result<CalendarDailyResponseModel> =
-        runCatching {
+        suspendRunCatching {
             calendarDataSource.getCalendarDaily(date = date).data!!.toModel()
         }
 
     override suspend fun getCalendarEventDowntime(id: Long): Result<CalendarDownTimeResponseModel> =
-        runCatching {
+        suspendRunCatching {
             calendarDataSource.getCalendarEventDowntime(id = id).data!!.toModel()
         }
 }
