@@ -24,6 +24,7 @@ import java.time.YearMonth
 @Composable
 fun CalendarRoute(
     paddingValues: PaddingValues,
+    onNavigateToProcedure: () -> Unit,
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,7 +43,7 @@ fun CalendarRoute(
                 onMonthChange = viewModel::onMonthChanged,
                 onDateClick = viewModel::onDateClick,
                 onEventClick = viewModel::onEventClick,
-                onAddButtonClick = { /*TODO: 시술 선택 플로우로 이동*/ }
+                onAddButtonClick = onNavigateToProcedure
             )
         }
 

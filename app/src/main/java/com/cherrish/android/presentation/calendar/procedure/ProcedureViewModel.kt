@@ -116,6 +116,14 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
+    fun onComplete() {
+        _uiState.updateSuccess { current ->
+            // TODO: 서버에 시술 정보 저장
+            // API 호출 후 성공하면 초기 상태로 리셋
+            ProcedureUiState.FakeNormal
+        }
+    }
 }
 
 private fun ProcedureUiState.toEntryState(): ProcedureUiState {

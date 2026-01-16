@@ -3,7 +3,6 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -31,7 +30,8 @@ import com.cherrish.android.presentation.calendar.procedure.content.RecoverySche
 
 @Composable
 fun ProcedureRoute(
-    paddingValues: PaddingValues,
+    onNavigateBack: () -> Unit,
+    onComplete: () -> Unit,
     viewModel: ProcedureViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -41,7 +41,6 @@ fun ProcedureRoute(
         is UiState.Failure -> Unit
         is UiState.Success -> {
             ProcedureScreen(
-                paddingValues = paddingValues,
                 uiState = state.data,
                 onExistenceClick = viewModel::onExistenceClick,
                 onWorryClick = viewModel::onWorryClick,
@@ -51,9 +50,22 @@ fun ProcedureRoute(
                 onDayChange = viewModel::onDayChange,
                 onProcedureCardClick = viewModel::onProcedureCardClick,
                 onDowntimeClick = viewModel::onDowntimeClick,
-                onNextClick = viewModel::onNextClick,
-                onBackClick = viewModel::onBackClick,
-                onCloseClick = { /* TODO */ }
+                onNextClick = {
+                    if (state.data.step == ProcedureStep.Downtime) {
+                        viewModel.onComplete()
+                        onComplete()
+                    } else {
+                        viewModel.onNextClick()
+                    }
+                },
+                onBackClick = {
+                    if (state.data.flow == ProcedureFlow.Entry) {
+                        onNavigateBack()
+                    } else {
+                        viewModel.onBackClick()
+                    }
+                },
+                onCloseClick = onNavigateBack
             )
         }
         else -> Unit
@@ -62,7 +74,6 @@ fun ProcedureRoute(
 
 @Composable
 fun ProcedureScreen(
-    paddingValues: PaddingValues,
     uiState: ProcedureUiState,
     onExistenceClick: (Int) -> Unit,
     onWorryClick: (Long) -> Unit,
@@ -85,7 +96,6 @@ fun ProcedureScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
-            .padding(paddingValues)
             .padding(top = 40.dp, bottom = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

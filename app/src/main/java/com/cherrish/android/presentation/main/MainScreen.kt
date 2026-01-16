@@ -41,7 +41,10 @@ fun MainScreen(
         ) {
             homeNavGraph(paddingValues = innerPadding)
 
-            calendarNavGraph(paddingValues = innerPadding)
+            calendarNavGraph(
+                paddingValues = innerPadding,
+                navController = appState.navController
+            )
 
             challengeNavGraph(paddingValues = innerPadding)
 

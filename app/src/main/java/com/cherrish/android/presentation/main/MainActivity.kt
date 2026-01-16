@@ -1,11 +1,11 @@
 package com.cherrish.android.presentation.main
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import android.graphics.Color
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import dagger.hilt.android.AndroidEntryPoint
 
