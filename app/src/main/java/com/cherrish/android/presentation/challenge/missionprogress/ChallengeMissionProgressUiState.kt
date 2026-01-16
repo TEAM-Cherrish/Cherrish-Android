@@ -9,7 +9,7 @@ data class ChallengeMissionProgressUiState(
     val routines: List<RoutineItemUiState>,
     val cherryType: CherryType,
     val remainingCount: Int
-){
+) {
     val isCompleteButtonEnabled: Boolean
         get() = routines.any { it.isCompleted }
 }

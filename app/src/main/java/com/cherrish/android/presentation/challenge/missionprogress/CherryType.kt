@@ -3,12 +3,12 @@ package com.cherrish.android.presentation.challenge.missionprogress
 import androidx.annotation.DrawableRes
 import com.cherrish.android.R
 
-enum class CherryType (
-    val step : Int,
-    val level : Int,
-    val stageName : String,
-@DrawableRes val imageRes: Int
-){
+enum class CherryType(
+    val step: Int,
+    val level: Int,
+    val stageName: String,
+    @DrawableRes val imageRes: Int
+) {
     MONGRONG(
         step = 0,
         level = 0,
@@ -38,5 +38,5 @@ enum class CherryType (
         level = 4,
         stageName = "꾸꾸체리",
         imageRes = R.drawable.img_challenge_lv4
-    ),
+    )
 }

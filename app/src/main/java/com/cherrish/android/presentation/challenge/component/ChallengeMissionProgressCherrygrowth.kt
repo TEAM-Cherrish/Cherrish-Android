@@ -1,6 +1,7 @@
 package com.cherrish.android.presentation.challenge.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +41,7 @@ private fun CherryGrowthSection(
             color = CherrishTheme.colors.gray900,
             style = CherrishTheme.typography.body1M14
         )
+
         Text(
             text = cherryType.stageName,
             color = CherrishTheme.colors.gray900,
@@ -55,7 +59,7 @@ private fun CherryGrowthProgressSection(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
     ) {
         Text(
             text = "챌린지 달성률",
@@ -81,20 +85,30 @@ fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,
     remainingRoutines: Int,
     challengeProgress: Int,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
+    val colors = listOf(CherrishTheme.colors.red200, CherrishTheme.colors.gray0)
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(size = 10.dp)),
-       horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+            .clip(shape = RoundedCornerShape(10.dp))
+            .background(
+                brush = Brush.linearGradient(
+                    colors = colors,
+                    start = Offset(x = 0f, y = 0f),
+                    end = Offset(x = 0f, y = 230f)
+                )
 
+            )
+            .padding(vertical = 16.dp, horizontal = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         CherryGrowthSection(cherryType = cherryType)
 
         Image(
             painter = painterResource(id = cherryType.imageRes),
-            contentDescription = null,
+            contentDescription = null
         )
 
         Text(
@@ -134,14 +148,14 @@ private fun ChallengeMissionProgressCherrygrowthPreview() {
                 Triple(first = CherryType.PPODUK, second = 3, third = 25),
                 Triple(first = CherryType.CHOKCHOK, second = 2, third = 50),
                 Triple(first = CherryType.BBANGBBANG, second = 2, third = 75),
-                Triple(first = CherryType.KKUKKU, second = 0, third = 100),
+                Triple(first = CherryType.KKUKKU, second = 0, third = 100)
             )
         ) { (type, remain, progress) ->
 
             ChallengeMissionProgressCherrygrowth(
                 cherryType = type,
                 remainingRoutines = remain,
-                challengeProgress = progress,
+                challengeProgress = progress
             )
 
             HorizontalDivider(
@@ -149,8 +163,6 @@ private fun ChallengeMissionProgressCherrygrowthPreview() {
                 thickness = 1.dp,
                 modifier = Modifier.padding(vertical = 12.dp)
             )
-
         }
     }
-
 }
