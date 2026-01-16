@@ -6,12 +6,10 @@ import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -313,7 +311,7 @@ private fun DowntimeDayPickerSection(
         DowntimeDayPickerOutline()
 
         DowntimeDayPicker(
-            minDowntimeDays= minDowntimeDays,
+            minDowntimeDays = minDowntimeDays,
             maxDowntimeDays = maxDowntimeDays,
             state = state,
             flingBehavior = flingBehavior
@@ -347,7 +345,7 @@ private fun DowntimeDayPicker(
             )
 
             Text(
-                text = "보통 ${minDowntimeDays}-${maxDowntimeDays}일",
+                text = "보통 $minDowntimeDays-${maxDowntimeDays}일",
                 color = CherrishTheme.colors.gray600,
                 style = CherrishTheme.typography.title2M16
             )
