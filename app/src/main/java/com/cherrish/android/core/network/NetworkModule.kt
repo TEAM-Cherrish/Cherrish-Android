@@ -62,9 +62,13 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideDefaultOkHttpClient(
-        loggingInterceptor: Interceptor
+        loggingInterceptor: Interceptor,
+        authInterceptor: AuthInterceptor,
+        tokenAuthenticator: TokenAuthenticator
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(authInterceptor)
+        .authenticator(tokenAuthenticator)
         .build()
 
     @Provides
