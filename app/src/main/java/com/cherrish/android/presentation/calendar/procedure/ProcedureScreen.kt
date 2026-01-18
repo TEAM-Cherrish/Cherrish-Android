@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,6 +44,11 @@ fun ProcedureRoute(
     viewModel: ProcedureViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val configuration = LocalConfiguration.current
+
+    LaunchedEffect(configuration.screenHeightDp) {
+        viewModel.updateScreenHeight(configuration.screenHeightDp.toFloat())
+    }
 
     when (val state = uiState) {
         is UiState.Loading -> Unit
@@ -110,12 +116,6 @@ fun ProcedureScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val downtimeBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val downtimePickerState = rememberLazyListState()
-
-    val showBottomSheet = (
-        uiState.step == ProcedureStep.Filtering ||
-            uiState.step == ProcedureStep.FilteringWithSearch
-        ) &&
-        uiState.selectedProcedureCardIds.isNotEmpty()
 
     LaunchedEffect(uiState.showDowntimeBottomSheet, uiState.downtimePickerValue) {
         if (uiState.showDowntimeBottomSheet) {
@@ -204,6 +204,7 @@ fun ProcedureScreen(
                                 cardItems = uiState.procedureItems,
                                 selectedCardIds = uiState.selectedProcedureCardIds,
                                 onCardClick = onProcedureCardClick,
+                                bottomPadding = uiState.lazyColumnBottomPadding,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -216,6 +217,7 @@ fun ProcedureScreen(
                                 onSearchAction = { /* TODO */ },
                                 query = query,
                                 onQueryChange = { query = it },
+                                bottomPadding = uiState.lazyColumnBottomPadding,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 24.dp)
@@ -253,9 +255,8 @@ fun ProcedureScreen(
     }
 
     SelectedProcedureBottomSheet(
-        isVisible = showBottomSheet,
+        isVisible = uiState.showBottomSheet,
         selectedProcedure = uiState.selectedProcedures,
-        onDismiss = { },
         onDeletedClick = onProcedureCardClick,
         onButtonClick = onNextClick,
         sheetState = sheetState

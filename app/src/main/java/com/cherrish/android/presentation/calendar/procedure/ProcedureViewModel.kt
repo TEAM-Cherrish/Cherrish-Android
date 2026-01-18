@@ -28,6 +28,12 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
     val uiState: StateFlow<UiState<ProcedureUiState>> = _uiState.asStateFlow()
 
+    fun updateScreenHeight(heightDp: Float) {
+        _uiState.updateSuccess { current ->
+            current.copy(screenHeightDp = heightDp)
+        }
+    }
+
     fun onExistenceClick(index: Int) {
         _uiState.updateSuccess { current ->
             current.copy(

@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.calendar.procedure.content
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.component.ProcedureCard
@@ -88,10 +90,12 @@ fun FilteringContent(
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
     selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(bottom = bottomPadding)
     ) {
         item {
             ProcedureTitleSection(
@@ -141,7 +145,8 @@ private fun FilteringContentPreview() {
                 } else {
                     selectedCardIds
                 }
-            }
+            },
+            bottomPadding = 20.dp
         )
     }
 }

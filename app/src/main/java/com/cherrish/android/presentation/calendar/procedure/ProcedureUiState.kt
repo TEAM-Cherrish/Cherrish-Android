@@ -45,7 +45,9 @@ data class ProcedureUiState(
     val showDowntimeBottomSheet: Boolean = false,
     val selectedProcedureForDowntime: ProcedureCardItemUiModel? = null,
     val downtimePickerValue: Int = 0,
-    val procedureDowntimeMap: Map<Long, Int> = emptyMap()
+    val procedureDowntimeMap: Map<Long, Int> = emptyMap(),
+
+    val screenHeightDp: Float = 0f
 ) {
     val showStepProgressBar: Boolean = flow != ProcedureFlow.Entry
 
@@ -74,6 +76,24 @@ data class ProcedureUiState(
         step == ProcedureStep.FilteringWithSearch -> 24.dp
         step == ProcedureStep.Downtime -> 20.dp
         else -> 60.dp
+    }
+
+    val showBottomSheet: Boolean = (
+        step == ProcedureStep.Filtering ||
+            step == ProcedureStep.FilteringWithSearch
+        ) && selectedProcedureCardIds.isNotEmpty()
+
+    val maxSheetHeight: Dp = (screenHeightDp * 0.3f).dp
+
+    val lazyColumnBottomPadding: Dp = run {
+        val isFilteringStep = step == ProcedureStep.Filtering ||
+            step == ProcedureStep.FilteringWithSearch
+
+        if (isFilteringStep && showBottomSheet) {
+            maxSheetHeight
+        } else {
+            20.dp
+        }
     }
 
     val totalSteps: Int = when (flow) {
