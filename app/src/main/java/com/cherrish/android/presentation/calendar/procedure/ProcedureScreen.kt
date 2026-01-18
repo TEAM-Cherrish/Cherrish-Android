@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -136,7 +137,7 @@ fun ProcedureScreen(
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .navigationBarsPadding()
             .padding(top = 44.dp, bottom = 30.dp),
