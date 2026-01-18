@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -61,7 +62,9 @@ fun InformationRoute(
         age = uiState.age,
         onAgeChange = viewModel::onAgeChanged,
         onNextClick = viewModel::onNextClicked,
-        enabled = uiState.buttonEnabled
+        enabled = uiState.buttonEnabled,
+        nameErrorCase = viewModel.onNameErrorCase(uiState.username),
+        ageErrorCase = viewModel.onAgeErrorCase(uiState.age)
     )
 }
 
@@ -74,6 +77,8 @@ private fun InformationScreen(
     onAgeChange: (String) -> Unit,
     onNextClick: () -> Unit,
     enabled: Boolean,
+    nameErrorCase: Boolean,
+    ageErrorCase: Boolean,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -105,8 +110,10 @@ private fun InformationScreen(
             onNextAction = {
                 ageFocusRequester.requestFocus()
             },
-            keyboardType = KeyboardType.Text
-        )
+            keyboardType = KeyboardType.Text,
+            errorText = "이름은 최대 7자까지 입력 가능합니다.",
+            errorCase = nameErrorCase,
+            )
 
         Spacer(modifier = Modifier.weight(30f))
 
@@ -128,6 +135,8 @@ private fun InformationScreen(
                     " 세"
                 )
             },
+            errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
+            errorCase = ageErrorCase,
             modifier = Modifier
                 .focusRequester(ageFocusRequester)
                 .onFocusChanged { state ->
@@ -178,10 +187,12 @@ private fun UserInfoTextField(
     placeholder: String,
     keyboardImeAction: ImeAction,
     keyboardType: KeyboardType,
+    errorText: String,
     modifier: Modifier = Modifier,
     onNextAction: () -> Unit = {},
     onDoneAction: () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    errorCase: Boolean = false
 ) {
     Column(
         modifier = modifier
@@ -214,6 +225,12 @@ private fun UserInfoTextField(
         )
 
         Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = errorText,
+            style = CherrishTheme.typography.body1R14,
+            color = if (errorCase) CherrishTheme.colors.red700 else Color.Transparent
+        )
     }
 }
 
@@ -228,7 +245,9 @@ private fun Preview() {
             age = "",
             onAgeChange = {},
             onNextClick = {},
-            enabled = true
+            enabled = true,
+            nameErrorCase = false,
+            ageErrorCase = false
         )
     }
 }

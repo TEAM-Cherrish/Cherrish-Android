@@ -36,17 +36,23 @@ class InformationViewModel @Inject constructor(
         }
     }
 
+    fun onNameErrorCase(name: String): Boolean = name.length > 7
+
     fun onAgeChanged(input: String) {
         val filtered = input.filter { it.isDigit() }
         _uiState.update { it.copy(age = filtered) }
     }
 
+    fun onAgeErrorCase(age: String): Boolean = age.toIntOrNull() ?.let { it > 100 } ?: false
+
     fun onNextClicked() {
+        val age = uiState.value.age.toIntOrNull() ?: return
+
         viewModelScope.launch {
             onboardingProfileRepository.postOnboardingProfile(
                 request = OnboardingProfileRequestModel(
                     name = uiState.value.username,
-                    age = uiState.value.age.toInt()
+                    age = age
                 )
             ).onSuccess { response ->
                 tokenManager.saveId(response.id)
