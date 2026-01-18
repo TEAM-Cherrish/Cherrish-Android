@@ -1,5 +1,9 @@
 package com.cherrish.android.presentation.calendar.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +37,7 @@ import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.core.util.rememberFixedDpFontSize
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
 import com.cherrish.android.presentation.calendar.util.getProcedureType
@@ -46,23 +53,6 @@ fun ProcedureScheduleCard(
     modifier: Modifier = Modifier
 ) {
     val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
-
-    val listState = rememberLazyListState()
-
-    val isFirstItemVisible = remember {
-        derivedStateOf {
-            val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
-            firstVisibleItem?.index == 0
-        }
-    }
-
-    val isLastItemVisible = remember {
-        derivedStateOf {
-            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            val lastItemIndex = procedureInfo.size - 1
-            lastVisibleItem?.index == lastItemIndex
-        }
-    }
 
     Box(
         modifier = modifier
@@ -83,84 +73,103 @@ fun ProcedureScheduleCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(top = 64.dp, bottom = 24.dp),
+                    .padding(top = 50.dp, bottom = 24.dp),
                 onClick = onAddProcedureClick
             )
         } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 19.dp)
-                    .padding(top = 8.dp, bottom = 18.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                ScheduleHeader(
-                    eventCount = procedureInfo.size,
-                    displayMode = displayMode,
-                    onClick = onAddProcedureClick
-                )
+            key(procedureInfo) {
+                val listState = rememberLazyListState()
+                val showTopGradient = remember {
+                    derivedStateOf { listState.canScrollBackward }
+                }
+                val showBottomGradient = remember {
+                    derivedStateOf { listState.canScrollForward }
+                }
 
-                LazyColumn(
-                    state = listState,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 19.dp)
+                        .padding(top = 8.dp, bottom = 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    items(
-                        items = procedureInfo,
-                        key = { it.procedureId }
-                    ) { procedure ->
-                        ProcedureInfoItem(
-                            procedureName = procedure.procedureName,
-                            procedureDay = procedure.procedureDay,
-                            downTimeDuration = procedure.downTimeDuration,
-                            procedureType = getProcedureType(
-                                displayMode,
-                                procedure.procedureId,
-                                procedure.downTimeDuration
-                            ),
-                            isDowntimeMode = isDowntimeMode,
-                            onClick = { onProcedureClick(procedure.procedureId) }
-                        )
+                    ScheduleHeader(
+                        eventCount = procedureInfo.size,
+                        displayMode = displayMode,
+                        onClick = onAddProcedureClick
+                    )
+
+                    LazyColumn(
+                        state = listState,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(
+                            items = procedureInfo,
+                            key = { it.procedureId }
+                        ) { procedure ->
+                            ProcedureInfoItem(
+                                procedureName = procedure.procedureName,
+                                procedureDay = procedure.procedureDay,
+                                downTimeDuration = procedure.downTimeDuration,
+                                procedureType = getProcedureType(
+                                    displayMode = displayMode,
+                                    procedureId = procedure.procedureId,
+                                    downTimeDuration = procedure.downTimeDuration
+                                ),
+                                isDowntimeMode = isDowntimeMode,
+                                onClick = { onProcedureClick(procedure.procedureId) }
+                            )
+                        }
                     }
                 }
-            }
 
-            if (!isFirstItemVisible.value) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .fillMaxWidth()
-                        .padding(top = 40.dp)
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = persistentListOf(
-                                    CherrishTheme.colors.gray0,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                    Color.Transparent
+                AnimatedVisibility(
+                    visible = showTopGradient.value,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.align(Alignment.TopCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 40.dp)
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = persistentListOf(
+                                        CherrishTheme.colors.gray0,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        Color.Transparent
+                                    )
                                 )
                             )
-                        )
-                )
-            }
+                    )
+                }
 
-            if (!isLastItemVisible.value) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(70.dp)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = persistentListOf(
-                                    Color.Transparent,
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                    CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                    CherrishTheme.colors.gray0
+                AnimatedVisibility(
+                    visible = showBottomGradient.value,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 18.dp)
+                            .height(70.dp)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = persistentListOf(
+                                        Color.Transparent,
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                        CherrishTheme.colors.gray0
+                                    )
                                 )
                             )
-                        )
-                )
+                    )
+                }
             }
         }
     }
@@ -203,6 +212,9 @@ private fun ScheduleTitle(
     eventCount: Int,
     modifier: Modifier = Modifier
 ) {
+    val fixedTitleFontSize = rememberFixedDpFontSize(CherrishTheme.typography.body1M14.fontSize)
+    val fixedCountFontSize = rememberFixedDpFontSize(CherrishTheme.typography.body1R14.fontSize)
+
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
@@ -210,19 +222,25 @@ private fun ScheduleTitle(
     ) {
         Text(
             text = "일정",
-            style = CherrishTheme.typography.body1M14,
+            style = CherrishTheme.typography.body1M14.copy(
+                fontSize = fixedTitleFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
 
         Text(
             text = "・",
-            style = CherrishTheme.typography.body1R14,
+            style = CherrishTheme.typography.body1R14.copy(
+                fontSize = fixedCountFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
 
         Text(
             text = "${eventCount}개",
-            style = CherrishTheme.typography.body1R14,
+            style = CherrishTheme.typography.body1R14.copy(
+                fontSize = fixedCountFontSize
+            ),
             color = CherrishTheme.colors.gray1000
         )
     }
@@ -237,8 +255,11 @@ private fun EmptyCardView(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /*TODO: 엠티뷰 디자인 확정 시 수정, 일단 패딩으로 사이즈 맞추기*/
-        Spacer(modifier = Modifier.height(72.dp))
+        Image(
+            painter = painterResource(id = R.drawable.img_calendar_empty_view),
+            contentDescription = null,
+            modifier = Modifier.padding(8.dp)
+        )
 
         Text(
             text = "오늘 예정된 일정이 없어요.",
