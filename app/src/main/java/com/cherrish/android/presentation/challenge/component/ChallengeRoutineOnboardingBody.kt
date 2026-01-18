@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,14 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionChip
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.challenge.routine.ChallengeRoutineUiState
+import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeRoutineOnboardingBody(
-    items: List<ChallengeRoutineUiState>,
-    onItemClick: (Int) -> Unit,
+    items: ImmutableList<ChallengeRoutineModel>,
+    onItemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -45,11 +46,14 @@ fun ChallengeRoutineOnboardingBody(
             verticalArrangement = Arrangement.spacedBy(space = 12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            itemsIndexed(items) { index, item ->
+            items(
+                items = items,
+                key = { it.id }
+            ) { item ->
                 CherrishSelectionChip(
                     text = item.routine,
                     isSelected = item.isSelected,
-                    onClick = { onItemClick(index) },
+                    onClick = { onItemClick(item.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -63,24 +67,23 @@ private fun ChallengeRoutineOnboarding_RoutinePreview() {
     CherrishTheme {
         var routineItems by remember {
             mutableStateOf(
-                value = persistentListOf(
-                    ChallengeRoutineUiState(routine = "보습 루틴"),
-                    ChallengeRoutineUiState(routine = "진정 루틴"),
-                    ChallengeRoutineUiState(routine = "미백 루틴"),
-                    ChallengeRoutineUiState(routine = "탄력 루틴"),
-                    ChallengeRoutineUiState(routine = "모공 관리 루틴"),
-                    ChallengeRoutineUiState(routine = "트러블 케어 루틴")
+                persistentListOf(
+                    ChallengeRoutineModel(id = 1, routine = "보습 루틴", isSelected = false),
+                    ChallengeRoutineModel(id = 2, routine = "진정 루틴", isSelected = false),
+                    ChallengeRoutineModel(id = 3, routine = "미백 루틴", isSelected = false),
+                    ChallengeRoutineModel(id = 4, routine = "탄력 루틴", isSelected = false),
+                    ChallengeRoutineModel(id = 5, routine = "모공 관리 루틴", isSelected = false),
+                    ChallengeRoutineModel(id = 6, routine = "트러블 케어 루틴", isSelected = false)
                 )
             )
         }
 
         ChallengeRoutineOnboardingBody(
             items = routineItems,
-            onItemClick = { clickedIndex ->
+            onItemClick = { clickedId ->
                 routineItems = routineItems
-                    .mapIndexed {
-                            index, item ->
-                        if (index == clickedIndex) {
+                    .map { item ->
+                        if (item.id == clickedId) {
                             item.copy(isSelected = !item.isSelected)
                         } else {
                             item.copy(isSelected = false)

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class ChallengeRoutineModel(
-    val id: Int,
-    val routine: String
+    val id: Long,
+    val routine: String,
+    val isSelected: Boolean
 )
