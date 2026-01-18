@@ -18,7 +18,9 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -30,6 +32,9 @@ class CalendarViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CalendarUiState>> = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<CalendarSideEffect>()
+    val sideEffect: SharedFlow<CalendarSideEffect> = _sideEffect
 
     private val monthlyCache = mutableMapOf<YearMonth, Map<LocalDate, Int>>()
     private val dailyCache = mutableMapOf<LocalDate, ImmutableList<ProcedureInfoModel>>()
@@ -234,6 +239,12 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
             }.onLogFailure { }
+        }
+
+        fun onAddButtonClick() {
+            viewModelScope.launch {
+                _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
+            }
         }
     }
 }
