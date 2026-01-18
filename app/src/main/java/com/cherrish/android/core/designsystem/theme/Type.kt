@@ -8,7 +8,9 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.cherrish.android.R
@@ -17,6 +19,22 @@ val cherrishFontBold = FontFamily(Font(R.font.pretendard_bold))
 val cherrishFontSemiBold = FontFamily(Font(R.font.pretendard_semibold))
 val cherrishFontMedium = FontFamily(Font(R.font.pretendard_medium))
 val cherrishFontRegular = FontFamily(Font(R.font.pretendard_regular))
+
+private fun CherrishTextStyle(
+    fontFamily: FontFamily,
+    fontSize: TextUnit,
+    letterSpacing: TextUnit = 0.em,
+    lineHeight: TextUnit
+): TextStyle = TextStyle(
+    fontFamily = fontFamily,
+    fontSize = fontSize,
+    letterSpacing = letterSpacing,
+    lineHeight = lineHeight,
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None
+    )
+)
 
 @Immutable
 data class CherrishTypography(
@@ -47,81 +65,98 @@ data class CherrishTypography(
 
 val defaultCherrishTypography = CherrishTypography(
 
-    headlineB20 = TextStyle(
+    headlineB20 = CherrishTextStyle(
         fontFamily = cherrishFontBold,
         fontSize = 20.sp,
-        letterSpacing = 0.01.em
+        letterSpacing = 0.01.em,
+        lineHeight = 1.5.em
     ),
-    headlineSB20 = TextStyle(
+
+    headlineSB20 = CherrishTextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 20.sp,
-        letterSpacing = 0.01.em
+        letterSpacing = 0.01.em,
+        lineHeight = 1.5.em
+
     ),
 
-    title1SB18 = TextStyle(
+    title1SB18 = CherrishTextStyle(
         fontFamily = cherrishFontSemiBold,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em
+        letterSpacing = 0.01.em,
+        lineHeight = 1.5.em
     ),
-    title1M18 = TextStyle(
+    title1M18 = CherrishTextStyle(
         fontFamily = cherrishFontMedium,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em
+        letterSpacing = 0.01.em,
+        lineHeight = 1.5.em
     ),
-    title1R18 = TextStyle(
+    title1R18 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
         fontSize = 18.sp,
-        letterSpacing = 0.01.em
+        letterSpacing = 0.01.em,
+        lineHeight = 1.5.em
     ),
 
-    title2SB16 = TextStyle(
+    title2SB16 = CherrishTextStyle(
         fontFamily = cherrishFontSemiBold,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 1.5.em
     ),
 
-    title2M16 = TextStyle(
+    title2M16 = CherrishTextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 1.5.em
     ),
 
-    title2R16 = TextStyle(
+    title2R16 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 16.sp
+        fontSize = 16.sp,
+        lineHeight = 1.5.em
     ),
 
-    body1SB14 = TextStyle(
+    body1SB14 = CherrishTextStyle(
         fontFamily = cherrishFontSemiBold,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        lineHeight = 1.4.em
     ),
 
-    body1M14 = TextStyle(
+    body1M14 = CherrishTextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        lineHeight = 1.4.em
     ),
 
-    body1R14 = TextStyle(
+    body1R14 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        lineHeight = 1.4.em
     ),
 
-    body2R13 = TextStyle(
+    body2R13 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 13.sp
+        fontSize = 13.sp,
+        lineHeight = 1.4.em
     ),
 
-    body3M12 = TextStyle(
+    body3M12 = CherrishTextStyle(
         fontFamily = cherrishFontMedium,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        lineHeight = 1.4.em
     ),
 
-    body3R12 = TextStyle(
+    body3R12 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        lineHeight = 1.4.em
     ),
 
-    captionR11 = TextStyle(
+    captionR11 = CherrishTextStyle(
         fontFamily = cherrishFontRegular,
-        fontSize = 11.sp
+        fontSize = 11.sp,
+        lineHeight = 1.4.em
     )
 
 )
