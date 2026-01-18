@@ -5,7 +5,6 @@ import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissio
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-
 @Immutable
 data class ChallengeMissionUiState(
     val missions: ImmutableList<ChallengeMissionModel> = persistentListOf(),
