@@ -133,7 +133,7 @@ fun ProcedureScreen(
         }
     }
 
-    BackHandler(enabled = true) { onBackClick() }
+    BackHandler { onBackClick() }
 
     Column(
         modifier = modifier
