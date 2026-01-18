@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
@@ -35,7 +36,12 @@ data class ProcedureUiState(
 
     val selectedProcedureCardIds: ImmutableList<Long> = persistentListOf(),
 
-    val selectedWorryName: String = ""
+    val selectedWorryName: String = "",
+
+    val showDowntimeBottomSheet: Boolean = false,
+    val selectedProcedureForDowntime: ProcedureCardItemUiModel? = null,
+    val downtimePickerValue: Int = 0,
+    val procedureDowntimeMap: Map<Long, Int> = emptyMap()
 ) {
     val showStepProgressBar: Boolean = flow != ProcedureFlow.Entry
 
@@ -102,7 +108,9 @@ data class ProcedureUiState(
             }
 
             ProcedureStep.FilteringWithSearch -> selectedProcedureCardIds.isNotEmpty()
-            ProcedureStep.Downtime -> selectedDowntime != null
+            ProcedureStep.Downtime -> {
+                selectedProcedureCardIds.all { it in procedureDowntimeMap }
+            }
             else -> false
         }
 
@@ -115,7 +123,9 @@ data class ProcedureUiState(
             }
 
             ProcedureStep.Filtering -> selectedProcedureCardIds.isNotEmpty()
-            ProcedureStep.Downtime -> selectedDowntime != null
+            ProcedureStep.Downtime -> {
+                selectedProcedureCardIds.all { it in procedureDowntimeMap }
+            }
             else -> false
         }
     }
@@ -132,6 +142,28 @@ data class ProcedureUiState(
                 )
             }
             .toImmutableList()
+
+    val downtimeDay: Int
+        get() = downtimePickerValue
+
+    val spareTimeDay: Int
+        get() {
+            val totalDays = 30
+            return (totalDays - downtimePickerValue).coerceAtLeast(0)
+        }
+
+    val downtimeValidationType: DowntimeValidationType
+        get() = if (downtimePickerValue <= 30) {
+            DowntimeValidationType.VALID
+        } else {
+            DowntimeValidationType.EXCEEDS_GOAL
+        }
+
+    val downtimeStartDay: String
+        get() = "2024.01.01"
+
+    val downtimeEndDay: String
+        get() = "2024.01.$downtimePickerValue"
 
     companion object {
 

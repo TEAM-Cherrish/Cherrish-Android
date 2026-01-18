@@ -6,6 +6,7 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithDowntime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -39,10 +40,66 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
         _uiState.updateSuccess { it.copy(recoverySelectedIndex = index) }
     }
 
-    fun onDowntimeClick(downtime: Int) {
+    fun onDowntimeClick(procedureId: Long) {
         _uiState.updateSuccess { current ->
-            val newValue = if (current.selectedDowntime == downtime) null else downtime
-            current.copy(selectedDowntime = newValue)
+            val procedure = current.procedureItems.firstOrNull { it.id == procedureId }
+                ?: return@updateSuccess current
+
+            current.copy(
+                selectedProcedureForDowntime = procedure,
+                showDowntimeBottomSheet = true,
+                downtimePickerValue = current.procedureDowntimeMap[procedureId]
+                    ?: procedure.minDowntimeDays
+            )
+        }
+    }
+
+    fun onDowntimeBottomSheetDismiss() {
+        _uiState.updateSuccess { current ->
+            current.copy(
+                showDowntimeBottomSheet = false,
+                selectedProcedureForDowntime = null
+            )
+        }
+    }
+
+    fun onDowntimePickerValueChange(value: Int) {
+        _uiState.updateSuccess { current ->
+            current.copy(downtimePickerValue = value)
+        }
+    }
+
+    fun onDowntimeConfirm() {
+        _uiState.updateSuccess { current ->
+            val procedureId = current.selectedProcedureForDowntime?.id
+                ?: return@updateSuccess current
+
+            val updatedMap = current.procedureDowntimeMap.toMutableMap().apply {
+                put(procedureId, current.downtimePickerValue)
+            }
+
+            current.copy(
+                procedureDowntimeMap = updatedMap,
+                showDowntimeBottomSheet = false,
+                selectedProcedureForDowntime = null
+            )
+        }
+    }
+
+    fun onAddWithoutDowntime() {
+        _uiState.updateSuccess { current ->
+            val procedureId = current.selectedProcedureForDowntime?.id
+                ?: return@updateSuccess current
+
+            val updatedMap = current.procedureDowntimeMap.toMutableMap().apply {
+                put(procedureId, 0)
+            }
+
+            current.copy(
+                procedureDowntimeMap = updatedMap,
+                showDowntimeBottomSheet = false,
+                selectedProcedureForDowntime = null
+            )
         }
     }
 
@@ -82,7 +139,16 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
                 currentList + cardId
             }.toImmutableList()
 
-            current.copy(selectedProcedureCardIds = newList)
+            val updatedMap = if (cardId !in newList) {
+                current.procedureDowntimeMap.filterKeys { it != cardId }
+            } else {
+                current.procedureDowntimeMap
+            }
+
+            current.copy(
+                selectedProcedureCardIds = newList,
+                procedureDowntimeMap = updatedMap
+            )
         }
     }
 
@@ -108,7 +174,8 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
                     month = "",
                     day = "",
                     selectedDowntime = null,
-                    selectedProcedureCardIds = persistentListOf()
+                    selectedProcedureCardIds = persistentListOf(),
+                    procedureDowntimeMap = emptyMap()
                 )
             }
 
@@ -156,7 +223,8 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
                         current.copy(
                             step = prevStepOrEntry.step,
-                            procedureItems = updatedProcedureItems
+                            procedureItems = updatedProcedureItems,
+                            procedureDowntimeMap = emptyMap()
                         )
                     } else {
                         current.copy(step = prevStepOrEntry.step)
@@ -168,8 +236,18 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
     fun onComplete() {
         _uiState.updateSuccess { current ->
+            val proceduresWithDowntime = current.selectedProcedureCardIds.map { procedureId ->
+                val downtime = current.procedureDowntimeMap[procedureId] ?: 0
+                ProcedureWithDowntime(
+                    procedureId = procedureId,
+                    downtimeDays = downtime
+                )
+            }
+
             // TODO: 서버에 시술 정보 저장
-            // API 호출 후 성공하면 초기 상태로 리셋
+
+            println("전송할 데이터: $proceduresWithDowntime")
+
             ProcedureUiState.FakeNormal
         }
     }
@@ -186,7 +264,8 @@ private fun ProcedureUiState.toEntryState(): ProcedureUiState {
         month = "",
         day = "",
         selectedDowntime = null,
-        selectedProcedureCardIds = persistentListOf()
+        selectedProcedureCardIds = persistentListOf(),
+        procedureDowntimeMap = emptyMap()
     )
 }
 

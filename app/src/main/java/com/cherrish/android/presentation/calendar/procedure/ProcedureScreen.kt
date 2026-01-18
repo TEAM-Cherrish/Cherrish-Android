@@ -5,9 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +23,7 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.calendar.procedure.component.DowntimeBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.SelectedProcedureBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.StepProgressBar
 import com.cherrish.android.presentation.calendar.procedure.content.CategoryContent
@@ -55,6 +58,10 @@ fun ProcedureRoute(
                 onDayChange = viewModel::onDayChange,
                 onProcedureCardClick = viewModel::onProcedureCardClick,
                 onDowntimeClick = viewModel::onDowntimeClick,
+                onDowntimeBottomSheetDismiss = viewModel::onDowntimeBottomSheetDismiss,
+                onDowntimePickerValueChange = viewModel::onDowntimePickerValueChange,
+                onDowntimeConfirm = viewModel::onDowntimeConfirm,
+                onAddWithoutDowntime = viewModel::onAddWithoutDowntime,
                 onNextClick = {
                     if (state.data.step == ProcedureStep.Downtime) {
                         viewModel.onComplete()
@@ -89,7 +96,11 @@ fun ProcedureScreen(
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
     onProcedureCardClick: (Long) -> Unit,
-    onDowntimeClick: (Int) -> Unit,
+    onDowntimeClick: (Long) -> Unit,
+    onDowntimeBottomSheetDismiss: () -> Unit,
+    onDowntimePickerValueChange: (Int) -> Unit,
+    onDowntimeConfirm: () -> Unit,
+    onAddWithoutDowntime: () -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
@@ -97,12 +108,28 @@ fun ProcedureScreen(
 ) {
     var query by remember { mutableStateOf("") }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val downtimeBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val downtimePickerState = rememberLazyListState()
 
     val showBottomSheet = (
         uiState.step == ProcedureStep.Filtering ||
             uiState.step == ProcedureStep.FilteringWithSearch
         ) &&
         uiState.selectedProcedureCardIds.isNotEmpty()
+
+    LaunchedEffect(uiState.showDowntimeBottomSheet, uiState.downtimePickerValue) {
+        if (uiState.showDowntimeBottomSheet) {
+            val initialIndex = uiState.downtimePickerValue - 1
+            downtimePickerState.scrollToItem(initialIndex.coerceIn(0, 29))
+        }
+    }
+
+    LaunchedEffect(downtimePickerState.firstVisibleItemIndex) {
+        if (uiState.showDowntimeBottomSheet) {
+            val newValue = downtimePickerState.firstVisibleItemIndex + 1
+            onDowntimePickerValueChange(newValue)
+        }
+    }
 
     BackHandler(enabled = true) { onBackClick() }
 
@@ -200,10 +227,9 @@ fun ProcedureScreen(
                                 cardItems = uiState.procedureItems
                                     .filter { it.id in uiState.selectedProcedureCardIds }
                                     .toImmutableList(),
-                                selectedCardId = uiState.selectedDowntime?.toLong(),
-                                onCardClick = { clickedId ->
-                                    onDowntimeClick(clickedId.toInt())
-                                },
+                                selectedCardIds =
+                                uiState.procedureDowntimeMap.keys.toImmutableList(),
+                                onCardClick = onDowntimeClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
@@ -225,6 +251,7 @@ fun ProcedureScreen(
             )
         }
     }
+
     SelectedProcedureBottomSheet(
         isVisible = showBottomSheet,
         selectedProcedure = uiState.selectedProcedures,
@@ -233,4 +260,22 @@ fun ProcedureScreen(
         onButtonClick = onNextClick,
         sheetState = sheetState
     )
+
+    if (uiState.selectedProcedureForDowntime != null) {
+        DowntimeBottomSheet(
+            onDismissRequest = onDowntimeBottomSheetDismiss,
+            sheetState = downtimeBottomSheetState,
+            validationType = uiState.downtimeValidationType,
+            downtimeDay = uiState.downtimeDay,
+            spareTimeDay = uiState.spareTimeDay,
+            downtimeStartDay = uiState.downtimeStartDay,
+            downtimeEndDay = uiState.downtimeEndDay,
+            state = downtimePickerState,
+            onAddWithoutDowntimeClick = onAddWithoutDowntime,
+            onConfirmClick = onDowntimeConfirm,
+            minDowntimeDays = uiState.selectedProcedureForDowntime.minDowntimeDays,
+            maxDowntimeDays = uiState.selectedProcedureForDowntime.maxDowntimeDays,
+            showBottomSheet = uiState.showDowntimeBottomSheet
+        )
+    }
 }
