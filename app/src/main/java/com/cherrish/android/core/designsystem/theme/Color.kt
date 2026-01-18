@@ -234,12 +234,12 @@ private fun CherrishGrayColorsPreview() {
             Text(
                 text = "GraStart",
                 style = CherrishTheme.typography.body1M14,
-                color = CherrishTheme.colors.shadow
+                color = CherrishTheme.colors.graStart
             )
             Text(
                 text = "GraEnd",
                 style = CherrishTheme.typography.body1M14,
-                color = CherrishTheme.colors.shadow
+                color = CherrishTheme.colors.graEnd
             )
             Text(
                 text = "BottomSheetScrimColor",

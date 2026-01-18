@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -59,7 +60,7 @@ import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 fun OnboardingRoute(
-    viewModel: OnboardingViewModel = viewModel()
+    viewModel: OnboardingViewModel = hiltViewModel()
 ) {
     OnboardingScreen(
         onCancelClick = viewModel::onCancelClick,
@@ -133,11 +134,8 @@ private fun OnboardingScreen(
 
             CherrishButton(
                 text = "다음",
-                onClick = {
-                    if (showButton) {
-                        onNextClick()
-                    }
-                },
+                onClick = onNextClick,
+                enabled = showButton,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
@@ -224,7 +222,7 @@ private fun OnboardingSection(
                 textColor = colors.gray1000,
                 underlineColor = colors.red700,
                 underlineThickness = 1.4.dp,
-                insetPx = 4.dp,
+                underlineInset = 4.dp,
                 underlineYOffset = 1.dp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -265,7 +263,7 @@ private fun UnderlineUntilWord(
     textColor: Color,
     underlineColor: Color,
     underlineThickness: Dp,
-    insetPx: Dp,
+    underlineInset: Dp,
     underlineYOffset: Dp,
     modifier: Modifier = Modifier
 ) {
@@ -273,7 +271,7 @@ private fun UnderlineUntilWord(
 
     val density = LocalDensity.current
     val thicknessPx = with(density) { underlineThickness.toPx() }
-    val insetPx = with(density) { insetPx.toPx() }
+    val insetPx = with(density) { underlineInset.toPx() }
     val yOffsetPx = with(density) { underlineYOffset.toPx() }
 
     val endExclusive = remember(text, underlineUntil) {
