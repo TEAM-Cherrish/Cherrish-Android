@@ -30,8 +30,7 @@ fun ChallengeLoadingScreen(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 10.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(44f))
@@ -39,7 +38,8 @@ fun ChallengeLoadingScreen(
         Icon(
             modifier = Modifier
                 .noRippleClickable(onClick = onCloseClick)
-                .align(Alignment.Start),
+                .align(Alignment.Start)
+                .padding(start = 10.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
             contentDescription = null,
             tint = CherrishTheme.colors.gray1000
