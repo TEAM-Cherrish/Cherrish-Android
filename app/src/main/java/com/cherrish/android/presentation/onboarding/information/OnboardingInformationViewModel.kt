@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class InformationViewModel @Inject constructor(
+class OnboardingInformationViewModel @Inject constructor(
     private val onboardingProfileRepository: OnboardingProfileRepository,
     private val tokenManager: TokenManager
 ) : ViewModel() {

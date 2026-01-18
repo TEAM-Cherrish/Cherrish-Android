@@ -5,11 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -61,16 +63,29 @@ import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 fun OnboardingRoute(
+    paddingValues: PaddingValues,
+    navigateToOnboardingInformation: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { sideEffect ->
+            when (sideEffect) {
+                OnboardingSideEffect.NavigateToOnboardingInformation -> {
+                    navigateToOnboardingInformation()
+                }
+            }
+        }
+    }
     OnboardingScreen(
-        onCancelClick = viewModel::onCancelClick,
-        onNextClick = viewModel::onNextClick
+        paddingValues = paddingValues,
+        onCancelClick = viewModel::onClick,
+        onNextClick = viewModel::onClick
     )
 }
 
 @Composable
 private fun OnboardingScreen(
+    paddingValues: PaddingValues,
     onCancelClick: () -> Unit,
     onNextClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -93,7 +108,9 @@ private fun OnboardingScreen(
             )
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             Spacer(modifier = Modifier.height(54.dp))
 
@@ -140,6 +157,7 @@ private fun OnboardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
+                    .navigationBarsPadding()
                     .graphicsLayer {
                         alpha = if (showButton) 1f else 0f
                     }
@@ -470,6 +488,7 @@ private fun Preview() {
             modifier = Modifier.fillMaxSize()
         ) {
             OnboardingScreen(
+                paddingValues = PaddingValues(),
                 onCancelClick = {},
                 onNextClick = {}
             )

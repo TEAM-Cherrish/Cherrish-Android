@@ -40,10 +40,10 @@ import com.cherrish.android.presentation.onboarding.information.extension.AgeSuf
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun InformationRoute(
+fun OnboardingInformationRoute(
     paddingValues: PaddingValues,
     navigateToHome: () -> Unit,
-    viewModel: InformationViewModel = hiltViewModel()
+    viewModel: OnboardingInformationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -55,7 +55,7 @@ fun InformationRoute(
         }
     }
 
-    InformationScreen(
+    OnboardingInformationScreen(
         paddingValues = paddingValues,
         username = uiState.username,
         onNameChange = viewModel::onNameChanged,
@@ -69,7 +69,7 @@ fun InformationRoute(
 }
 
 @Composable
-private fun InformationScreen(
+private fun OnboardingInformationScreen(
     paddingValues: PaddingValues,
     username: String,
     onNameChange: (String) -> Unit,
@@ -238,7 +238,7 @@ private fun UserInfoTextField(
 @Composable
 private fun Preview() {
     CherrishTheme {
-        InformationScreen(
+        OnboardingInformationScreen(
             paddingValues = PaddingValues(),
             username = "",
             onNameChange = {},

@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.onboarding.information.navigation
+package com.cherrish.android.presentation.onboarding.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.Route
-import com.cherrish.android.presentation.onboarding.information.InformationRoute
+import com.cherrish.android.presentation.onboarding.information.OnboardingInformationRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,7 +21,7 @@ fun NavGraphBuilder.onboardingInformationNavGraph(
     navigateToHome: () -> Unit
 ) {
     composable<OnboardingInformation> {
-        InformationRoute(
+        OnboardingInformationRoute(
             paddingValues = paddingValues,
             navigateToHome = navigateToHome
         )

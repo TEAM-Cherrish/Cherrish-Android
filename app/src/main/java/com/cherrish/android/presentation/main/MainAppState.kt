@@ -13,7 +13,8 @@ import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
-import com.cherrish.android.presentation.onboarding.information.navigation.navigateToOnboardingInformation
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
 import com.cherrish.android.presentation.splash.navigation.Splash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -78,6 +79,10 @@ class MainAppState(
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
             MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
         }
+    }
+
+    fun navigateToOnboarding(navOptions: NavOptions) {
+        navController.navigateToOnboarding(navOptions)
     }
 
     fun navigateToOnboardingInformation(navOptions: NavOptions) {
