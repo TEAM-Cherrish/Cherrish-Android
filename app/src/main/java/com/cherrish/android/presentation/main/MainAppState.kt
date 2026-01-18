@@ -8,6 +8,8 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
+import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.home.navigation.navigateToHome
@@ -17,8 +19,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import navigateToCalendar
-import navigateToProcedure
 
 @Stable
 class MainAppState(

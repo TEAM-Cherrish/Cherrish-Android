@@ -1,3 +1,5 @@
+package com.cherrish.android.presentation.calendar.navigation
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -9,6 +11,7 @@ import com.cherrish.android.presentation.calendar.CalendarRoute
 import com.cherrish.android.presentation.calendar.procedure.ProcedureRoute
 import kotlinx.serialization.Serializable
 
+@Serializable
 data object Calendar : MainTabRoute
 
 @Serializable
