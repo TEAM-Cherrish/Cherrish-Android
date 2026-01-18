@@ -4,12 +4,14 @@ import com.cherrish.android.presentation.challenge.missionprogress.model.Challen
 import com.cherrish.android.presentation.challenge.missionprogress.model.TemporaryRoutineModel
 
 data class ChallengeMissionProgressUiState(
-    val challenge : ChallengeInfoModel,
+    val challenge: ChallengeInfoModel,
     val currentDay: Int,
-    val routines : List<RoutineItemUiState>,
-    val currentStep : Int
+    val routines: List<RoutineItemUiState>,
+    val cherryType: CherryType,
+    val remainingCount: Int
 ){
-
+    val isCompleteButtonEnabled: Boolean
+        get() = routines.any { it.isCompleted }
 }
 
 data class RoutineItemUiState(
