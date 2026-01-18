@@ -6,9 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.annotation.Signed
-import javax.inject.Singleton
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,7 +19,7 @@ object ServiceModule {
     ): CalendarService = retrofit.create(CalendarService::class.java)
 
     @Provides
-    @Signed
+    @Singleton
     fun provideOnboardingProfileService(
         retrofit: Retrofit
     ): OnboardingProfileService = retrofit.create(OnboardingProfileService::class.java)
