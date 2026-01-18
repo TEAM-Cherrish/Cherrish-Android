@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.challenge.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,10 +26,13 @@ import com.cherrish.android.presentation.challenge.missionprogress.ChallengeMiss
 import com.cherrish.android.presentation.challenge.missionprogress.CherryType
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
 import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 private fun ChallengeMissionTodoList(
-    routines: List<DailyTodoRoutineModel>,
+    routines: ImmutableList<DailyTodoRoutineModel>,
     onRoutineClick: (Long) -> Unit
 ) {
     LazyColumn(
@@ -41,15 +45,38 @@ private fun ChallengeMissionTodoList(
             ChallengeChecklist(
                 isChecked = item.isCompleted,
                 onChecklistClick = { onRoutineClick(item.id) },
-                checklistContent = item.name
+                checklistContent = item.routine
             )
         }
     }
 }
 
 @Composable
+private fun ChallengeMissionTodoTitle(
+    currentDay: Int,
+    modifier : Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            "${currentDay}일",
+            color = CherrishTheme.colors.gray1000,
+            style = CherrishTheme.typography.body1SB14
+        )
+        Text(
+            "TO-DO 미션",
+            color = CherrishTheme.colors.gray1000,
+            style = CherrishTheme.typography.body1SB14
+        )
+    }
+}
+
+@Composable
 fun ChallengeMissionTodoSection(
-    uiState: ChallengeMissionProgressUiState,
+    routines: ImmutableList<DailyTodoRoutineModel>,
+    currentDay: Int,
     onRoutineClick: (Long) -> Unit,
     onCompleteClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -71,15 +98,12 @@ fun ChallengeMissionTodoSection(
             .padding(all = 18.dp)
 
     ) {
-        Text(
-            text = "${uiState.currentDay}일차 TO-DO 미션",
-            color = CherrishTheme.colors.gray1000,
-            style = CherrishTheme.typography.body1SB14,
+        ChallengeMissionTodoTitle(
+            currentDay = currentDay,
             modifier = Modifier.padding(bottom = 14.dp)
         )
-
         ChallengeMissionTodoList(
-            routines = uiState.routines,
+            routines = routines,
             onRoutineClick = onRoutineClick
         )
 
@@ -95,49 +119,40 @@ fun ChallengeMissionTodoSection(
 @Composable
 private fun ChallengeMissionTodoSectionPreview() {
     var routines by remember {
-        mutableStateOf(
-            listOf(
+        mutableStateOf<ImmutableList<DailyTodoRoutineModel>>(
+            persistentListOf(
                 DailyTodoRoutineModel(
                     id = 1,
-                    name = "선크림 바르기",
+                    routine = "선크림 바르기",
                     isCompleted = false
                 ),
                 DailyTodoRoutineModel(
                     id = 2,
-                    name = "진정 토너 + 세럼",
+                    routine = "진정 토너 + 세럼",
                     isCompleted = false
                 ),
                 DailyTodoRoutineModel(
                     id = 3,
-                    name = "미끄덩 거리는 로션",
+                    routine = "미끄덩 거리는 로션",
                     isCompleted = false
                 )
             )
         )
     }
 
-    val uiState = ChallengeMissionProgressUiState(
-        challenge = ChallengeInfoModel(
-            id = 1,
-            title = "웰니스 챌린지",
-            totalDays = 7
-        ),
-        currentDay = 3,
-        cherryType = CherryType.PPODUK,
-        remainingCount = 2,
-        routines = routines
-    )
-
     ChallengeMissionTodoSection(
-        uiState = uiState,
+        routines = routines,
+        currentDay = 5,
         onRoutineClick = { routineId ->
-            routines = routines.map {
-                if (it.id == routineId) {
-                    it.copy(isCompleted = !it.isCompleted)
-                } else {
-                    it
+            routines = routines
+                .map {
+                    if (it.id == routineId) {
+                        it.copy(isCompleted = !it.isCompleted)
+                    } else {
+                        it
+                    }
                 }
-            }
+                .toImmutableList()
         },
         onCompleteClick = {},
         modifier = Modifier.padding(20.dp)

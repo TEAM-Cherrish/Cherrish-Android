@@ -5,6 +5,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class DailyTodoRoutineModel(
     val id: Long,
-    val name: String,
+    val routine: String,
     val isCompleted: Boolean
 )

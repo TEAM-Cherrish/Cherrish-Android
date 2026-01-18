@@ -5,6 +5,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class ChallengeInfoModel(
     val id: Long,
-    val title: String,
-    val totalDays: Int
+    val challengeTitle: String,
+    val challengeTotalDays: Int
 )

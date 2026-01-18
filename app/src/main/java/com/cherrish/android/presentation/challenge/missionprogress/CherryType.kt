@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.challenge.missionprogress
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
 import com.cherrish.android.R
+
 @Immutable
 enum class CherryType(
     val step: Int,

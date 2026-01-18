@@ -31,10 +31,11 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 private fun CherryGrowthSection(
-    cherryType: CherryType
+    cherryType: CherryType,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
@@ -54,10 +55,11 @@ private fun CherryGrowthSection(
 @Composable
 private fun CherryGrowthProgressSection(
     challengeProgress: Int,
-    cherryType: CherryType
+    cherryType: CherryType,
+    modifier : Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
@@ -77,7 +79,8 @@ private fun CherryGrowthProgressSection(
 
     CherrishGaugeBar(
         currentStep = cherryType.step,
-        gauges = CherrishGaugeType.entries.toImmutableList()
+        gauges = CherrishGaugeType.entries.toImmutableList(),
+        modifier = modifier.padding()
     )
 }
 
@@ -102,18 +105,21 @@ fun ChallengeMissionProgressCherrygrowth(
                 color = CherrishTheme.colors.shadow
             )
             .clip(RoundedCornerShape(10.dp))
-            .background(CherrishTheme.colors.gray0)
             .background(
                 brush = Brush.linearGradient(
-                    colors = colors, // red200 -> gray0
+                    colors = colors,
                     start = Offset(x = 0f, y = 0f),
                     end = Offset(x = 0f, y = 230f)
                 )
-            )
-            .padding(18.dp),
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CherryGrowthSection(cherryType = cherryType)
+        CherryGrowthSection(
+            cherryType = cherryType,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 18.dp,top= 16.dp)
+        )
 
         Image(
             painter = painterResource(id = cherryType.imageRes),
@@ -124,7 +130,6 @@ fun ChallengeMissionProgressCherrygrowth(
             text = "체리가 크려면 ${remainingRoutines}개의 미션을 수행해야 해요!",
             color = CherrishTheme.colors.gray800,
             style = CherrishTheme.typography.body2R13,
-            textAlign = TextAlign.Center
         )
 
         HorizontalDivider(
@@ -137,7 +142,8 @@ fun ChallengeMissionProgressCherrygrowth(
 
         CherryGrowthProgressSection(
             challengeProgress = challengeProgress,
-            cherryType = cherryType
+            cherryType = cherryType,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp)
         )
     }
 }
