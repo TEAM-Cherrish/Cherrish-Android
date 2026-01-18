@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import com.cherrish.android.presentation.calendar.navigation.calendarNavGraph
+import calendarNavGraph
 import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph
 import com.cherrish.android.presentation.home.navigation.homeNavGraph
 import com.cherrish.android.presentation.main.component.MainBottomBar
@@ -43,7 +43,8 @@ fun MainScreen(
 
             calendarNavGraph(
                 paddingValues = innerPadding,
-                navController = appState.navController
+                navigateUp = appState::navigateUp,
+                navigateToProcedure = appState::navigateToProcedure
             )
 
             challengeNavGraph(paddingValues = innerPadding)
