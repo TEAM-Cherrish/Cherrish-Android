@@ -90,6 +90,7 @@ fun ChallengeMissionProgressCherrygrowth(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 18.dp)
+                .padding(bottom = 9.dp)
         )
     }
 }
