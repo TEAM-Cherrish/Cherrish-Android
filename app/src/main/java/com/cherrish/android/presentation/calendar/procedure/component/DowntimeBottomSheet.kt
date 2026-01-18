@@ -44,7 +44,7 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.type.CherrishButtonStyle
 import com.cherrish.android.core.util.rememberFixedDpFontSize
-import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
+import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

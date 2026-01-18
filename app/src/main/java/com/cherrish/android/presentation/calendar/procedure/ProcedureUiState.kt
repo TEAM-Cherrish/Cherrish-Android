@@ -3,13 +3,17 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
+import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
+import com.cherrish.android.presentation.calendar.procedure.util.DowntimeDayLogic
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -143,27 +147,49 @@ data class ProcedureUiState(
             }
             .toImmutableList()
 
+    private val targetDate: LocalDate?
+        get() = try {
+            if (year.isNotBlank() && month.isNotBlank() && day.isNotBlank()) {
+                LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+
     val downtimeDay: Int
         get() = downtimePickerValue
 
     val spareTimeDay: Int
         get() {
-            val totalDays = 30
+            val target = targetDate ?: return 0
+            val totalDays = ChronoUnit.DAYS.between(LocalDate.now(), target).toInt()
             return (totalDays - downtimePickerValue).coerceAtLeast(0)
         }
 
     val downtimeValidationType: DowntimeValidationType
-        get() = if (downtimePickerValue <= 30) {
-            DowntimeValidationType.VALID
-        } else {
-            DowntimeValidationType.EXCEEDS_GOAL
+        get() {
+            val target = targetDate ?: return DowntimeValidationType.VALID
+            val logic = DowntimeDayLogic(
+                endDay = target,
+                downtimeDay = downtimePickerValue
+            )
+            return logic.downtimeValidationType
         }
 
     val downtimeStartDay: String
-        get() = "2024.01.01"
+        get() {
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            return LocalDate.now().format(formatter)
+        }
 
     val downtimeEndDay: String
-        get() = "2024.01.$downtimePickerValue"
+        get() {
+            val target = targetDate ?: return ""
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            return target.format(formatter)
+        }
 
     companion object {
 

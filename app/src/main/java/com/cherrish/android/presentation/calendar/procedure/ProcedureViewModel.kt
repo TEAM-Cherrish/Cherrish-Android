@@ -244,7 +244,7 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
                 )
             }
 
-            // TODO: 서버에 시술 정보 저장
+            // TODO: 서버에 <procedureId, downtime>
 
             println("전송할 데이터: $proceduresWithDowntime")
 
