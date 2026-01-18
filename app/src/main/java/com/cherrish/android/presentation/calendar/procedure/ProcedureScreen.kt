@@ -194,6 +194,7 @@ fun ProcedureScreen(
                                 onYearChange = onYearChange,
                                 onMonthChange = onMonthChange,
                                 onDayChange = onDayChange,
+                                errorMessage = uiState.dateErrorMessage,
                                 modifier = Modifier.padding(horizontal = 26.dp)
                             )
                         }

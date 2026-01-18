@@ -49,6 +49,24 @@ data class ProcedureUiState(
 
     val screenHeightDp: Float = 0f
 ) {
+    val dateErrorMessage: String? = run {
+        if (year.isBlank() || month.isBlank() || day.isBlank()) {
+            return@run null
+        }
+
+        try {
+            val inputDate = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+            val today = LocalDate.now()
+
+            when {
+                inputDate.isBefore(today) -> "이미 지난 날짜는 입력할 수 없어요."
+                else -> null
+            }
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
     val showStepProgressBar: Boolean = flow != ProcedureFlow.Entry
 
     val title: String = when (flow) {
@@ -128,7 +146,8 @@ data class ProcedureUiState(
             ProcedureStep.RecoverySchedule -> {
                 val hasChoice = recoverySelectedIndex != null
                 val hasDate = year.isNotBlank() && month.isNotBlank() && day.isNotBlank()
-                hasChoice && hasDate
+                val hasNoError = dateErrorMessage == null
+                hasChoice && hasDate && hasNoError
             }
 
             ProcedureStep.FilteringWithSearch -> selectedProcedureCardIds.isNotEmpty()
@@ -143,7 +162,8 @@ data class ProcedureUiState(
             ProcedureStep.RecoverySchedule -> {
                 val hasChoice = recoverySelectedIndex != null
                 val hasDate = year.isNotBlank() && month.isNotBlank() && day.isNotBlank()
-                hasChoice && hasDate
+                val hasNoError = dateErrorMessage == null
+                hasChoice && hasDate && hasNoError
             }
 
             ProcedureStep.Filtering -> selectedProcedureCardIds.isNotEmpty()
