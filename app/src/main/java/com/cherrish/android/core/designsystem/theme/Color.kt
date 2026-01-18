@@ -75,7 +75,7 @@ data class CherrishColors(
     val graStart: Color,
     val graEnd: Color,
 
-    val bottomSheetScrimColor: Color,
+    val bottomSheetScrimColor: Color
 )
 
 val defaultCherrishColors = CherrishColors(
