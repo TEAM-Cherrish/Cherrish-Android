@@ -112,8 +112,8 @@ private fun InformationScreen(
             },
             keyboardType = KeyboardType.Text,
             errorText = "이름은 최대 7자까지 입력 가능합니다.",
-            errorCase = nameErrorCase,
-            )
+            errorCase = nameErrorCase
+        )
 
         Spacer(modifier = Modifier.weight(30f))
 
