@@ -1,21 +1,26 @@
 package com.cherrish.android.presentation.splash
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.R
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import kotlinx.coroutines.delay
 
@@ -23,7 +28,7 @@ import kotlinx.coroutines.delay
 fun SplashRoute(
     navigateToOnboarding: () -> Unit,
     paddingValues: PaddingValues,
-){
+) {
     LaunchedEffect(Unit) {
         delay(3000)
         navigateToOnboarding()
@@ -51,36 +56,25 @@ private fun SplashScreen(
                 )
                 drawRect(brush)
             }
-            .padding( paddingValues)
+            .padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(109f))
+        Spacer(modifier = Modifier.weight(283f))
 
-        // TODO: 임시 텍스트, 로고 들어갈 예정
-        Text(
-            text = "Cherrish",
-            style = CherrishTheme.typography.title1M18,
-            color = CherrishTheme.colors.red600,
-            modifier = Modifier
-                .padding(start = 33.dp)
+        Image(
+            painter = painterResource(id = R.drawable.ic_app_logo),
+            contentDescription = null,
+            modifier = Modifier.size(width = 114.dp, height = 100.dp),
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        Text(
-            text = "디데이를 기준으로,\n다운타임 회복을 관리하는 뷰티 캘린더",
-            style = CherrishTheme.typography.title1M18,
-            color = CherrishTheme.colors.gray600,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+        Image(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo_title),
+            contentDescription = null
         )
 
-        Spacer(modifier = Modifier.weight(66f))
-
-        // TODO: 추후 이미지 들어갈 자리
-
-        Spacer(modifier = Modifier.weight(213f))
-
+        Spacer(modifier = Modifier.weight(298f))
     }
 }
 
