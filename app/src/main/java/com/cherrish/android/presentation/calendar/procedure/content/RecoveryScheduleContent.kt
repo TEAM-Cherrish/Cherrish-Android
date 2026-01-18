@@ -36,8 +36,8 @@ fun RecoveryScheduleContent(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
-    errorMessage: String? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    errorMessage: String? = null
 ) {
     val hasSelection = selectedIndex != null && selectedIndex >= 0
 
