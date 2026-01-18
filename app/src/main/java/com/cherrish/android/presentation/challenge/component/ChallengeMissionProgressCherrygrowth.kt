@@ -27,6 +27,7 @@ import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.missionprogress.CherryType
 import kotlinx.collections.immutable.toImmutableList
+
 @Composable
 fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,

@@ -56,6 +56,7 @@ fun ChallengeMissionTodoSection(
             currentDay = currentDay,
             modifier = Modifier.padding(bottom = 14.dp)
         )
+
         ChallengeMissionTodoList(
             routines = routines,
             onRoutineClick = onRoutineClick
