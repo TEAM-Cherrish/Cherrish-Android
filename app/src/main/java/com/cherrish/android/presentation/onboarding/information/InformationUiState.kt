@@ -10,3 +10,7 @@ data class InformationUiState(
     val buttonEnabled: Boolean
         get() = username.isNotBlank() && age.toIntOrNull()?.let { it > 0 } == true
 }
+
+sealed interface InformationSideEffect{
+    data object NavigateToHome: InformationSideEffect
+}

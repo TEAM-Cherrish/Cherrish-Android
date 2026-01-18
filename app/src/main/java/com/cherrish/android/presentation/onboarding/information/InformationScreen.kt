@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,17 +31,28 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.addFocusCleaner
+import com.cherrish.android.core.common.extension.advancedImePadding
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.information.extension.AgeSuffixTransformation
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun InformationRoute(
     paddingValues: PaddingValues,
+    navigateToHome: () -> Unit,
     viewModel: InformationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collectLatest { sideEffect ->
+            when (sideEffect) {
+                InformationSideEffect.NavigateToHome -> navigateToHome()
+            }
+        }
+    }
 
     InformationScreen(
         paddingValues = paddingValues,
@@ -75,6 +88,7 @@ private fun InformationScreen(
             .background(color = CherrishTheme.colors.gray0)
             .addFocusCleaner(focusManager)
             .padding(paddingValues = paddingValues)
+            .advancedImePadding()
     ) {
         Spacer(modifier = Modifier.weight(135f))
 
@@ -173,13 +187,14 @@ private fun UserInfoTextField(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
             text = textFieldName,
             style = CherrishTheme.typography.body1SB14,
             color = CherrishTheme.colors.gray1000
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         CherrishTextField(
             value = value,
@@ -197,6 +212,9 @@ private fun UserInfoTextField(
             visualTransformation = visualTransformation,
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
     }
 }
 
