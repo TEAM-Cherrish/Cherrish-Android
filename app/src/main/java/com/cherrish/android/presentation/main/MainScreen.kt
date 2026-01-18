@@ -14,6 +14,7 @@ import com.cherrish.android.presentation.home.navigation.homeNavGraph
 import com.cherrish.android.presentation.main.component.MainBottomBar
 import com.cherrish.android.presentation.mypage.navigation.myPageNavGraph
 import com.cherrish.android.presentation.onboarding.information.navigation.onboardingInformationNavGraph
+import com.cherrish.android.presentation.splash.navigation.splashNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -52,6 +53,11 @@ fun MainScreen(
             navController = appState.navController,
             startDestination = appState.startDestination
         ) {
+            splashNavGraph(
+                navigateToOnboarding = {}, // TODO: 로직 넣어서 바꿀 예정
+                paddingValues = innerPadding
+            )
+
             onboardingInformationNavGraph(
                 paddingValues = innerPadding,
                 navigateToHome = {

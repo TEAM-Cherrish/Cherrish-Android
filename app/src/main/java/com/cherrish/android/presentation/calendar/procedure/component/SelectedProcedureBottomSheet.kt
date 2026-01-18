@@ -1,14 +1,19 @@
 package com.cherrish.android.presentation.calendar.procedure.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,7 +21,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -29,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -47,7 +52,6 @@ import kotlinx.collections.immutable.toPersistentList
 fun SelectedProcedureBottomSheet(
     isVisible: Boolean,
     selectedProcedure: ImmutableList<SelectedProcedureModel>,
-    onDismiss: () -> Unit,
     onDeletedClick: (Long) -> Unit,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -68,46 +72,38 @@ fun SelectedProcedureBottomSheet(
     val maxSheetHeight = screenHeightDp * 0.36f
     val listState = rememberLazyListState()
 
-    val isFirstItemVisible = remember(selectedProcedure.size) {
-        derivedStateOf {
-            val firstVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
-            firstVisibleItem?.index == 0
-        }
+    val showTopGradient = remember {
+        derivedStateOf { listState.canScrollBackward }
     }
 
-    val isLastItemVisible = remember(selectedProcedure.size) {
-        derivedStateOf {
-            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            val lastItemIndex = selectedProcedure.size - 1
-            lastVisibleItem?.index == lastItemIndex
-        }
+    val showBottomGradient = remember {
+        derivedStateOf { listState.canScrollForward }
     }
 
     if (sheetState.isVisible) {
-        ModalBottomSheet(
-            onDismissRequest = onDismiss,
-            sheetState = sheetState,
-            modifier = modifier
-                .fillMaxWidth()
-                .dropShadow(
-                    shape = RoundedCornerShape(10.dp),
-                    color = CherrishTheme.colors.shadow,
-                    blur = 10.dp,
-                    offsetX = 0.dp,
-                    offsetY = 0.dp,
-                    spread = 0.dp
-                ),
-            containerColor = CherrishTheme.colors.gray0,
-            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
-            dragHandle = null
+        Box(
+            modifier = modifier.fillMaxSize()
+                .background(Color.Transparent)
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .heightIn(max = maxSheetHeight)
+                    .dropShadow(
+                        shape = RoundedCornerShape(10.dp),
+                        color = CherrishTheme.colors.shadow,
+                        blur = 10.dp,
+                        offsetX = 0.dp,
+                        offsetY = (-5).dp,
+                        spread = 0.dp
+                    )
+                    .clip(shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
+                    .background(color = CherrishTheme.colors.gray0)
+                    .navigationBarsPadding()
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(max = maxSheetHeight),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -124,26 +120,79 @@ fun SelectedProcedureBottomSheet(
                         color = CherrishTheme.colors.gray400
                     )
 
-                    LazyColumn(
-                        state = listState,
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f, fill = false)
-                            .padding(horizontal = 24.dp),
-                        contentPadding = PaddingValues(top = 14.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(
-                            items = selectedProcedure,
-                            key = { it.procedureId }
-                        ) { procedure ->
-                            SelectedProcedureItem(
-                                procedureId = procedure.procedureId,
-                                procedureName = procedure.procedureName,
-                                minDowntimeDays = procedure.minDowntimeDays,
-                                maxDowntimeDays = procedure.maxDowntimeDays,
-                                onDeletedClick = { onDeletedClick(procedure.procedureId) }
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            contentPadding = PaddingValues(top = 14.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(
+                                items = selectedProcedure,
+                                key = { it.procedureId }
+                            ) { procedure ->
+                                SelectedProcedureItem(
+                                    procedureId = procedure.procedureId,
+                                    procedureName = procedure.procedureName,
+                                    minDowntimeDays = procedure.minDowntimeDays,
+                                    maxDowntimeDays = procedure.maxDowntimeDays,
+                                    onDeletedClick = { onDeletedClick(procedure.procedureId) }
+                                )
+                            }
+                        }
+
+                        this@Column.AnimatedVisibility(
+                            visible = showTopGradient.value,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            modifier = Modifier.align(Alignment.TopCenter)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp)
+                                    .height(60.dp)
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                CherrishTheme.colors.gray0,
+                                                CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                                CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                                Color.Transparent
+                                            )
+                                        )
+                                    )
+                            )
+                        }
+
+                        this@Column.AnimatedVisibility(
+                            visible = showBottomGradient.value,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp)
+                                    .height(60.dp)
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                Color.Transparent,
+                                                CherrishTheme.colors.gray0.copy(alpha = 0.5f),
+                                                CherrishTheme.colors.gray0.copy(alpha = 0.8f),
+                                                CherrishTheme.colors.gray0
+                                            )
+                                        )
+                                    )
                             )
                         }
                     }
@@ -157,46 +206,6 @@ fun SelectedProcedureBottomSheet(
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp)
                             .padding(bottom = 20.dp)
-                    )
-                }
-
-                if (!isFirstItemVisible.value) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .fillMaxWidth()
-                            .padding(top = 49.dp)
-                            .height(70.dp)
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        CherrishTheme.colors.gray0,
-                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-                }
-
-                if (!isLastItemVisible.value) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .fillMaxWidth()
-                            .padding(bottom = 68.dp)
-                            .height(70.dp)
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Transparent,
-                                        CherrishTheme.colors.gray0.copy(alpha = 0.5f),
-                                        CherrishTheme.colors.gray0.copy(alpha = 0.8f),
-                                        CherrishTheme.colors.gray0
-                                    )
-                                )
-                            )
                     )
                 }
             }
@@ -268,7 +277,6 @@ private fun SelectedProcedureBottomSheetPreview() {
         SelectedProcedureBottomSheet(
             isVisible = isSheetVisible,
             selectedProcedure = selectedProcedures,
-            onDismiss = { isSheetVisible = false },
             onDeletedClick = { procedureId ->
                 val newList = selectedProcedures
                     .filter { it.procedureId != procedureId }

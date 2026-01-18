@@ -51,7 +51,7 @@ fun ChallengeMissionCardChip(
             .padding(vertical = 14.dp)
             .padding(start = 14.dp, end = 44.dp)
             .noRippleClickable(onClick = onClick),
-        horizontalArrangement = Arrangement.spacedBy(space = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -78,12 +78,12 @@ fun ChallengeMissionCardChip(
 @Composable
 private fun ChallengeMissionCardChipPreview() {
     CherrishTheme {
-        var selected by remember { mutableStateOf(value = false) }
+        var isSelected by remember { mutableStateOf(value = false) }
 
         ChallengeMissionCardChip(
             text = "선크림 3번 바르기",
-            isSelected = selected,
-            onClick = { selected = !selected }
+            isSelected = isSelected,
+            onClick = { isSelected = !isSelected }
         )
     }
 }

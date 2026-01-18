@@ -37,6 +37,9 @@ val green3 = Color(0xFF9AD342)
 
 val shadow = Color(0xFF9098A7).copy(alpha = 0.12f)
 
+val gradation = Color(0xFFFFFDFD)
+val gradation2 = Color(0xFFFAE0E6)
+
 val graStart = Color(0xFFFFF7f7)
 val graEnd = Color(0xFFFFFDFD)
 
@@ -72,6 +75,9 @@ data class CherrishColors(
 
     val shadow: Color,
 
+    val gradation: Color,
+    val gradation2: Color,
+
     val graStart: Color,
     val graEnd: Color,
 
@@ -106,6 +112,9 @@ val defaultCherrishColors = CherrishColors(
     green3 = green3,
 
     shadow = shadow,
+
+    gradation = gradation,
+    gradation2 = gradation2,
 
     graStart = graStart,
     graEnd = graEnd,
@@ -230,6 +239,16 @@ private fun CherrishGrayColorsPreview() {
                 text = "Shadow",
                 style = CherrishTheme.typography.body1M14,
                 color = CherrishTheme.colors.shadow
+            )
+            Text(
+                text = "Gradation",
+                style = CherrishTheme.typography.body1M14,
+                color = CherrishTheme.colors.gradation
+            )
+            Text(
+                text = "Gradation2",
+                style = CherrishTheme.typography.body1M14,
+                color = CherrishTheme.colors.gradation2
             )
             Text(
                 text = "GraStart",

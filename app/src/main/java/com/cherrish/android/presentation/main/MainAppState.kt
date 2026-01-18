@@ -13,8 +13,8 @@ import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
-import com.cherrish.android.presentation.onboarding.information.navigation.OnboardingInformation
 import com.cherrish.android.presentation.onboarding.information.navigation.navigateToOnboardingInformation
+import com.cherrish.android.presentation.splash.navigation.Splash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +26,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope
 ) {
-    val startDestination = OnboardingInformation
+    val startDestination = Splash
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }

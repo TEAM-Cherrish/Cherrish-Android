@@ -52,13 +52,13 @@ fun ChallengeChecklist(
                 color = CherrishTheme.colors.gray500,
                 shape = RoundedCornerShape(10.dp)
             )
+            .noRippleClickable(onClick = onChecklistClick)
             .background(color = CherrishTheme.colors.gray0)
             .padding(vertical = 12.dp)
             .padding(start = 14.dp)
     ) {
         ChallengeChecklistItem(
             checklistIcon = checklistIcon,
-            onChecklistClick = onChecklistClick,
             checklistContent = checklistContent,
             contentColor = contentColor,
             contentDecoration = contentDecoration
@@ -69,7 +69,6 @@ fun ChallengeChecklist(
 @Composable
 private fun ChallengeChecklistItem(
     @DrawableRes checklistIcon: Int,
-    onChecklistClick: () -> Unit,
     checklistContent: String,
     contentColor: Color,
     contentDecoration: TextDecoration,
@@ -83,9 +82,6 @@ private fun ChallengeChecklistItem(
         Icon(
             imageVector = ImageVector.vectorResource(id = checklistIcon),
             contentDescription = null,
-            modifier = Modifier.noRippleClickable(
-                onClick = onChecklistClick
-            ),
             tint = Color.Unspecified
         )
 
