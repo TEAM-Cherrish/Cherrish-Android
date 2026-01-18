@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class ChallengeRoutineUiState(
     val routine: String = "",
-
     val isSelected: Boolean = false
 ) {
     companion object {
