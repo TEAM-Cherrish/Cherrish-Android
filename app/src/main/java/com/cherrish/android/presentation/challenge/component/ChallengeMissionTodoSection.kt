@@ -28,49 +28,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-private fun ChallengeMissionTodoList(
-    routines: ImmutableList<DailyTodoRoutineModel>,
-    onRoutineClick: (Long) -> Unit
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(
-            items = routines,
-            key = { it.id }
-        ) { item ->
-            ChallengeChecklist(
-                isChecked = item.isCompleted,
-                onChecklistClick = { onRoutineClick(item.id) },
-                checklistContent = item.routine
-            )
-        }
-    }
-}
-
-@Composable
-private fun ChallengeMissionTodoTitle(
-    currentDay: Int,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            "${currentDay}일",
-            color = CherrishTheme.colors.gray1000,
-            style = CherrishTheme.typography.body1SB14
-        )
-        Text(
-            "TO-DO 미션",
-            color = CherrishTheme.colors.gray1000,
-            style = CherrishTheme.typography.body1SB14
-        )
-    }
-}
-
-@Composable
 fun ChallengeMissionTodoSection(
     routines: ImmutableList<DailyTodoRoutineModel>,
     currentDay: Int,
@@ -108,6 +65,50 @@ fun ChallengeMissionTodoSection(
             text = "오늘 미션 종료하기",
             onClick = onCompleteClick,
             modifier = Modifier.padding(top = 10.dp)
+        )
+    }
+}
+
+@Composable
+private fun ChallengeMissionTodoList(
+    routines: ImmutableList<DailyTodoRoutineModel>,
+    onRoutineClick: (Long) -> Unit
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(
+            items = routines,
+            key = { it.id }
+        ) { item ->
+            ChallengeChecklist(
+                isChecked = item.isCompleted,
+                onChecklistClick = { onRoutineClick(item.id) },
+                checklistContent = item.routine
+            )
+        }
+    }
+}
+
+@Composable
+private fun ChallengeMissionTodoTitle(
+    currentDay: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            text = "${currentDay}일차",
+            color = CherrishTheme.colors.gray1000,
+            style = CherrishTheme.typography.body1SB14
+        )
+
+        Text(
+            text = "TO-DO 미션",
+            color = CherrishTheme.colors.gray1000,
+            style = CherrishTheme.typography.body1SB14
         )
     }
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,68 +27,6 @@ import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.missionprogress.CherryType
 import kotlinx.collections.immutable.toImmutableList
-
-@Composable
-private fun CherryGrowthSection(
-    cherryType: CherryType,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        Text(
-            text = "Lv.${cherryType.level}",
-            color = CherrishTheme.colors.gray900,
-            style = CherrishTheme.typography.body1M14
-        )
-
-        Text(
-            text = cherryType.stageName,
-            color = CherrishTheme.colors.gray900,
-            style = CherrishTheme.typography.body1M14
-        )
-    }
-}
-
-@Composable
-private fun  CherryGrowthProgressSection(
-    challengeProgress: Int,
-    cherryType: CherryType,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
-        ) {
-
-            Text(
-                text = "챌린지 달성률",
-                color = CherrishTheme.colors.gray900,
-                style = CherrishTheme.typography.body1M14
-            )
-
-            Text(
-                text = "$challengeProgress%",
-                color = CherrishTheme.colors.gray900,
-                style = CherrishTheme.typography.body1M14
-            )
-        }
-
-        CherrishGaugeBar(
-            currentStep = cherryType.step,
-            gauges = CherrishGaugeType.entries.toImmutableList()
-
-        )
-    }
-}
-
 @Composable
 fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,
@@ -102,7 +39,6 @@ fun ChallengeMissionProgressCherrygrowth(
     Column(
         modifier = modifier
             .fillMaxWidth()
-
             .dropShadow(
                 shape = RoundedCornerShape(10.dp),
                 blur = 10.dp,
@@ -125,7 +61,7 @@ fun ChallengeMissionProgressCherrygrowth(
             cherryType = cherryType,
             modifier = Modifier
                 .fillMaxWidth()
-                           .padding(start = 18.dp, top = 16.dp)
+                .padding(start = 18.dp, top = 16.dp)
         )
 
         Image(
@@ -153,6 +89,65 @@ fun ChallengeMissionProgressCherrygrowth(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 18.dp)
+        )
+    }
+}
+
+@Composable
+private fun CherryGrowthSection(
+    cherryType: CherryType,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Text(
+            text = "Lv.${cherryType.level}",
+            color = CherrishTheme.colors.gray900,
+            style = CherrishTheme.typography.body1M14
+        )
+
+        Text(
+            text = cherryType.stageName,
+            color = CherrishTheme.colors.gray900,
+            style = CherrishTheme.typography.body1M14
+        )
+    }
+}
+
+@Composable
+private fun CherryGrowthProgressSection(
+    challengeProgress: Int,
+    cherryType: CherryType,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
+        ) {
+            Text(
+                text = "챌린지 달성률",
+                color = CherrishTheme.colors.gray900,
+                style = CherrishTheme.typography.body1M14
+            )
+
+            Text(
+                text = "$challengeProgress%",
+                color = CherrishTheme.colors.gray900,
+                style = CherrishTheme.typography.body1M14
+            )
+        }
+
+        CherrishGaugeBar(
+            currentStep = cherryType.step,
+            gauges = CherrishGaugeType.entries.toImmutableList()
+
         )
     }
 }
