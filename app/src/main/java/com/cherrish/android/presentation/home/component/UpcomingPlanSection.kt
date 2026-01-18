@@ -113,7 +113,7 @@ private fun UpcomingPlan(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 26.dp, end = 16.dp)
+            .padding(start = 26.dp, end = 16.dp, top = 11.dp)
     ) {
         plans.forEachIndexed { index, plan ->
             key("${plan.upcomingPlanDate}-$index") {
