@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +21,14 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.mission.ChallengeMissionUiState
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeMissionOnboardingBody(
-    items: List<ChallengeMissionUiState>,
+    items: ImmutableList<ChallengeMissionModel>,
+    selectedMissionIds: Set<Int>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -50,11 +53,18 @@ fun ChallengeMissionOnboardingBody(
             verticalArrangement = Arrangement.spacedBy(space = 8.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
-            itemsIndexed(items = items) { index, item ->
+
+
+            items(
+                items = items,
+                key = { it.id }
+            ) {
+
+                    item ->
                 ChallengeMissionCardChip(
-                    text = item.mission.missionContent,
-                    isSelected = item.isSelected,
-                    onClick = { onItemClick(index) }
+                    text = item.missionContent,
+                    isSelected = item.id in selectedMissionIds,
+                    onClick = { onItemClick(item.id) }
                 )
             }
         }
@@ -65,55 +75,26 @@ fun ChallengeMissionOnboardingBody(
 @Composable
 private fun ChallengeRoutineOnboardingMissionPreview() {
     CherrishTheme {
-        var routineItems by remember {
-            mutableStateOf(
-                value = persistentListOf(
-                    ChallengeMissionUiState(
-                        mission = ChallengeMissionModel(
-                            id = 1,
-                            missionContent = "아침 세안 후 토너 바르기"
-                        )
-                    ),
-                    ChallengeMissionUiState(
-                        mission = ChallengeMissionModel(
-                            id = 2,
-                            missionContent = "수분 에센스 2-3방울 흡수"
-                        )
-                    ),
-                    ChallengeMissionUiState(
-                        mission = ChallengeMissionModel(
-                            id = 3,
-                            missionContent = "보습 크림으로 마무리"
-                        )
-                    ),
-                    ChallengeMissionUiState(
-                        mission = ChallengeMissionModel(
-                            id = 4,
-                            missionContent = "저녁 클렌징 꼼꼼히 하기"
-                        )
-                    ),
-                    ChallengeMissionUiState(
-                        mission = ChallengeMissionModel(
-                            id = 5,
-                            missionContent = "수분 마스크팩 (주 2-3회)"
-                        )
-                    )
-                )
-            )
-        }
+        var selectedMissionIds by remember { mutableStateOf<Set<Int>>(emptySet()) }
+
+        val missions = persistentListOf(
+            ChallengeMissionModel(1, "아침 세안 후 토너 바르기"),
+            ChallengeMissionModel(2, "수분 에센스 2-3방울 흡수"),
+            ChallengeMissionModel(3, "보습 크림으로 마무리"),
+            ChallengeMissionModel(4, "저녁 클렌징 꼼꼼히 하기"),
+            ChallengeMissionModel(5, "수분 마스크팩 (주 2-3회)")
+        )
 
         ChallengeMissionOnboardingBody(
-            items = routineItems,
-            onItemClick = { clickedIndex ->
-                routineItems = routineItems
-                    .mapIndexed { index, item ->
-                        if (index == clickedIndex) {
-                            item.copy(isSelected = !item.isSelected)
-                        } else {
-                            item
-                        }
+            items = missions,
+            selectedMissionIds = selectedMissionIds,
+            onItemClick = { clickedId ->
+                selectedMissionIds =
+                    if (clickedId in selectedMissionIds) {
+                        selectedMissionIds - clickedId
+                    } else {
+                        selectedMissionIds + clickedId
                     }
-                    .toPersistentList()
             },
             modifier = Modifier.padding(26.dp)
         )
