@@ -64,7 +64,7 @@ fun ChallengeSection(
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo_title),
                 contentDescription = null
             )
 
