@@ -22,9 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.challenge.missionprogress.ChallengeMissionProgressUiState
-import com.cherrish.android.presentation.challenge.missionprogress.CherryType
-import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
 import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -54,7 +51,7 @@ private fun ChallengeMissionTodoList(
 @Composable
 private fun ChallengeMissionTodoTitle(
     currentDay: Int,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),

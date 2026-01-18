@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
@@ -56,7 +55,7 @@ private fun CherryGrowthSection(
 private fun CherryGrowthProgressSection(
     challengeProgress: Int,
     cherryType: CherryType,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -118,7 +117,7 @@ fun ChallengeMissionProgressCherrygrowth(
             cherryType = cherryType,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 18.dp,top= 16.dp)
+                .padding(start = 18.dp, top = 16.dp)
         )
 
         Image(
@@ -129,7 +128,7 @@ fun ChallengeMissionProgressCherrygrowth(
         Text(
             text = "체리가 크려면 ${remainingRoutines}개의 미션을 수행해야 해요!",
             color = CherrishTheme.colors.gray800,
-            style = CherrishTheme.typography.body2R13,
+            style = CherrishTheme.typography.body2R13
         )
 
         HorizontalDivider(
