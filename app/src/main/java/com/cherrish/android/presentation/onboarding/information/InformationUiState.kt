@@ -10,7 +10,8 @@ data class InformationUiState(
     val buttonEnabled: Boolean
         get() {
             val ageInt = age.toIntOrNull() ?: return false
-            return username.isNotBlank() && age.toIntOrNull()?.let { it > 0 } == true && ageInt in 1..100 && username.length <= 7
+            return username.isNotBlank() && age.toIntOrNull()?.let { it > 0 } == true &&
+                ageInt in 1..100 && username.length <= 7
         }
 }
 
