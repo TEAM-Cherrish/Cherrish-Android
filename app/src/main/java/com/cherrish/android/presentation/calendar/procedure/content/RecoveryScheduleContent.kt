@@ -174,8 +174,7 @@ private fun DateInputBasicSection(
 
 @Composable
 private fun ErrorMessage(
-    message: String,
-    modifier: Modifier = Modifier
+    message: String
 ) {
     Text(
         text = message,
