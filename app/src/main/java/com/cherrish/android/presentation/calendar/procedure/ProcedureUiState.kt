@@ -76,7 +76,7 @@ data class ProcedureUiState(
             ProcedureStep.RecoverySchedule -> "목표 디데이 설정"
             ProcedureStep.FilteringWithSearch -> "시술 필터링"
             ProcedureStep.Downtime -> "다운타임 설정"
-            else -> "시술 관리"
+            else -> ""
         }
 
         ProcedureFlow.NoTreat -> when (step) {
@@ -84,14 +84,14 @@ data class ProcedureUiState(
             ProcedureStep.RecoverySchedule -> "목표 디데이 설정"
             ProcedureStep.Filtering -> "시술 필터링"
             ProcedureStep.Downtime -> "다운타임 설정"
-            else -> "시술 관리"
+            else -> ""
         }
     }
 
     val contentTopPadding: Dp = when {
         flow == ProcedureFlow.Entry -> 84.dp
         step == ProcedureStep.Filtering -> 20.dp
-        step == ProcedureStep.FilteringWithSearch -> 24.dp
+        step == ProcedureStep.FilteringWithSearch -> 20.dp
         step == ProcedureStep.Downtime -> 20.dp
         else -> 60.dp
     }
@@ -210,7 +210,7 @@ data class ProcedureUiState(
 
     val downtimeValidationType: DowntimeValidationType
         get() {
-            val target = targetDate ?: return DowntimeValidationType.VALID
+            val target = targetDate ?: return DowntimeValidationType.INVALID
             val logic = DowntimeDayLogic(
                 endDay = target,
                 downtimeDay = downtimePickerValue
