@@ -7,5 +7,5 @@ data class ProcedureInfoModel(
     val procedureId: Long,
     val procedureName: String,
     val procedureDay: String,
-    val downTimeDuration: Int?
+    val downTimeDuration: Int
 )
