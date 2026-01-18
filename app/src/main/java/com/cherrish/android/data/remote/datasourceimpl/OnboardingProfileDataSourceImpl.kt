@@ -10,7 +10,9 @@ import javax.inject.Inject
 class OnboardingProfileDataSourceImpl @Inject constructor(
     private val onboardingProfileService: OnboardingProfileService
 ) : OnboardingProfileDataSource {
-    override suspend fun postOnboardingProfile(request: OnboardingProfileRequestDto): BaseResponse<OnboardingProfileResponseDto> {
+    override suspend fun postOnboardingProfile(
+        request: OnboardingProfileRequestDto
+    ): BaseResponse<OnboardingProfileResponseDto> {
         return onboardingProfileService.postOnboardingProfile(request)
     }
 }
