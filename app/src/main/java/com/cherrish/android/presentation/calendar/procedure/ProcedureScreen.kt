@@ -182,7 +182,7 @@ fun ProcedureScreen(
                                 worries = uiState.worries,
                                 selectedWorryId = uiState.selectedWorryId,
                                 onWorryClick = onWorryClick,
-                                modifier = modifier.padding(horizontal = 26.dp)
+                                modifier = Modifier.padding(horizontal = 26.dp)
                             )
                         }
 
