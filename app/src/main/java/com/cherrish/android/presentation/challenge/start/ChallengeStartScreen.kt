@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.challenge
+package com.cherrish.android.presentation.challenge.start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,26 +19,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
-import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-fun ChallengeStartRoute(paddingValues: PaddingValues) {
-    ChallengeStartScreen(paddingValues = paddingValues)
+fun ChallengeStartRoute(
+    paddingValues: PaddingValues,
+    viewModel: ChallengeStartViewModel = hiltViewModel()
+
+) {
+    ChallengeStartScreen(
+        paddingValues = paddingValues,
+        onNextClick = viewModel::onNextClick
+    )
 }
 
 @Composable
 private fun ChallengeStartScreen(
     paddingValues: PaddingValues,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(paddingValues)
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(paddingValues)
     ) {
-
         Spacer(modifier = Modifier.weight(98f))
 
         ChallengeStartTitle(modifier = Modifier.fillMaxWidth())
@@ -61,16 +67,17 @@ private fun ChallengeStartScreen(
 
         CherrishButton(
             text = "다음",
-            onClick = {}
+            onClick = { onNextClick }
         )
 
         Spacer(modifier = Modifier.weight(34f))
-
     }
 }
 
 @Composable
-private fun ChallengeStartInfo(modifier: Modifier = Modifier) {
+private fun ChallengeStartInfo(
+    modifier: Modifier = Modifier
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -79,7 +86,7 @@ private fun ChallengeStartInfo(modifier: Modifier = Modifier) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_challenge_info),
             contentDescription = null,
-            tint = CherrishTheme.colors.gray600,
+            tint = CherrishTheme.colors.gray600
         )
 
         Text(
@@ -104,12 +111,16 @@ private fun ChallengeStartTitle(modifier: Modifier = Modifier) {
             color = CherrishTheme.colors.gray800,
             style = CherrishTheme.typography.title2M16
         )
-
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun ChallengeStartScreenPreview() {
-    ChallengeStartScreen(paddingValues = PaddingValues(horizontal = 17.dp))
+    CherrishTheme {
+        ChallengeStartScreen(
+            paddingValues = PaddingValues(horizontal = 17.dp),
+            onNextClick = { }
+        )
+    }
 }
