@@ -86,7 +86,7 @@ private val mockProcedureCardItems = persistentListOf(
 fun FilteringContent(
     name: String,
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
-    selectedCardId: Long?,
+    selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -113,7 +113,7 @@ fun FilteringContent(
                 minDowntimeDays = item.minDowntimeDays,
                 maxDowntimeDays = item.maxDowntimeDays,
                 onCardClick = { onCardClick(item.id) },
-                isSelected = selectedCardId == item.id,
+                isSelected = item.id in selectedCardIds,
                 displayMode = item.displayMode,
                 modifier = Modifier
                     .padding(bottom = 10.dp)
@@ -127,14 +127,20 @@ fun FilteringContent(
 @Composable
 private fun FilteringContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var selectedCardIds by remember { mutableStateOf(persistentListOf<Long>()) }
 
         FilteringContent(
             name = "색소침착",
             cardItems = mockProcedureCardItems,
-            selectedCardId = selectedCardId,
+            selectedCardIds = selectedCardIds,
             onCardClick = { clickedId ->
-                selectedCardId = if (selectedCardId == clickedId) null else clickedId
+                selectedCardIds = if (clickedId in selectedCardIds) {
+                    selectedCardIds.remove(clickedId)
+                } else if (selectedCardIds.size < 5) {
+                    selectedCardIds.add(clickedId)
+                } else {
+                    selectedCardIds
+                }
             }
         )
     }

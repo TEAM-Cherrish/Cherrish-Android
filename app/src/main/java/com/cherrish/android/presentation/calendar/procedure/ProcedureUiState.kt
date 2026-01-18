@@ -8,10 +8,10 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardI
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
-import kotlin.Long
-import kotlin.String
+import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Immutable
 data class ProcedureUiState(
@@ -33,9 +33,12 @@ data class ProcedureUiState(
     val procedureItems: ImmutableList<ProcedureCardItemUiModel> = persistentListOf(),
     val selectedProcedureCardId: Long? = null,
 
+    val selectedProcedureCardIds: ImmutableList<Long> = persistentListOf(),
+
     val selectedWorryName: String = ""
 ) {
     val showStepProgressBar: Boolean = flow != ProcedureFlow.Entry
+
     val title: String = when (flow) {
         ProcedureFlow.Entry -> "시술 여부 선택"
 
@@ -98,7 +101,7 @@ data class ProcedureUiState(
                 hasChoice && hasDate
             }
 
-            ProcedureStep.FilteringWithSearch -> selectedProcedureCardId != null
+            ProcedureStep.FilteringWithSearch -> selectedProcedureCardIds.isNotEmpty()
             ProcedureStep.Downtime -> selectedDowntime != null
             else -> false
         }
@@ -111,13 +114,27 @@ data class ProcedureUiState(
                 hasChoice && hasDate
             }
 
-            ProcedureStep.Filtering -> selectedProcedureCardId != null
+            ProcedureStep.Filtering -> selectedProcedureCardIds.isNotEmpty()
             ProcedureStep.Downtime -> selectedDowntime != null
             else -> false
         }
     }
 
+    val selectedProcedures: ImmutableList<SelectedProcedureModel>
+        get() = procedureItems
+            .filter { it.id in selectedProcedureCardIds }
+            .map {
+                SelectedProcedureModel(
+                    procedureId = it.id,
+                    procedureName = it.name,
+                    minDowntimeDays = it.minDowntimeDays,
+                    maxDowntimeDays = it.maxDowntimeDays
+                )
+            }
+            .toImmutableList()
+
     companion object {
+
         val FakeNormal = ProcedureUiState(
             worries = persistentListOf(
                 ProcedureWorryUiModel(id = 1L, content = "피부결 ∙ 각질"),
@@ -133,7 +150,7 @@ data class ProcedureUiState(
             procedureItems = persistentListOf(
                 ProcedureCardItemUiModel(
                     id = 1L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝1",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -141,7 +158,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 2L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝2",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 1,
                     maxDowntimeDays = 3,
@@ -149,7 +166,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 3L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝3",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 5,
                     maxDowntimeDays = 10,
@@ -157,7 +174,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 4L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝4",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -165,7 +182,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 5L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝5",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -173,7 +190,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 6L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝6",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -181,7 +198,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 7L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝7",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -189,7 +206,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 8L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝8",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,
@@ -197,7 +214,7 @@ data class ProcedureUiState(
                 ),
                 ProcedureCardItemUiModel(
                     id = 9L,
-                    name = "레이저 토닝",
+                    name = "레이저 토닝9",
                     category = "색소 개선 | 톤업",
                     minDowntimeDays = 3,
                     maxDowntimeDays = 5,

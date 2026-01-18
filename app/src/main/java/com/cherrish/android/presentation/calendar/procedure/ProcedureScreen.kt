@@ -2,10 +2,13 @@ package com.cherrish.android.presentation.calendar.procedure
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +23,7 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.calendar.procedure.component.SelectedProcedureBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.StepProgressBar
 import com.cherrish.android.presentation.calendar.procedure.content.CategoryContent
 import com.cherrish.android.presentation.calendar.procedure.content.DowntimeContent
@@ -29,6 +33,7 @@ import com.cherrish.android.presentation.calendar.procedure.content.FilteringWit
 import com.cherrish.android.presentation.calendar.procedure.content.RecoveryScheduleContent
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ProcedureRoute(
@@ -74,6 +79,7 @@ fun ProcedureRoute(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProcedureScreen(
     uiState: ProcedureUiState,
@@ -91,121 +97,149 @@ fun ProcedureScreen(
     modifier: Modifier = Modifier
 ) {
     var query by remember { mutableStateOf("") }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val showBottomSheet = (
+        uiState.step == ProcedureStep.Filtering ||
+            uiState.step == ProcedureStep.FilteringWithSearch
+        ) &&
+        uiState.selectedProcedureCardIds.isNotEmpty()
 
     BackHandler(enabled = true) { onBackClick() }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(CherrishTheme.colors.gray0)
-            .padding(top = 40.dp, bottom = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        BackAndCloseTopAppBar(
-            title = uiState.title,
-            onBackClick = onBackClick,
-            onCloseClick = onCloseClick
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(CherrishTheme.colors.gray0)
+                .padding(top = 40.dp, bottom = 30.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            BackAndCloseTopAppBar(
+                title = uiState.title,
+                onBackClick = onBackClick,
+                onCloseClick = onCloseClick
+            )
 
-        if (uiState.showStepProgressBar) {
-            StepProgressBar(
-                totalStep = uiState.totalSteps,
-                currentStep = uiState.currentStepIndex,
+            if (uiState.showStepProgressBar) {
+                StepProgressBar(
+                    totalStep = uiState.totalSteps,
+                    currentStep = uiState.currentStepIndex,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 26.dp)
+                        .padding(top = 20.dp)
+                )
+            }
+
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 26.dp)
-                    .padding(top = 20.dp)
-            )
-        }
+                    .padding(top = uiState.contentTopPadding)
+                    .weight(1f)
+            ) {
+                when (uiState.flow) {
+                    ProcedureFlow.Entry -> {
+                        ExistenceContent(
+                            selectedIndex = uiState.existenceSelectedIndex,
+                            onItemClick = onExistenceClick,
+                            modifier = Modifier.padding(horizontal = 26.dp)
+                        )
+                    }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = uiState.contentTopPadding)
-                .weight(1f)
-        ) {
-            when (uiState.flow) {
-                ProcedureFlow.Entry -> {
-                    ExistenceContent(
-                        selectedIndex = uiState.existenceSelectedIndex,
-                        onItemClick = onExistenceClick,
-                        modifier = Modifier.padding(horizontal = 26.dp)
-                    )
-                }
+                    ProcedureFlow.NoTreat,
+                    ProcedureFlow.Treat -> {
+                        when (uiState.step) {
+                            ProcedureStep.Category -> {
+                                CategoryContent(
+                                    worries = uiState.worries,
+                                    selectedWorryId = uiState.selectedWorryId,
+                                    onWorryClick = onWorryClick,
+                                    modifier = modifier.padding(horizontal = 26.dp)
+                                )
+                            }
 
-                ProcedureFlow.NoTreat,
-                ProcedureFlow.Treat -> {
-                    when (uiState.step) {
-                        ProcedureStep.Category -> {
-                            CategoryContent(
-                                worries = uiState.worries,
-                                selectedWorryId = uiState.selectedWorryId,
-                                onWorryClick = onWorryClick,
-                                modifier = modifier.padding(horizontal = 26.dp)
-                            )
-                        }
+                            ProcedureStep.RecoverySchedule -> {
+                                RecoveryScheduleContent(
+                                    selectedIndex = uiState.recoverySelectedIndex,
+                                    onItemClick = onRecoveryOptionClick,
+                                    year = uiState.year,
+                                    month = uiState.month,
+                                    day = uiState.day,
+                                    onYearChange = onYearChange,
+                                    onMonthChange = onMonthChange,
+                                    onDayChange = onDayChange,
+                                    modifier = Modifier.padding(horizontal = 26.dp)
+                                )
+                            }
 
-                        ProcedureStep.RecoverySchedule -> {
-                            RecoveryScheduleContent(
-                                selectedIndex = uiState.recoverySelectedIndex,
-                                onItemClick = onRecoveryOptionClick,
-                                year = uiState.year,
-                                month = uiState.month,
-                                day = uiState.day,
-                                onYearChange = onYearChange,
-                                onMonthChange = onMonthChange,
-                                onDayChange = onDayChange,
-                                modifier = Modifier.padding(horizontal = 26.dp)
-                            )
-                        }
+                            ProcedureStep.Filtering -> {
+                                FilteringContent(
+                                    name = uiState.selectedWorryName,
+                                    cardItems = uiState.procedureItems,
+                                    selectedCardIds = uiState.selectedProcedureCardIds,
+                                    onCardClick = onProcedureCardClick,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
 
-                        ProcedureStep.Filtering -> {
-                            FilteringContent(
-                                name = uiState.selectedWorryName,
-                                cardItems = uiState.procedureItems,
-                                selectedCardId = uiState.selectedProcedureCardId,
-                                onCardClick = onProcedureCardClick,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                            ProcedureStep.FilteringWithSearch -> {
+                                FilteringWithSearchContent(
+                                    cardItems = uiState.procedureItems,
+                                    selectedCardIds = uiState.selectedProcedureCardIds,
+                                    onCardClick = onProcedureCardClick,
+                                    onSearchAction = { /* TODO */ },
+                                    query = query,
+                                    onQueryChange = { query = it },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 24.dp)
+                                )
+                            }
 
-                        ProcedureStep.FilteringWithSearch -> {
-                            FilteringWithSearchContent(
-                                cardItems = uiState.procedureItems,
-                                selectedCardId = uiState.selectedProcedureCardId,
-                                onCardClick = onProcedureCardClick,
-                                onSearchAction = { /* TODO */ },
-                                query = query,
-                                onQueryChange = { query = it },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 24.dp)
-                            )
-                        }
-
-                        ProcedureStep.Downtime -> {
-                            DowntimeContent(
-                                cardItems = uiState.procedureItems,
-                                selectedCardId = uiState.selectedDowntime?.toLong(),
-                                onCardClick = { clickedId -> onDowntimeClick(clickedId.toInt()) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                            ProcedureStep.Downtime -> {
+                                DowntimeContent(
+                                    cardItems = uiState.procedureItems
+                                        .filter { it.id in uiState.selectedProcedureCardIds }
+                                        .toImmutableList(),
+                                    selectedCardId = uiState.selectedDowntime?.toLong(),
+                                    onCardClick = { clickedId ->
+                                        onDowntimeClick(clickedId.toInt())
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
                         }
                     }
                 }
             }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            ) {
+                CherrishButton(
+                    text = "다음",
+                    onClick = onNextClick,
+                    enabled = uiState.isNextEnabled,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
-        Column(
+        Box(
             modifier = Modifier
+                .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
         ) {
-            CherrishButton(
-                text = "다음",
-                onClick = onNextClick,
-                enabled = uiState.isNextEnabled,
-                modifier = Modifier.fillMaxWidth()
+            SelectedProcedureBottomSheet(
+                isVisible = showBottomSheet,
+                selectedProcedure = uiState.selectedProcedures,
+                onDismiss = { },
+                onDeletedClick = onProcedureCardClick,
+                onButtonClick = onNextClick,
+                sheetState = sheetState
             )
         }
     }

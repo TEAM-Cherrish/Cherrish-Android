@@ -3,11 +3,13 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -72,8 +74,15 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
     fun onProcedureCardClick(cardId: Long) {
         _uiState.updateSuccess { current ->
-            val newId = if (current.selectedProcedureCardId == cardId) null else cardId
-            current.copy(selectedProcedureCardId = newId)
+            val currentList = current.selectedProcedureCardIds
+
+            val newList = if (cardId in currentList) {
+                currentList.filter { it != cardId }
+            } else {
+                currentList + cardId
+            }.toImmutableList()
+
+            current.copy(selectedProcedureCardIds = newList)
         }
     }
 
@@ -98,7 +107,27 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
                     year = "",
                     month = "",
                     day = "",
-                    selectedDowntime = null
+                    selectedDowntime = null,
+                    selectedProcedureCardIds = persistentListOf()
+                )
+            }
+
+            if (current.step == ProcedureStep.Filtering ||
+                current.step == ProcedureStep.FilteringWithSearch
+            ) {
+                val nextStep = current.nextStep()
+
+                val updatedProcedureItems = current.procedureItems.map { item ->
+                    if (item.id in current.selectedProcedureCardIds) {
+                        item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
+                    } else {
+                        item
+                    }
+                }.toImmutableList()
+
+                return@updateSuccess current.copy(
+                    step = nextStep,
+                    procedureItems = updatedProcedureItems
                 )
             }
 
@@ -114,7 +143,25 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
             val prevStepOrEntry = current.prevStepOrEntry()
             when (prevStepOrEntry) {
                 is PrevResult.ToEntry -> current.toEntryState()
-                is PrevResult.ToStep -> current.copy(step = prevStepOrEntry.step)
+                is PrevResult.ToStep -> {
+                    if (current.step == ProcedureStep.Downtime &&
+                        (
+                            prevStepOrEntry.step == ProcedureStep.Filtering ||
+                                prevStepOrEntry.step == ProcedureStep.FilteringWithSearch
+                            )
+                    ) {
+                        val updatedProcedureItems = current.procedureItems.map { item ->
+                            item.copy(displayMode = ProcedureCardDisplayMode.Basic)
+                        }.toImmutableList()
+
+                        current.copy(
+                            step = prevStepOrEntry.step,
+                            procedureItems = updatedProcedureItems
+                        )
+                    } else {
+                        current.copy(step = prevStepOrEntry.step)
+                    }
+                }
             }
         }
     }
@@ -138,7 +185,8 @@ private fun ProcedureUiState.toEntryState(): ProcedureUiState {
         year = "",
         month = "",
         day = "",
-        selectedDowntime = null
+        selectedDowntime = null,
+        selectedProcedureCardIds = persistentListOf()
     )
 }
 
@@ -171,18 +219,32 @@ private sealed interface PrevResult {
 private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
     return when (flow) {
         ProcedureFlow.NoTreat -> when (step) {
-            ProcedureStep.Category -> PrevResult.ToEntry
-            ProcedureStep.RecoverySchedule -> PrevResult.ToStep(ProcedureStep.Category)
-            ProcedureStep.Filtering -> PrevResult.ToStep(ProcedureStep.RecoverySchedule)
-            ProcedureStep.Downtime -> PrevResult.ToStep(ProcedureStep.Filtering)
-            else -> PrevResult.ToEntry
+            ProcedureStep.Category
+            -> PrevResult.ToEntry
+
+            ProcedureStep.RecoverySchedule
+            -> PrevResult.ToStep(ProcedureStep.Category)
+
+            ProcedureStep.Filtering
+            -> PrevResult.ToStep(ProcedureStep.RecoverySchedule)
+
+            ProcedureStep.Downtime
+            -> PrevResult.ToStep(ProcedureStep.Filtering)
+
+            else
+            -> PrevResult.ToEntry
         }
 
         ProcedureFlow.Treat -> when (step) {
             ProcedureStep.RecoverySchedule -> PrevResult.ToEntry
-            ProcedureStep.FilteringWithSearch -> PrevResult.ToStep(ProcedureStep.RecoverySchedule)
-            ProcedureStep.Downtime -> PrevResult.ToStep(ProcedureStep.FilteringWithSearch)
-            else -> PrevResult.ToEntry
+            ProcedureStep.FilteringWithSearch
+            -> PrevResult.ToStep(ProcedureStep.RecoverySchedule)
+
+            ProcedureStep.Downtime
+            -> PrevResult.ToStep(ProcedureStep.FilteringWithSearch)
+
+            else
+            -> PrevResult.ToEntry
         }
 
         ProcedureFlow.Entry -> PrevResult.ToEntry

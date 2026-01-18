@@ -89,7 +89,7 @@ private val mockProcedureCardItems = persistentListOf(
 @Composable
 fun FilteringWithSearchContent(
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
-    selectedCardId: Long?,
+    selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
     onSearchAction: (String) -> Unit,
     query: String,
@@ -129,9 +129,8 @@ fun FilteringWithSearchContent(
                     minDowntimeDays = item.minDowntimeDays,
                     maxDowntimeDays = item.maxDowntimeDays,
                     onCardClick = { onCardClick(item.id) },
-                    isSelected = selectedCardId == item.id,
+                    isSelected = item.id in selectedCardIds,
                     displayMode = item.displayMode
-
                 )
             }
         }
@@ -142,14 +141,19 @@ fun FilteringWithSearchContent(
 @Composable
 private fun FilteringWithSearchContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var selectedCardIds by remember { mutableStateOf(persistentListOf<Long>()) }
         var query by remember { mutableStateOf("") }
 
         FilteringWithSearchContent(
             cardItems = mockProcedureCardItems,
-            selectedCardId = selectedCardId,
+            selectedCardIds = selectedCardIds,
             onCardClick = { clickedId ->
-                selectedCardId = if (selectedCardId == clickedId) null else clickedId
+                selectedCardIds =
+                    if (clickedId in selectedCardIds) {
+                        selectedCardIds.remove(clickedId)
+                    } else {
+                        selectedCardIds.add(clickedId)
+                    }
             },
             onSearchAction = {},
             query = query,
