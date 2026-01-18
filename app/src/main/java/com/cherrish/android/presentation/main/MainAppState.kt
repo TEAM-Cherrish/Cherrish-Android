@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
@@ -13,6 +14,8 @@ import com.cherrish.android.presentation.challenge.navigation.navigateToChalleng
 import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
+import com.cherrish.android.presentation.onboarding.information.navigation.OnboardingInformation
+import com.cherrish.android.presentation.onboarding.information.navigation.navigateToOnboardingInformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +27,7 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope
 ) {
-    val startDestination = Home
+    val startDestination = OnboardingInformation
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
@@ -76,6 +79,14 @@ class MainAppState(
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
             MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
         }
+    }
+
+    fun navigateToOnboardingInformation(navOptions: NavOptions) {
+        navController.navigateToOnboardingInformation(navOptions)
+    }
+
+    fun navigateToHome(navOptions: NavOptions) {
+        navController.navigateToHome(navOptions)
     }
 }
 

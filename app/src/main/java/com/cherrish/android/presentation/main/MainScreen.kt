@@ -7,11 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.calendarNavGraph
 import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph
 import com.cherrish.android.presentation.home.navigation.homeNavGraph
 import com.cherrish.android.presentation.main.component.MainBottomBar
 import com.cherrish.android.presentation.mypage.navigation.myPageNavGraph
+import com.cherrish.android.presentation.onboarding.information.navigation.onboardingInformationNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -20,6 +22,17 @@ fun MainScreen(
 ) {
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
+
+    val clearStackNavOptions = navOptions {
+        popUpTo(0) { inclusive = true }
+        launchSingleTop = true
+        restoreState = false
+    }
+
+    val keepStackNavOptions = navOptions {
+        launchSingleTop = true
+        restoreState = true
+    }
 
     Scaffold(
         bottomBar = {
@@ -39,6 +52,13 @@ fun MainScreen(
             navController = appState.navController,
             startDestination = appState.startDestination
         ) {
+            onboardingInformationNavGraph(
+                paddingValues = innerPadding,
+                navigateToHome = {
+                    appState.navigateToHome(clearStackNavOptions)
+                }
+            )
+
             homeNavGraph(paddingValues = innerPadding)
 
             calendarNavGraph(paddingValues = innerPadding)
