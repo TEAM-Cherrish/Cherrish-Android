@@ -242,19 +242,15 @@ fun ProcedureScreen(
                 }
             }
         }
-
-        Column(
+        CherrishButton(
+            text = "다음",
+            onClick = onNextClick,
+            enabled = uiState.isNextEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
-        ) {
-            CherrishButton(
-                text = "다음",
-                onClick = onNextClick,
-                enabled = uiState.isNextEnabled,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+                .padding(top = 24.dp)
+        )
     }
 
     SelectedProcedureBottomSheet(
