@@ -111,14 +111,12 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
     fun onWorryClick(worryId: Long) {
         _uiState.updateSuccess { current ->
-            val newId = if (current.selectedWorryId == worryId) null else worryId
-
-            val newName = current.worries.firstOrNull { it.id == newId }?.content.orEmpty()
+            val newName = current.worries.firstOrNull { it.id == worryId }?.content.orEmpty()
 
             current.copy(
-                selectedWorryId = newId,
+                selectedWorryId = worryId,
                 selectedWorryName = newName,
-                procedureItems = if (newId != null) current.procedureItems else persistentListOf()
+                procedureItems = current.procedureItems
             )
         }
     }
