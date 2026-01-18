@@ -1,15 +1,13 @@
 package com.cherrish.android.presentation.challenge.mission
 
+import androidx.compose.runtime.Immutable
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
+
+@Immutable
 data class ChallengeMissionUiState(
-    val mission: ChallengeMissionModel,
-    val isSelected: Boolean = false
+    val missions: ImmutableList<ChallengeMissionModel> = persistentListOf(),
+    val selectedMissionIds: Set<Int>
 )
-
-data class ChallengeMissionScreenUiState(
-    val missions: List<ChallengeMissionUiState>
-) {
-    val selectedMissions: List<ChallengeMissionModel>
-        get() = missions.filter { it.isSelected }.map { it.mission }
-}
