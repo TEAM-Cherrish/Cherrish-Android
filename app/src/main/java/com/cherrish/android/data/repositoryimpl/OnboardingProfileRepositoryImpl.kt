@@ -11,9 +11,13 @@ import javax.inject.Inject
 
 class OnboardingProfileRepositoryImpl @Inject constructor(
     private val onboardingProfileDataSource: OnboardingProfileDataSource
-) : OnboardingProfileRepository{
-    override suspend fun postOnboardingProfile(request: OnboardingProfileRequestModel): Result<OnboardingProfileResponseModel> =
+) : OnboardingProfileRepository {
+    override suspend fun postOnboardingProfile(
+        request: OnboardingProfileRequestModel
+    ): Result<OnboardingProfileResponseModel> =
         suspendRunCatching {
-            onboardingProfileDataSource.postOnboardingProfile(request = request.toDto()).data!!.toModel()
+            onboardingProfileDataSource.postOnboardingProfile(
+                request = request.toDto()
+            ).data!!.toModel()
         }
 }

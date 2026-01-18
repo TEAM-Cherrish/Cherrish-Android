@@ -186,7 +186,7 @@ private fun UserInfoTextField(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp),
+            .padding(horizontal = 26.dp)
     ) {
         Text(
             text = textFieldName,
@@ -214,7 +214,6 @@ private fun UserInfoTextField(
         )
 
         Spacer(modifier = Modifier.height(4.dp))
-
     }
 }
 

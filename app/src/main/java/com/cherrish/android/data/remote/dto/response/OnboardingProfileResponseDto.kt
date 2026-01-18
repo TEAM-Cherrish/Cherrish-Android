@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class OnboardingProfileResponseDto (
+data class OnboardingProfileResponseDto(
     @SerialName("id")
     val id: Long,
     @SerialName("name")

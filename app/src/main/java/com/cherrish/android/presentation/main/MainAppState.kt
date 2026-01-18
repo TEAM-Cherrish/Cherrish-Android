@@ -11,7 +11,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
-import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.information.navigation.OnboardingInformation

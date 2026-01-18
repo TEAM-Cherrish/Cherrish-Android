@@ -10,16 +10,16 @@ import com.cherrish.android.presentation.onboarding.information.InformationRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object OnboardingInformation: Route
+data object OnboardingInformation : Route
 
-fun NavController.navigateToOnboardingInformation(navOptions: NavOptions? = null){
+fun NavController.navigateToOnboardingInformation(navOptions: NavOptions? = null) {
     navigate(route = OnboardingInformation, navOptions = navOptions)
 }
 
 fun NavGraphBuilder.onboardingInformationNavGraph(
     paddingValues: PaddingValues,
     navigateToHome: () -> Unit
-){
+) {
     composable<OnboardingInformation> {
         InformationRoute(
             paddingValues = paddingValues,

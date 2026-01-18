@@ -11,6 +11,6 @@ data class InformationUiState(
         get() = username.isNotBlank() && age.toIntOrNull()?.let { it > 0 } == true
 }
 
-sealed interface InformationSideEffect{
-    data object NavigateToHome: InformationSideEffect
+sealed interface InformationSideEffect {
+    data object NavigateToHome : InformationSideEffect
 }
