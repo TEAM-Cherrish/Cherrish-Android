@@ -31,7 +31,7 @@ fun ChallengeLoadingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 26.dp),
+            .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(44f))
@@ -57,12 +57,19 @@ fun ChallengeLoadingScreen(
                 withStyle(
                     style = SpanStyle(color = CherrishTheme.colors.gray800)
                 ) {
-                    append("관리 방향을 바탕으로\n")
-                    append("TO-DO 미션을 만들고 있어요.")
+                    append("관리 방향을 바탕으로")
                 }
             },
             style = CherrishTheme.typography.title1SB18,
             textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.weight(2f))
+
+        Text(
+            text = "TO-DO 미션을 만들고 있어요.",
+            color = CherrishTheme.colors.gray800,
+            style = CherrishTheme.typography.title1SB18
         )
 
         Spacer(modifier = Modifier.weight(60f))
@@ -77,7 +84,7 @@ fun ChallengeLoadingScreen(
         Text(
             text = "잠시만 기다려주세요!",
             color = CherrishTheme.colors.gray800,
-            style = CherrishTheme.typography.title2SB16
+            style = CherrishTheme.typography.title2SB16,
         )
 
         Spacer(modifier = Modifier.weight(147f))
