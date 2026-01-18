@@ -8,5 +8,4 @@ import kotlinx.collections.immutable.persistentListOf
 @Immutable
 data class ChallengeMissionUiState(
     val missions: ImmutableList<ChallengeMissionModel> = persistentListOf(),
-    val selectedMissionIds: Set<Int>
 )
