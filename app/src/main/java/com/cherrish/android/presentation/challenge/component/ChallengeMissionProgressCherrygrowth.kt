@@ -163,9 +163,8 @@ private fun ChallengeMissionProgressCherrygrowthPreview() {
     ) {
         items(
             items = listOf(
-                Triple(first = CherryType.MONGRONG, second = 4, third = 0),
-                Triple(first = CherryType.PPODUK, second = 3, third = 25),
-                Triple(first = CherryType.CHOKCHOK, second = 2, third = 50),
+                Triple(first = CherryType.MONGRONG, second = 4, third = 25),
+                Triple(first = CherryType.PPODUK, second = 3, third = 50),
                 Triple(first = CherryType.BBANGBBANG, second = 2, third = 75),
                 Triple(first = CherryType.KKUKKU, second = 0, third = 100)
             )

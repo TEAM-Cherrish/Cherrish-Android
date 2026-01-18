@@ -12,21 +12,15 @@ enum class CherryType(
     @DrawableRes val imageRes: Int
 ) {
     MONGRONG(
-        step = 0,
-        level = 0,
-        stageName = "몽롱체리",
-        imageRes = R.drawable.img_challenge_lv0
-    ),
-    PPODUK(
         step = 1,
         level = 1,
-        stageName = "뽀득체리",
+        stageName = "몽롱체리",
         imageRes = R.drawable.img_challenge_lv1
     ),
-    CHOKCHOK(
+    PPODUK(
         step = 2,
         level = 2,
-        stageName = "촉촉체리",
+        stageName = "뽀득체리",
         imageRes = R.drawable.img_challenge_lv2
     ),
     BBANGBBANG(
