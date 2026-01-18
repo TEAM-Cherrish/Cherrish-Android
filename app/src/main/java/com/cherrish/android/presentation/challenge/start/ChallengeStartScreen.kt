@@ -101,7 +101,7 @@ private fun ChallengeStartInfo(
 @Composable
 private fun ChallengeStartTitle(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(horizontal = 7.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
