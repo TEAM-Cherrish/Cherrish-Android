@@ -250,8 +250,6 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
 
             // TODO: 서버에 <procedureId, downtime>
 
-            println("전송할 데이터: $proceduresWithDowntime")
-
             ProcedureUiState.FakeNormal
         }
     }
