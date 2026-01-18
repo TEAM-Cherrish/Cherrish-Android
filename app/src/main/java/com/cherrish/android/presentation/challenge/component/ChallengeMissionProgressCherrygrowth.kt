@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -52,35 +53,41 @@ private fun CherryGrowthSection(
 }
 
 @Composable
-private fun CherryGrowthProgressSection(
+private fun  CherryGrowthProgressSection(
     challengeProgress: Int,
     cherryType: CherryType,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(
-            text = "챌린지 달성률",
-            color = CherrishTheme.colors.gray900,
-            style = CherrishTheme.typography.body1M14
-        )
 
-        Text(
-            text = "$challengeProgress%",
-            color = CherrishTheme.colors.gray900,
-            style = CherrishTheme.typography.body1M14
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(space = 6.dp)
+        ) {
+
+            Text(
+                text = "챌린지 달성률",
+                color = CherrishTheme.colors.gray900,
+                style = CherrishTheme.typography.body1M14
+            )
+
+            Text(
+                text = "$challengeProgress%",
+                color = CherrishTheme.colors.gray900,
+                style = CherrishTheme.typography.body1M14
+            )
+        }
+
+        CherrishGaugeBar(
+            currentStep = cherryType.step,
+            gauges = CherrishGaugeType.entries.toImmutableList()
+
         )
     }
-
-    CherrishGaugeBar(
-        currentStep = cherryType.step,
-        gauges = CherrishGaugeType.entries.toImmutableList(),
-        modifier = modifier.padding()
-    )
 }
 
 @Composable
@@ -95,6 +102,7 @@ fun ChallengeMissionProgressCherrygrowth(
     Column(
         modifier = modifier
             .fillMaxWidth()
+
             .dropShadow(
                 shape = RoundedCornerShape(10.dp),
                 blur = 10.dp,
@@ -117,7 +125,7 @@ fun ChallengeMissionProgressCherrygrowth(
             cherryType = cherryType,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 18.dp, top = 16.dp)
+                           .padding(start = 18.dp, top = 16.dp)
         )
 
         Image(
@@ -142,7 +150,9 @@ fun ChallengeMissionProgressCherrygrowth(
         CherryGrowthProgressSection(
             challengeProgress = challengeProgress,
             cherryType = cherryType,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp)
         )
     }
 }
