@@ -90,7 +90,6 @@ private fun ChallengeStartInfo(
             contentDescription = null,
             tint = CherrishTheme.colors.gray600
         )
-
         Text(
             text = "이 챌린지는 설정 시점부터 7일간 진행됩니다.",
             color = CherrishTheme.colors.gray600,
@@ -101,7 +100,7 @@ private fun ChallengeStartInfo(
 
 @Composable
 private fun ChallengeStartTitle(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
             text = "이번엔 어떤 루틴으로 관리할까요?",
             color = CherrishTheme.colors.gray1000,
