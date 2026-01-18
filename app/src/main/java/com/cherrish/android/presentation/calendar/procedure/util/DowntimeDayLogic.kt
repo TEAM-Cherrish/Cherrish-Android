@@ -1,6 +1,6 @@
-package com.cherrish.android.presentation.calendar
+package com.cherrish.android.presentation.calendar.procedure.util
 
-import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
+import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
