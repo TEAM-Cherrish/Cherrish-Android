@@ -1,12 +1,5 @@
 package com.cherrish.android.presentation.onboarding
 
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,24 +10,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,7 +41,10 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,31 +52,32 @@ import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import kotlin.math.ceil
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 fun OnboardingRoute(
     viewModel: OnboardingViewModel = viewModel()
 ) {
-    Onboarding(
+    OnboardingScreen(
         onCancelClick = viewModel::onCancelClick,
         onNextClick = viewModel::onNextClick
     )
 }
 
 @Composable
-private fun Onboarding(
+private fun OnboardingScreen(
     onCancelClick: () -> Unit,
     onNextClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
     val colors = CherrishTheme.colors
-    val gradientEndY = with(LocalDensity.current) { 310.dp.toPx() }
-
-    var buttonHeightPx by remember { mutableStateOf(0) }
     val density = LocalDensity.current
-    val buttonSlotMinHeight = with(density) { buttonHeightPx.toDp() }
+
+    val gradientEndY = with(density) { 310.dp.toPx() }
 
     Box(
         modifier = modifier
@@ -107,7 +109,6 @@ private fun Onboarding(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 23.dp + buttonSlotMinHeight + 22.dp)
             ) { page ->
                 when (page) {
                     0 -> OnboardingSection()
@@ -128,23 +129,22 @@ private fun Onboarding(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            Box(
+            val showButton = pagerState.currentPage == 1
+
+            CherrishButton(
+                text = "다음",
+                onClick = {
+                    if (showButton) {
+                        onNextClick()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .heightIn(min = buttonSlotMinHeight),
-                contentAlignment = Alignment.Center
-            ) {
-                if (pagerState.currentPage == 1) {
-                    CherrishButton(
-                        text = "다음",
-                        onClick = onNextClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .onSizeChanged { buttonHeightPx = maxOf(buttonHeightPx, it.height) }
-                    )
-                }
-            }
+                    .graphicsLayer {
+                        alpha = if (showButton) 1f else 0f
+                    }
+            )
         }
     }
 }
@@ -170,8 +170,7 @@ private fun OnboardingSection(
                 calendarImage,
                 overlayRow,
                 titleText,
-                line1,
-                line2,
+                underlineSpacer,
                 subTitleText
             ) = createRefs()
 
@@ -218,10 +217,15 @@ private fun OnboardingSection(
                 )
             }
 
-            Text(
+            UnderlineUntilWord(
                 text = "시술 후 불편감이 남을 수 있는 기간을 계산해",
+                underlineUntil = "기간",
                 style = CherrishTheme.typography.title1SB18,
-                color = colors.gray1000,
+                textColor = colors.gray1000,
+                underlineColor = colors.red700,
+                underlineThickness = 1.4.dp,
+                insetPx = 4.dp,
+                underlineYOffset = 1.dp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(titleText) {
@@ -229,43 +233,15 @@ private fun OnboardingSection(
                         start.linkTo(parent.start)
                     }
             )
-
-            Canvas(
+            Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 4.dp, end = 72.dp)
-                    .constrainAs(line1) {
-                        top.linkTo(titleText.bottom, margin = 0.dp)
+                    .height(8.dp)
+                    .constrainAs(underlineSpacer) {
+                        top.linkTo(titleText.bottom)
+                        start.linkTo(parent.start)
                     }
-            ) {
-                val strokePx = 1.4.dp.toPx()
-                drawLine(
-                    color = colors.red700,
-                    start = Offset(0f, strokePx / 2),
-                    end = Offset(size.width, strokePx / 2),
-                    strokeWidth = strokePx,
-                    cap = StrokeCap.Round
-                )
-            }
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 68.dp)
-                    .constrainAs(line2) {
-                        top.linkTo(line1.bottom, margin = 3.dp)
-                    }
-            ) {
-                val strokePx = 1.4.dp.toPx()
-                drawLine(
-                    color = colors.red700,
-                    start = Offset(0f, strokePx / 2),
-                    end = Offset(size.width, strokePx / 2),
-                    strokeWidth = strokePx,
-                    cap = StrokeCap.Round
-                )
-            }
-
+            )
             Text(
                 text = "일정 한 눈에 정리해드려요",
                 style = CherrishTheme.typography.title1SB18,
@@ -273,7 +249,7 @@ private fun OnboardingSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(subTitleText) {
-                        top.linkTo(line2.bottom, margin = 3.dp)
+                        top.linkTo(underlineSpacer.bottom, margin = 3.dp)
                         start.linkTo(parent.start)
                     }
             )
@@ -282,9 +258,78 @@ private fun OnboardingSection(
 }
 
 @Composable
+private fun UnderlineUntilWord(
+    text: String,
+    underlineUntil: String,
+    style: TextStyle,
+    textColor: Color,
+    underlineColor: Color,
+    underlineThickness: Dp,
+    insetPx: Dp,
+    underlineYOffset: Dp,
+    modifier: Modifier = Modifier
+) {
+    var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    val density = LocalDensity.current
+    val thicknessPx = with(density) { underlineThickness.toPx() }
+    val insetPx = with(density) { insetPx.toPx() }
+    val yOffsetPx = with(density) { underlineYOffset.toPx() }
+
+    val endExclusive = remember(text, underlineUntil) {
+        val idx = text.indexOf(underlineUntil)
+        if (idx >= 0) idx + underlineUntil.length else -1
+    }
+
+    Text(
+        text = text,
+        style = style,
+        color = textColor,
+        onTextLayout = { layoutResult = it },
+        modifier = modifier.drawBehind {
+            val layout = layoutResult ?: return@drawBehind
+            if (endExclusive <= 0) return@drawBehind
+
+            val line = layout.getLineForOffset(endExclusive - 1)
+
+            val end = layout.getHorizontalPosition(endExclusive, usePrimaryDirection = true)
+
+            val y = layout.getLineBottom(line) + yOffsetPx
+            val gap = with(density) { 3.dp.toPx() }
+
+            drawLine(
+                color = underlineColor,
+                start = Offset(x = insetPx, y = y),
+                end = Offset(x = end, y = y),
+                strokeWidth = thicknessPx,
+                cap = StrokeCap.Round
+            )
+            drawLine(
+                color = underlineColor,
+                start = Offset(x = 0f, y = y + gap),
+                end = Offset(x = (end + insetPx), y = y + gap),
+                strokeWidth = thicknessPx,
+                cap = StrokeCap.Round
+            )
+        }
+    )
+}
+
+@Composable
 private fun Onboarding2Section(
     modifier: Modifier = Modifier
 ) {
+    val images = remember {
+        persistentListOf(
+            OnboardingCherryType.LV0,
+            OnboardingCherryType.LV1,
+            OnboardingCherryType.LV2,
+            OnboardingCherryType.LV3,
+            OnboardingCherryType.LV4
+
+        )
+    }
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -308,59 +353,11 @@ private fun Onboarding2Section(
             modifier = Modifier.padding(horizontal = 34.dp)
         )
 
-        Spacer(modifier = Modifier.weight(13f))
+        Spacer(modifier = Modifier.height(13.dp))
 
-        // TODO: 애니 이상항
-        val imageCount = 5
-        val imageSize = 90.dp
-        val imageSpacing = 16.dp
+        MovingCherry(images = images)
 
-        val density = LocalDensity.current
-        val singleSetWidthPx = with(density) {
-            (imageSize + imageSpacing).toPx() * imageCount
-        }
-
-        val infinite = rememberInfiniteTransition(label = "cherry_marquee")
-        val translateX by infinite.animateFloat(
-            initialValue = 0f,
-            targetValue = -singleSetWidthPx,
-            animationSpec = infiniteRepeatable(
-                animation = tween(
-                    durationMillis = 6000,
-                    easing = LinearEasing
-                ),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "translateX"
-        )
-
-        val cherries = OnboardingCherryType.entries
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clipToBounds()
-        ) {
-            Row(
-                modifier = Modifier.graphicsLayer {
-                    translationX = translateX
-                }
-            ) {
-                repeat(3) {
-                    cherries.forEach { type ->
-                        Image(
-                            imageVector = ImageVector.vectorResource(id = type.image),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .size(90.dp)
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.weight(18f))
+        Spacer(modifier = Modifier.height(18.dp))
 
         Text(
             text = "TO-DO 미션을 채울때마다 체리가 변화해요!",
@@ -404,6 +401,74 @@ private fun PagerIndicator(
     }
 }
 
+@Composable
+private fun MovingCherry(
+    images: ImmutableList<OnboardingCherryType>,
+    modifier: Modifier = Modifier
+) {
+    val imageSize = 90.dp
+    val speedDpPerSec = 24.dp
+    val density = LocalDensity.current
+
+    val imageSizePx = with(density) { imageSize.toPx() }
+    val speedPxPerSec = with(density) { speedDpPerSec.toPx() }
+
+    var viewWidthPx by remember { mutableFloatStateOf(0f) }
+    val cherryWidthPx = imageSizePx * images.size
+
+    val repeatCount by remember(viewWidthPx, cherryWidthPx) {
+        derivedStateOf {
+            if (viewWidthPx == 0f || cherryWidthPx == 0f) {
+                2
+            } else {
+                maxOf(2, ceil((viewWidthPx + cherryWidthPx) / cherryWidthPx).toInt() + 1)
+            }
+        }
+    }
+
+    var offsetX by remember { mutableFloatStateOf(0f) }
+
+    LaunchedEffect(cherryWidthPx, speedPxPerSec) {
+        if (cherryWidthPx == 0f) return@LaunchedEffect
+        var lastFrameTime = 0L
+
+        while (true) {
+            val frameTime = awaitFrame()
+            if (lastFrameTime != 0L) {
+                val diffFrameTime = (frameTime - lastFrameTime) / 1_000_000_000f
+                offsetX -= speedPxPerSec * diffFrameTime
+                if (offsetX <= -cherryWidthPx) offsetX += cherryWidthPx
+            }
+            lastFrameTime = frameTime
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(imageSize)
+            .onSizeChanged { viewWidthPx = it.width.toFloat() }
+            .clipToBounds()
+    ) {
+        Row(
+            modifier = Modifier
+                .wrapContentWidth(unbounded = true)
+                .graphicsLayer { translationX = offsetX }
+        ) {
+            repeat(repeatCount) {
+                images.forEach { type ->
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = type.image),
+                        contentDescription = null,
+                        modifier = Modifier.size(imageSize),
+                        contentScale = ContentScale.Fit
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
@@ -411,7 +476,7 @@ private fun Preview() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            Onboarding(
+            OnboardingScreen(
                 onCancelClick = {},
                 onNextClick = {}
             )
