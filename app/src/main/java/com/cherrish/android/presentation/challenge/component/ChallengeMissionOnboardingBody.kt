@@ -21,11 +21,11 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeMissionOnboardingBody(
     items: ImmutableList<ChallengeMissionModel>,
-    selectedMissionIds: Set<Int>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -53,15 +53,15 @@ fun ChallengeMissionOnboardingBody(
             items(
                 items = items,
                 key = { it.id }
-            ) {
-                    item ->
+            ) { item ->
                 ChallengeMissionCardChip(
                     text = item.missionContent,
-                    isSelected = item.id in selectedMissionIds,
+                    isSelected = item.isSelected,
                     onClick = { onItemClick(item.id) }
                 )
             }
         }
+
     }
 }
 
@@ -69,26 +69,49 @@ fun ChallengeMissionOnboardingBody(
 @Composable
 private fun ChallengeRoutineOnboardingMissionPreview() {
     CherrishTheme {
-        var selectedMissionIds by remember { mutableStateOf<Set<Int>>(emptySet()) }
 
-        val missions = persistentListOf(
-            ChallengeMissionModel(1, "아침 세안 후 토너 바르기"),
-            ChallengeMissionModel(2, "수분 에센스 2-3방울 흡수"),
-            ChallengeMissionModel(3, "보습 크림으로 마무리"),
-            ChallengeMissionModel(4, "저녁 클렌징 꼼꼼히 하기"),
-            ChallengeMissionModel(5, "수분 마스크팩 (주 2-3회)")
-        )
+        var missions by remember {
+            mutableStateOf(
+                persistentListOf(
+                    ChallengeMissionModel(
+                        id = 1,
+                        missionContent = "아침 세안 후 토너 바르기",
+                        isSelected = false
+                    ),
+                    ChallengeMissionModel(
+                        id = 2,
+                        missionContent = "수분 에센스 2-3방울 흡수",
+                        isSelected = false
+                    ),
+                    ChallengeMissionModel(
+                        id = 3,
+                        missionContent = "보습 크림으로 마무리",
+                        isSelected = false
+                    ),
+                    ChallengeMissionModel(
+                        id = 4,
+                        missionContent = "저녁 클렌징 꼼꼼히 하기",
+                        isSelected = false
+                    ),
+                    ChallengeMissionModel(
+                        id = 5,
+                        missionContent = "수분 마스크팩 (주 2-3회)",
+                        isSelected = false
+                    )
+                )
+            )
+        }
 
         ChallengeMissionOnboardingBody(
             items = missions,
-            selectedMissionIds = selectedMissionIds,
             onItemClick = { clickedId ->
-                selectedMissionIds =
-                    if (clickedId in selectedMissionIds) {
-                        selectedMissionIds - clickedId
+                missions = missions.map { mission ->
+                    if (mission.id == clickedId) {
+                        mission.copy(isSelected = !mission.isSelected)
                     } else {
-                        selectedMissionIds + clickedId
+                        mission
                     }
+                }.toPersistentList()
             },
             modifier = Modifier.padding(26.dp)
         )

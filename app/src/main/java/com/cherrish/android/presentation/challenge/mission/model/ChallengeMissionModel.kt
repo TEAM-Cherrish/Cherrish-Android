@@ -5,5 +5,6 @@ import androidx.compose.runtime.Immutable
 @Immutable
 data class ChallengeMissionModel(
     val id: Int,
-    val missionContent: String
+    val missionContent: String,
+    val isSelected : Boolean
 )
