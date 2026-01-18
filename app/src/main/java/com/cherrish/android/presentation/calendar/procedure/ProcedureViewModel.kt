@@ -122,15 +122,29 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onYearChange(value: String) {
-        _uiState.updateSuccess { it.copy(year = value) }
+        _uiState.updateSuccess {
+            it.copy(year = value.filter { it.isDigit() }.take(4))
+        }
     }
 
     fun onMonthChange(value: String) {
-        _uiState.updateSuccess { it.copy(month = value) }
+        _uiState.updateSuccess { current ->
+            val filtered = value.filter { it.isDigit() }
+            val isValid = filtered.isEmpty() ||
+                (filtered.toIntOrNull()?.let { it in 1..12 } == true)
+
+            current.copy(month = if (isValid) filtered.take(2) else current.month)
+        }
     }
 
     fun onDayChange(value: String) {
-        _uiState.updateSuccess { it.copy(day = value) }
+        _uiState.updateSuccess { current ->
+            val filtered = value.filter { it.isDigit() }
+            val isValid = filtered.isEmpty() ||
+                (filtered.toIntOrNull()?.let { it in 1..31 } == true)
+
+            current.copy(day = if (isValid) filtered.take(2) else current.day)
+        }
     }
 
     fun onProcedureCardClick(cardId: Long) {
