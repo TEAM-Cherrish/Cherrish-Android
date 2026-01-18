@@ -61,7 +61,6 @@ fun ChallengeMissionOnboardingBody(
                 )
             }
         }
-
     }
 }
 
@@ -69,7 +68,6 @@ fun ChallengeMissionOnboardingBody(
 @Composable
 private fun ChallengeRoutineOnboardingMissionPreview() {
     CherrishTheme {
-
         var missions by remember {
             mutableStateOf(
                 persistentListOf(
