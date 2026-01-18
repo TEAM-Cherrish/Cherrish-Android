@@ -95,7 +95,7 @@ fun SelectedProcedureBottomSheet(
                         color = CherrishTheme.colors.shadow,
                         blur = 10.dp,
                         offsetX = 0.dp,
-                        offsetY = 0.dp,
+                        offsetY = (-5).dp,
                         spread = 0.dp
                     )
                     .clip(shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
