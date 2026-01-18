@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.onboarding
+package com.cherrish.android.presentation.onboarding.model
 
 import androidx.annotation.DrawableRes
 import com.cherrish.android.R

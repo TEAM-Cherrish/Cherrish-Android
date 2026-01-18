@@ -53,6 +53,7 @@ import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.onboarding.model.OnboardingCherryType
 import kotlin.math.ceil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -381,13 +382,7 @@ private fun PagerIndicator(
             val isSelected = pagerState.currentPage == index
 
             Icon(
-                imageVector = ImageVector.vectorResource(
-                    id = if (isSelected) {
-                        R.drawable.ic_indicator
-                    } else {
-                        R.drawable.ic_unindicator
-                    }
-                ),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_indicator),
                 contentDescription = null,
                 tint = if (isSelected) {
                     CherrishTheme.colors.gray800
