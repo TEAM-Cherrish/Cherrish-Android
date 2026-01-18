@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.bundles.network)
 
     implementation(libs.bundles.hilt)
+    implementation(libs.androidx.constraintlayout)
     ksp(libs.hilt.compiler)
 
     implementation(platform(libs.coil.bom))
