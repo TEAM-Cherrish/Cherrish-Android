@@ -27,7 +27,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashRoute(
     navigateToOnboarding: () -> Unit,
-    paddingValues: PaddingValues,
+    paddingValues: PaddingValues
 ) {
     LaunchedEffect(Unit) {
         delay(3000)
@@ -52,7 +52,7 @@ private fun SplashScreen(
             .drawBehind {
                 val brush = Brush.linearGradient(
                     colors = gradationColors,
-                    start = Offset(size.width / 2f, size.height / 2f),
+                    start = Offset(size.width / 2f, size.height / 2f)
                 )
                 drawRect(brush)
             }
@@ -64,7 +64,7 @@ private fun SplashScreen(
         Image(
             painter = painterResource(id = R.drawable.ic_app_logo),
             contentDescription = null,
-            modifier = Modifier.size(width = 114.dp, height = 100.dp),
+            modifier = Modifier.size(width = 114.dp, height = 100.dp)
         )
 
         Spacer(modifier = Modifier.height(14.dp))
