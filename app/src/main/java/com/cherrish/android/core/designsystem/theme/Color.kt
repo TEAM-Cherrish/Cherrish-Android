@@ -42,7 +42,6 @@ val gradation2 = Color(0xFFFAE0E6)
 
 val bottomSheetScrimColor = Color(0x1A464C52)
 
-
 @Immutable
 data class CherrishColors(
 
