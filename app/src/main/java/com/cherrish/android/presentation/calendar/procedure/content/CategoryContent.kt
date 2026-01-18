@@ -39,7 +39,7 @@ fun CategoryContent(
         .takeIf { it >= 0 }
 
     SelectionSection(
-        title = "요즘 가장 신경 쓰이는\n피부 고민은 무엇인가요?",
+        title = "요즘 가장 신경 쓰이는\n외모 고민은 무엇인가요?",
         description = "선택한 고민을 기준으로 시술 정보를 정리해줘요.",
         descriptionTextStyle = CherrishTheme.typography.body1M14,
         items = items,
