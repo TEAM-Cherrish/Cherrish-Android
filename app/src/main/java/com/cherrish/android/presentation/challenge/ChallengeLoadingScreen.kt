@@ -84,7 +84,7 @@ fun ChallengeLoadingScreen(
         Text(
             text = "잠시만 기다려주세요!",
             color = CherrishTheme.colors.gray800,
-            style = CherrishTheme.typography.title2SB16,
+            style = CherrishTheme.typography.title2SB16
         )
 
         Spacer(modifier = Modifier.weight(147f))
