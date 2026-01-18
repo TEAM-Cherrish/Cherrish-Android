@@ -45,7 +45,9 @@ private fun ChallengeStartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(horizontal = 17.dp)
             .padding(paddingValues)
+
     ) {
         Spacer(modifier = Modifier.weight(98f))
 
@@ -67,7 +69,7 @@ private fun ChallengeStartScreen(
 
         CherrishButton(
             text = "다음",
-            onClick = { onNextClick }
+            onClick = onNextClick
         )
 
         Spacer(modifier = Modifier.weight(34f))
@@ -101,7 +103,7 @@ private fun ChallengeStartInfo(
 private fun ChallengeStartTitle(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
-            text = "루틴을 지킬수록 체리가 성장해요.",
+            text = "이번엔 어떤 루틴으로 관리할까요?",
             color = CherrishTheme.colors.gray1000,
             style = CherrishTheme.typography.headlineSB20
         )
@@ -119,7 +121,7 @@ private fun ChallengeStartTitle(modifier: Modifier = Modifier) {
 private fun ChallengeStartScreenPreview() {
     CherrishTheme {
         ChallengeStartScreen(
-            paddingValues = PaddingValues(horizontal = 17.dp),
+            paddingValues = PaddingValues(),
             onNextClick = { }
         )
     }
