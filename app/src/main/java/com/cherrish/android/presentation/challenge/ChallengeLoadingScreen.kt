@@ -3,10 +3,12 @@ package com.cherrish.android.presentation.challenge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -25,13 +27,16 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun ChallengeLoadingScreen(
+    paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
     onCloseClick: () -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 10.dp),
+            .padding(horizontal = 10.dp)
+            .padding(paddingValues)
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(44.dp))
@@ -102,6 +107,9 @@ fun ChallengeLoadingScreen(
 @Composable
 private fun ChallengeLoadingScreenPreview() {
     CherrishTheme {
-        ChallengeLoadingScreen(onCloseClick = {})
+        ChallengeLoadingScreen(
+            paddingValues = PaddingValues(),
+            onCloseClick = {}
+        )
     }
 }
