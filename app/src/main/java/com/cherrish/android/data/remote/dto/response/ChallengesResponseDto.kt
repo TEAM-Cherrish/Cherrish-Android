@@ -10,7 +10,7 @@ data class ChallengesHomecareRoutinesResponseDto(
     @SerialName("name")
     val name: String,
     @SerialName("description")
-    val description: String?,
+    val description: String?
 )
 
 @Serializable
@@ -22,7 +22,7 @@ data class ChallengesAiRecommendResponseDto(
 @Serializable
 data class RoutinesDto(
     @SerialName("routine")
-    val routine : String
+    val routine: String
 )
 
 @Serializable
