@@ -113,7 +113,7 @@ data class ChallengeRoutineDto(
 )
 
 @Serializable
-data class ChallengeMissionProgressDataDto(
+data class AdvanceDayDataDto(
     @SerialName("challengeId")
     val challengeId: Long,
 
@@ -124,7 +124,7 @@ data class ChallengeMissionProgressDataDto(
     val currentDay: Int,
 
     @SerialName("progressPercentage")
-    val progressPercentage: Double, // 👈 Double로 변경
+    val progressPercentage: Double, // 42.8
 
     @SerialName("cherryLevel")
     val cherryLevel: Int,
