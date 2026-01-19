@@ -53,6 +53,6 @@ data class HomeUiState(
     }
 }
 
-sealed interface HomeSideEffect{
-    data object NavigateToChallenge: HomeSideEffect
+sealed interface HomeSideEffect {
+    data object NavigateToChallenge : HomeSideEffect
 }

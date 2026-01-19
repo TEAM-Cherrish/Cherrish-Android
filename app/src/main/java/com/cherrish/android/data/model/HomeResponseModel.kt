@@ -4,10 +4,8 @@ import com.cherrish.android.core.util.toKoreanName
 import com.cherrish.android.data.remote.dto.response.HomeResponseDto
 import com.cherrish.android.data.remote.dto.response.RecentProcedureDto
 import com.cherrish.android.data.remote.dto.response.UpcomingProcedureDto
-import com.cherrish.android.presentation.home.type.DowntimePhase
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.Locale
 
 data class HomeResponseModel(
     val date: String,
