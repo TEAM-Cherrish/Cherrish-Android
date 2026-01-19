@@ -34,10 +34,8 @@ fun ChallengeMissionSelectedRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     when (val state = uiState) {
         is UiState.Loading -> {
-
         }
         is UiState.Failure -> {
-
         }
         is UiState.Success -> {
             ChallengeMissionSelectedScreen(
@@ -102,7 +100,6 @@ private fun ChallengeMissionSelectedScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ChallengeMissionSelectedScreenPreview() {
-
     var uiState by remember {
         mutableStateOf(
             ChallengeMissionUiState(
