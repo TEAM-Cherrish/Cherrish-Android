@@ -10,6 +10,7 @@ data class ProceduresResponseModel(
 data class ProcedureModel(
     val id: Long,
     val name: String,
+    val category: String?,
     val minDowntimeDays: Int,
     val maxDowntimeDays: Int
 )
@@ -21,6 +22,7 @@ fun ProceduresResponseDto.toModel() = ProceduresResponseModel(
 fun ProcedureDto.toModel() = ProcedureModel(
     id = id,
     name = name,
+    category = category,
     minDowntimeDays = minDowntimeDays,
     maxDowntimeDays = maxDowntimeDays
 )
