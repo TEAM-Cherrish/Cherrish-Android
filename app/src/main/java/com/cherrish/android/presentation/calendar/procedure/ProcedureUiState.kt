@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import java.time.YearMonth
 
 @Immutable
 data class ProcedureUiState(
@@ -57,7 +58,16 @@ data class ProcedureUiState(
         }
 
         try {
-            val inputDate = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+            val yearInt = year.toInt()
+            val monthInt = month.toInt()
+            val dayInt = day.toInt()
+
+            val yearMonth = YearMonth.of(yearInt, monthInt)
+            if (dayInt > yearMonth.lengthOfMonth()) {
+                return@run "올바른 날짜 형식이 아니에요."
+            }
+
+            val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
             val today = LocalDate.now()
 
             when {
