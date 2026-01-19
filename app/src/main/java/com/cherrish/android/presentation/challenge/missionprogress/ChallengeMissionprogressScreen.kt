@@ -3,14 +3,15 @@ package com.cherrish.android.presentation.challenge.missionprogress
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,38 +66,44 @@ private fun ChallengeMissionprogressScreen(
     onCompleteTodayClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 17.dp)
-            .padding(paddingValues)
-            .navigationBarsPadding()
             .background(CherrishTheme.colors.gray100)
+            .navigationBarsPadding(),
+        contentPadding = PaddingValues(horizontal = 17.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        Spacer(modifier = Modifier.weight(38f))
+        item {
+            Spacer(modifier = Modifier.height(38.dp))
+        }
 
-        ChallengeMissionSelectedTitle()
+        item {
+            ChallengeMissionSelectedTitle()
+        }
 
-        Spacer(modifier = Modifier.weight(14f))
+        item {
+            ChallengeMissionProgressCherrygrowth(
+                cherryType = uiState.cherryType,
+                remainingRoutines = uiState.remainingCount,
+                challengeProgress = uiState.progressPercentage,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+        }
 
-        ChallengeMissionProgressCherrygrowth(
-            cherryType = uiState.cherryType,
-            remainingRoutines = uiState.remainingCount,
-            challengeProgress = uiState.progressPercentage,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+        item {
+            ChallengeMissionTodoSection(
+                routines = uiState.routines,
+                currentDay = uiState.currentDay,
+                onRoutineClick = onTodoClick,
+                onCompleteClick = onCompleteTodayClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
-        Spacer(modifier = Modifier.weight(14f))
-
-        ChallengeMissionTodoSection(
-            routines = uiState.routines,
-            currentDay = uiState.currentDay,
-            onRoutineClick = onTodoClick,
-            onCompleteClick = onCompleteTodayClick,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.weight(24f))
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+        }
     }
 }
 
@@ -115,7 +122,6 @@ private fun ChallengeMissionSelectedTitle(modifier: Modifier = Modifier) {
         )
 
         Surface(
-            modifier = Modifier,
             shape = RoundedCornerShape(4.dp),
             border = BorderStroke(
                 width = 1.dp,
@@ -155,16 +161,34 @@ private fun ChallengeMissionprogressScreenPreview() {
                 remainingCount = 3,
                 progressPercentage = 25,
                 routines = persistentListOf(
-                    DailyTodoRoutineModel(id = 1L, routine = "아침 세안 후 토너 바르기", isCompleted = false),
+                    DailyTodoRoutineModel(
+                        id = 1L,
+                        routine = "아침 세안 후 토너 바르기",
+                        isCompleted = false
+                    ),
                     DailyTodoRoutineModel(
                         id = 2L,
                         routine = "수분 에센스 2–3방울 흡수",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(id = 3L, routine = "보습 크림으로 마무리", isCompleted = false),
+                    DailyTodoRoutineModel(
+                        id = 3L,
+                        routine = "보습 크림으로 마무리",
+                        isCompleted = false
+                    ),
                     DailyTodoRoutineModel(
                         id = 4L,
                         routine = "외출 전 선크림 꼼꼼히 바르기",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 5L,
+                        routine = "태양을 피하는 방법",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 6L,
+                        routine = "나가지 않기",
                         isCompleted = false
                     )
                 )
@@ -173,7 +197,7 @@ private fun ChallengeMissionprogressScreenPreview() {
     }
 
     ChallengeMissionprogressScreen(
-        paddingValues = PaddingValues(),
+        paddingValues = PaddingValues(0.dp),
         uiState = uiState,
         onTodoClick = { clickedId ->
             uiState = uiState.copy(

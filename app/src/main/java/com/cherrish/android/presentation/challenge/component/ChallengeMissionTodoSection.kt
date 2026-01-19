@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,13 +73,24 @@ private fun ChallengeMissionTodoList(
     routines: ImmutableList<DailyTodoRoutineModel>,
     onRoutineClick: (Long) -> Unit
 ) {
-    LazyColumn(
+//    LazyColumn(
+//        verticalArrangement = Arrangement.spacedBy(8.dp)
+//    ) {
+//        items(
+//            items = routines,
+//            key = { it.id }
+//        ) { item ->
+//            ChallengeChecklist(
+//                isChecked = item.isCompleted,
+//                onChecklistClick = { onRoutineClick(item.id) },
+//                checklistContent = item.routine
+//            )
+//        }
+//    }
+    Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(
-            items = routines,
-            key = { it.id }
-        ) { item ->
+        routines.forEach { item ->
             ChallengeChecklist(
                 isChecked = item.isCompleted,
                 onChecklistClick = { onRoutineClick(item.id) },
