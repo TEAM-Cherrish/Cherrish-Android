@@ -44,7 +44,7 @@ import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.home.model.UpcomingPlanUiModel
+import com.cherrish.android.data.model.UpcomingProcedureModel
 import com.cherrish.android.presentation.home.type.UpcomingPlanTimelineType
 import com.cherrish.android.presentation.home.type.style
 import com.cherrish.android.presentation.home.type.toUpcomingPlanTimelineType
@@ -56,7 +56,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun UpcomingPlanSection(
     onAddPlanClick: () -> Unit,
-    plans: ImmutableList<UpcomingPlanUiModel>,
+    plans: ImmutableList<UpcomingProcedureModel>,
     onUpcomingPlanClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,7 +106,7 @@ fun UpcomingPlanSection(
 
 @Composable
 private fun UpcomingPlan(
-    plans: ImmutableList<UpcomingPlanUiModel>,
+    plans: ImmutableList<UpcomingProcedureModel>,
     onUpcomingPlanClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -132,7 +132,7 @@ private fun UpcomingPlan(
 @Composable
 private fun UpcomingPlanContent(
     planCount: Int,
-    planModel: UpcomingPlanUiModel,
+    planModel: UpcomingProcedureModel,
     index: Int,
     onUpcomingPlanClick: (LocalDate) -> Unit,
     type: UpcomingPlanTimelineType,
@@ -140,12 +140,13 @@ private fun UpcomingPlanContent(
 ) {
     var heightPx by remember { mutableIntStateOf(0) }
     var dateTextTopPx by remember { mutableFloatStateOf(0f) }
+    val upcomingDate = planModel.upcomingPlanDate
 
     Row(
         modifier = modifier
             .wrapContentHeight()
             .onSizeChanged { heightPx = it.height }
-            .noRippleClickable(onClick = { onUpcomingPlanClick(planModel.upcomingPlanDate) }),
+            .noRippleClickable(onClick = { onUpcomingPlanClick(upcomingDate) }),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         verticalAlignment = Alignment.Top
     ) {
@@ -158,7 +159,7 @@ private fun UpcomingPlanContent(
         )
 
         UpcomingPlanBox(
-            upcomingDate = planModel.upcomingPlanDate,
+            upcomingDate = upcomingDate,
             procedureName = planModel.procedureName,
             procedureCount = planModel.procedureCount,
             dDay = planModel.dDay,
@@ -349,37 +350,6 @@ private fun Preview_UpcomingPlanSection_Empty() {
         UpcomingPlanSection(
             onAddPlanClick = {},
             plans = persistentListOf(),
-            onUpcomingPlanClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview_UpcomingPlanSection_Filled() {
-    CherrishTheme {
-        UpcomingPlanSection(
-            onAddPlanClick = {},
-            plans = persistentListOf(
-                UpcomingPlanUiModel(
-                    upcomingPlanDate = LocalDate.of(2026, 1, 20),
-                    procedureName = "슈링크",
-                    procedureCount = 1,
-                    dDay = 3
-                ),
-                UpcomingPlanUiModel(
-                    upcomingPlanDate = LocalDate.of(2026, 1, 25),
-                    procedureName = "보톡스",
-                    procedureCount = 0,
-                    dDay = 8
-                ),
-                UpcomingPlanUiModel(
-                    upcomingPlanDate = LocalDate.of(2026, 2, 1),
-                    procedureName = "필러",
-                    procedureCount = 2,
-                    dDay = 15
-                )
-            ),
             onUpcomingPlanClick = {}
         )
     }

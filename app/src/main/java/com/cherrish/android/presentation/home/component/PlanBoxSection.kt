@@ -28,13 +28,14 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.home.model.PlanUiModel
+import com.cherrish.android.data.model.RecentProcedureModel
+import com.cherrish.android.presentation.home.type.toDowntimePhase
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun PlanBoxSection(
     todayDate: String,
-    plans: ImmutableList<PlanUiModel>,
+    plans: ImmutableList<RecentProcedureModel>,
     modifier: Modifier = Modifier
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -84,7 +85,7 @@ fun PlanBoxSection(
                             state = PlanBoxState.Filled(
                                 medicalProcedureName = plan.procedureName,
                                 medicalProcedureNameDate = plan.daysSince,
-                                downtimePhase = plan.downtimePhase
+                                downtimePhase = plan.downtimePhase.toDowntimePhase()
                             )
                         )
                     }
@@ -119,7 +120,7 @@ fun PlanBoxSection(
                                     state = PlanBoxState.Filled(
                                         medicalProcedureName = plan.procedureName,
                                         medicalProcedureNameDate = plan.daysSince,
-                                        downtimePhase = plan.downtimePhase
+                                        downtimePhase = plan.downtimePhase.toDowntimePhase()
                                     )
                                 )
                             }
