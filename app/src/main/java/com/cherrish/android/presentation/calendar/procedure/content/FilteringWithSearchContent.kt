@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.component.ProcedureTextField
@@ -89,11 +90,12 @@ private val mockProcedureCardItems = persistentListOf(
 @Composable
 fun FilteringWithSearchContent(
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
-    selectedCardId: Long?,
+    selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
     onSearchAction: (String) -> Unit,
     query: String,
     onQueryChange: (String) -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -109,7 +111,7 @@ fun FilteringWithSearchContent(
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(bottom = 20.dp)
+            contentPadding = PaddingValues(bottom = bottomPadding)
         ) {
             item {
                 CautionDescription()
@@ -129,9 +131,8 @@ fun FilteringWithSearchContent(
                     minDowntimeDays = item.minDowntimeDays,
                     maxDowntimeDays = item.maxDowntimeDays,
                     onCardClick = { onCardClick(item.id) },
-                    isSelected = selectedCardId == item.id,
+                    isSelected = item.id in selectedCardIds,
                     displayMode = item.displayMode
-
                 )
             }
         }
@@ -142,17 +143,23 @@ fun FilteringWithSearchContent(
 @Composable
 private fun FilteringWithSearchContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var selectedCardIds by remember { mutableStateOf(persistentListOf<Long>()) }
         var query by remember { mutableStateOf("") }
 
         FilteringWithSearchContent(
             cardItems = mockProcedureCardItems,
-            selectedCardId = selectedCardId,
+            selectedCardIds = selectedCardIds,
             onCardClick = { clickedId ->
-                selectedCardId = if (selectedCardId == clickedId) null else clickedId
+                selectedCardIds =
+                    if (clickedId in selectedCardIds) {
+                        selectedCardIds.remove(clickedId)
+                    } else {
+                        selectedCardIds.add(clickedId)
+                    }
             },
             onSearchAction = {},
             query = query,
+            bottomPadding = 20.dp,
             onQueryChange = { query = it }
         )
     }

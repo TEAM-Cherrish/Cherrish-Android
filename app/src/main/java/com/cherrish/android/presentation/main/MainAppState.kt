@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
+import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
@@ -76,6 +77,14 @@ class MainAppState(
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
             MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
         }
+    }
+
+    fun navigateUp() {
+        navController.navigateUp()
+    }
+
+    fun navigateToProcedure() {
+        navController.navigateToProcedure()
     }
 }
 
