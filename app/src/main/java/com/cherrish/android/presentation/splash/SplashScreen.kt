@@ -20,18 +20,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashRoute(
     navigateToOnboarding: () -> Unit,
-    paddingValues: PaddingValues
+    navigateToHome: () -> Unit,
+    paddingValues: PaddingValues,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) {
+        viewModel.isAutoLoginCheck()
+    }
+
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         delay(3000)
-        navigateToOnboarding()
+
+        when (sideEffect) {
+            SplashSideEffect.NavigateToOnboarding -> {
+                navigateToOnboarding()
+            }
+            SplashSideEffect.NavigateToHome -> {
+                navigateToHome()
+            }
+        }
     }
 
     SplashScreen(
