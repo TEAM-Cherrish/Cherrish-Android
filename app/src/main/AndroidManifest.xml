@@ -16,6 +16,7 @@
         android:theme="@style/Theme.Cherrish" >
         <activity
             android:name=".presentation.main.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Cherrish" >

@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.calendar.procedure.content
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.component.ProcedureCard
@@ -86,12 +88,14 @@ private val mockProcedureCardItems = persistentListOf(
 fun FilteringContent(
     name: String,
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
-    selectedCardId: Long?,
+    selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(bottom = bottomPadding)
     ) {
         item {
             ProcedureTitleSection(
@@ -113,7 +117,7 @@ fun FilteringContent(
                 minDowntimeDays = item.minDowntimeDays,
                 maxDowntimeDays = item.maxDowntimeDays,
                 onCardClick = { onCardClick(item.id) },
-                isSelected = selectedCardId == item.id,
+                isSelected = item.id in selectedCardIds,
                 displayMode = item.displayMode,
                 modifier = Modifier
                     .padding(bottom = 10.dp)
@@ -127,15 +131,22 @@ fun FilteringContent(
 @Composable
 private fun FilteringContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var selectedCardIds by remember { mutableStateOf(persistentListOf<Long>()) }
 
         FilteringContent(
             name = "색소침착",
             cardItems = mockProcedureCardItems,
-            selectedCardId = selectedCardId,
+            selectedCardIds = selectedCardIds,
             onCardClick = { clickedId ->
-                selectedCardId = if (selectedCardId == clickedId) null else clickedId
-            }
+                selectedCardIds = if (clickedId in selectedCardIds) {
+                    selectedCardIds.remove(clickedId)
+                } else if (selectedCardIds.size < 5) {
+                    selectedCardIds.add(clickedId)
+                } else {
+                    selectedCardIds
+                }
+            },
+            bottomPadding = 20.dp
         )
     }
 }

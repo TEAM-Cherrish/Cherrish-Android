@@ -40,7 +40,7 @@ fun ChallengeSection(
     gauges: ImmutableList<CherrishGaugeType>,
     modifier: Modifier = Modifier,
     currentStep: Int = 0,
-    @DrawableRes imageRes: Int = R.drawable.img_lv1,
+    @DrawableRes imageRes: Int = R.drawable.img_challenge_lv2,
     onChallengeStartClick: () -> Unit = {},
     challengeName: String? = "웰니스 • 마음챙김",
     challengeRate: Int = 0
@@ -211,7 +211,7 @@ private fun NoChallenge(
 private fun Preview_ChallengeSection_NoChallenge() {
     CherrishTheme {
         ChallengeSection(
-            imageRes = R.drawable.img_lv1,
+            imageRes = R.drawable.img_challenge_lv2,
             currentStep = 0,
             gauges = CherrishGaugeType.entries.toImmutableList(),
             onChallengeStartClick = {},
@@ -225,7 +225,7 @@ private fun Preview_ChallengeSection_NoChallenge() {
 private fun Preview_ChallengeSection_InProgress() {
     CherrishTheme {
         ChallengeSection(
-            imageRes = R.drawable.img_lv2,
+            imageRes = R.drawable.img_challenge_lv2,
             currentStep = 2,
             gauges = CherrishGaugeType.entries.toImmutableList(),
             onChallengeStartClick = {},

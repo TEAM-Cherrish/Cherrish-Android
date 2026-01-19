@@ -6,13 +6,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
+import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
-import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
+import com.cherrish.android.presentation.splash.navigation.Splash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +28,18 @@ class MainAppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope
 ) {
-    val startDestination = Home
+    val startDestination = Splash
+
+    private val clearStackNavOptions = navOptions {
+        popUpTo(0) { inclusive = true }
+        launchSingleTop = true
+        restoreState = false
+    }
+
+    private val keepStackNavOptions = navOptions {
+        launchSingleTop = true
+        restoreState = true
+    }
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
@@ -76,6 +91,26 @@ class MainAppState(
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
             MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
         }
+    }
+
+    fun navigateToOnboarding(navOptions: NavOptions? = clearStackNavOptions) {
+        navController.navigateToOnboarding(navOptions)
+    }
+
+    fun navigateToOnboardingInformation(navOptions: NavOptions? = clearStackNavOptions) {
+        navController.navigateToOnboardingInformation(navOptions)
+    }
+
+    fun navigateToHome(navOptions: NavOptions? = clearStackNavOptions) {
+        navController.navigateToHome(navOptions)
+    }
+
+    fun navigateUp() {
+        navController.navigateUp()
+    }
+
+    fun navigateToProcedure() {
+        navController.navigateToProcedure()
     }
 }
 

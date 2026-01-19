@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.calendar.component
+package com.cherrish.android.presentation.calendar.procedure.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,7 +44,7 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.type.CherrishButtonStyle
 import com.cherrish.android.core.util.rememberFixedDpFontSize
-import com.cherrish.android.presentation.calendar.model.DowntimeValidationType
+import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -82,6 +82,7 @@ fun DowntimeBottomSheet(
             modifier = modifier.fillMaxWidth()
         ) {
             val downtimeGuideBubbleText = when (validationType) {
+                DowntimeValidationType.INVALID -> ""
                 DowntimeValidationType.VALID -> "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
                 DowntimeValidationType.EXCEEDS_GOAL -> "설정한 다운타임은 목표일을 넘깁니다."
             }
