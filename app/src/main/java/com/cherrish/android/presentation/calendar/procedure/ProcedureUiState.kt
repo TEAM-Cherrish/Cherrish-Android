@@ -12,6 +12,7 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorry
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import com.cherrish.android.presentation.calendar.procedure.util.DowntimeDayLogic
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
@@ -57,7 +58,16 @@ data class ProcedureUiState(
         }
 
         try {
-            val inputDate = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+            val yearInt = year.toInt()
+            val monthInt = month.toInt()
+            val dayInt = day.toInt()
+
+            val yearMonth = YearMonth.of(yearInt, monthInt)
+            if (dayInt > yearMonth.lengthOfMonth()) {
+                return@run "올바른 날짜 형식이 아니에요."
+            }
+
+            val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
             val today = LocalDate.now()
 
             when {

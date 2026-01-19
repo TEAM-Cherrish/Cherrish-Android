@@ -18,6 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +44,7 @@ fun RecoveryScheduleContent(
     errorMessage: String? = null
 ) {
     val hasSelection = selectedIndex != null && selectedIndex >= 0
+    val focusManager = LocalFocusManager.current
 
     Column(modifier = modifier) {
         SelectionSection(
@@ -66,7 +71,9 @@ fun RecoveryScheduleContent(
                     day = day,
                     onYearChange = onYearChange,
                     onMonthChange = onMonthChange,
-                    onDayChange = onDayChange
+                    onDayChange = onDayChange,
+                    onDone = { focusManager.clearFocus() },
+                    onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) }
                 )
 
                 if (errorMessage != null) {
@@ -86,6 +93,8 @@ private fun ScheduleSettingSection(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
+    onDone: () -> Unit,
+    onNext: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -114,6 +123,8 @@ private fun ScheduleSettingSection(
                 suffix = "년",
                 placeholder = "YYYY",
                 onValueChange = onYearChange,
+                imeAction = ImeAction.Next,
+                onNext = onNext,
                 modifier = Modifier.weight(1f)
             )
             DateInputBasicSection(
@@ -121,6 +132,8 @@ private fun ScheduleSettingSection(
                 suffix = "월",
                 placeholder = "MM",
                 onValueChange = onMonthChange,
+                imeAction = ImeAction.Next,
+                onNext = onNext,
                 modifier = Modifier.weight(1f)
             )
             DateInputBasicSection(
@@ -128,6 +141,8 @@ private fun ScheduleSettingSection(
                 suffix = "일",
                 placeholder = "DD",
                 onValueChange = onDayChange,
+                imeAction = ImeAction.Done,
+                onDone = onDone,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -140,7 +155,10 @@ private fun DateInputBasicSection(
     suffix: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    imeAction: ImeAction = ImeAction.Next,
+    onDone: () -> Unit = {},
+    onNext: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -160,6 +178,10 @@ private fun DateInputBasicSection(
                 textAlign = TextAlign.Center
             ),
             inputTextColor = CherrishTheme.colors.gray800,
+            keyboardType = KeyboardType.Number,
+            keyboardImeAction = imeAction,
+            onDoneAction = onDone,
+            onNextAction = onNext,
             paddingValues = PaddingValues(horizontal = 19.dp, vertical = 8.dp),
             modifier = Modifier.weight(1f)
         )
