@@ -60,7 +60,11 @@ fun MainScreen(
 
             homeNavGraph(paddingValues = innerPadding)
 
-            calendarNavGraph(paddingValues = innerPadding)
+            calendarNavGraph(
+                paddingValues = innerPadding,
+                navigateUp = appState::navigateUp,
+                navigateToProcedure = appState::navigateToProcedure
+            )
 
             challengeNavGraph(paddingValues = innerPadding)
 

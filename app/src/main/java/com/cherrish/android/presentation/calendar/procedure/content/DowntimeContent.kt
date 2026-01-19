@@ -22,6 +22,7 @@ import com.cherrish.android.presentation.calendar.procedure.component.ProcedureC
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 
 /* TODO: 삭제 예정 */
@@ -87,7 +88,7 @@ private val mockProcedureCardItems = persistentListOf(
 @Composable
 fun DowntimeContent(
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
-    selectedCardId: Long?,
+    selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -117,7 +118,7 @@ fun DowntimeContent(
                 minDowntimeDays = item.minDowntimeDays,
                 maxDowntimeDays = item.maxDowntimeDays,
                 onCardClick = { onCardClick(item.id) },
-                isSelected = selectedCardId == item.id,
+                isSelected = item.id in selectedCardIds,
                 displayMode = item.displayMode,
                 modifier = Modifier.padding(top = 10.dp)
             )
@@ -138,13 +139,18 @@ fun DowntimeContent(
 @Composable
 private fun DowntimeContentPreview() {
     CherrishTheme {
-        var selectedCardId by remember { mutableStateOf<Long?>(null) }
+        var selectedCardIds by remember { mutableStateOf<PersistentList<Long>>(persistentListOf()) }
 
         DowntimeContent(
             cardItems = mockProcedureCardItems,
-            selectedCardId = selectedCardId,
+            selectedCardIds = selectedCardIds,
             onCardClick = { clickedId ->
-                selectedCardId = if (selectedCardId == clickedId) null else clickedId
+                selectedCardIds =
+                    if (clickedId in selectedCardIds) {
+                        selectedCardIds.remove(clickedId)
+                    } else {
+                        selectedCardIds.add(clickedId)
+                    }
             }
         )
     }

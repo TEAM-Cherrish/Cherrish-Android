@@ -36,7 +36,8 @@ fun RecoveryScheduleContent(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    errorMessage: String? = null
 ) {
     val hasSelection = selectedIndex != null && selectedIndex >= 0
 
@@ -67,6 +68,10 @@ fun RecoveryScheduleContent(
                     onMonthChange = onMonthChange,
                     onDayChange = onDayChange
                 )
+
+                if (errorMessage != null) {
+                    ErrorMessage(message = errorMessage)
+                }
             }
         }
     }
@@ -165,6 +170,20 @@ private fun DateInputBasicSection(
             color = CherrishTheme.colors.gray700
         )
     }
+}
+
+@Composable
+private fun ErrorMessage(
+    message: String
+) {
+    Text(
+        text = message,
+        style = CherrishTheme.typography.body1R14,
+        color = CherrishTheme.colors.red700,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp)
+    )
 }
 
 @Preview(showBackground = true)

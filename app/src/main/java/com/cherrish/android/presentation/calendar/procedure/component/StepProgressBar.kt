@@ -1,7 +1,7 @@
 package com.cherrish.android.presentation.calendar.procedure.component
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +35,18 @@ fun StepProgressBar(
     currentStep: Int,
     modifier: Modifier = Modifier
 ) {
+    if (totalStep <= 0) return
+
     val safeStep = currentStep.coerceIn(0, totalStep - 1)
+    var previousStep by remember { mutableIntStateOf(safeStep) }
+
+    val isGoingBack = safeStep < previousStep
+    val animatedIndex = if (isGoingBack) previousStep else safeStep
+
+    LaunchedEffect(safeStep) {
+        kotlinx.coroutines.delay(800)
+        previousStep = safeStep
+    }
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -49,7 +61,7 @@ fun StepProgressBar(
             StepSegment(
                 modifier = Modifier.weight(1f),
                 targetProgress = target,
-                animate = (index == safeStep)
+                animate = index == animatedIndex
             )
         }
     }
@@ -61,14 +73,22 @@ private fun StepSegment(
     animate: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val progress by animateFloatAsState(
-        targetValue = targetProgress.coerceIn(0f, 1f),
-        animationSpec = if (animate) {
-            tween(durationMillis = 800, easing = FigmaGentleEasing)
+    val clampedTarget = targetProgress.coerceIn(0f, 1f)
+
+    val animatable = remember { Animatable(0f) }
+
+    LaunchedEffect(clampedTarget, animate) {
+        if (animate) {
+            animatable.animateTo(
+                targetValue = clampedTarget,
+                animationSpec = tween(durationMillis = 800, easing = FigmaGentleEasing)
+            )
         } else {
-            tween(durationMillis = 0)
+            animatable.snapTo(clampedTarget)
         }
-    )
+    }
+
+    val progress = animatable.value
 
     Box(
         modifier = modifier
@@ -100,11 +120,25 @@ private fun StepProgressBarPreview() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = { step = (step + 1).coerceAtMost(3) },
-                enabled = step < 3
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(text = "다음")
+                Button(
+                    onClick = { step = (step - 1).coerceAtLeast(0) },
+                    enabled = step > 0,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = "이전")
+                }
+
+                Button(
+                    onClick = { step = (step + 1).coerceAtMost(3) },
+                    enabled = step < 3,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = "다음")
+                }
             }
         }
     }
