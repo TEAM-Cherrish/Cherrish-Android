@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -68,6 +69,7 @@ private fun ChallengeRoutineScreen(
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .padding(paddingValues)
+            .navigationBarsPadding()
     ) {
         Spacer(Modifier.weight(44f))
 
