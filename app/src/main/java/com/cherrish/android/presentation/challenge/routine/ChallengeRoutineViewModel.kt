@@ -55,7 +55,7 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
         val selectedRoutine = state.data.selectedRoutine!!
     }
 
-    fun onBackCLick() {
+    fun onBackClick() {
     }
     fun onCloseClick() {}
 }
