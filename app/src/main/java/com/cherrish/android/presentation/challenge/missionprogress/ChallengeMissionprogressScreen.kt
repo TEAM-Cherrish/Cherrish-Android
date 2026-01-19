@@ -34,7 +34,8 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeMissionprogressRoute(
-    paddingValues: PaddingValues, viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
+    paddingValues: PaddingValues,
+    viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -99,7 +100,8 @@ private fun ChallengeMissionprogressScreen(
 
 @Composable
 private fun ChallengeMissionSelectedTitle(
-    challengeName: String, modifier: Modifier = Modifier
+    challengeName: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -118,7 +120,8 @@ private fun ChallengeMissionSelectedTitle(
             style = CherrishTheme.typography.body3M12,
             modifier = Modifier
                 .background(
-                    color = CherrishTheme.colors.gray100, shape = RoundedCornerShape(4.dp)
+                    color = CherrishTheme.colors.gray100,
+                    shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
@@ -145,7 +148,9 @@ private fun ChallengeMissionprogressScreenPreview() {
         mutableStateOf(
             ChallengeMissionProgressUiState(
                 challenge = ChallengeInfoModel(
-                    id = 1L, challengeTitle = "피부 컨디션 챌린지", challengeTotalDays = 7
+                    id = 1L,
+                    challengeTitle = "피부 컨디션 챌린지",
+                    challengeTotalDays = 7
                 ),
                 currentDay = 4,
                 cherryType = CherryType.BBANGBBANG,
@@ -153,17 +158,34 @@ private fun ChallengeMissionprogressScreenPreview() {
                 progressPercentage = 25,
                 routines = persistentListOf(
                     DailyTodoRoutineModel(
-                        id = 1L, routine = "아침 세안 후 토너 바르기", isCompleted = false
-                    ), DailyTodoRoutineModel(
-                        id = 2L, routine = "수분 에센스 2–3방울 흡수", isCompleted = false
-                    ), DailyTodoRoutineModel(
-                        id = 3L, routine = "보습 크림으로 마무리", isCompleted = false
-                    ), DailyTodoRoutineModel(
-                        id = 4L, routine = "외출 전 선크림 꼼꼼히 바르기", isCompleted = false
-                    ), DailyTodoRoutineModel(
-                        id = 5L, routine = "태양을 피하는 방법", isCompleted = false
-                    ), DailyTodoRoutineModel(
-                        id = 6L, routine = "나가지 않기", isCompleted = false
+                        id = 1L,
+                        routine = "아침 세안 후 토너 바르기",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 2L,
+                        routine = "수분 에센스 2–3방울 흡수",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 3L,
+                        routine = "보습 크림으로 마무리",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 4L,
+                        routine = "외출 전 선크림 꼼꼼히 바르기",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 5L,
+                        routine = "태양을 피하는 방법",
+                        isCompleted = false
+                    ),
+                    DailyTodoRoutineModel(
+                        id = 6L,
+                        routine = "나가지 않기",
+                        isCompleted = false
                     )
                 )
             )
@@ -184,5 +206,6 @@ private fun ChallengeMissionprogressScreenPreview() {
                 }.toPersistentList()
             )
         },
-        onCompleteTodayClick = {})
+        onCompleteTodayClick = {}
+    )
 }
