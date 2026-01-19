@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeMissionOnboardingBody(
     items: ImmutableList<ChallengeMissionModel>,
-    onItemClick: (Int) -> Unit,
+    onItemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
