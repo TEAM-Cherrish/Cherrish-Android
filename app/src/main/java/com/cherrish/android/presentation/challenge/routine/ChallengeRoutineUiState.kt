@@ -1,17 +1,10 @@
 package com.cherrish.android.presentation.challenge.routine
 
 import androidx.compose.runtime.Immutable
+import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import kotlinx.collections.immutable.ImmutableList
 
 @Immutable
 data class ChallengeRoutineUiState(
-    val routine: String = "",
-    val isSelected: Boolean = false
-) {
-    companion object {
-        val FakeRoutine =
-            ChallengeRoutineUiState(
-                routine = "피부 컨디션",
-                isSelected = false
-            )
-    }
-}
+    val routines: ImmutableList<ChallengeRoutineModel>
+)
