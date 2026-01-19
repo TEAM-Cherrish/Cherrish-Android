@@ -24,7 +24,6 @@ fun MainScreen(
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
-
     Scaffold(
         bottomBar = {
             MainBottomBar(

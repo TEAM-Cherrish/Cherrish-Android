@@ -68,12 +68,12 @@ fun OnboardingRoute(
     navigateToOnboardingInformation: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
-        viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
-            when (sideEffect) {
-                OnboardingSideEffect.NavigateToOnboardingInformation -> {
-                    navigateToOnboardingInformation()
-                }
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            OnboardingSideEffect.NavigateToOnboardingInformation -> {
+                navigateToOnboardingInformation()
             }
+        }
     }
     OnboardingScreen(
         paddingValues = paddingValues,
