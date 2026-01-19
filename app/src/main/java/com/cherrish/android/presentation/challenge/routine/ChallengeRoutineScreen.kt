@@ -69,6 +69,8 @@ private fun ChallengeRoutineScreen(
             .background(CherrishTheme.colors.gray0)
             .padding(paddingValues)
     ) {
+        Spacer(Modifier.weight(44f))
+
         BackAndCloseTopAppBar(
             title = "루틴 챌린지 선택",
             onBackClick = onBackClick,
