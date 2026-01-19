@@ -127,7 +127,7 @@ private fun ChallengeMissionSelectedTitle(modifier: Modifier = Modifier) {
                 text = "7일 플랜",
                 color = CherrishTheme.colors.gray700,
                 style = CherrishTheme.typography.body3M12,
-                modifier = Modifier.padding(horizontal = 3.dp, vertical = 8.dp)
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
             )
         }
     }
