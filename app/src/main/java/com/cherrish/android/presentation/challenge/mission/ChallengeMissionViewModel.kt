@@ -5,15 +5,14 @@ import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
 @HiltViewModel
-class ChallengeMissionViewModel @Inject constructor() : ViewModel(){
+class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
     private val _uiState =
         MutableStateFlow<UiState<ChallengeMissionUiState>>(UiState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -22,10 +21,11 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel(){
         loadMissions()
     }
 
-    private fun loadMissions(){
+    private fun loadMissions() {
         _uiState.value = UiState.Success(
             ChallengeMissionUiState(
-                missions = persistentListOf(   ChallengeMissionModel(1, "아침 세안 후 토너 바르기"),
+                missions = persistentListOf(
+                    ChallengeMissionModel(1, "아침 세안 후 토너 바르기"),
                     ChallengeMissionModel(2, "수분 에센스 2-3방울 흡수"),
                     ChallengeMissionModel(3, "보습 크림으로 마무리"),
                     ChallengeMissionModel(4, "저녁 클렌징 꼼꼼히 하기"),
@@ -35,20 +35,21 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel(){
             )
         )
     }
-    fun onTodoMissionClick(id:Long){
+    fun onTodoMissionClick(id: Long) {
         _uiState.updateSuccess {
-            state -> state.copy(
+                state ->
+            state.copy(
                 missions = state.missions.map {
-                    mission -> if(mission.id==id){
+                        mission ->
+                    if (mission.id == id) {
                         mission.copy(isSelected = !mission.isSelected)
-                }else {
-                    mission
-                }
+                    } else {
+                        mission
+                    }
                 }.toPersistentList()
             )
         }
     }
-
 
     fun onAddTodoClick() {
         val state = _uiState.value
@@ -58,9 +59,7 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel(){
         if (!state.data.hasSelected) return
 
         state.data.selectedMissions
-
     }
-    fun onBackClick(){}
-    fun onCloseClick(){}
-
+    fun onBackClick() {}
+    fun onCloseClick() {}
 }

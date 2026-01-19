@@ -1,6 +1,5 @@
 package com.cherrish.android.presentation.challenge.mission
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,9 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,11 +22,9 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.component.ChallengeMissionOnboardingBody
-import com.cherrish.android.presentation.challenge.mission.ChallengeMissionSelectedScreen
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-
 
 @Composable
 fun ChallengeMissionSelectedRoute(
@@ -38,8 +33,12 @@ fun ChallengeMissionSelectedRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     when (val state = uiState) {
-        is UiState.Loading -> {}
-        is UiState.Failure -> {}
+        is UiState.Loading -> {
+
+        }
+        is UiState.Failure -> {
+
+        }
         is UiState.Success -> {
             ChallengeMissionSelectedScreen(
                 uiState = state.data,
@@ -50,7 +49,6 @@ fun ChallengeMissionSelectedRoute(
                 onAddTodoClick = viewModel::onAddTodoClick
             )
         }
-
         else -> {}
     }
 }
@@ -69,7 +67,7 @@ private fun ChallengeMissionSelectedScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
-            .padding(paddingValues),
+            .padding(paddingValues)
     ) {
         Spacer(Modifier.height(44.dp))
 
@@ -147,7 +145,9 @@ private fun ChallengeMissionSelectedScreenPreview() {
                 missions = uiState.missions.map { mission ->
                     if (mission.id == clickedId) {
                         mission.copy(isSelected = !mission.isSelected)
-                    } else mission
+                    } else {
+                        mission
+                    }
                 }.toPersistentList()
             )
         },
