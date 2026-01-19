@@ -6,12 +6,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
+import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
+import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
 import com.cherrish.android.presentation.splash.navigation.Splash
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
