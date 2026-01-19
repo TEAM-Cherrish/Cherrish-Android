@@ -1,6 +1,7 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
+import com.cherrish.android.data.remote.service.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,4 +17,10 @@ object ServiceModule {
     fun provideCalendarService(
         retrofit: Retrofit
     ): CalendarService = retrofit.create(CalendarService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHomeService(
+        retrofit: Retrofit
+    ): HomeService = retrofit.create(HomeService::class.java)
 }
