@@ -63,7 +63,10 @@ fun ChallengeMissionTodoSection(
         CherrishButton(
             text = "오늘 미션 종료하기",
             onClick = onCompleteClick,
-            modifier = Modifier.padding(top = 10.dp)
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp)
         )
     }
 }
@@ -73,20 +76,6 @@ private fun ChallengeMissionTodoList(
     routines: ImmutableList<DailyTodoRoutineModel>,
     onRoutineClick: (Long) -> Unit
 ) {
-//    LazyColumn(
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
-//    ) {
-//        items(
-//            items = routines,
-//            key = { it.id }
-//        ) { item ->
-//            ChallengeChecklist(
-//                isChecked = item.isCompleted,
-//                onChecklistClick = { onRoutineClick(item.id) },
-//                checklistContent = item.routine
-//            )
-//        }
-//    }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
