@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,8 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.model.CalendarDay
@@ -104,22 +109,45 @@ private fun DowntimeDateContent(
     }
 
     Box(
-        modifier = Modifier
-            .aspectRatio(1f)
-            .clip(shape = CircleShape)
-            .background(color = colors.background)
-            .border(width = 1.dp, color = colors.border, shape = CircleShape),
+        modifier = Modifier.aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
-        DateText(day.date.dayOfMonth)
+        Box(
+            modifier = Modifier
+                .aspectRatio(1f)
+                .clip(shape = CircleShape)
+                .background(color = colors.background)
+                .border(width = 1.dp, color = colors.border, shape = CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            DateText(
+                dayOfMonth = day.date.dayOfMonth,
+                color = if (day.status == DownTimeStatus.NONE && day.isDDay) CherrishTheme.colors.red700 else CherrishTheme.colors.gray1000
+
+            )
+        }
+
+        if (day.isDDay) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_calendar_d_day),
+                contentDescription = null,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .offset(y = 8.dp),
+                tint = Color.Unspecified
+            )
+        }
     }
 }
 
 @Composable
-private fun DateText(dayOfMonth: Int) {
+private fun DateText(
+    dayOfMonth: Int,
+    color: Color = CherrishTheme.colors.gray1000
+) {
     Text(
         text = dayOfMonth.toString(),
-        color = CherrishTheme.colors.gray1000,
+        color = color,
         style = CherrishTheme.typography.body1R14
     )
 }
@@ -170,9 +198,9 @@ private fun DayItemPreview() {
                 modifier = Modifier.size(48.dp)
             )
             DayItem(
-                day = CalendarDay.Date.Downtime(date.plusDays(2), status = DownTimeStatus.CAUTION),
+                day = CalendarDay.Date.Downtime(date.plusDays(2), status = DownTimeStatus.NONE, isDDay = true),
                 onDateClick = {},
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
             )
             DayItem(
                 day = CalendarDay.Date.Downtime(date.plusDays(3), status = DownTimeStatus.RECOVERY),
