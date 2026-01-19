@@ -1,7 +1,9 @@
 package com.cherrish.android.presentation.challenge
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,10 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
@@ -47,22 +45,19 @@ fun ChallengeLoadingScreen(
 
         Spacer(modifier = Modifier.weight(84f))
 
-        Text(
-            text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(color = CherrishTheme.colors.red700)
-                ) {
-                    append("피부 컨디션 ")
-                }
-                withStyle(
-                    style = SpanStyle(color = CherrishTheme.colors.gray800)
-                ) {
-                    append("관리 방향을 바탕으로")
-                }
-            },
-            style = CherrishTheme.typography.title1SB18,
-            textAlign = TextAlign.Center
-        )
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(
+                text = "피부 컨디션",
+                color = CherrishTheme.colors.red700,
+                style = CherrishTheme.typography.title1SB18
+            )
+
+            Text(
+                text = "관리 방향을 바탕으로 ",
+                color = CherrishTheme.colors.gray800,
+                style = CherrishTheme.typography.title1SB18
+            )
+        }
 
         Spacer(modifier = Modifier.weight(2f))
 
