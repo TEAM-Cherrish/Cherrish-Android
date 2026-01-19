@@ -81,13 +81,30 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun onMonthChange(yearMonth: YearMonth) {
-        val newSelectedDate = if (yearMonth == YearMonth.now()) {
-            LocalDate.now()
-        } else {
-            yearMonth.atDay(1)
-        }
+        _uiState.updateSuccess { currentState ->
+            val currentMode = currentState.calendarDisplayMode
 
-        loadMonthlyCalendar(yearMonth, newSelectedDate)
+            val newSelectedDate = if (yearMonth == YearMonth.now()) {
+                LocalDate.now()
+            } else {
+                yearMonth.atDay(1)
+            }
+
+            if (currentMode is CalendarDisplayMode.Downtime) {
+                _uiState.update {
+                    UiState.Success(
+                        currentState.copy(
+                            selectedYearMonth = yearMonth,
+                            selectedDate = newSelectedDate
+                        )
+                    )
+                }
+            } else {
+                loadMonthlyCalendar(yearMonth, newSelectedDate)
+            }
+
+            currentState
+        }
     }
 
     fun onEventClick(procedureId: Long) {
