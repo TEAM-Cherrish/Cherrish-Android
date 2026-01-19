@@ -231,16 +231,20 @@ class CalendarViewModel @Inject constructor(
                         }
                     }
 
+                    val dDayDate = LocalDate.parse(response.recoveryTargetDate)
+
                     currentState.copy(
                         calendarDisplayMode = CalendarDisplayMode.Downtime(
                             downtimeByDate = downtimeByDate,
-                            selectedProcedureId = userProcedureId
+                            selectedProcedureId = userProcedureId,
+                            dDayDate = dDayDate
                         )
                     )
                 }
             }.onLogFailure { }
         }
     }
+
     fun onAddButtonClick() {
         viewModelScope.launch {
             _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
