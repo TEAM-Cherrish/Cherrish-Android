@@ -26,7 +26,7 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadMissions() {
-        _uiState.value = UiState.Success(
+        _uiState.updateSuccess {
             ChallengeMissionProgressUiState(
                 challenge = ChallengeInfoModel(
                     id = 1L,
@@ -44,7 +44,7 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
                     DailyTodoRoutineModel(4L, "진정 토너+세럼", false)
                 )
             )
-        )
+        }
     }
 
     fun onTodoClick(id: Long) {

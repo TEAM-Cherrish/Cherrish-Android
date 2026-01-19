@@ -1,20 +1,16 @@
 package com.cherrish.android.presentation.challenge.missionprogress
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,14 +34,13 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeMissionprogressRoute(
-    paddingValues: PaddingValues,
-    viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
+    paddingValues: PaddingValues, viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
-        is UiState.Loading -> Unit
-        is UiState.Failure -> Unit
+        is UiState.Loading -> {}
+        is UiState.Failure -> {}
         is UiState.Success -> {
             ChallengeMissionprogressScreen(
                 paddingValues = paddingValues,
@@ -86,7 +81,7 @@ private fun ChallengeMissionprogressScreen(
             ChallengeMissionProgressCherrygrowth(
                 cherryType = uiState.cherryType,
                 remainingRoutines = uiState.remainingCount,
-                challengeProgress = uiState.progressPercentage,
+                challengeProgress = uiState.progressPercentage
             )
         }
 
@@ -104,18 +99,15 @@ private fun ChallengeMissionprogressScreen(
 
 @Composable
 private fun ChallengeMissionSelectedTitle(
-    challengeName: String,
-    modifier: Modifier = Modifier,
-
+    challengeName: String, modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${challengeName} 챌린지",
+            text = "$challengeName 챌린지",
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )
@@ -126,8 +118,7 @@ private fun ChallengeMissionSelectedTitle(
             style = CherrishTheme.typography.body3M12,
             modifier = Modifier
                 .background(
-                    color = CherrishTheme.colors.gray100,
-                    shape = RoundedCornerShape(4.dp)
+                    color = CherrishTheme.colors.gray100, shape = RoundedCornerShape(4.dp)
                 )
                 .border(
                     width = 1.dp,
@@ -136,10 +127,8 @@ private fun ChallengeMissionSelectedTitle(
                 )
                 .padding(horizontal = 8.dp, vertical = 3.dp)
         )
-
     }
-    }
-
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -156,9 +145,7 @@ private fun ChallengeMissionprogressScreenPreview() {
         mutableStateOf(
             ChallengeMissionProgressUiState(
                 challenge = ChallengeInfoModel(
-                    id = 1L,
-                    challengeTitle = "피부 컨디션 챌린지",
-                    challengeTotalDays = 7
+                    id = 1L, challengeTitle = "피부 컨디션 챌린지", challengeTotalDays = 7
                 ),
                 currentDay = 4,
                 cherryType = CherryType.BBANGBBANG,
@@ -166,34 +153,17 @@ private fun ChallengeMissionprogressScreenPreview() {
                 progressPercentage = 25,
                 routines = persistentListOf(
                     DailyTodoRoutineModel(
-                        id = 1L,
-                        routine = "아침 세안 후 토너 바르기",
-                        isCompleted = false
-                    ),
-                    DailyTodoRoutineModel(
-                        id = 2L,
-                        routine = "수분 에센스 2–3방울 흡수",
-                        isCompleted = false
-                    ),
-                    DailyTodoRoutineModel(
-                        id = 3L,
-                        routine = "보습 크림으로 마무리",
-                        isCompleted = false
-                    ),
-                    DailyTodoRoutineModel(
-                        id = 4L,
-                        routine = "외출 전 선크림 꼼꼼히 바르기",
-                        isCompleted = false
-                    ),
-                    DailyTodoRoutineModel(
-                        id = 5L,
-                        routine = "태양을 피하는 방법",
-                        isCompleted = false
-                    ),
-                    DailyTodoRoutineModel(
-                        id = 6L,
-                        routine = "나가지 않기",
-                        isCompleted = false
+                        id = 1L, routine = "아침 세안 후 토너 바르기", isCompleted = false
+                    ), DailyTodoRoutineModel(
+                        id = 2L, routine = "수분 에센스 2–3방울 흡수", isCompleted = false
+                    ), DailyTodoRoutineModel(
+                        id = 3L, routine = "보습 크림으로 마무리", isCompleted = false
+                    ), DailyTodoRoutineModel(
+                        id = 4L, routine = "외출 전 선크림 꼼꼼히 바르기", isCompleted = false
+                    ), DailyTodoRoutineModel(
+                        id = 5L, routine = "태양을 피하는 방법", isCompleted = false
+                    ), DailyTodoRoutineModel(
+                        id = 6L, routine = "나가지 않기", isCompleted = false
                     )
                 )
             )
@@ -214,6 +184,5 @@ private fun ChallengeMissionprogressScreenPreview() {
                 }.toPersistentList()
             )
         },
-        onCompleteTodayClick = {}
-    )
+        onCompleteTodayClick = {})
 }
