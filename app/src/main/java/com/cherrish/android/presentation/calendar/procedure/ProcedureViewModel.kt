@@ -1,22 +1,38 @@
 package com.cherrish.android.presentation.calendar.procedure
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.repository.ProcedureRepository
+import com.cherrish.android.data.repository.UserProcedureRepository
+import com.cherrish.android.data.repository.WorryRepository
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithDowntime
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ProcedureViewModel @Inject constructor() : ViewModel() {
+class ProcedureViewModel @Inject constructor(
+    private val worryRepository: WorryRepository,
+    private val procedureRepository: ProcedureRepository,
+    private val userProcedureRepository: UserProcedureRepository
+) : ViewModel() {
+
+    init {
+        fetchWorries()
+    }
 
     private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
         UiState.Success(
@@ -39,6 +55,37 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
             current.copy(
                 existenceSelectedIndex = index
             )
+        }
+    }
+
+    fun fetchWorries() {
+        viewModelScope.launch {
+            Log.d("PROC", "[WORRY] fetchWorries() called")
+
+            worryRepository.getWorries()
+                .onSuccess { worries ->
+                    Log.d("PROC", "[WORRY] success size=${worries.size}, worries=$worries")
+
+                    _uiState.updateSuccess { current ->
+                        // 서버에서 빈 배열이 내려오면(현재 로그처럼) 화면이 비어 보이므로,
+                        // UX를 위해 임시로 FakeNormal을 fallback으로 사용합니다.
+                        // (백엔드/인증 정책이 정리되면 이 fallback은 제거하세요.)
+                        val mapped = worries
+                            .map { ProcedureWorryUiModel(id = it.id, content = it.content) }
+                            .toPersistentList()
+
+                        current.copy(
+                            worries = if (mapped.isEmpty()) ProcedureUiState.FakeNormal.worries else mapped
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    Log.e("PROC", "[WORRY] failed", e)
+                    // 실패 시에도 화면이 완전히 비지 않게 fallback
+                    _uiState.updateSuccess { current ->
+                        current.copy(worries = ProcedureUiState.FakeNormal.worries)
+                    }
+                }
         }
     }
 
