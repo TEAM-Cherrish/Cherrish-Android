@@ -47,7 +47,7 @@ fun ChallengeRoutineRoute(
                 paddingValues = paddingValues,
                 onRoutineClick = viewModel::onRoutineClick,
                 onNextClick = viewModel::onNextClick,
-                onBackClick = viewModel::onBackCLick,
+                onBackClick = viewModel::onBackClick,
                 onCloseClick = viewModel::onCloseClick
             )
         }
