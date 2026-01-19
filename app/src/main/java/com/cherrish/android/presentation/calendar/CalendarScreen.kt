@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.component.CherrishCalendar
@@ -24,8 +25,15 @@ import java.time.YearMonth
 @Composable
 fun CalendarRoute(
     paddingValues: PaddingValues,
+    onNavigateToProcedure: () -> Unit,
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            CalendarSideEffect.NavigateToProcedure -> onNavigateToProcedure()
+        }
+    }
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
@@ -42,7 +50,7 @@ fun CalendarRoute(
                 onMonthChange = viewModel::onMonthChange,
                 onDateClick = viewModel::onDateClick,
                 onEventClick = viewModel::onEventClick,
-                onAddButtonClick = { /*TODO: 시술 선택 플로우로 이동*/ }
+                onAddButtonClick = viewModel::onAddButtonClick
             )
         }
 

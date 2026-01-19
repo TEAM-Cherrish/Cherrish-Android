@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.main
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
         )
-
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         setContent {
             CherrishTheme {
                 val appState = rememberMainAppState()
