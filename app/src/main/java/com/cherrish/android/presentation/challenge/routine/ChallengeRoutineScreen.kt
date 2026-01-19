@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,15 +18,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.core.common.state.UiState
-import com.cherrish.android.core.common.state.UiState.*
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.challenge.component.ChallengeMissionOnboardingBody
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
-import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
 import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -44,7 +39,7 @@ fun ChallengeRoutineRoute(
         is UiState.Success -> {
             ChallengeRoutineScreen(
                 paddingValues = paddingValues,
-                uiState = (uiState as Success<ChallengeRoutineUiState>).data,
+                uiState = (uiState as UiState.Success<ChallengeRoutineUiState>).data,
                 onRoutineClick = viewModel::onRoutineClick,
                 onNextClick = viewModel::onNextClick,
                 onBackClick = {},
@@ -87,7 +82,9 @@ private fun ChallengeRoutineScreen(
             onItemClick = onRoutineClick,
             modifier = Modifier.padding(horizontal = 26.dp)
         )
+
         Spacer(Modifier.weight(232f))
+
         CherrishButton(
             text = "다음",
             enabled = hasSelected,
@@ -96,15 +93,12 @@ private fun ChallengeRoutineScreen(
         )
 
         Spacer(Modifier.weight(30f))
-
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 private fun ChallengeRoutineScreenDisabledPreview() {
-
     var uiState by remember {
         mutableStateOf(
             ChallengeRoutineUiState(
@@ -117,6 +111,7 @@ private fun ChallengeRoutineScreenDisabledPreview() {
             )
         )
     }
+
     ChallengeRoutineScreen(
         paddingValues = PaddingValues(),
         uiState = uiState,
