@@ -7,4 +7,10 @@ import kotlinx.collections.immutable.ImmutableList
 @Immutable
 data class ChallengeRoutineUiState(
     val routines: ImmutableList<ChallengeRoutineModel>
-)
+) {
+    val selectedRoutine: ChallengeRoutineModel?
+        get() = routines.firstOrNull { it.isSelected }
+
+    val isSelected: Boolean
+        get() = selectedRoutine != null
+}

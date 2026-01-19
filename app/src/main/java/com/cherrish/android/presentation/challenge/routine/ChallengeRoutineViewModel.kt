@@ -47,12 +47,12 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onNextClick() {
-        val selectedRoutine = _uiState.value
-            .let { it as? UiState.Success }
-            ?.data
-            ?.routines
-            ?.firstOrNull { it.isSelected }
-            ?: return
+        val state = _uiState.value
+
+        if (state !is UiState.Success) return
+        if (!state.data.isSelected) return
+
+        val selectedRoutine = state.data.selectedRoutine!!
     }
 
     fun onBackCLick() {
