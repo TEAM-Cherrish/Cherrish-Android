@@ -122,7 +122,11 @@ private fun DowntimeDateContent(
         ) {
             DateText(
                 dayOfMonth = day.date.dayOfMonth,
-                color = if (day.status == DownTimeStatus.NONE && day.isDDay) CherrishTheme.colors.red700 else CherrishTheme.colors.gray1000
+                color = if (day.status == DownTimeStatus.NONE && day.isDDay) {
+                    CherrishTheme.colors.red700
+                } else {
+                    CherrishTheme.colors.gray1000
+                }
 
             )
         }
@@ -198,9 +202,13 @@ private fun DayItemPreview() {
                 modifier = Modifier.size(48.dp)
             )
             DayItem(
-                day = CalendarDay.Date.Downtime(date.plusDays(2), status = DownTimeStatus.NONE, isDDay = true),
+                day = CalendarDay.Date.Downtime(
+                    date.plusDays(2),
+                    status = DownTimeStatus.NONE,
+                    isDDay = true
+                ),
                 onDateClick = {},
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(48.dp)
             )
             DayItem(
                 day = CalendarDay.Date.Downtime(date.plusDays(3), status = DownTimeStatus.RECOVERY),

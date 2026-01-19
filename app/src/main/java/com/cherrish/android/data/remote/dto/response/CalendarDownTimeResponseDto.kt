@@ -2,7 +2,6 @@ package com.cherrish.android.data.remote.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.io.Serial
 
 @Serializable
 data class CalendarDownTimeResponseDto(
