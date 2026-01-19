@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface OnboardingProfileService {
-    @POST("/api/onboarding/profiles")
+    @POST("api/onboarding/profiles")
     suspend fun postOnboardingProfile(
         @Body request: OnboardingProfileRequestDto
     ): BaseResponse<OnboardingProfileResponseDto>

@@ -29,6 +29,17 @@ class MainAppState(
 ) {
     val startDestination = Splash
 
+    private val clearStackNavOptions = navOptions {
+        popUpTo(0) { inclusive = true }
+        launchSingleTop = true
+        restoreState = false
+    }
+
+    private val keepStackNavOptions = navOptions {
+        launchSingleTop = true
+        restoreState = true
+    }
+
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
         .stateIn(
@@ -81,15 +92,15 @@ class MainAppState(
         }
     }
 
-    fun navigateToOnboarding(navOptions: NavOptions) {
+    fun navigateToOnboarding(navOptions: NavOptions? = clearStackNavOptions) {
         navController.navigateToOnboarding(navOptions)
     }
 
-    fun navigateToOnboardingInformation(navOptions: NavOptions) {
+    fun navigateToOnboardingInformation(navOptions: NavOptions? = clearStackNavOptions) {
         navController.navigateToOnboardingInformation(navOptions)
     }
 
-    fun navigateToHome(navOptions: NavOptions) {
+    fun navigateToHome(navOptions: NavOptions? = clearStackNavOptions) {
         navController.navigateToHome(navOptions)
     }
 }

@@ -52,6 +52,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.R
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -67,14 +68,12 @@ fun OnboardingRoute(
     navigateToOnboardingInformation: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.collect { sideEffect ->
+        viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
             when (sideEffect) {
                 OnboardingSideEffect.NavigateToOnboardingInformation -> {
                     navigateToOnboardingInformation()
                 }
             }
-        }
     }
     OnboardingScreen(
         paddingValues = paddingValues,

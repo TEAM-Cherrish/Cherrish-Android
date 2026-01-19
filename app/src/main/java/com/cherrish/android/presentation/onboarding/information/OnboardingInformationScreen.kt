@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,11 +32,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.addFocusCleaner
 import com.cherrish.android.core.common.extension.advancedImePadding
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.information.extension.AgeSuffixTransformation
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun OnboardingInformationRoute(
@@ -47,11 +46,9 @@ fun OnboardingInformationRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.sideEffect.collectLatest { sideEffect ->
-            when (sideEffect) {
-                InformationSideEffect.NavigateToHome -> navigateToHome()
-            }
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            InformationSideEffect.NavigateToHome -> navigateToHome()
         }
     }
 

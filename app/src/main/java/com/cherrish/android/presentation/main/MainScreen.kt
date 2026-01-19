@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.calendarNavGraph
 import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph
 import com.cherrish.android.presentation.home.navigation.homeNavGraph
@@ -25,16 +24,6 @@ fun MainScreen(
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
 
-    val clearStackNavOptions = navOptions {
-        popUpTo(0) { inclusive = true }
-        launchSingleTop = true
-        restoreState = false
-    }
-
-    val keepStackNavOptions = navOptions {
-        launchSingleTop = true
-        restoreState = true
-    }
 
     Scaffold(
         bottomBar = {
@@ -55,24 +44,18 @@ fun MainScreen(
             startDestination = appState.startDestination
         ) {
             splashNavGraph(
-                navigateToOnboarding = {
-                    appState.navigateToOnboarding(clearStackNavOptions)
-                },
+                navigateToOnboarding = appState::navigateToOnboarding,
                 paddingValues = innerPadding
             )
 
             onboardingNavGraph(
                 paddingValues = innerPadding,
-                navigateToOnboardingInformation = {
-                    appState.navigateToOnboardingInformation(clearStackNavOptions)
-                }
+                navigateToOnboardingInformation = appState::navigateToOnboardingInformation
             )
 
             onboardingInformationNavGraph(
                 paddingValues = innerPadding,
-                navigateToHome = {
-                    appState.navigateToHome(clearStackNavOptions)
-                }
+                navigateToHome = appState::navigateToHome
             )
 
             homeNavGraph(paddingValues = innerPadding)
