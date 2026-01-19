@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,16 +30,17 @@ fun ChallengeLoadingScreen(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(44f))
+        Spacer(modifier = Modifier.height(44.dp))
 
         Icon(
             modifier = Modifier
                 .noRippleClickable(onClick = onCloseClick)
                 .align(Alignment.Start)
-                .padding(start = 10.dp),
+                .padding(10.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
             contentDescription = null,
             tint = CherrishTheme.colors.gray1000
@@ -53,13 +56,13 @@ fun ChallengeLoadingScreen(
             )
 
             Text(
-                text = "관리 방향을 바탕으로 ",
+                text = "관리 방향을 바탕으로",
                 color = CherrishTheme.colors.gray800,
                 style = CherrishTheme.typography.title1SB18
             )
         }
 
-        Spacer(modifier = Modifier.weight(2f))
+        Spacer(modifier = Modifier.height(2.dp))
 
         Text(
             text = "TO-DO 미션을 만들고 있어요.",
@@ -67,14 +70,15 @@ fun ChallengeLoadingScreen(
             style = CherrishTheme.typography.title1SB18
         )
 
-        Spacer(modifier = Modifier.weight(60f))
+        Spacer(modifier = Modifier.height(60.dp))
 
         Image(
             painter = painterResource(id = R.drawable.img_challenge_loading),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.size(150.dp)
         )
 
-        Spacer(modifier = Modifier.weight(80f))
+        Spacer(modifier = Modifier.height(80.dp))
 
         Text(
             text = "잠시만 기다려주세요!",
@@ -90,7 +94,7 @@ fun ChallengeLoadingScreen(
             style = CherrishTheme.typography.body3M12
         )
 
-        Spacer(modifier = Modifier.weight(30f))
+        Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
