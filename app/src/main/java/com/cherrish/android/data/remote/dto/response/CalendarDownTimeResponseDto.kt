@@ -2,6 +2,7 @@ package com.cherrish.android.data.remote.dto.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.io.Serial
 
 @Serializable
 data class CalendarDownTimeResponseDto(
@@ -11,6 +12,8 @@ data class CalendarDownTimeResponseDto(
     val scheduledAt: String,
     @SerialName("downtimeDays")
     val downtimeDays: Int,
+    @SerialName("recoveryTargetDate")
+    val recoveryTargetDate: String,
     @SerialName("sensitiveDays")
     val sensitiveDays: List<String>,
     @SerialName("cautionDays")
