@@ -12,6 +12,6 @@ data class ChallengeMissionUiState(
     val selectedMissions: ImmutableList<ChallengeMissionModel>
         get() = missions.filter { it.isSelected }.toPersistentList()
 
-    val hasSelected: Boolean
+    val isSelected: Boolean
         get() = selectedMissions.isNotEmpty()
 }
