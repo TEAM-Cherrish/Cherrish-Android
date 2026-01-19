@@ -28,8 +28,8 @@ import com.cherrish.android.core.designsystem.theme.graStart
 import com.cherrish.android.presentation.home.component.ChallengeSection
 import com.cherrish.android.presentation.home.component.PlanBoxSection
 import com.cherrish.android.presentation.home.component.UpcomingPlanSection
-import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HomeRoute(
