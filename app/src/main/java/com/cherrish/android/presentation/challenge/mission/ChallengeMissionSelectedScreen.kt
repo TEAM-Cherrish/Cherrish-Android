@@ -72,8 +72,7 @@ private fun ChallengeMissionSelectedScreen(
         BackAndCloseTopAppBar(
             title = "TO-DO 미션 선택",
             onBackClick = onBackClick,
-            onCloseClick = onCloseClick,
-            modifier = Modifier.padding(horizontal = 9.dp)
+            onCloseClick = onCloseClick
         )
 
         Spacer(Modifier.height(44.dp))
