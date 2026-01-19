@@ -12,3 +12,15 @@ data class ChallengesHomecareRoutinesResponseDto(
     @SerialName("description")
     val description: String?,
 )
+
+@Serializable
+data class ChallengesAiRecommendResponseDto(
+    @SerialName("data")
+    val data: List<RoutinesDto>
+)
+
+@Serializable
+data class RoutinesDto(
+    @SerialName("routine")
+    val routine : String
+)
