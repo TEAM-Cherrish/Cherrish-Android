@@ -50,7 +50,7 @@ fun CalendarRoute(
                 onMonthChange = viewModel::onMonthChange,
                 onDateClick = viewModel::onDateClick,
                 onEventClick = viewModel::onEventClick,
-                onAddButtonClick = onNavigateToProcedure
+                onAddButtonClick = viewModel::onAddButtonClick
             )
         }
 

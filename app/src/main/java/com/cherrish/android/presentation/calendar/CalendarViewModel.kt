@@ -240,11 +240,10 @@ class CalendarViewModel @Inject constructor(
                 }
             }.onLogFailure { }
         }
-
-        fun onAddButtonClick() {
-            viewModelScope.launch {
-                _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
-            }
+    }
+    fun onAddButtonClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
         }
     }
 }
