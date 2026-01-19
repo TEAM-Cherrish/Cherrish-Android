@@ -72,3 +72,42 @@ data class TodayRoutineDto(
     @SerialName("isComplete")
     val isComplete: Boolean
 )
+
+@Serializable
+data class ChallengeCreateDataDto(
+    @SerialName("challengeId")
+    val challengeId: Long,
+
+    @SerialName("title")
+    val title: String,
+
+    @SerialName("totalDays")
+    val totalDays: Int,
+
+    @SerialName("startDate")
+    val startDate: String,
+
+    @SerialName("endDate")
+    val endDate: String,
+
+    @SerialName("totalRoutineCount")
+    val totalRoutineCount: Int,
+
+    @SerialName("routines")
+    val routines: List<ChallengeRoutineDto>
+)
+
+@Serializable
+data class ChallengeRoutineDto(
+    @SerialName("routineId")
+    val routineId: Long,
+
+    @SerialName("name")
+    val name: String,
+
+    @SerialName("scheduledDate")
+    val scheduledDate: String,
+
+    @SerialName("isComplete")
+    val isComplete: Boolean
+)
