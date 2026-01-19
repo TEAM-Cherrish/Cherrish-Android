@@ -2,6 +2,7 @@ package com.cherrish.android.presentation.challenge.missionprogress
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -70,16 +71,15 @@ private fun ChallengeMissionprogressScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray100)
+            .padding(paddingValues)
             .navigationBarsPadding(),
-        contentPadding = PaddingValues(horizontal = 17.dp),
+        contentPadding = PaddingValues(top = 38.dp, start = 17.dp, end = 17.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
-            Spacer(modifier = Modifier.height(38.dp))
-        }
-
-        item {
-            ChallengeMissionSelectedTitle()
+            ChallengeMissionSelectedTitle(
+                challengeName = uiState.challenge.challengeTitle
+            )
         }
 
         item {
@@ -87,7 +87,6 @@ private fun ChallengeMissionprogressScreen(
                 cherryType = uiState.cherryType,
                 remainingRoutines = uiState.remainingCount,
                 challengeProgress = uiState.progressPercentage,
-                modifier = Modifier.padding(bottom = 16.dp)
             )
         }
 
@@ -100,15 +99,15 @@ private fun ChallengeMissionprogressScreen(
                 modifier = Modifier.fillMaxWidth()
             )
         }
-
-        item {
-            Spacer(modifier = Modifier.height(24.dp))
-        }
     }
 }
 
 @Composable
-private fun ChallengeMissionSelectedTitle(modifier: Modifier = Modifier) {
+private fun ChallengeMissionSelectedTitle(
+    challengeName: String,
+    modifier: Modifier = Modifier,
+
+) {
     Row(
         modifier = modifier
             .fillMaxWidth(),
@@ -116,33 +115,38 @@ private fun ChallengeMissionSelectedTitle(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            "피부 컨디션 챌린지",
+            text = "${challengeName} 챌린지",
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )
 
-        Surface(
-            shape = RoundedCornerShape(4.dp),
-            border = BorderStroke(
-                width = 1.dp,
-                color = CherrishTheme.colors.gray700
-            ),
-            color = CherrishTheme.colors.gray100
-        ) {
-            Text(
-                text = "7일 플랜",
-                color = CherrishTheme.colors.gray700,
-                style = CherrishTheme.typography.body3M12,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
-            )
-        }
+        Text(
+            text = "7일 플랜",
+            color = CherrishTheme.colors.gray700,
+            style = CherrishTheme.typography.body3M12,
+            modifier = Modifier
+                .background(
+                    color = CherrishTheme.colors.gray100,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .border(
+                    width = 1.dp,
+                    color = CherrishTheme.colors.gray700,
+                    shape = RoundedCornerShape(4.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 3.dp)
+        )
+
     }
-}
+    }
+
 
 @Preview(showBackground = true)
 @Composable
 private fun ChallengeMissionSelectedTitlePreview() {
-    ChallengeMissionSelectedTitle()
+    ChallengeMissionSelectedTitle(
+        challengeName = "피부 컨디션"
+    )
 }
 
 @Preview(showBackground = true)
