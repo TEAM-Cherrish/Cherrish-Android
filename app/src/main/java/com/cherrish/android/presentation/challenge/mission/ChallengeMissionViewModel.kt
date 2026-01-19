@@ -53,7 +53,7 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
 
     fun onAddTodoClick() {
         _uiState.updateSuccess { state ->
-            if (!state.hasSelected) return@updateSuccess state
+            if (!state.isSelected) return@updateSuccess state
 
             state.copy()
         }
