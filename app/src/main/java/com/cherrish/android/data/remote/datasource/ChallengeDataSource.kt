@@ -1,10 +1,10 @@
-package com.cherrish.android.data.remote.service
+package com.cherrish.android.data.remote.datasource
 
 import com.cherrish.android.core.network.BaseResponse
 import com.cherrish.android.data.remote.dto.response.ChallengesHomecareRoutinesResponseDto
-import retrofit2.http.GET
+import com.cherrish.android.data.remote.dto.response.RoutinesDto
 
-interface ChallengeService{
-    @GET("api/challenges/homecare-routines")
+
+interface ChallengeDataSource {
     suspend fun getHomecareRoutineData(): BaseResponse<ChallengesHomecareRoutinesResponseDto>
 }
