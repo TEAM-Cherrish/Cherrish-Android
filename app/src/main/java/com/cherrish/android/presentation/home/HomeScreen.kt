@@ -39,8 +39,8 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    viewModel.sideEffect.collectLatestSideEffect {
-        when (it) {
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
             is HomeSideEffect.NavigateToChallenge -> {
                 navigateToChallenge()
             }
