@@ -11,5 +11,9 @@ data class ChallengeMissionProgressUiState(
     val currentDay: Int,
     val cherryType: CherryType,
     val remainingCount: Int,
+    val progressPercentage: Int,
     val routines: ImmutableList<DailyTodoRoutineModel>
-)
+) {
+    val hasCompletedAny: Boolean
+        get() = routines.any { it.isCompleted }
+}
