@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -17,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
@@ -66,7 +66,7 @@ private fun ChallengeRoutineScreen(
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val hasSelected = uiState.routines.any { it.isSelected }
+    val isSelected = uiState.routines.any { it.isSelected }
 
     Column(
         modifier = modifier
@@ -75,7 +75,7 @@ private fun ChallengeRoutineScreen(
             .padding(paddingValues)
             .navigationBarsPadding()
     ) {
-        Spacer(Modifier.weight(44f))
+        Spacer(Modifier.height(44.dp))
 
         BackAndCloseTopAppBar(
             title = "루틴 챌린지 선택",
@@ -95,12 +95,12 @@ private fun ChallengeRoutineScreen(
 
         CherrishButton(
             text = "다음",
-            enabled = hasSelected,
+            enabled = isSelected,
             onClick = onNextClick,
             modifier = Modifier.padding(horizontal = 24.dp)
         )
 
-        Spacer(Modifier.weight(30f))
+        Spacer(Modifier.height(30.dp))
     }
 }
 
