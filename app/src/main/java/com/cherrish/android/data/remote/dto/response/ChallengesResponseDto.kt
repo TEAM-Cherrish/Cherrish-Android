@@ -111,3 +111,36 @@ data class ChallengeRoutineDto(
     @SerialName("isComplete")
     val isComplete: Boolean
 )
+
+@Serializable
+data class ChallengeMissionProgressDataDto(
+    @SerialName("challengeId")
+    val challengeId: Long,
+
+    @SerialName("title")
+    val title: String,
+
+    @SerialName("currentDay")
+    val currentDay: Int,
+
+    @SerialName("progressPercentage")
+    val progressPercentage: Double, // 👈 Double로 변경
+
+    @SerialName("cherryLevel")
+    val cherryLevel: Int,
+
+    @SerialName("cherryLevelName")
+    val cherryLevelName: String,
+
+    @SerialName("progressToNextLevel")
+    val progressToNextLevel: Double,
+
+    @SerialName("remainingRoutinesToNextLevel")
+    val remainingRoutinesToNextLevel: Int,
+
+    @SerialName("todayRoutines")
+    val todayRoutines: List<TodayRoutineDto>,
+
+    @SerialName("cheeringMessage")
+    val cheeringMessage: String
+)
