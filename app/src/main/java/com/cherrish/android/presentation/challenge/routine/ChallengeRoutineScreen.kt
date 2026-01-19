@@ -34,17 +34,21 @@ fun ChallengeRoutineRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    when (uiState) {
-        is UiState.Loading -> Unit
-        is UiState.Failure -> Unit
+    when (val state = uiState) {
+        is UiState.Loading -> {
+        }
+
+        is UiState.Failure -> {
+        }
+
         is UiState.Success -> {
             ChallengeRoutineScreen(
+                uiState = state.data,
                 paddingValues = paddingValues,
-                uiState = (uiState as UiState.Success<ChallengeRoutineUiState>).data,
                 onRoutineClick = viewModel::onRoutineClick,
                 onNextClick = viewModel::onNextClick,
-                onBackClick = {},
-                onCloseClick = {}
+                onBackClick = viewModel::onBackCLick,
+                onCloseClick = viewModel::onCloseClick
             )
         }
 
