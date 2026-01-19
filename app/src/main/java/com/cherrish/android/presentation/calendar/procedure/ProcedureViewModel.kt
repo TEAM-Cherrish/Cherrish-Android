@@ -46,6 +46,10 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
         _uiState.updateSuccess { it.copy(recoverySelectedIndex = index) }
     }
 
+    fun onSearchQueryChange(query: String) {
+        _uiState.updateSuccess { it.copy(searchQuery = query) }
+    }
+
     fun onDowntimeClick(procedureId: Long) {
         _uiState.updateSuccess { current ->
             val procedure = current.procedureItems.firstOrNull { it.id == procedureId }

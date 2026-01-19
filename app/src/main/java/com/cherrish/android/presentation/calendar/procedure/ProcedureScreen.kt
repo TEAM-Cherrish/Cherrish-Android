@@ -13,8 +13,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,6 +68,7 @@ fun ProcedureRoute(
                 onDowntimePickerValueChange = viewModel::onDowntimePickerValueChange,
                 onDowntimeConfirm = viewModel::onDowntimeConfirm,
                 onAddWithoutDowntime = viewModel::onAddWithoutDowntime,
+                onSearchableQueryChange = viewModel::onSearchQueryChange,
                 onNextClick = {
                     if (state.data.step == ProcedureStep.Downtime) {
                         viewModel.onComplete()
@@ -109,12 +108,12 @@ fun ProcedureScreen(
     onDowntimePickerValueChange: (Int) -> Unit,
     onDowntimeConfirm: () -> Unit,
     onAddWithoutDowntime: () -> Unit,
+    onSearchableQueryChange: (String) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var query by remember { mutableStateOf("") }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val downtimeBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val downtimePickerState = rememberLazyListState()
@@ -175,8 +174,7 @@ fun ProcedureScreen(
                     )
                 }
 
-                ProcedureFlow.NoTreat,
-                ProcedureFlow.Treat -> {
+                ProcedureFlow.NoTreat, ProcedureFlow.Treat -> {
                     when (uiState.step) {
                         ProcedureStep.Category -> {
                             CategoryContent(
@@ -219,8 +217,8 @@ fun ProcedureScreen(
                                 selectedCardIds = uiState.selectedProcedureCardIds,
                                 onCardClick = onProcedureCardClick,
                                 onSearchAction = { /* TODO */ },
-                                query = query,
-                                onQueryChange = { query = it },
+                                query = uiState.searchQuery,
+                                onQueryChange = onSearchableQueryChange,
                                 bottomPadding = uiState.lazyColumnBottomPadding,
                                 modifier = Modifier
                                     .fillMaxWidth()
