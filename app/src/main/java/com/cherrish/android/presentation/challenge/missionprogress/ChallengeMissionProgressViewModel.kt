@@ -46,6 +46,7 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
             )
         )
     }
+
     fun onTodoClick(id: Long) {
         _uiState.updateSuccess { state ->
             state.copy(
@@ -59,6 +60,7 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
             )
         }
     }
+
     fun onCompletedTodayClick() {
         val state = _uiState.value
         if (state !is UiState.Success) return
