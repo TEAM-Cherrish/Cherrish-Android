@@ -9,6 +9,7 @@ import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
@@ -16,14 +17,14 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeRoutineUiState>>(UiState.Loading)
-    val uiState = _uiState.asStateFlow()
+    val uiState: StateFlow<UiState<ChallengeRoutineUiState>> = _uiState.asStateFlow()
 
     init {
         loadRoutines()
     }
 
     private fun loadRoutines() {
-        _uiState.value = UiState.Success(
+        _uiState.updateSuccess {
             ChallengeRoutineUiState(
                 routines = persistentListOf(
                     ChallengeRoutineModel(id = 1L, routine = "피부 컨디션"),
@@ -32,7 +33,7 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
                     ChallengeRoutineModel(id = 4L, routine = "웰니스 · 마음챙김")
                 )
             )
-        )
+        }
     }
 
     fun onRoutineClick(id: Long) {
@@ -53,4 +54,8 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
             ?.firstOrNull { it.isSelected }
             ?: return
     }
+
+    fun onBackCLick() {
+    }
+    fun onCloseClick() {}
 }
