@@ -12,12 +12,12 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorry
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import com.cherrish.android.presentation.calendar.procedure.util.DowntimeDayLogic
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.YearMonth
 
 @Immutable
 data class ProcedureUiState(
