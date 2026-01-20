@@ -69,10 +69,9 @@ data class ProcedureUiState(
             }
 
             val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
-            val today = LocalDate.now()
 
             when {
-                inputDate.isBefore(today) -> "이미 지난 날짜는 입력할 수 없어요."
+                inputDate.isBefore(startDay) -> "이미 지난 날짜는 입력할 수 없어요."
                 else -> null
             }
         } catch (e: Exception) {
