@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.data.model.ChallengeRoutineResponseModel
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

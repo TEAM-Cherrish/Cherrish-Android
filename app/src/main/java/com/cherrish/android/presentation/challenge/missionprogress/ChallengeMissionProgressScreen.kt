@@ -109,7 +109,7 @@ private fun ChallengeMissionSelectedTitle(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${challengeName} 챌린지",
+            text = "$challengeName 챌린지",
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )

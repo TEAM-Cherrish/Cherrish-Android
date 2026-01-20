@@ -1,7 +1,6 @@
 package com.cherrish.android.presentation.challenge.missionprogress
 
 import androidx.compose.runtime.Immutable
-import com.cherrish.android.data.model.ChallengeRoutineResponseModel
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.ImmutableList
 
