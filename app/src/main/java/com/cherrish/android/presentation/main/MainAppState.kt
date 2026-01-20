@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMission
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeRoutine
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeStart
 import com.cherrish.android.presentation.home.navigation.navigateToHome
@@ -114,8 +115,11 @@ class MainAppState(
         navController.navigateToProcedure()
     }
 
-    fun navigateToRoutine() {
+    fun navigateToChallengeRoutine() {
         navController.navigateToChallengeRoutine()
+    }
+    fun navigateToChallengeMission(navOptions: NavOptions? = clearStackNavOptions){
+        navController.navigateToChallengeMission(navOptions)
     }
 
 }

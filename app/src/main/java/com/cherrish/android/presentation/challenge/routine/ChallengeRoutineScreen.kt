@@ -33,18 +33,17 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeRoutineRoute(
     paddingValues: PaddingValues,
-    onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
-    navigateToRoutine : () -> Unit,
+    navigateToMission : () -> Unit,
     viewModel: ChallengeRoutineViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
-            is ChallengeSideEffect.NavigateToTodoRoutine -> {
-               navigateToRoutine()
+            is ChallengeSideEffect.navigateToMission -> {
+                navigateToMission()
             }
         }
     }
@@ -60,7 +59,7 @@ fun ChallengeRoutineRoute(
                 uiState = state.data,
                 paddingValues = paddingValues,
                 onRoutineClick = viewModel::onRoutineClick,
-                onNextClick = onNextClick,
+                onNextClick = viewModel::onNextClick,
                 onBackClick = onBackClick,
                 onCloseClick = onCloseClick
             )
@@ -87,7 +86,6 @@ private fun ChallengeRoutineScreen(
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .padding(paddingValues)
-            .navigationBarsPadding()
     ) {
         Spacer(Modifier.height(44.dp))
 

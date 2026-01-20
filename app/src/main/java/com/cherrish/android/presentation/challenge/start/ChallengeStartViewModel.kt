@@ -22,7 +22,7 @@ class ChallengeStartViewModel @Inject constructor() :
     fun onNextClick() {
         viewModelScope.launch {
             _sideEffect.emit(
-                ChallengeSideEffect.NavigateToTodoRoutine
+                ChallengeSideEffect.navigateToMission
             )
         }
     }

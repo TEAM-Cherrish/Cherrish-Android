@@ -2,6 +2,7 @@ package com.cherrish.android.presentation.challenge.routine
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.ChallengeRepository
@@ -49,7 +50,7 @@ class ChallengeRoutineViewModel @Inject constructor(
                         )
                     )
                 }
-                .onFailure {
+                .onLogFailure {
                 }
         }
 //        _uiState.updateSuccess {
@@ -75,12 +76,17 @@ class ChallengeRoutineViewModel @Inject constructor(
     }
 
     fun onNextClick() {
-        val state = _uiState.value
-
-        if (state !is UiState.Success) return
-        if (!state.data.isSelected) return
-
-        val selectedRoutine = state.data.selectedRoutine!!
+        viewModelScope.launch {
+            _sideEffect.emit(
+                ChallengeSideEffect.navigateToMission
+            )
+        }
+//        val state = _uiState.value
+//
+//        if (state !is UiState.Success) return
+//        if (!state.data.isSelected) return
+//
+//        val selectedRoutine = state.data.selectedRoutine!!
     }
 
     fun onBackClick() {
