@@ -25,12 +25,14 @@ import java.time.YearMonth
 @Composable
 fun CalendarRoute(
     paddingValues: PaddingValues,
-    onNavigateToProcedure: () -> Unit,
+    navigateToProcedure: (LocalDate) -> Unit,
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
-            CalendarSideEffect.NavigateToProcedure -> onNavigateToProcedure()
+            is CalendarSideEffect.NavigateToProcedure -> {
+                navigateToProcedure(sideEffect.startDate)
+            }
         }
     }
 

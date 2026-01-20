@@ -1,32 +1,63 @@
 package com.cherrish.android.presentation.calendar.procedure
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
+import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.model.ProcedureModel
+import com.cherrish.android.data.model.UserProcedureItemModel
+import com.cherrish.android.data.model.UserProceduresRequestModel
+import com.cherrish.android.data.repository.ProcedureRepository
+import com.cherrish.android.data.repository.UserProcedureRepository
+import com.cherrish.android.data.repository.WorryRepository
+import com.cherrish.android.presentation.calendar.CalendarEvent
+import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
+import com.cherrish.android.presentation.calendar.navigation.Procedure
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithDowntime
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ProcedureViewModel @Inject constructor() : ViewModel() {
+class ProcedureViewModel @Inject constructor(
+    private val worryRepository: WorryRepository,
+    private val procedureRepository: ProcedureRepository,
+    private val userProcedureRepository: UserProcedureRepository,
+    private val calendarEventBus: CalendarRefreshEventBus,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
-        UiState.Success(
-            ProcedureUiState.FakeNormal.copy(
-                procedureItems = ProcedureUiState.FakeProcedureCardItems.procedureItems
-            )
-        )
-    )
+    private val startDateArg = runCatching {
+        LocalDate.parse(savedStateHandle.toRoute<Procedure>().startDate)
+    }.getOrElse { LocalDate.now() }
+
+    private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(UiState.Loading)
 
     val uiState: StateFlow<UiState<ProcedureUiState>> = _uiState.asStateFlow()
+
+    private val _completeEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val completeEvent = _completeEvent.asSharedFlow()
+
+    init {
+        fetchWorries()
+    }
 
     fun updateScreenHeight(heightDp: Float) {
         _uiState.updateSuccess { current ->
@@ -42,12 +73,51 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun fetchWorries() {
+        viewModelScope.launch {
+            worryRepository.getWorries()
+                .onSuccess { worries ->
+
+                    val mapped = worries
+                        .map { ProcedureWorryUiModel(id = it.id, content = it.content) }
+                        .toPersistentList()
+
+                    val worriesToUse = if (mapped.isEmpty()) {
+                        ProcedureUiState.FakeNormal.worries
+                    } else {
+                        mapped
+                    }
+
+                    val currentState = _uiState.value
+                    if (currentState is UiState.Success) {
+                        _uiState.value = currentState.copy(
+                            data = currentState.data.copy(worries = worriesToUse)
+                        )
+                    } else {
+                        _uiState.value = UiState.Success(
+                            ProcedureUiState(
+                                worries = worriesToUse,
+                                startDay = startDateArg
+                            )
+                        )
+                    }
+                }
+                .onLogFailure { }
+        }
+    }
+
     fun onRecoveryOptionClick(index: Int) {
         _uiState.updateSuccess { it.copy(recoverySelectedIndex = index) }
     }
 
     fun onSearchQueryChange(query: String) {
         _uiState.updateSuccess { it.copy(searchQuery = query) }
+    }
+
+    fun onSearchAction(query: String) {
+        val current = currentStateOrNull() ?: return
+        val keyword = query.trim().takeIf { it.isNotEmpty() }
+        fetchProcedures(keyword = keyword, worryId = current.selectedWorryId)
     }
 
     fun onDowntimeClick(procedureId: Long) {
@@ -158,7 +228,7 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
             val newList = if (cardId in currentList) {
                 currentList.filter { it != cardId }
             } else {
-                currentList + cardId
+                persistentListOf(cardId) + currentList
             }.toImmutableList()
 
             val updatedMap = if (cardId !in newList) {
@@ -175,6 +245,8 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onNextClick() {
+        var queryToFetch: ProceduresQuery? = null
+
         _uiState.updateSuccess { current ->
             if (!current.isNextEnabled) return@updateSuccess current
 
@@ -221,8 +293,30 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
             }
 
             val nextStep = current.nextStep()
+
+            if (current.flow == ProcedureFlow.NoTreat &&
+                current.step == ProcedureStep.RecoverySchedule
+            ) {
+                queryToFetch = ProceduresQuery(
+                    keyword = null,
+                    worryId = current.selectedWorryId
+                )
+            }
+
+            if (current.flow == ProcedureFlow.Treat &&
+                current.step == ProcedureStep.RecoverySchedule
+            ) {
+                val keyword = current.searchQuery.trim().takeIf { it.isNotEmpty() }
+                queryToFetch = ProceduresQuery(
+                    keyword = keyword,
+                    worryId = null
+                )
+            }
+
             current.copy(step = nextStep)
         }
+
+        queryToFetch?.let { fetchProcedures(keyword = it.keyword, worryId = it.worryId) }
     }
 
     fun onBackClick() {
@@ -257,21 +351,79 @@ class ProcedureViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onComplete() {
-        _uiState.updateSuccess { current ->
-            val proceduresWithDowntime = current.selectedProcedureCardIds.map { procedureId ->
-                val downtime = current.procedureDowntimeMap[procedureId] ?: 0
-                ProcedureWithDowntime(
-                    procedureId = procedureId,
-                    downtimeDays = downtime
+        val current = currentStateOrNull() ?: return
+
+        val proceduresWithDowntime = current.selectedProcedureCardIds.map { procedureId ->
+            val downtime = current.procedureDowntimeMap[procedureId] ?: 0
+            ProcedureWithDowntime(
+                procedureId = procedureId,
+                downtimeDays = downtime
+            )
+        }
+
+        val scheduledAt = startDateArg.atStartOfDay()
+        val recoveryTargetDate = current.recoveryTargetDateOrNull()
+
+        val request = UserProceduresRequestModel(
+            scheduledAt = scheduledAt,
+            recoveryTargetDate = recoveryTargetDate,
+            procedures = proceduresWithDowntime.map {
+                UserProcedureItemModel(
+                    procedureId = it.procedureId,
+                    downtimeDays = it.downtimeDays
                 )
             }
+        )
+        viewModelScope.launch {
+            userProcedureRepository.addUserProcedures(request = request)
+                .onSuccess {
+                    calendarEventBus.emit(CalendarEvent.RefreshRequired)
+                    _completeEvent.tryEmit(Unit)
+                }
+                .onLogFailure { }
+        }
+    }
 
-            // TODO: 서버에 <procedureId, downtime>
+    private fun currentStateOrNull(): ProcedureUiState? =
+        (_uiState.value as? UiState.Success)?.data
 
-            ProcedureUiState.FakeNormal
+    private fun fetchProcedures(keyword: String?, worryId: Long?) {
+        viewModelScope.launch {
+            procedureRepository.getProcedures(keyword = keyword, worryId = worryId)
+                .onSuccess { response ->
+                    val items = response.procedures
+                        .map { it.toUiModel() }
+                        .toPersistentList()
+
+                    _uiState.updateSuccess { current ->
+                        current.copy(
+                            procedureItems = items,
+                            selectedProcedureCardIds = persistentListOf(),
+                            procedureDowntimeMap = emptyMap(),
+                            selectedProcedureForDowntime = null,
+                            showDowntimeBottomSheet = false
+                        )
+                    }
+                }
+                .onLogFailure { }
         }
     }
 }
+
+private data class ProceduresQuery(
+    val keyword: String?,
+    val worryId: Long?
+)
+
+private fun ProcedureModel.toUiModel(): ProcedureCardItemUiModel =
+    ProcedureCardItemUiModel(
+        id = this.id,
+        name = this.name,
+        category = this.category.orEmpty(),
+        minDowntimeDays = this.minDowntimeDays,
+        maxDowntimeDays = this.maxDowntimeDays,
+        displayMode = ProcedureCardDisplayMode.Basic
+    )
 
 private fun ProcedureUiState.toEntryState(): ProcedureUiState {
     return copy(
@@ -347,5 +499,14 @@ private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
         }
 
         ProcedureFlow.Entry -> PrevResult.ToEntry
+    }
+}
+
+private fun ProcedureUiState.recoveryTargetDateOrNull(): LocalDate? {
+    return try {
+        if (year.isBlank() || month.isBlank() || day.isBlank()) return null
+        LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+    } catch (e: Exception) {
+        null
     }
 }

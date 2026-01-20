@@ -13,7 +13,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -40,7 +39,6 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun ProcedureRoute(
     onNavigateBack: () -> Unit,
-    onComplete: () -> Unit,
     viewModel: ProcedureViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -48,6 +46,12 @@ fun ProcedureRoute(
 
     LaunchedEffect(configuration.screenHeightDp) {
         viewModel.updateScreenHeight(configuration.screenHeightDp.toFloat())
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.completeEvent.collect {
+            onNavigateBack()
+        }
     }
 
     when (val state = uiState) {
@@ -69,10 +73,10 @@ fun ProcedureRoute(
                 onDowntimeConfirm = viewModel::onDowntimeConfirm,
                 onAddWithoutDowntime = viewModel::onAddWithoutDowntime,
                 onSearchableQueryChange = viewModel::onSearchQueryChange,
+                onSearchAction = viewModel::onSearchAction,
                 onNextClick = {
                     if (state.data.step == ProcedureStep.Downtime) {
                         viewModel.onComplete()
-                        onComplete()
                     } else {
                         viewModel.onNextClick()
                     }
@@ -109,6 +113,7 @@ fun ProcedureScreen(
     onDowntimeConfirm: () -> Unit,
     onAddWithoutDowntime: () -> Unit,
     onSearchableQueryChange: (String) -> Unit,
+    onSearchAction: (String) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
@@ -216,7 +221,7 @@ fun ProcedureScreen(
                                 cardItems = uiState.procedureItems,
                                 selectedCardIds = uiState.selectedProcedureCardIds,
                                 onCardClick = onProcedureCardClick,
-                                onSearchAction = { /* TODO */ },
+                                onSearchAction = onSearchAction,
                                 query = uiState.searchQuery,
                                 onQueryChange = onSearchableQueryChange,
                                 bottomPadding = uiState.lazyColumnBottomPadding,

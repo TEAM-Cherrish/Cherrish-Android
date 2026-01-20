@@ -5,11 +5,17 @@ import com.cherrish.android.data.remote.datasource.ChallengeMissionProgressDataS
 import com.cherrish.android.data.remote.datasource.HomeDataSource
 import com.cherrish.android.data.remote.datasource.MyPageDataSource
 import com.cherrish.android.data.remote.datasource.OnboardingProfileDataSource
+import com.cherrish.android.data.remote.datasource.ProcedureDataSource
+import com.cherrish.android.data.remote.datasource.UserProcedureDataSource
+import com.cherrish.android.data.remote.datasource.WorryDataSource
 import com.cherrish.android.data.remote.datasourceimpl.CalendarDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.ChallengeMissionProgressDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.HomeDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.MyPageDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.OnboardingProfileDataSourceImpl
+import com.cherrish.android.data.remote.datasourceimpl.ProcedureDataSourceImpl
+import com.cherrish.android.data.remote.datasourceimpl.UserProcedureDataSourceImpl
+import com.cherrish.android.data.remote.datasourceimpl.WorryDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,6 +30,24 @@ abstract class DataSourceModule {
     abstract fun bindCalendarDataSource(
         calendarDataSourceImpl: CalendarDataSourceImpl
     ): CalendarDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindProcedureDataSource(
+        procedureDataSourceImpl: ProcedureDataSourceImpl
+    ): ProcedureDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindWorryDataSource(
+        worryDataSourceImpl: WorryDataSourceImpl
+    ): WorryDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindUserProcedureDataSource(
+        userProcedureDataSourceImpl: UserProcedureDataSourceImpl
+    ): UserProcedureDataSource
 
     @Binds
     @Singleton

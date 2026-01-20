@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
@@ -17,6 +18,7 @@ import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
 import com.cherrish.android.presentation.splash.navigation.Splash
+import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.stateIn
 @Stable
 class MainAppState(
     val navController: NavHostController,
+    val calendarEventBus: CalendarRefreshEventBus,
     coroutineScope: CoroutineScope
 ) {
     val startDestination = Splash
@@ -105,22 +108,24 @@ class MainAppState(
         navController.navigateToHome(navOptions)
     }
 
-    fun navigateUp() {
-        navController.navigateUp()
+    fun navigateToProcedure(startDate: LocalDate) {
+        navController.navigateToProcedure(startDate)
     }
 
-    fun navigateToProcedure() {
-        navController.navigateToProcedure()
+    fun navigateUp() {
+        navController.navigateUp()
     }
 }
 
 @Composable
 fun rememberMainAppState(
     navController: NavHostController = rememberNavController(),
-    coroutineScope: CoroutineScope = rememberCoroutineScope()
-): MainAppState = remember(navController, coroutineScope) {
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    calendarEventBus: CalendarRefreshEventBus
+): MainAppState = remember(navController, coroutineScope, calendarEventBus) {
     MainAppState(
         navController = navController,
+        calendarEventBus = calendarEventBus,
         coroutineScope = coroutineScope
     )
 }

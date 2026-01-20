@@ -33,6 +33,7 @@ data class ProcedureUiState(
     val year: String = "",
     val month: String = "",
     val day: String = "",
+    val startDay: LocalDate = LocalDate.now(),
 
     val selectedDowntime: Int? = null,
 
@@ -67,11 +68,13 @@ data class ProcedureUiState(
                 return@run "올바른 날짜 형식이 아니에요."
             }
 
-            val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
             val today = LocalDate.now()
+
+            val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
 
             when {
                 inputDate.isBefore(today) -> "이미 지난 날짜는 입력할 수 없어요."
+                inputDate.isBefore(startDay) -> "목표일은 시술 날짜 이후로만 설정할 수 있어요."
                 else -> null
             }
         } catch (e: Exception) {
@@ -187,17 +190,20 @@ data class ProcedureUiState(
     }
 
     val selectedProcedures: ImmutableList<SelectedProcedureModel>
-        get() = procedureItems
-            .filter { it.id in selectedProcedureCardIds }
-            .map {
-                SelectedProcedureModel(
-                    procedureId = it.id,
-                    procedureName = it.name,
-                    minDowntimeDays = it.minDowntimeDays,
-                    maxDowntimeDays = it.maxDowntimeDays
-                )
-            }
-            .toImmutableList()
+        get() {
+            val procedureMap = procedureItems.associateBy { it.id }
+            return selectedProcedureCardIds
+                .mapNotNull { id -> procedureMap[id] }
+                .map {
+                    SelectedProcedureModel(
+                        procedureId = it.id,
+                        procedureName = it.name,
+                        minDowntimeDays = it.minDowntimeDays,
+                        maxDowntimeDays = it.maxDowntimeDays
+                    )
+                }
+                .toImmutableList()
+        }
 
     private val targetDate: LocalDate?
         get() = try {
@@ -216,7 +222,7 @@ data class ProcedureUiState(
     val spareTimeDay: Int
         get() {
             val target = targetDate ?: return 0
-            val totalDays = ChronoUnit.DAYS.between(LocalDate.now(), target).toInt()
+            val totalDays = ChronoUnit.DAYS.between(startDay, target).toInt()
             return (totalDays - downtimePickerValue).coerceAtLeast(0)
         }
 
@@ -233,7 +239,7 @@ data class ProcedureUiState(
     val downtimeStartDay: String
         get() {
             val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            return LocalDate.now().format(formatter)
+            return startDay.format(formatter)
         }
 
     val downtimeEndDay: String
