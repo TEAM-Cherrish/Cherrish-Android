@@ -71,8 +71,8 @@ fun NavGraphBuilder.challengeNavGraph(
 
     composable<ChallengeMission> {
         ChallengeMissionSelectedRoute(
-            paddingValues = paddingValues,
-            //navigateToProgress = { }
+            paddingValues = paddingValues
+            // navigateToProgress = { }
         )
     }
 }
