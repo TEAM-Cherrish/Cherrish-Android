@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.core.common.navigation.Route
@@ -39,9 +38,9 @@ fun NavController.navigateToChallengeRoutine(
     )
 }
 
-fun  NavController.navigateToChallengeMission(
-    navOptions : NavOptions? = null
-){
+fun NavController.navigateToChallengeMission(
+    navOptions: NavOptions? = null
+) {
     navigate(
         route = ChallengeMission,
         navOptions = navOptions
@@ -51,7 +50,7 @@ fun  NavController.navigateToChallengeMission(
 fun NavGraphBuilder.challengeNavGraph(
     paddingValues: PaddingValues,
     navigateToChallengeRoutine: () -> Unit,
-    navigationChallengeMission: ()-> Unit,
+    navigationChallengeMission: () -> Unit,
     navigateUp: () -> Unit
 ) {
     composable<ChallengeStart> {
@@ -73,7 +72,7 @@ fun NavGraphBuilder.challengeNavGraph(
     composable<ChallengeMission> {
         ChallengeMissionSelectedRoute(
             paddingValues = paddingValues,
-            navigateToProgress = {  }
+            navigateToProgress = { }
         )
     }
 }

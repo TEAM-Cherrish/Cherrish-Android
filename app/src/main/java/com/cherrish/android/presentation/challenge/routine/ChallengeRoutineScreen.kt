@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +25,6 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
 import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineUiModel
-import com.cherrish.android.presentation.home.HomeSideEffect
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -35,7 +33,7 @@ fun ChallengeRoutineRoute(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
-    navigateToMission : () -> Unit,
+    navigateToMission: () -> Unit,
     viewModel: ChallengeRoutineViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

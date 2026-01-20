@@ -118,10 +118,9 @@ class MainAppState(
     fun navigateToChallengeRoutine() {
         navController.navigateToChallengeRoutine()
     }
-    fun navigateToChallengeMission(navOptions: NavOptions? = clearStackNavOptions){
+    fun navigateToChallengeMission(navOptions: NavOptions? = clearStackNavOptions) {
         navController.navigateToChallengeMission(navOptions)
     }
-
 }
 
 @Composable

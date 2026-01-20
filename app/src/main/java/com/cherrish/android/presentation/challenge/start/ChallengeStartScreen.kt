@@ -28,7 +28,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 fun ChallengeStartRoute(
     paddingValues: PaddingValues,
     onNavigateRoutine: () -> Unit,
-     viewModel: ChallengeStartViewModel = hiltViewModel()
+    viewModel: ChallengeStartViewModel = hiltViewModel()
 ) {
     ChallengeStartScreen(
         paddingValues = paddingValues,

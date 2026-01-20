@@ -1,7 +1,5 @@
 package com.cherrish.android.data.di
 
-import com.cherrish.android.data.remote.datasource.ChallengeDataSource
-import com.cherrish.android.data.remote.datasourceimpl.ChallengeDataSourceImpl
 import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.data.repository.ChallengeRepository
 import com.cherrish.android.data.repository.HomeRepository

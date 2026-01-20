@@ -70,9 +70,8 @@ fun MainScreen(
                 paddingValues = innerPadding,
                 navigateUp = appState::navigateUp,
                 navigateToChallengeRoutine = appState::navigateToChallengeRoutine,
-                navigationChallengeMission = appState::navigateToChallengeMission,
+                navigationChallengeMission = appState::navigateToChallengeMission
             )
-
 
             myPageNavGraph(paddingValues = innerPadding)
         }

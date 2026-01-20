@@ -8,7 +8,6 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.ChallengeRepository
 import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.routine.model.toUiModel
-import com.cherrish.android.presentation.home.HomeSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
@@ -29,8 +28,7 @@ class ChallengeRoutineViewModel @Inject constructor(
         MutableStateFlow<UiState<ChallengeRoutineUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<ChallengeRoutineUiState>> = _uiState.asStateFlow()
 
-
-    private val _sideEffect = MutableSharedFlow< ChallengeSideEffect>()
+    private val _sideEffect = MutableSharedFlow<ChallengeSideEffect>()
     val sideEffect: SharedFlow<ChallengeSideEffect> = _sideEffect.asSharedFlow()
 
     init {

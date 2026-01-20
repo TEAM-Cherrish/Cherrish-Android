@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeMissionSelectedRoute(
     paddingValues: PaddingValues,
-    navigateToProgress : ( ) -> Unit,
+    navigateToProgress: () -> Unit,
     viewModel: ChallengeMissionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
