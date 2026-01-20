@@ -21,13 +21,14 @@ import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.data.model.ChallengeRoutineResponseModel
+import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ChallengeMissionTodoSection(
-    routines: ImmutableList<ChallengeRoutineResponseModel>,
+    routines: ImmutableList<ChallengeRoutineUiModel>,
     currentDay: Int,
     onRoutineClick: (Long) -> Unit,
     onCompleteClick: () -> Unit,
@@ -73,7 +74,7 @@ fun ChallengeMissionTodoSection(
 
 @Composable
 private fun ChallengeMissionTodoList(
-    routines: ImmutableList<ChallengeRoutineResponseModel>,
+    routines: ImmutableList<ChallengeRoutineUiModel>,
     onRoutineClick: (Long) -> Unit
 ) {
     Column(
@@ -116,24 +117,21 @@ private fun ChallengeMissionTodoTitle(
 @Composable
 private fun ChallengeMissionTodoSectionPreview() {
     var routines by remember {
-        mutableStateOf<ImmutableList<ChallengeRoutineResponseModel>>(
+        mutableStateOf<ImmutableList<ChallengeRoutineUiModel>>(
             persistentListOf(
-                ChallengeRoutineResponseModel(
+                ChallengeRoutineUiModel(
                     routineId = 1,
                     routineName = "선크림 바르기",
-                    scheduledDate = "",
                     isCompleted = false
                 ),
-                ChallengeRoutineResponseModel(
+                ChallengeRoutineUiModel(
                     routineId = 2,
                     routineName = "진정 토너 + 세럼",
-                    scheduledDate = "",
                     isCompleted = false
                 ),
-                ChallengeRoutineResponseModel(
+                ChallengeRoutineUiModel(
                     routineId = 3,
                     routineName = "미끄덩 거리는 로션",
-                    scheduledDate = "",
                     isCompleted = false
                 )
             )

@@ -1,17 +1,27 @@
 package com.cherrish.android.presentation.challenge.missionprogress
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
+import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import javax.inject.Inject
 
 @HiltViewModel
-class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
+class ChallengeMissionProgressViewModel @Inject constructor(
+    private val challengeMissionProgressRepository: ChallengeMissionProgressRepository
+) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeMissionProgressUiState>>(UiState.Loading)
@@ -23,9 +33,31 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadMissions() {
-//        _uiState.updateSuccess{
-//
-//        }
+        viewModelScope.launch {
+            _uiState.update { UiState.Loading }
+
+            challengeMissionProgressRepository.getChallengeMissions().onSuccess { response ->
+                _uiState.update {
+                    UiState.Success(
+                        ChallengeMissionProgressUiState(
+                            challengeId = response.challengeId,
+                            challengeName = response.title,
+                            currentDay = response.currentDay,
+                            progressPercentage = response.progressPercentage,
+                            cherryType = CherryType.entries.first { it.step == response.cherryLevel },
+                            remainingCount = response.remainingRoutinesToNextLevel,
+                            routines = response.todayRoutines.map { routine ->
+                                ChallengeRoutineUiModel(
+                                    routineId = routine.routineId,
+                                    routineName = routine.routineName,
+                                    isCompleted = routine.isCompleted
+                                )
+                            }
+                                .toPersistentList()
+                        ))
+                }
+            }.onLogFailure {}
+        }
     }
 
     fun onTodoClick(id: Long) {
