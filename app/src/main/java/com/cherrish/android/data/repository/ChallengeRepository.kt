@@ -1,12 +1,9 @@
 package com.cherrish.android.data.repository
 
-import com.cherrish.android.data.model.OnboardingProfileRequestModel
-import com.cherrish.android.data.model.OnboardingProfileResponseModel
-import com.cherrish.android.data.remote.dto.response.ChallengeRoutineDto
-import com.cherrish.android.data.remote.dto.response.ChallengesHomecareRoutinesResponseDto
+import com.cherrish.android.data.model.ChallengeHomecareRoutinesResponseModel
 
 interface ChallengeRepository{
-    suspend fun getChallengeRoutinData(
+    suspend fun getChallengeRoutineData(
 
-    ): Result<ChallengesHomecareRoutinesResponseDto>
+    ): Result<ChallengeHomecareRoutinesResponseModel>
 }

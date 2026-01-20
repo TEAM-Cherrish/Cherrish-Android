@@ -3,16 +3,17 @@ package com.cherrish.android.data.repositoryimpl
 import com.cherrish.android.core.util.suspendRunCatching
 import com.cherrish.android.data.model.toModel
 import com.cherrish.android.data.remote.datasource.ChallengeDataSource
-import com.cherrish.android.data.repository.DummyRepository
-import com.cherrish.android.data.model.ChallengeRoutineResponseModel
+import com.cherrish.android.data.model.ChallengeHomecareRoutinesResponseModel
+import com.cherrish.android.data.repository.ChallengeRepository
 import javax.inject.Inject
 
 class ChallengeRepositoryImpl @Inject constructor(
     private val challengeDataSource: ChallengeDataSource
-) : DummyRepository {
-    override suspend fun getChallengeRoutinData(): Result<ChallengeRoutineResponseModel> =
+) : ChallengeRepository {
+    override suspend fun getChallengeRoutineData()
+    : Result<ChallengeHomecareRoutinesResponseModel> =
         suspendRunCatching {
-            challengeDataSource.getHomecareRoutineData().data!!.toModel()
-                .getDummyData().data!!.toModel()
+          challengeDataSource.getHomecareRoutineData().data!!.toModel()
+
         }
 }

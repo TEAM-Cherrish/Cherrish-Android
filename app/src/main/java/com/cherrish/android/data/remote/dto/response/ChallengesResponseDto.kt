@@ -4,13 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChallengesHomecareRoutinesResponseDto(
+data class ChallengeHomecareRoutinesResponseDto(
     @SerialName("id")
     val id: Int,
     @SerialName("name")
     val name: String,
     @SerialName("description")
-    val description: String?
+    val description: String
 )
 
 @Serializable
