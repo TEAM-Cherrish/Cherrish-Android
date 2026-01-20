@@ -18,9 +18,9 @@ data class ChallengeMissionResponseModel(
 
 data class ChallengeRoutineResponseModel(
     val routineId: Long,
-    val name: String,
+    val routineName: String,
     val scheduledDate: String,
-    val isComplete: Boolean
+    val isCompleted: Boolean
 )
 
 fun ChallengeMissionResponseDto.toModel() = ChallengeMissionResponseModel(
@@ -38,7 +38,7 @@ fun ChallengeMissionResponseDto.toModel() = ChallengeMissionResponseModel(
 
 fun ChallengeRoutineResponseDto.toModel() = ChallengeRoutineResponseModel(
     routineId = this.routineId,
-    name = this.name,
+    routineName = this.name,
     scheduledDate = this.scheduledDate,
-    isComplete = this.isComplete
+    isCompleted = this.isComplete
 )

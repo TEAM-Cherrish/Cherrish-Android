@@ -25,15 +25,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.data.model.ChallengeRoutineResponseModel
 import com.cherrish.android.presentation.challenge.component.ChallengeMissionProgressCherrygrowth
 import com.cherrish.android.presentation.challenge.component.ChallengeMissionTodoSection
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
-import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun ChallengeMissionprogressRoute(
+fun ChallengeMissionProgressRoute(
     paddingValues: PaddingValues,
     viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
 ) {
@@ -109,7 +109,7 @@ private fun ChallengeMissionSelectedTitle(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "$challengeName 챌린지",
+            text = challengeName,
             style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000
         )
@@ -157,34 +157,40 @@ private fun ChallengeMissionprogressScreenPreview() {
                 remainingCount = 3,
                 progressPercentage = 25,
                 routines = persistentListOf(
-                    DailyTodoRoutineModel(
-                        id = 1L,
-                        routine = "아침 세안 후 토너 바르기",
+                    ChallengeRoutineResponseModel(
+                        routineId = 1L,
+                        routineName = "아침 세안 후 토너 바르기",
+                        scheduledDate = "",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 2L,
-                        routine = "수분 에센스 2–3방울 흡수",
+                    ChallengeRoutineResponseModel(
+                        routineId = 2L,
+                        routineName = "수분 에센스 2–3방울 흡수",
+                        scheduledDate = "",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 3L,
-                        routine = "보습 크림으로 마무리",
+                    ChallengeRoutineResponseModel(
+                        routineId = 3L,
+                        routineName = "보습 크림으로 마무리",
+                        scheduledDate = "",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 4L,
-                        routine = "외출 전 선크림 꼼꼼히 바르기",
+                    ChallengeRoutineResponseModel(
+                        routineId = 4L,
+                        routineName = "외출 전 선크림 꼼꼼히 바르기",
+                        scheduledDate = "",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 5L,
-                        routine = "태양을 피하는 방법",
+                    ChallengeRoutineResponseModel(
+                        routineId = 5L,
+                        routineName = "태양을 피하는 방법",
+                        scheduledDate = "",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 6L,
-                        routine = "나가지 않기",
+                    ChallengeRoutineResponseModel(
+                        routineId = 6L,
+                        routineName = "나가지 않기",
+                        scheduledDate = "",
                         isCompleted = false
                     )
                 )
@@ -198,7 +204,7 @@ private fun ChallengeMissionprogressScreenPreview() {
         onTodoClick = { clickedId ->
             uiState = uiState.copy(
                 routines = uiState.routines.map {
-                    if (it.id == clickedId) {
+                    if (it.routineId == clickedId) {
                         it.copy(isCompleted = !it.isCompleted)
                     } else {
                         it

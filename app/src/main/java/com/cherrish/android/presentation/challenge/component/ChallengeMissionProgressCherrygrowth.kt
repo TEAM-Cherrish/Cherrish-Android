@@ -147,7 +147,7 @@ private fun CherryGrowthProgressSection(
         }
 
         CherrishGaugeBar(
-            currentStep = cherryType.step,
+            currentStep = cherryType.level,
             gauges = CherrishGaugeType.entries.toImmutableList()
 
         )

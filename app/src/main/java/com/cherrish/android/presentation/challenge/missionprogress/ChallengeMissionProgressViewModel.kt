@@ -3,11 +3,8 @@ package com.cherrish.android.presentation.challenge.missionprogress
 import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
-import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
-import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,32 +23,16 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadMissions() {
-        _uiState.updateSuccess {
-            ChallengeMissionProgressUiState(
-                challenge = ChallengeInfoModel(
-                    id = 1L,
-                    challengeTitle = "피부 컨디션 챌린지",
-                    challengeTotalDays = 8
-                ),
-                currentDay = 8,
-                cherryType = CherryType.BBANGBBANG,
-                remainingCount = 3,
-                progressPercentage = 25,
-                routines = persistentListOf(
-                    DailyTodoRoutineModel(1L, "선크림 바르기", true),
-                    DailyTodoRoutineModel(2L, "진정 토너+세럼", false),
-                    DailyTodoRoutineModel(3L, "진정 토너+세럼", false),
-                    DailyTodoRoutineModel(4L, "진정 토너+세럼", false)
-                )
-            )
-        }
+//        _uiState.updateSuccess{
+//
+//        }
     }
 
     fun onTodoClick(id: Long) {
         _uiState.updateSuccess { state ->
             state.copy(
                 routines = state.routines.map {
-                    if (it.id == id) {
+                    if (it.routineId == id) {
                         it.copy(isCompleted = !it.isCompleted)
                     } else {
                         it
