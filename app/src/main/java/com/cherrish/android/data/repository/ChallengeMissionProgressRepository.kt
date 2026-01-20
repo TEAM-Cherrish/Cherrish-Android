@@ -7,4 +7,5 @@ interface ChallengeMissionProgressRepository {
     suspend fun getChallengeMissions(): Result<ChallengeMissionProgressResponseModel>
     suspend fun patchChallengeRoutinesComplete(routineId: Long):
         Result<ChallengeRoutineCompleteResponseModel>
+    suspend fun postChallengeAdvanceDay(): Result<ChallengeMissionProgressResponseModel>
 }

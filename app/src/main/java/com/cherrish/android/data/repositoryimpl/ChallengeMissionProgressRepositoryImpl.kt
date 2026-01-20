@@ -17,10 +17,15 @@ class ChallengeMissionProgressRepositoryImpl @Inject constructor(
         }
 
     override suspend fun patchChallengeRoutinesComplete(routineId: Long):
-        Result<ChallengeRoutineCompleteResponseModel> =
+            Result<ChallengeRoutineCompleteResponseModel> =
         suspendRunCatching {
             challengeMissionDataSource.patchChallengeRoutinesComplete(
                 routineId = routineId
             ).data!!.toModel()
+        }
+
+    override suspend fun postChallengeAdvanceDay(): Result<ChallengeMissionProgressResponseModel> =
+        suspendRunCatching {
+            challengeMissionDataSource.postChallengeAdvanceDay().data!!.toModel()
         }
 }
