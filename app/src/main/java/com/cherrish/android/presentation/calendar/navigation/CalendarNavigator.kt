@@ -1,16 +1,13 @@
 package com.cherrish.android.presentation.calendar.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.presentation.calendar.CalendarRoute
-import com.cherrish.android.presentation.calendar.CalendarViewModel
 import com.cherrish.android.presentation.calendar.procedure.ProcedureRoute
-import com.cherrish.android.presentation.calendar.procedure.ProcedureViewModel
 import java.time.LocalDate
 import kotlinx.serialization.Serializable
 
@@ -29,7 +26,7 @@ fun NavController.navigateToProcedure(startDate: LocalDate, navOptions: NavOptio
 fun NavGraphBuilder.calendarNavGraph(
     paddingValues: PaddingValues,
     navigateUp: () -> Unit,
-    navigateToProcedure: (LocalDate) -> Unit,
+    navigateToProcedure: (LocalDate) -> Unit
 ) {
     composable<Calendar> {
         CalendarRoute(
@@ -40,7 +37,7 @@ fun NavGraphBuilder.calendarNavGraph(
 
     composable<Procedure> {
         ProcedureRoute(
-            onNavigateBack = navigateUp,
+            onNavigateBack = navigateUp
         )
     }
 }

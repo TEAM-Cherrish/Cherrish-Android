@@ -6,10 +6,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
-import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.LocalCalendarEventBus
 import com.cherrish.android.presentation.calendar.navigation.calendarNavGraph
 import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph

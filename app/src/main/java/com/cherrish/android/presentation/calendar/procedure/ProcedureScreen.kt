@@ -23,8 +23,6 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.calendar.CalendarEvent
-import com.cherrish.android.presentation.calendar.LocalCalendarEventBus
 import com.cherrish.android.presentation.calendar.procedure.component.DowntimeBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.SelectedProcedureBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.StepProgressBar
@@ -55,7 +53,6 @@ fun ProcedureRoute(
             onNavigateBack()
         }
     }
-
 
     when (val state = uiState) {
         is UiState.Loading -> Unit
