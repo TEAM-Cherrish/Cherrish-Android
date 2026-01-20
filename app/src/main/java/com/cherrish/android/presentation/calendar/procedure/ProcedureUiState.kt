@@ -32,6 +32,7 @@ data class ProcedureUiState(
     val year: String = "",
     val month: String = "",
     val day: String = "",
+    val startDay: LocalDate = LocalDate.now(),
 
     val selectedDowntime: Int? = null,
 

@@ -10,8 +10,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.component.SelectionSection
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
-import kotlin.collections.indexOfFirst
-import kotlin.collections.map
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
