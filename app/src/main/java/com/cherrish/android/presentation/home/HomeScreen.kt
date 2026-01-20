@@ -3,17 +3,14 @@ package com.cherrish.android.presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,14 +19,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.theme.graEnd
 import com.cherrish.android.core.designsystem.theme.graStart
 import com.cherrish.android.presentation.home.component.ChallengeSection
 import com.cherrish.android.presentation.home.component.PlanBoxSection
 import com.cherrish.android.presentation.home.component.UpcomingPlanSection
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDate
 
 @Composable
 fun HomeRoute(
@@ -135,19 +133,6 @@ private fun HomeScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun LoadingScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = CherrishTheme.colors.gray0),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        CircularProgressIndicator()
     }
 }
 
