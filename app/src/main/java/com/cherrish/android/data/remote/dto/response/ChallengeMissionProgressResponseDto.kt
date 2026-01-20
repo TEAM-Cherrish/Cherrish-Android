@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChallengeMissionResponseDto(
+data class ChallengeMissionProgressResponseDto(
     @SerialName("challengeId")
     val challengeId: Long,
     @SerialName("title")
@@ -21,8 +21,8 @@ data class ChallengeMissionResponseDto(
     val progressToNextLevel: Double,
     @SerialName("remainingRoutinesToNextLevel")
     val remainingRoutinesToNextLevel: Int,
-    @SerialName("routines")
-    val routines: List<ChallengeRoutineResponseDto>,
+    @SerialName("todayRoutines")
+    val todayRoutines: List<ChallengeRoutineResponseDto>,
     @SerialName("cheeringMessage")
     val cheeringMessage: String
 )
