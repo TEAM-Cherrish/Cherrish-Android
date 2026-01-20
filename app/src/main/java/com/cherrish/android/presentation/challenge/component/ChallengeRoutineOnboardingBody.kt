@@ -20,14 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.designsystem.component.chip.CherrishSelectionChip
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import com.cherrish.android.data.model.ChallengeRoutineResponseModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeRoutineOnboardingBody(
-    items: ImmutableList<ChallengeRoutineModel>,
+    items: ImmutableList<ChallengeRoutineResponseModel>,
     onItemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -68,12 +68,12 @@ private fun ChallengeRoutineOnboarding_RoutinePreview() {
         var routineItems by remember {
             mutableStateOf(
                 persistentListOf(
-                    ChallengeRoutineModel(id = 1, routine = "보습 루틴", isSelected = false),
-                    ChallengeRoutineModel(id = 2, routine = "진정 루틴", isSelected = false),
-                    ChallengeRoutineModel(id = 3, routine = "미백 루틴", isSelected = false),
-                    ChallengeRoutineModel(id = 4, routine = "탄력 루틴", isSelected = false),
-                    ChallengeRoutineModel(id = 5, routine = "모공 관리 루틴", isSelected = false),
-                    ChallengeRoutineModel(id = 6, routine = "트러블 케어 루틴", isSelected = false)
+                    ChallengeRoutineResponseModel(id = 1, routine = "보습 루틴", isSelected = false),
+                    ChallengeRoutineResponseModel(id = 2, routine = "진정 루틴", isSelected = false),
+                    ChallengeRoutineResponseModel(id = 3, routine = "미백 루틴", isSelected = false),
+                    ChallengeRoutineResponseModel(id = 4, routine = "탄력 루틴", isSelected = false),
+                    ChallengeRoutineResponseModel(id = 5, routine = "모공 관리 루틴", isSelected = false),
+                    ChallengeRoutineResponseModel(id = 6, routine = "트러블 케어 루틴", isSelected = false)
                 )
             )
         }
