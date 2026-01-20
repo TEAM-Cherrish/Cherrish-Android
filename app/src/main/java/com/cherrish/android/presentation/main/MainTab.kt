@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import com.cherrish.android.R
 import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.presentation.calendar.navigation.Calendar
-import com.cherrish.android.presentation.challenge.navigation.Challenge
+import com.cherrish.android.presentation.challenge.navigation.ChallengeStart
 import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.mypage.navigation.MyPage
 
@@ -25,7 +25,7 @@ enum class MainTab(
     ),
     CHALLENGE(
         iconRes = R.drawable.ic_challenge,
-        route = Challenge,
+        route = ChallengeStart,
         label = "챌린지"
     ),
     MYPAGE(

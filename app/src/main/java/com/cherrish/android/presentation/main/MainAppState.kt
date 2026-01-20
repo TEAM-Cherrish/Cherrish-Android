@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeStart
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
@@ -89,7 +89,7 @@ class MainAppState(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions = navOptions)
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
-            MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
+            MainTab.CHALLENGE -> navController.navigateToChallengeStart(navOptions = navOptions)
         }
     }
 

@@ -6,18 +6,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
-import com.cherrish.android.presentation.challenge.ChallengeRoute
-import com.cherrish.android.presentation.challenge.routine.ChallengeRoutineRoute
+import com.cherrish.android.presentation.challenge.start.ChallengeStartRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object Challenge : MainTabRoute
+data object ChallengeStart : MainTabRoute
 
-fun NavController.navigateToChallenge(
+fun NavController.navigateToChallengeStart(
     navOptions: NavOptions? = null
 ) {
     navigate(
-        route = Challenge,
+        route = ChallengeStart,
         navOptions = navOptions
     )
 }
@@ -25,8 +24,8 @@ fun NavController.navigateToChallenge(
 fun NavGraphBuilder.challengeNavGraph(
     paddingValues: PaddingValues
 ) {
-    composable<Challenge> {
-        ChallengeRoutineRoute(
+    composable<ChallengeStart> {
+        ChallengeStartRoute(
             paddingValues = paddingValues
         )
     }
