@@ -7,11 +7,10 @@ import com.cherrish.android.data.remote.service.ChallengeService
 import javax.inject.Inject
 
 class ChallengeDataSourceImpl @Inject constructor(
-    private val challengeService : ChallengeService
+    private val challengeService: ChallengeService
 ) : ChallengeDataSource {
-    override suspend fun getHomecareRoutineData(
-
-    ): BaseResponse<ChallengeHomecareRoutinesResponseDto> {
-     return  challengeService.getHomecareRoutineData()
+    override suspend fun getHomecareRoutineData():
+        BaseResponse<List<ChallengeHomecareRoutinesResponseDto>> {
+        return challengeService.getHomecareRoutineData()
     }
 }
