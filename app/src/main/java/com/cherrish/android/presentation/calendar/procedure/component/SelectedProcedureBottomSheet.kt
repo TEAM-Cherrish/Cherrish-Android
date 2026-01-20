@@ -71,6 +71,14 @@ fun SelectedProcedureBottomSheet(
     val screenHeightDp = configuration.screenHeightDp.dp
     val maxSheetHeight = screenHeightDp * 0.36f
     val listState = rememberLazyListState()
+    var lastSelectedCount by remember { mutableStateOf(selectedProcedure.size) }
+
+    LaunchedEffect(selectedProcedure) {
+        if (selectedProcedure.size > lastSelectedCount) {
+            listState.animateScrollToItem(0)
+        }
+        lastSelectedCount = selectedProcedure.size
+    }
 
     val showTopGradient = remember {
         derivedStateOf { listState.canScrollBackward }
