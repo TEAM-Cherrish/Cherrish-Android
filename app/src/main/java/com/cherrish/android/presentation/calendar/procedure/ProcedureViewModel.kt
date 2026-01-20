@@ -47,7 +47,8 @@ class ProcedureViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
         UiState.Success(
             ProcedureUiState.FakeNormal.copy(
-                procedureItems = persistentListOf()
+                procedureItems = persistentListOf(),
+                startDay = startDateArg
             )
         )
     )

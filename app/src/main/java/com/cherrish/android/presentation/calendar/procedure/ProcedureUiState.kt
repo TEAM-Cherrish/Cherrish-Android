@@ -207,7 +207,7 @@ data class ProcedureUiState(
     val spareTimeDay: Int
         get() {
             val target = targetDate ?: return 0
-            val totalDays = ChronoUnit.DAYS.between(LocalDate.now(), target).toInt()
+            val totalDays = ChronoUnit.DAYS.between(startDay, target).toInt()
             return (totalDays - downtimePickerValue).coerceAtLeast(0)
         }
 
@@ -224,7 +224,7 @@ data class ProcedureUiState(
     val downtimeStartDay: String
         get() {
             val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            return LocalDate.now().format(formatter)
+            return startDay.format(formatter)
         }
 
     val downtimeEndDay: String
