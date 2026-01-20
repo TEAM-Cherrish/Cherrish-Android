@@ -1,12 +1,8 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.datasource.CalendarDataSource
-import com.cherrish.android.data.remote.datasource.ChallengeDataSource
-import com.cherrish.android.data.remote.datasource.HomeDataSource
 import com.cherrish.android.data.remote.datasource.OnboardingProfileDataSource
 import com.cherrish.android.data.remote.datasourceimpl.CalendarDataSourceImpl
-import com.cherrish.android.data.remote.datasourceimpl.ChallengeDataSourceImpl
-import com.cherrish.android.data.remote.datasourceimpl.HomeDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.OnboardingProfileDataSourceImpl
 import dagger.Binds
 import dagger.Module
@@ -40,4 +36,16 @@ abstract class DataSourceModule {
     abstract fun bindChallengeDataSource(
         challengeDataSourceImpl: ChallengeDataSourceImpl
     ): ChallengeDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindMyPageDataSource(
+        myPageDataSourceImpl: MyPageDataSourceImpl
+    ): MyPageDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindChallengeMissionProgressDataSource(
+        challengeMissionProgressDataSourceImpl: ChallengeMissionProgressDataSourceImpl
+    ): ChallengeMissionProgressDataSource
 }

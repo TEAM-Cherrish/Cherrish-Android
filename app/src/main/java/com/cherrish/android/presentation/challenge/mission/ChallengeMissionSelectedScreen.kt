@@ -29,17 +29,14 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeMissionSelectedRoute(
     paddingValues: PaddingValues,
-    navigateToProgress: () -> Unit,
     viewModel: ChallengeMissionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     when (val state = uiState) {
         is UiState.Loading -> {
         }
-
         is UiState.Failure -> {
         }
-
         is UiState.Success -> {
             ChallengeMissionSelectedScreen(
                 uiState = state.data,
@@ -50,7 +47,6 @@ fun ChallengeMissionSelectedRoute(
                 onAddTodoClick = viewModel::onAddTodoClick
             )
         }
-
         else -> {}
     }
 }
@@ -92,8 +88,7 @@ private fun ChallengeMissionSelectedScreen(
         CherrishButton(
             text = "플래너에 추가하기",
             enabled = uiState.isSelected,
-            onClick = onAddTodoClick,
-            modifier = Modifier.padding(horizontal = 24.dp)
+            onClick = onAddTodoClick
         )
 
         Spacer(Modifier.height(30.dp))
