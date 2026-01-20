@@ -124,7 +124,7 @@ data class AdvanceDayDataDto(
     val currentDay: Int,
 
     @SerialName("progressPercentage")
-    val progressPercentage: Double, // 42.8
+    val progressPercentage: Double,
 
     @SerialName("cherryLevel")
     val cherryLevel: Int,

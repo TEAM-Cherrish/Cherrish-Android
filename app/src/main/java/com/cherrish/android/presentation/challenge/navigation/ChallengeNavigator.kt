@@ -20,6 +20,7 @@ data object ChallengeRoutine : Route
 
 @Serializable
 data object ChallengeMission : Route
+
 fun NavController.navigateToChallengeStart(
     navOptions: NavOptions? = null
 ) {
@@ -50,13 +51,13 @@ fun NavController.navigateToChallengeMission(
 fun NavGraphBuilder.challengeNavGraph(
     paddingValues: PaddingValues,
     navigateToChallengeRoutine: () -> Unit,
-    navigationChallengeMission: () -> Unit,
+    navigateToChallengeMission: () -> Unit,
     navigateUp: () -> Unit
 ) {
     composable<ChallengeStart> {
         ChallengeStartRoute(
             paddingValues = paddingValues,
-            onNavigateRoutine = navigateToChallengeRoutine
+            onNavigateToRoutine = navigateToChallengeRoutine
         )
     }
 
@@ -65,7 +66,7 @@ fun NavGraphBuilder.challengeNavGraph(
             paddingValues = paddingValues,
             onBackClick = navigateUp,
             onCloseClick = navigateUp,
-            navigateToMission = navigationChallengeMission
+            onNavigateToMission = navigateToChallengeMission
         )
     }
 

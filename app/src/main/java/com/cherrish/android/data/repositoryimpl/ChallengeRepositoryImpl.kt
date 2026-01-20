@@ -13,9 +13,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun getChallengeRoutineData():
         Result<List<ChallengeHomecareRoutinesResponseModel>> =
         suspendRunCatching {
-            challengeDataSource
-                .getHomecareRoutineData()
-                .data!!
-                .map { it.toModel() }
+            challengeDataSource.getHomecareRoutineData().data!!.map {
+                it.toModel() }
         }
 }

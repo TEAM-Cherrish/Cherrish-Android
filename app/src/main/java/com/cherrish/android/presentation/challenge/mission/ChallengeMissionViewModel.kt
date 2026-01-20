@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
+import com.cherrish.android.presentation.mypage.MyPageUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -15,9 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 @HiltViewModel
 class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
     private val _uiState =
-        MutableStateFlow<UiState<ChallengeMissionUiState>>(
-            UiState.Success(ChallengeMissionUiState.Fake)
-        )
+        MutableStateFlow<UiState<ChallengeMissionUiState>>(UiState.Success(ChallengeMissionUiState.Fake))
     val uiState: StateFlow<UiState<ChallengeMissionUiState>> = _uiState.asStateFlow()
 
     init {
@@ -37,11 +36,12 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
             )
         }
     }
-
     fun onTodoMissionClick(id: Long) {
-        _uiState.updateSuccess { state ->
+        _uiState.updateSuccess {
+                state ->
             state.copy(
-                missions = state.missions.map { mission ->
+                missions = state.missions.map {
+                        mission ->
                     if (mission.id == id) {
                         mission.copy(isSelected = !mission.isSelected)
                     } else {
@@ -59,7 +59,6 @@ class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
             state.copy()
         }
     }
-
     fun onBackClick() {}
     fun onCloseClick() {}
 }

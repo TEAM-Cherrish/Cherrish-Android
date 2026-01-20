@@ -27,12 +27,12 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 @Composable
 fun ChallengeStartRoute(
     paddingValues: PaddingValues,
-    onNavigateRoutine: () -> Unit,
+    onNavigateToRoutine: () -> Unit,
     viewModel: ChallengeStartViewModel = hiltViewModel()
 ) {
     ChallengeStartScreen(
         paddingValues = paddingValues,
-        onNextClick = onNavigateRoutine
+        onNextClick = onNavigateToRoutine
     )
 }
 
