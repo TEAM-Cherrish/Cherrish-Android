@@ -26,7 +26,7 @@ class MyPageViewModel @Inject constructor(
 
     private fun loadMyPageProfile() {
         viewModelScope.launch {
-            myPageRepository.getUsers().onSuccess { response ->
+            myPageRepository.getUsersProfile().onSuccess { response ->
                 _uiState.update {
                     UiState.Success(
                         MyPageUiState(

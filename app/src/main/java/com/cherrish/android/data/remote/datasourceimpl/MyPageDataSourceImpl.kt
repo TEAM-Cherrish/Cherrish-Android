@@ -9,6 +9,6 @@ import javax.inject.Inject
 class MyPageDataSourceImpl @Inject constructor(
     private val myPageService: MyPageService
 ) : MyPageDataSource {
-    override suspend fun getUsers(): BaseResponse<UsersResponseDto> =
-        myPageService.getUsers()
+    override suspend fun getUsersProfile(): BaseResponse<UsersResponseDto> =
+        myPageService.getUsersProfile()
 }

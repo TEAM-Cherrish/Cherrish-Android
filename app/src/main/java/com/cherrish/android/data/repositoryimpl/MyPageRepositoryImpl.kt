@@ -10,8 +10,8 @@ import javax.inject.Inject
 class MyPageRepositoryImpl @Inject constructor(
     private val myPageDataSource: MyPageDataSource
 ) : MyPageRepository {
-    override suspend fun getUsers(): Result<UsersResponseModel> =
+    override suspend fun getUsersProfile(): Result<UsersResponseModel> =
         suspendRunCatching {
-            myPageDataSource.getUsers().data!!.toModel()
+            myPageDataSource.getUsersProfile().data!!.toModel()
         }
 }
