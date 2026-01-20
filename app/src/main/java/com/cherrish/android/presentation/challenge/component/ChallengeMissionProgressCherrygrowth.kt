@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.gaugebar.CherrishGaugeBar
-import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.missionprogress.CherryType
+import com.cherrish.android.presentation.home.type.CherrishGaugeType
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -105,7 +105,7 @@ private fun CherryGrowthSection(
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         Text(
-            text = "Lv.${cherryType.level}",
+            text = "Lv.${cherryType.step}",
             color = CherrishTheme.colors.gray900,
             style = CherrishTheme.typography.body1M14
         )
@@ -147,7 +147,7 @@ private fun CherryGrowthProgressSection(
         }
 
         CherrishGaugeBar(
-            currentStep = cherryType.level,
+            currentStep = cherryType.step,
             gauges = CherrishGaugeType.entries.toImmutableList()
 
         )
