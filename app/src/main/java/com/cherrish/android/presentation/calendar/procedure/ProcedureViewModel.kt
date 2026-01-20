@@ -375,16 +375,13 @@ class ProcedureViewModel @Inject constructor(
                 )
             }
         )
-
         viewModelScope.launch {
             userProcedureRepository.addUserProcedures(request = request)
-                .onSuccess { response ->
-                    _uiState.updateSuccess { ProcedureUiState.FakeNormal }
+                .onSuccess {
                     calendarEventBus.emit(CalendarEvent.RefreshRequired)
                     _completeEvent.tryEmit(Unit)
                 }
-                .onLogFailure { e ->
-                }
+                .onLogFailure { }
         }
     }
 
