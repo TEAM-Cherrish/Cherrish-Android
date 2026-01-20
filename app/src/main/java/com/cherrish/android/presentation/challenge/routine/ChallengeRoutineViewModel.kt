@@ -1,23 +1,38 @@
 package com.cherrish.android.presentation.challenge.routine
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.repository.ChallengeRepository
+import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
+class ChallengeRoutineViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeRoutineUiState>>(UiState.Loading)
-    val uiState: StateFlow<UiState<ChallengeRoutineUiState>> = _uiState.asStateFlow()
+    val uiState: StateFlow<UiState<ChallengeRoutineUiState>> =
+        _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<ChallengeSideEffect>()
+    val sideEffect: SharedFlow<ChallengeSideEffect> =
+        _sideEffect.asSharedFlow()
 
     init {
         loadRoutines()
@@ -47,15 +62,27 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onNextClick() {
-        val state = _uiState.value
-
-        if (state !is UiState.Success) return
-        if (!state.data.isSelected) return
-
-        val selectedRoutine = state.data.selectedRoutine!!
+        val selectedId = 1L // 하드코딩 추후 UI 받아온 거 수정
+        viewModelScope.launch {
+            challengeRepository
+                .postAiRecommendations(
+                    homecareRoutineId = selectedId.toInt()
+                )
+                .onSuccess {
+                    _sideEffect.emit(
+                        ChallengeSideEffect.NavigateToMission
+                    )
+                }
+                .onFailure {
+                }
+        }
     }
 
     fun onBackClick() {
     }
     fun onCloseClick() {}
+
+    private companion object {
+        const val TAG = "ChallengeRoutineViewModel"
+    }
 }

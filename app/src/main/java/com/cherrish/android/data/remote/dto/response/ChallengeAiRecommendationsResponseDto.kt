@@ -5,12 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ChallengesAiRecommendResponseDto(
-    @SerialName("data")
-    val data: ChallengesAiRecommendDataDto
-)
-
-@Serializable
-data class ChallengesAiRecommendDataDto(
     @SerialName("routines")
     val routines: List<String>
 )

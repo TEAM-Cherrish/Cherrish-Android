@@ -7,8 +7,7 @@ data class ChallengesAiRecommendResponseModel(
     val routines: List<String>
 )
 
-
 fun ChallengesAiRecommendResponseDto.toModel() =
     ChallengesAiRecommendResponseModel(
-        routines = data.routines
+        routines = routines
     )
