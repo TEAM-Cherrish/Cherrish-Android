@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChallengeRoutineCompleteRequestDto(
+data class ChallengeRoutineCompleteResponseDto(
     @SerialName("routineId")
     val routineId: Long,
     @SerialName("name")
