@@ -90,7 +90,6 @@ private fun OnboardingInformationScreen(
             .background(color = CherrishTheme.colors.gray0)
             .addFocusCleaner(focusManager)
             .padding(paddingValues = paddingValues)
-            .advancedImePadding()
     ) {
         Spacer(modifier = Modifier.weight(135f))
 
