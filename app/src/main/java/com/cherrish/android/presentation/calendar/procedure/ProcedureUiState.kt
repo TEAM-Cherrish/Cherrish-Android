@@ -68,10 +68,13 @@ data class ProcedureUiState(
                 return@run "올바른 날짜 형식이 아니에요."
             }
 
+            val today = LocalDate.now()
+
             val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
 
             when {
-                inputDate.isBefore(startDay) -> "이미 지난 날짜는 입력할 수 없어요."
+                inputDate.isBefore(today) -> "이미 지난 날짜는 입력할 수 없어요."
+                inputDate.isBefore(startDay) -> "목표일은 시술 날짜 이후로만 설정할 수 있어요."
                 else -> null
             }
         } catch (e: Exception) {
