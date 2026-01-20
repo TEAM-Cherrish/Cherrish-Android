@@ -131,8 +131,7 @@ fun FilteringWithSearchContent(
             if (cardItems.isEmpty()) {
                 item {
                     EmptySearchResult(
-                        modifier = Modifier
-                            .fillParentMaxSize()
+                        modifier = Modifier.fillParentMaxSize()
                     )
                 }
             } else {
@@ -180,8 +179,6 @@ private fun EmptySearchResult(
             style = CherrishTheme.typography.body1R14,
             color = CherrishTheme.colors.gray600
         )
-
-        Spacer(modifier = Modifier.height(126.dp))
     }
 }
 
