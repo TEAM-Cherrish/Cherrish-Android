@@ -1,5 +1,9 @@
 package com.cherrish.android.data.remote.dto.response
 
+import com.cherrish.android.core.util.LocalDateSerializer
+import com.cherrish.android.core.util.LocalDateTimeSerializer
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,9 +22,11 @@ data class CreatedUserProcedureDto(
     @SerialName("procedureName")
     val procedureName: String,
     @SerialName("scheduledAt")
-    val scheduledAt: String,
+    @Serializable(with = LocalDateTimeSerializer::class)
+    val scheduledAt: LocalDateTime,
     @SerialName("downtimeDays")
     val downtimeDays: Int,
     @SerialName("recoveryTargetDate")
-    val recoveryTargetDate: String
+    @Serializable(with = LocalDateSerializer::class)
+    val recoveryTargetDate: LocalDate
 )

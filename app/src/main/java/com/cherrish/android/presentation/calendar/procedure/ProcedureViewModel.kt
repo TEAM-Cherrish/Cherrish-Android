@@ -22,7 +22,6 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -358,9 +357,7 @@ class ProcedureViewModel @Inject constructor(
             )
         }
 
-        val scheduledAt = startDateArg
-            .atStartOfDay()
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        val scheduledAt = startDateArg.atStartOfDay()
         val recoveryTargetDate = current.recoveryTargetDateOrNull()
 
         val request = UserProceduresRequestModel(
@@ -513,11 +510,10 @@ private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
     }
 }
 
-private fun ProcedureUiState.recoveryTargetDateOrNull(): String? {
+private fun ProcedureUiState.recoveryTargetDateOrNull(): LocalDate? {
     return try {
         if (year.isBlank() || month.isBlank() || day.isBlank()) return null
-        val date = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
-        date.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        LocalDate.of(year.toInt(), month.toInt(), day.toInt())
     } catch (e: Exception) {
         null
     }

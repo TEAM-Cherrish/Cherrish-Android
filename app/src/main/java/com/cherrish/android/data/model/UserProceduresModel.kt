@@ -4,10 +4,12 @@ import com.cherrish.android.data.remote.dto.request.UserProcedureItemDto
 import com.cherrish.android.data.remote.dto.request.UserProceduresRequestDto
 import com.cherrish.android.data.remote.dto.response.CreatedUserProcedureDto
 import com.cherrish.android.data.remote.dto.response.UserProceduresResponseDto
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class UserProceduresRequestModel(
-    val scheduledAt: String,
-    val recoveryTargetDate: String? = null,
+    val scheduledAt: LocalDateTime,
+    val recoveryTargetDate: LocalDate? = null,
     val procedures: List<UserProcedureItemModel>
 )
 
@@ -31,9 +33,9 @@ data class CreatedUserProcedureModel(
     val userProcedureId: Long,
     val procedureId: Long,
     val procedureName: String,
-    val scheduledAt: String,
+    val scheduledAt: LocalDateTime,
     val downtimeDays: Int,
-    val recoveryTargetDate: String
+    val recoveryTargetDate: LocalDate
 )
 
 fun UserProceduresResponseDto.toModel(): UserProceduresResponseModel =

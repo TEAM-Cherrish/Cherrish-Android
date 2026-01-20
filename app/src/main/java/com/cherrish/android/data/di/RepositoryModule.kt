@@ -1,15 +1,15 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.repository.CalendarRepository
+import com.cherrish.android.data.repository.OnboardingProfileRepository
 import com.cherrish.android.data.repository.ProcedureRepository
 import com.cherrish.android.data.repository.UserProcedureRepository
 import com.cherrish.android.data.repository.WorryRepository
-import com.cherrish.android.data.repository.OnboardingProfileRepository
 import com.cherrish.android.data.repositoryimpl.CalendarRepositoryImpl
+import com.cherrish.android.data.repositoryimpl.OnboardingProfileRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.ProcedureRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.UserProcedureRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.WorryRepositoryImpl
-import com.cherrish.android.data.repositoryimpl.OnboardingProfileRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
