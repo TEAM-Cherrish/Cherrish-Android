@@ -22,7 +22,8 @@ fun ProceduresResponseDto.toModel() = ProceduresResponseModel(
 fun ProcedureDto.toModel() = ProcedureModel(
     id = id,
     name = name,
-    category = category,
+    category = category?.takeIf { it.isNotBlank() }
+        ?: worries.map { it.content }.filter { it.isNotBlank() }.joinToString(" | "),
     minDowntimeDays = minDowntimeDays,
     maxDowntimeDays = maxDowntimeDays
 )
