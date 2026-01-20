@@ -11,6 +11,8 @@ data class CalendarDownTimeResponseDto(
     val scheduledAt: String,
     @SerialName("downtimeDays")
     val downtimeDays: Int,
+    @SerialName("recoveryTargetDate")
+    val recoveryTargetDate: String,
     @SerialName("sensitiveDays")
     val sensitiveDays: List<String>,
     @SerialName("cautionDays")

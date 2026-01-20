@@ -1,20 +1,25 @@
 package com.cherrish.android.presentation.challenge.missionprogress
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
-import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
-import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
+import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
+import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
+class ChallengeMissionProgressViewModel @Inject constructor(
+    private val challengeMissionProgressRepository: ChallengeMissionProgressRepository
+) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeMissionProgressUiState>>(UiState.Loading)
@@ -26,44 +31,81 @@ class ChallengeMissionProgressViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadMissions() {
-        _uiState.updateSuccess {
-            ChallengeMissionProgressUiState(
-                challenge = ChallengeInfoModel(
-                    id = 1L,
-                    challengeTitle = "피부 컨디션 챌린지",
-                    challengeTotalDays = 8
-                ),
-                currentDay = 8,
-                cherryType = CherryType.BBANGBBANG,
-                remainingCount = 3,
-                progressPercentage = 25,
-                routines = persistentListOf(
-                    DailyTodoRoutineModel(1L, "선크림 바르기", true),
-                    DailyTodoRoutineModel(2L, "진정 토너+세럼", false),
-                    DailyTodoRoutineModel(3L, "진정 토너+세럼", false),
-                    DailyTodoRoutineModel(4L, "진정 토너+세럼", false)
-                )
-            )
+        viewModelScope.launch {
+            _uiState.update { UiState.Loading }
+
+            challengeMissionProgressRepository.getChallengeMissions().onSuccess { response ->
+                _uiState.update {
+                    UiState.Success(
+                        ChallengeMissionProgressUiState(
+                            challengeId = response.challengeId,
+                            challengeName = response.title,
+                            currentDay = response.currentDay,
+                            progressPercentage = response.progressPercentage,
+                            cherryType = CherryType.entries.first {
+                                it.step == response.cherryLevel
+                            },
+                            remainingCount = response.remainingRoutinesToNextLevel,
+                            routines = response.todayRoutines.map { routine ->
+                                ChallengeRoutineUiModel(
+                                    routineId = routine.routineId,
+                                    routineName = routine.routineName,
+                                    isCompleted = routine.isCompleted
+                                )
+                            }
+                                .toPersistentList()
+                        )
+                    )
+                }
+            }.onLogFailure {}
         }
     }
 
     fun onTodoClick(id: Long) {
         _uiState.updateSuccess { state ->
             state.copy(
-                routines = state.routines.map {
-                    if (it.id == id) {
-                        it.copy(isCompleted = !it.isCompleted)
+                routines = state.routines.map { routine ->
+                    if (routine.routineId == id) {
+                        routine.copy(isCompleted = !routine.isCompleted)
                     } else {
-                        it
+                        routine
                     }
                 }.toPersistentList()
             )
         }
+        viewModelScope.launch {
+            challengeMissionProgressRepository
+                .patchChallengeRoutinesComplete(routineId = id)
+                .onLogFailure { }
+        }
     }
 
     fun onCompletedTodayClick() {
-        val state = _uiState.value
-        if (state !is UiState.Success) return
-        if (!state.data.hasCompletedAny) return
+        viewModelScope.launch {
+            challengeMissionProgressRepository.postChallengeAdvanceDay()
+                .onSuccess { response ->
+                    _uiState.update {
+                        UiState.Success(
+                            ChallengeMissionProgressUiState(
+                                challengeId = response.challengeId,
+                                challengeName = response.title,
+                                currentDay = response.currentDay,
+                                progressPercentage = response.progressPercentage,
+                                cherryType = CherryType.entries.first {
+                                    it.step == response.cherryLevel
+                                },
+                                remainingCount = response.remainingRoutinesToNextLevel,
+                                routines = response.todayRoutines.map { routine ->
+                                    ChallengeRoutineUiModel(
+                                        routineId = routine.routineId,
+                                        routineName = routine.routineName,
+                                        isCompleted = routine.isCompleted
+                                    )
+                                }.toPersistentList()
+                            )
+                        )
+                    }
+                }
+        }
     }
 }

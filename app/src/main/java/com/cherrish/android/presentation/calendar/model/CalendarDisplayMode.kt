@@ -13,6 +13,7 @@ sealed interface CalendarDisplayMode {
     @Immutable
     data class Downtime(
         val downtimeByDate: Map<LocalDate, DownTimeStatus> = persistentMapOf(),
-        val selectedProcedureId: Long? = null
+        val selectedProcedureId: Long? = null,
+        val dDayDate: LocalDate? = null
     ) : CalendarDisplayMode
 }

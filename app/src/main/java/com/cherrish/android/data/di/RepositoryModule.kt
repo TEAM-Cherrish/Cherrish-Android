@@ -1,10 +1,12 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.repository.CalendarRepository
+import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.data.repository.HomeRepository
 import com.cherrish.android.data.repository.MyPageRepository
 import com.cherrish.android.data.repository.OnboardingProfileRepository
 import com.cherrish.android.data.repositoryimpl.CalendarRepositoryImpl
+import com.cherrish.android.data.repositoryimpl.ChallengeMissionProgressRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.HomeRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.MyPageRepositoryImpl
 import com.cherrish.android.data.repositoryimpl.OnboardingProfileRepositoryImpl
@@ -40,4 +42,10 @@ abstract class RepositoryModule {
     abstract fun bindMyPageRepository(
         myPageRepositoryImpl: MyPageRepositoryImpl
     ): MyPageRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindChallengeMissionProgressRepository(
+        challengeMissionProgressRepositoryImpl: ChallengeMissionProgressRepositoryImpl
+    ): ChallengeMissionProgressRepository
 }

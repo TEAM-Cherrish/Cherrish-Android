@@ -22,7 +22,8 @@ sealed interface CalendarDay {
         @Immutable
         data class Downtime(
             override val date: LocalDate,
-            val status: DownTimeStatus
+            val status: DownTimeStatus,
+            val isDDay: Boolean = false
         ) : Date
     }
 }
