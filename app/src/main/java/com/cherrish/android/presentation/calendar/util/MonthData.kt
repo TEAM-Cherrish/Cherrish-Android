@@ -41,11 +41,13 @@ data class MonthData(
             }
             is CalendarDisplayMode.Downtime -> {
                 val status = displayMode.downtimeByDate[date] ?: DownTimeStatus.NONE
-                if (status != DownTimeStatus.NONE) {
-                    CalendarDay.Date.Downtime(date = date, status = status)
-                } else {
-                    CalendarDay.Date.Normal(date = date, procedureCount = 0)
-                }
+                val isDDay = displayMode.dDayDate == date
+
+                CalendarDay.Date.Downtime(
+                    date = date,
+                    status = status,
+                    isDDay = isDDay
+                )
             }
         }
     }

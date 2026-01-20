@@ -20,8 +20,8 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.home.type.CherrishGaugeType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
