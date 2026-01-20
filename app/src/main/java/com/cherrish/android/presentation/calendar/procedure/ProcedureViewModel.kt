@@ -48,14 +48,7 @@ class ProcedureViewModel @Inject constructor(
         LocalDate.parse(savedStateHandle.toRoute<Procedure>().startDate)
     }.getOrElse { LocalDate.now() }
 
-    private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
-        UiState.Success(
-            ProcedureUiState.FakeNormal.copy(
-                procedureItems = persistentListOf(),
-                startDay = startDateArg
-            )
-        )
-    )
+    private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(UiState.Loading)
 
     val uiState: StateFlow<UiState<ProcedureUiState>> = _uiState.asStateFlow()
 
@@ -85,18 +78,27 @@ class ProcedureViewModel @Inject constructor(
             worryRepository.getWorries()
                 .onSuccess { worries ->
 
-                    _uiState.updateSuccess { current ->
-                        val mapped = worries
-                            .map { ProcedureWorryUiModel(id = it.id, content = it.content) }
-                            .toPersistentList()
+                    val mapped = worries
+                        .map { ProcedureWorryUiModel(id = it.id, content = it.content) }
+                        .toPersistentList()
 
-                        current.copy(
-                            worries =
-                            if (mapped.isEmpty()) {
-                                ProcedureUiState.FakeNormal.worries
-                            } else {
-                                mapped
-                            }
+                    val worriesToUse = if (mapped.isEmpty()) {
+                        ProcedureUiState.FakeNormal.worries
+                    } else {
+                        mapped
+                    }
+
+                    val currentState = _uiState.value
+                    if (currentState is UiState.Success) {
+                        _uiState.value = currentState.copy(
+                            data = currentState.data.copy(worries = worriesToUse)
+                        )
+                    } else {
+                        _uiState.value = UiState.Success(
+                            ProcedureUiState(
+                                worries = worriesToUse,
+                                startDay = startDateArg
+                            )
                         )
                     }
                 }
