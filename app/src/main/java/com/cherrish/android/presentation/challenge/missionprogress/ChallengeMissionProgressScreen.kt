@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,23 +23,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.component.ChallengeMissionProgressCherrygrowth
 import com.cherrish.android.presentation.challenge.component.ChallengeMissionTodoSection
-import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeInfoModel
-import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
+import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun ChallengeMissionprogressRoute(
+fun ChallengeMissionProgressRoute(
     paddingValues: PaddingValues,
     viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     when (val state = uiState) {
-        is UiState.Loading -> {}
+        is UiState.Loading -> {
+            LoadingScreen()
+        }
         is UiState.Failure -> {}
         is UiState.Success -> {
             ChallengeMissionprogressScreen(
@@ -67,14 +68,13 @@ private fun ChallengeMissionprogressScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray100)
-            .padding(paddingValues)
-            .navigationBarsPadding(),
+            .padding(paddingValues),
         contentPadding = PaddingValues(top = 38.dp, start = 17.dp, end = 17.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
             ChallengeMissionSelectedTitle(
-                challengeName = uiState.challenge.challengeTitle
+                challengeName = uiState.challengeName
             )
         }
 
@@ -147,44 +147,41 @@ private fun ChallengeMissionprogressScreenPreview() {
     var uiState by remember {
         mutableStateOf(
             ChallengeMissionProgressUiState(
-                challenge = ChallengeInfoModel(
-                    id = 1L,
-                    challengeTitle = "피부 컨디션 챌린지",
-                    challengeTotalDays = 7
-                ),
-                currentDay = 4,
+                challengeId = 1L,
+                challengeName = "피부 컨디션 챌린지",
+                currentDay = 3,
                 cherryType = CherryType.BBANGBBANG,
                 remainingCount = 3,
                 progressPercentage = 25,
                 routines = persistentListOf(
-                    DailyTodoRoutineModel(
-                        id = 1L,
-                        routine = "아침 세안 후 토너 바르기",
+                    ChallengeRoutineUiModel(
+                        routineId = 1L,
+                        routineName = "아침 세안 후 토너 바르기",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 2L,
-                        routine = "수분 에센스 2–3방울 흡수",
+                    ChallengeRoutineUiModel(
+                        routineId = 2L,
+                        routineName = "수분 에센스 2–3방울 흡수",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 3L,
-                        routine = "보습 크림으로 마무리",
+                    ChallengeRoutineUiModel(
+                        routineId = 3L,
+                        routineName = "보습 크림으로 마무리",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 4L,
-                        routine = "외출 전 선크림 꼼꼼히 바르기",
+                    ChallengeRoutineUiModel(
+                        routineId = 4L,
+                        routineName = "외출 전 선크림 꼼꼼히 바르기",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 5L,
-                        routine = "태양을 피하는 방법",
+                    ChallengeRoutineUiModel(
+                        routineId = 5L,
+                        routineName = "태양을 피하는 방법",
                         isCompleted = false
                     ),
-                    DailyTodoRoutineModel(
-                        id = 6L,
-                        routine = "나가지 않기",
+                    ChallengeRoutineUiModel(
+                        routineId = 6L,
+                        routineName = "나가지 않기",
                         isCompleted = false
                     )
                 )
@@ -198,7 +195,7 @@ private fun ChallengeMissionprogressScreenPreview() {
         onTodoClick = { clickedId ->
             uiState = uiState.copy(
                 routines = uiState.routines.map {
-                    if (it.id == clickedId) {
+                    if (it.routineId == clickedId) {
                         it.copy(isCompleted = !it.isCompleted)
                     } else {
                         it

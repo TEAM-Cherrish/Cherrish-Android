@@ -1,4 +1,4 @@
-package com.cherrish.android.core.designsystem.component.type
+package com.cherrish.android.presentation.home.type
 
 import androidx.annotation.DrawableRes
 import com.cherrish.android.R

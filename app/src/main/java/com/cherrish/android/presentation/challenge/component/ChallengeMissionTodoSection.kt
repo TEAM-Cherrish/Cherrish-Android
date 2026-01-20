@@ -20,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
-import com.cherrish.android.presentation.challenge.missionprogress.model.DailyTodoRoutineModel
+import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun ChallengeMissionTodoSection(
-    routines: ImmutableList<DailyTodoRoutineModel>,
+    routines: ImmutableList<ChallengeRoutineUiModel>,
     currentDay: Int,
     onRoutineClick: (Long) -> Unit,
     onCompleteClick: () -> Unit,
@@ -73,7 +73,7 @@ fun ChallengeMissionTodoSection(
 
 @Composable
 private fun ChallengeMissionTodoList(
-    routines: ImmutableList<DailyTodoRoutineModel>,
+    routines: ImmutableList<ChallengeRoutineUiModel>,
     onRoutineClick: (Long) -> Unit
 ) {
     Column(
@@ -82,8 +82,8 @@ private fun ChallengeMissionTodoList(
         routines.forEach { item ->
             ChallengeChecklist(
                 isChecked = item.isCompleted,
-                onChecklistClick = { onRoutineClick(item.id) },
-                checklistContent = item.routine
+                onChecklistClick = { onRoutineClick(item.routineId) },
+                checklistContent = item.routineName
             )
         }
     }
@@ -116,21 +116,21 @@ private fun ChallengeMissionTodoTitle(
 @Composable
 private fun ChallengeMissionTodoSectionPreview() {
     var routines by remember {
-        mutableStateOf<ImmutableList<DailyTodoRoutineModel>>(
+        mutableStateOf<ImmutableList<ChallengeRoutineUiModel>>(
             persistentListOf(
-                DailyTodoRoutineModel(
-                    id = 1,
-                    routine = "선크림 바르기",
+                ChallengeRoutineUiModel(
+                    routineId = 1,
+                    routineName = "선크림 바르기",
                     isCompleted = false
                 ),
-                DailyTodoRoutineModel(
-                    id = 2,
-                    routine = "진정 토너 + 세럼",
+                ChallengeRoutineUiModel(
+                    routineId = 2,
+                    routineName = "진정 토너 + 세럼",
                     isCompleted = false
                 ),
-                DailyTodoRoutineModel(
-                    id = 3,
-                    routine = "미끄덩 거리는 로션",
+                ChallengeRoutineUiModel(
+                    routineId = 3,
+                    routineName = "미끄덩 거리는 로션",
                     isCompleted = false
                 )
             )
@@ -143,7 +143,7 @@ private fun ChallengeMissionTodoSectionPreview() {
         onRoutineClick = { routineId ->
             routines = routines
                 .map {
-                    if (it.id == routineId) {
+                    if (it.routineId == routineId) {
                         it.copy(isCompleted = !it.isCompleted)
                     } else {
                         it
