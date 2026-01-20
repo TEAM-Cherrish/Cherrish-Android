@@ -24,6 +24,7 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithD
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -33,7 +34,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 @HiltViewModel
 class ProcedureViewModel @Inject constructor(

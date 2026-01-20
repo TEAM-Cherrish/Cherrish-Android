@@ -31,7 +31,7 @@ fun NavGraphBuilder.calendarNavGraph(
     composable<Calendar> {
         CalendarRoute(
             paddingValues = paddingValues,
-            onNavigateToProcedure = navigateToProcedure
+            navigateToProcedure = navigateToProcedure
         )
     }
 
