@@ -7,3 +7,7 @@ enum class DowntimePhase(
     CAUTION("주의기"),
     RECOVERY("회복기")
 }
+
+fun String.toDowntimePhase(): DowntimePhase =
+    runCatching { DowntimePhase.valueOf(this) }
+        .getOrElse { DowntimePhase.SENSITIVE }
