@@ -59,6 +59,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onUpcomingPlanClick(date: LocalDate) {
+        viewModelScope.launch {
+            _sideEffect.emit(
+                HomeSideEffect.NavigateToCalendar
+            )
+        }
     }
 
     fun onAddChallengeClick() {

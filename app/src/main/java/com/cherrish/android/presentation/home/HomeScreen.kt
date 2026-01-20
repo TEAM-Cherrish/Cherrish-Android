@@ -35,6 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun HomeRoute(
     paddingValues: PaddingValues,
     navigateToChallenge: () -> Unit,
+    navigateToCalendar: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -43,6 +44,9 @@ fun HomeRoute(
         when (sideEffect) {
             is HomeSideEffect.NavigateToChallenge -> {
                 navigateToChallenge()
+            }
+            is HomeSideEffect.NavigateToCalendar -> {
+                navigateToCalendar()
             }
         }
     }
