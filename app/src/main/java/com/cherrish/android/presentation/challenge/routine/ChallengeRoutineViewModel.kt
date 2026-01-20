@@ -51,16 +51,6 @@ class ChallengeRoutineViewModel @Inject constructor(
                 .onLogFailure {
                 }
         }
-//        _uiState.updateSuccess {
-//            ChallengeRoutineUiState(
-//                routines = persistentListOf(
-//                    ChallengeRoutineUiModel(id = 1, routine = "피부 컨디션"),
-//                    ChallengeRoutineUiModel(id = 2, routine = "생활 습관"),
-//                    ChallengeRoutineUiModel(id = 3, routine = "체형 관리"),
-//                    ChallengeRoutineUiModel(id = 4, routine = "웰니스 · 마음챙김")
-//                )
-//            )
-//        }
     }
 
     fun onRoutineClick(id: Int) {

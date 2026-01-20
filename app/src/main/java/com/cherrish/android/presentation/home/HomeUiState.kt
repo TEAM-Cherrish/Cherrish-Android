@@ -4,10 +4,10 @@ import androidx.compose.runtime.Immutable
 import com.cherrish.android.data.model.RecentProcedureModel
 import com.cherrish.android.data.model.UpcomingProcedureModel
 import com.cherrish.android.presentation.home.type.CherrishGaugeType
+import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import java.time.LocalDate
 
 @Immutable
 data class HomeUiState(
