@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChallengesAiRecommendResponseDto(
+data class ChallengeAiRecommendationsResponseDto(
     @SerialName("routines")
     val routines: List<String>
 )

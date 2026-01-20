@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AiRecommendationRequestDto(
+data class ChallengeAiRecommendationRequestDto(
     @SerialName("homecareRoutineId")
     val homecareRoutineId: Int
 )

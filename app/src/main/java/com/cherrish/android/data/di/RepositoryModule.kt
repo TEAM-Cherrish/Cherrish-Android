@@ -40,6 +40,4 @@ abstract class RepositoryModule {
     abstract fun challengeProfileRepository(
         challengeRepositoryImpl: ChallengeRepositoryImpl
     ): ChallengeRepository
-
-
 }

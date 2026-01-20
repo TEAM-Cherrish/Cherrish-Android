@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
-import com.cherrish.android.presentation.challenge.ChallengeRoute
 import com.cherrish.android.presentation.challenge.routine.ChallengeRoutineRoute
 import kotlinx.serialization.Serializable
 

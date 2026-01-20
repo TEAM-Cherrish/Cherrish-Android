@@ -1,6 +1,5 @@
 package com.cherrish.android.presentation.challenge.routine
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.updateSuccess
