@@ -23,6 +23,8 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.calendar.CalendarEvent
+import com.cherrish.android.presentation.calendar.LocalCalendarEventBus
 import com.cherrish.android.presentation.calendar.procedure.component.DowntimeBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.SelectedProcedureBottomSheet
 import com.cherrish.android.presentation.calendar.procedure.component.StepProgressBar
@@ -35,12 +37,10 @@ import com.cherrish.android.presentation.calendar.procedure.content.RecoverySche
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ProcedureRoute(
     onNavigateBack: () -> Unit,
-    onComplete: () -> Unit,
     viewModel: ProcedureViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -50,11 +50,12 @@ fun ProcedureRoute(
         viewModel.updateScreenHeight(configuration.screenHeightDp.toFloat())
     }
 
-    LaunchedEffect(viewModel) {
-        viewModel.completeEvent.collectLatest {
-            onComplete()
+    LaunchedEffect(Unit) {
+        viewModel.completeEvent.collect {
+            onNavigateBack()
         }
     }
+
 
     when (val state = uiState) {
         is UiState.Loading -> Unit

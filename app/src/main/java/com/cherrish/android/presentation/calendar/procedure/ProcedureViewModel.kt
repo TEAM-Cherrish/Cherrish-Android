@@ -12,6 +12,8 @@ import com.cherrish.android.data.model.UserProceduresRequestModel
 import com.cherrish.android.data.repository.ProcedureRepository
 import com.cherrish.android.data.repository.UserProcedureRepository
 import com.cherrish.android.data.repository.WorryRepository
+import com.cherrish.android.presentation.calendar.CalendarEvent
+import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.navigation.Procedure
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
@@ -37,6 +39,7 @@ class ProcedureViewModel @Inject constructor(
     private val worryRepository: WorryRepository,
     private val procedureRepository: ProcedureRepository,
     private val userProcedureRepository: UserProcedureRepository,
+    private val calendarEventBus: CalendarRefreshEventBus,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val startDateArg = runCatching {
@@ -375,6 +378,7 @@ class ProcedureViewModel @Inject constructor(
             userProcedureRepository.addUserProcedures(body = request)
                 .onSuccess { response ->
                     _uiState.updateSuccess { ProcedureUiState.FakeNormal }
+                    calendarEventBus.emit(CalendarEvent.RefreshRequired)
                     _completeEvent.tryEmit(Unit)
                 }
                 .onFailure { e ->

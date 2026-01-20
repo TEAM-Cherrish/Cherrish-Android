@@ -27,8 +27,6 @@ import java.time.YearMonth
 fun CalendarRoute(
     paddingValues: PaddingValues,
     onNavigateToProcedure: (LocalDate) -> Unit,
-    shouldRefresh: Boolean = false,
-    onRefreshConsumed: () -> Unit = {},
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
@@ -36,13 +34,6 @@ fun CalendarRoute(
             is CalendarSideEffect.NavigateToProcedure -> {
                 onNavigateToProcedure(sideEffect.startDate)
             }
-        }
-    }
-
-    LaunchedEffect(shouldRefresh) {
-        if (shouldRefresh) {
-            viewModel.refreshCalendar()
-            onRefreshConsumed()
         }
     }
 
