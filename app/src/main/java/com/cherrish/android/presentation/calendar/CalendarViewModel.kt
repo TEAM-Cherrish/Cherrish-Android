@@ -275,14 +275,12 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun onAddButtonClick() {
-        val selectedDate = (_uiState.value as? UiState.Success)?.data?.selectedDate
-            ?: LocalDate.now()
         viewModelScope.launch {
-            _sideEffect.emit(
-                CalendarSideEffect.NavigateToProcedure(
-                    startDate = selectedDate
-                )
-            )
+            val selectedDate = when (val state = _uiState.value) {
+                is UiState.Success -> state.data.selectedDate
+                else -> LocalDate.now()
+            }
+            selectedDate?.let { _sideEffect.emit(CalendarSideEffect.NavigateToProcedure(it)) }
         }
     }
 
