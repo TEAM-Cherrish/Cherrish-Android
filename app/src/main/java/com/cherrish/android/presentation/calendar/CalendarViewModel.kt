@@ -287,15 +287,16 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun refreshCalendar() {
-        val currentState = (_uiState.value as? UiState.Success)?.data
-        val selectedYearMonth = currentState?.selectedYearMonth ?: YearMonth.now()
-        val selectedDate = currentState?.selectedDate ?: LocalDate.now()
-
-        monthlyCache.clear()
-        dailyCache.clear()
-        loadMonthlyCalendar(
-            yearMonth = selectedYearMonth,
-            selectedDate = selectedDate
-        )
+        _uiState.updateSuccess { currentState ->
+            monthlyCache.clear()
+            dailyCache.clear()
+            currentState.selectedDate?.let {
+                loadMonthlyCalendar(
+                    yearMonth = currentState.selectedYearMonth,
+                    selectedDate = it
+                )
+            }
+            currentState
+        }
     }
 }
