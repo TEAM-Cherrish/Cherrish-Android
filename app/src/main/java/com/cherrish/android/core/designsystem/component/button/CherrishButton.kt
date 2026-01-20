@@ -67,7 +67,7 @@ fun CherrishButton(
             .scale(scale)
             .clip(RoundedCornerShape(12.dp))
             .background(backgroundColor)
-            .padding(10.dp),
+            .padding(vertical = 10.dp),
         interactionSource = interactionSource
     ) {
         Text(

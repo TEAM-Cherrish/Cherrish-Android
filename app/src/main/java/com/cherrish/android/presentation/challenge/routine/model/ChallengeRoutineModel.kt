@@ -6,5 +6,5 @@ import androidx.compose.runtime.Immutable
 data class ChallengeRoutineModel(
     val id: Long,
     val routine: String,
-    val isSelected: Boolean
+    val isSelected: Boolean = false
 )

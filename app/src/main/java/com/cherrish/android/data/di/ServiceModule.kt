@@ -1,6 +1,7 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
+import com.cherrish.android.data.remote.service.OnboardingProfileService
 import com.cherrish.android.data.remote.service.ProcedureService
 import com.cherrish.android.data.remote.service.UserProcedureService
 import com.cherrish.android.data.remote.service.WorryService
@@ -20,6 +21,12 @@ object ServiceModule {
     fun provideCalendarService(
         retrofit: Retrofit
     ): CalendarService = retrofit.create(CalendarService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOnboardingProfileService(
+        retrofit: Retrofit
+    ): OnboardingProfileService = retrofit.create(OnboardingProfileService::class.java)
 
     @Provides
     @Singleton

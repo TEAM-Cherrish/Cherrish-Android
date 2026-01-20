@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -29,31 +31,42 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.addFocusCleaner
+import com.cherrish.android.core.common.extension.advancedImePadding
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.information.extension.AgeSuffixTransformation
 
 @Composable
-fun InformationRoute(
+fun OnboardingInformationRoute(
     paddingValues: PaddingValues,
-    viewModel: InformationViewModel = hiltViewModel()
+    navigateToHome: () -> Unit,
+    viewModel: OnboardingInformationViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    InformationScreen(
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            InformationSideEffect.NavigateToHome -> navigateToHome()
+        }
+    }
+
+    OnboardingInformationScreen(
         paddingValues = paddingValues,
         username = uiState.username,
         onNameChange = viewModel::onNameChanged,
         age = uiState.age,
         onAgeChange = viewModel::onAgeChanged,
         onNextClick = viewModel::onNextClicked,
-        enabled = uiState.buttonEnabled
+        enabled = uiState.buttonEnabled,
+        nameErrorCase = viewModel.onNameErrorCase(uiState.username),
+        ageErrorCase = viewModel.onAgeErrorCase(uiState.age)
     )
 }
 
 @Composable
-private fun InformationScreen(
+private fun OnboardingInformationScreen(
     paddingValues: PaddingValues,
     username: String,
     onNameChange: (String) -> Unit,
@@ -61,6 +74,8 @@ private fun InformationScreen(
     onAgeChange: (String) -> Unit,
     onNextClick: () -> Unit,
     enabled: Boolean,
+    nameErrorCase: Boolean,
+    ageErrorCase: Boolean,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -75,6 +90,7 @@ private fun InformationScreen(
             .background(color = CherrishTheme.colors.gray0)
             .addFocusCleaner(focusManager)
             .padding(paddingValues = paddingValues)
+            .advancedImePadding()
     ) {
         Spacer(modifier = Modifier.weight(135f))
 
@@ -91,7 +107,9 @@ private fun InformationScreen(
             onNextAction = {
                 ageFocusRequester.requestFocus()
             },
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            errorText = "이름은 최대 7자까지 입력 가능합니다.",
+            errorCase = nameErrorCase
         )
 
         Spacer(modifier = Modifier.weight(30f))
@@ -114,6 +132,8 @@ private fun InformationScreen(
                     " 세"
                 )
             },
+            errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
+            errorCase = ageErrorCase,
             modifier = Modifier
                 .focusRequester(ageFocusRequester)
                 .onFocusChanged { state ->
@@ -164,22 +184,25 @@ private fun UserInfoTextField(
     placeholder: String,
     keyboardImeAction: ImeAction,
     keyboardType: KeyboardType,
+    errorText: String,
     modifier: Modifier = Modifier,
     onNextAction: () -> Unit = {},
     onDoneAction: () -> Unit = {},
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    errorCase: Boolean = false
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = 26.dp)
     ) {
         Text(
             text = textFieldName,
             style = CherrishTheme.typography.body1SB14,
             color = CherrishTheme.colors.gray1000
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         CherrishTextField(
             value = value,
@@ -197,6 +220,14 @@ private fun UserInfoTextField(
             visualTransformation = visualTransformation,
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = errorText,
+            style = CherrishTheme.typography.body1R14,
+            color = if (errorCase) CherrishTheme.colors.red700 else Color.Transparent
+        )
     }
 }
 
@@ -204,14 +235,16 @@ private fun UserInfoTextField(
 @Composable
 private fun Preview() {
     CherrishTheme {
-        InformationScreen(
+        OnboardingInformationScreen(
             paddingValues = PaddingValues(),
             username = "",
             onNameChange = {},
             age = "",
             onAgeChange = {},
             onNextClick = {},
-            enabled = true
+            enabled = true,
+            nameErrorCase = false,
+            ageErrorCase = false
         )
     }
 }

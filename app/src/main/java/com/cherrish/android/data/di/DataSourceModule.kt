@@ -1,10 +1,12 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.datasource.CalendarDataSource
+import com.cherrish.android.data.remote.datasource.OnboardingProfileDataSource
 import com.cherrish.android.data.remote.datasource.ProcedureDataSource
 import com.cherrish.android.data.remote.datasource.UserProcedureDataSource
 import com.cherrish.android.data.remote.datasource.WorryDataSource
 import com.cherrish.android.data.remote.datasourceimpl.CalendarDataSourceImpl
+import com.cherrish.android.data.remote.datasourceimpl.OnboardingProfileDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.ProcedureDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.UserProcedureDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.WorryDataSourceImpl
@@ -40,4 +42,10 @@ abstract class DataSourceModule {
     abstract fun bindUserProcedureDataSource(
         userProcedureDataSourceImpl: UserProcedureDataSourceImpl
     ): UserProcedureDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindOnboardingProfileDataSource(
+        onboardingProfileDataSourceImpl: OnboardingProfileDataSourceImpl
+    ): OnboardingProfileDataSource
 }
