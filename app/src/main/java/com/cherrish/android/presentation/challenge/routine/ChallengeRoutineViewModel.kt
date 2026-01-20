@@ -79,15 +79,10 @@ class ChallengeRoutineViewModel @Inject constructor(
                 ChallengeSideEffect.navigateToMission
             )
         }
-//        val state = _uiState.value
-//
-//        if (state !is UiState.Success) return
-//        if (!state.data.isSelected) return
-//
-//        val selectedRoutine = state.data.selectedRoutine!!
     }
 
     fun onBackClick() {
     }
+
     fun onCloseClick() {}
 }
