@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.model.ProcedureModel
@@ -97,10 +98,7 @@ class ProcedureViewModel @Inject constructor(
                         )
                     }
                 }
-                .onFailure { e ->
-                    _uiState.updateSuccess { current ->
-                        current.copy(worries = ProcedureUiState.FakeNormal.worries)
-                    }
+                .onLogFailure { e ->
                 }
         }
     }
@@ -375,13 +373,13 @@ class ProcedureViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            userProcedureRepository.addUserProcedures(body = request)
+            userProcedureRepository.addUserProcedures(request = request)
                 .onSuccess { response ->
                     _uiState.updateSuccess { ProcedureUiState.FakeNormal }
                     calendarEventBus.emit(CalendarEvent.RefreshRequired)
                     _completeEvent.tryEmit(Unit)
                 }
-                .onFailure { e ->
+                .onLogFailure { e ->
                 }
         }
     }
@@ -407,16 +405,7 @@ class ProcedureViewModel @Inject constructor(
                         )
                     }
                 }
-                .onFailure { e ->
-                    _uiState.updateSuccess { current ->
-                        current.copy(
-                            procedureItems = persistentListOf(),
-                            selectedProcedureCardIds = persistentListOf(),
-                            procedureDowntimeMap = emptyMap(),
-                            selectedProcedureForDowntime = null,
-                            showDowntimeBottomSheet = false
-                        )
-                    }
+                .onLogFailure { e ->
                 }
         }
     }
