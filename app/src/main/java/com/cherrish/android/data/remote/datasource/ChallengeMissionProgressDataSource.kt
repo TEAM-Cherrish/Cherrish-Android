@@ -8,4 +8,5 @@ interface ChallengeMissionProgressDataSource {
     suspend fun getChallengeMissions(): BaseResponse<ChallengeMissionProgressResponseDto>
     suspend fun patchChallengeRoutinesComplete(routineId: Long):
         BaseResponse<ChallengeRoutineCompleteResponseDto>
+    suspend fun postChallengeAdvanceDay(): BaseResponse<ChallengeMissionProgressResponseDto>
 }
