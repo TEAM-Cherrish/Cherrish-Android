@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
-import com.cherrish.android.presentation.mypage.MyPageUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -16,7 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 @HiltViewModel
 class ChallengeMissionViewModel @Inject constructor() : ViewModel() {
     private val _uiState =
-        MutableStateFlow<UiState<ChallengeMissionUiState>>(UiState.Success(ChallengeMissionUiState.Fake))
+        MutableStateFlow<UiState<ChallengeMissionUiState>>(
+            UiState.Success(ChallengeMissionUiState.Fake)
+        )
     val uiState: StateFlow<UiState<ChallengeMissionUiState>> = _uiState.asStateFlow()
 
     init {

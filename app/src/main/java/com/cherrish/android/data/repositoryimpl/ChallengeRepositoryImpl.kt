@@ -14,6 +14,7 @@ class ChallengeRepositoryImpl @Inject constructor(
         Result<List<ChallengeHomecareRoutinesResponseModel>> =
         suspendRunCatching {
             challengeDataSource.getHomecareRoutineData().data!!.map {
-                it.toModel() }
+                it.toModel()
+            }
         }
 }
