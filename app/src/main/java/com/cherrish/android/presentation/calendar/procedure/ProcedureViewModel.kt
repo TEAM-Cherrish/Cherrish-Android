@@ -102,8 +102,7 @@ class ProcedureViewModel @Inject constructor(
                         )
                     }
                 }
-                .onLogFailure { e ->
-                }
+                .onLogFailure { }
         }
     }
 
@@ -383,8 +382,7 @@ class ProcedureViewModel @Inject constructor(
                     calendarEventBus.emit(CalendarEvent.RefreshRequired)
                     _completeEvent.tryEmit(Unit)
                 }
-                .onLogFailure { e ->
-                }
+                .onLogFailure { }
         }
     }
 
@@ -409,8 +407,7 @@ class ProcedureViewModel @Inject constructor(
                         )
                     }
                 }
-                .onLogFailure { e ->
-                }
+                .onLogFailure { }
         }
     }
 }
