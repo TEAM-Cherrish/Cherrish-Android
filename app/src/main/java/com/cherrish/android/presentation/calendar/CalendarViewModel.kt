@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.calendar
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
@@ -241,9 +242,16 @@ class CalendarViewModel @Inject constructor(
             }.onLogFailure { }
         }
     }
+
     fun onAddButtonClick() {
+        val selectedDate = (_uiState.value as? UiState.Success)?.data?.selectedDate
+            ?: LocalDate.now()
         viewModelScope.launch {
-            _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
+            _sideEffect.emit(
+                CalendarSideEffect.NavigateToProcedure(
+                    startDate = selectedDate
+                )
+            )
         }
     }
 }

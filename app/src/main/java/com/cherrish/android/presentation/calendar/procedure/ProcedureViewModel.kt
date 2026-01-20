@@ -1,14 +1,20 @@
 package com.cherrish.android.presentation.calendar.procedure
 
-import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.model.ProcedureModel
+import com.cherrish.android.data.model.UserProcedureItemModel
+import com.cherrish.android.data.model.UserProceduresRequestModel
 import com.cherrish.android.data.repository.ProcedureRepository
 import com.cherrish.android.data.repository.UserProcedureRepository
 import com.cherrish.android.data.repository.WorryRepository
+import com.cherrish.android.presentation.calendar.navigation.Procedure
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
+import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithDowntime
@@ -18,31 +24,41 @@ import jakarta.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @HiltViewModel
 class ProcedureViewModel @Inject constructor(
     private val worryRepository: WorryRepository,
     private val procedureRepository: ProcedureRepository,
-    private val userProcedureRepository: UserProcedureRepository
+    private val userProcedureRepository: UserProcedureRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-
-    init {
-        fetchWorries()
-    }
+    private val startDateArg = runCatching {
+        LocalDate.parse(savedStateHandle.toRoute<Procedure>().startDate)
+    }.getOrElse { LocalDate.now() }
 
     private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
         UiState.Success(
             ProcedureUiState.FakeNormal.copy(
-                procedureItems = ProcedureUiState.FakeProcedureCardItems.procedureItems
+                procedureItems = persistentListOf()
             )
         )
     )
-
     val uiState: StateFlow<UiState<ProcedureUiState>> = _uiState.asStateFlow()
+
+    private val _completeEvent = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val completeEvent = _completeEvent.asSharedFlow()
+
+    init {
+        fetchWorries()
+    }
 
     fun updateScreenHeight(heightDp: Float) {
         _uiState.updateSuccess { current ->
@@ -60,16 +76,11 @@ class ProcedureViewModel @Inject constructor(
 
     fun fetchWorries() {
         viewModelScope.launch {
-            Log.d("PROC", "[WORRY] fetchWorries() called")
 
             worryRepository.getWorries()
                 .onSuccess { worries ->
-                    Log.d("PROC", "[WORRY] success size=${worries.size}, worries=$worries")
 
                     _uiState.updateSuccess { current ->
-                        // 서버에서 빈 배열이 내려오면(현재 로그처럼) 화면이 비어 보이므로,
-                        // UX를 위해 임시로 FakeNormal을 fallback으로 사용합니다.
-                        // (백엔드/인증 정책이 정리되면 이 fallback은 제거하세요.)
                         val mapped = worries
                             .map { ProcedureWorryUiModel(id = it.id, content = it.content) }
                             .toPersistentList()
@@ -80,8 +91,6 @@ class ProcedureViewModel @Inject constructor(
                     }
                 }
                 .onFailure { e ->
-                    Log.e("PROC", "[WORRY] failed", e)
-                    // 실패 시에도 화면이 완전히 비지 않게 fallback
                     _uiState.updateSuccess { current ->
                         current.copy(worries = ProcedureUiState.FakeNormal.worries)
                     }
@@ -95,6 +104,12 @@ class ProcedureViewModel @Inject constructor(
 
     fun onSearchQueryChange(query: String) {
         _uiState.updateSuccess { it.copy(searchQuery = query) }
+    }
+
+    fun onSearchAction(query: String) {
+        val current = currentStateOrNull() ?: return
+        val keyword = query.trim().takeIf { it.isNotEmpty() }
+        fetchProcedures(keyword = keyword, worryId = current.selectedWorryId)
     }
 
     fun onDowntimeClick(procedureId: Long) {
@@ -222,6 +237,8 @@ class ProcedureViewModel @Inject constructor(
     }
 
     fun onNextClick() {
+        var queryToFetch: ProceduresQuery? = null
+
         _uiState.updateSuccess { current ->
             if (!current.isNextEnabled) return@updateSuccess current
 
@@ -268,8 +285,30 @@ class ProcedureViewModel @Inject constructor(
             }
 
             val nextStep = current.nextStep()
+
+            if (current.flow == ProcedureFlow.NoTreat &&
+                current.step == ProcedureStep.RecoverySchedule
+            ) {
+                queryToFetch = ProceduresQuery(
+                    keyword = null,
+                    worryId = current.selectedWorryId
+                )
+            }
+
+            if (current.flow == ProcedureFlow.Treat &&
+                current.step == ProcedureStep.RecoverySchedule
+            ) {
+                val keyword = current.searchQuery.trim().takeIf { it.isNotEmpty() }
+                queryToFetch = ProceduresQuery(
+                    keyword = keyword,
+                    worryId = null
+                )
+            }
+
             current.copy(step = nextStep)
         }
+
+        queryToFetch?.let { fetchProcedures(keyword = it.keyword, worryId = it.worryId) }
     }
 
     fun onBackClick() {
@@ -304,21 +343,94 @@ class ProcedureViewModel @Inject constructor(
     }
 
     fun onComplete() {
-        _uiState.updateSuccess { current ->
-            val proceduresWithDowntime = current.selectedProcedureCardIds.map { procedureId ->
-                val downtime = current.procedureDowntimeMap[procedureId] ?: 0
-                ProcedureWithDowntime(
-                    procedureId = procedureId,
-                    downtimeDays = downtime
+        val current = currentStateOrNull() ?: return
+
+        val proceduresWithDowntime = current.selectedProcedureCardIds.map { procedureId ->
+            val downtime = current.procedureDowntimeMap[procedureId] ?: 0
+            ProcedureWithDowntime(
+                procedureId = procedureId,
+                downtimeDays = downtime
+            )
+        }
+
+        val scheduledAt = startDateArg
+            .atStartOfDay()
+            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        val recoveryTargetDate = current.recoveryTargetDateOrNull()
+
+        val request = UserProceduresRequestModel(
+            scheduledAt = scheduledAt,
+            recoveryTargetDate = recoveryTargetDate,
+            procedures = proceduresWithDowntime.map {
+                UserProcedureItemModel(
+                    procedureId = it.procedureId,
+                    downtimeDays = it.downtimeDays
                 )
             }
+        )
 
-            // TODO: 서버에 <procedureId, downtime>
+        viewModelScope.launch {
+            userProcedureRepository.addUserProcedures(body = request)
+                .onSuccess { response ->
+                    _uiState.updateSuccess { ProcedureUiState.FakeNormal }
+                    _completeEvent.tryEmit(Unit)
+                }
+                .onFailure { e ->
+                }
+        }
+    }
 
-            ProcedureUiState.FakeNormal
+    private fun currentStateOrNull(): ProcedureUiState? =
+        (_uiState.value as? UiState.Success)?.data
+
+    private fun fetchProcedures(keyword: String?, worryId: Long?) {
+        viewModelScope.launch {
+
+            procedureRepository.getProcedures(keyword = keyword, worryId = worryId)
+                .onSuccess { response ->
+                    val items = response.procedures
+                        .map { it.toUiModel() }
+                        .toPersistentList()
+
+                    _uiState.updateSuccess { current ->
+                        current.copy(
+                            procedureItems = items,
+                            selectedProcedureCardIds = persistentListOf(),
+                            procedureDowntimeMap = emptyMap(),
+                            selectedProcedureForDowntime = null,
+                            showDowntimeBottomSheet = false
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    _uiState.updateSuccess { current ->
+                        current.copy(
+                            procedureItems = persistentListOf(),
+                            selectedProcedureCardIds = persistentListOf(),
+                            procedureDowntimeMap = emptyMap(),
+                            selectedProcedureForDowntime = null,
+                            showDowntimeBottomSheet = false
+                        )
+                    }
+                }
         }
     }
 }
+
+private data class ProceduresQuery(
+    val keyword: String?,
+    val worryId: Long?
+)
+
+private fun ProcedureModel.toUiModel(): ProcedureCardItemUiModel =
+    ProcedureCardItemUiModel(
+        id = id,
+        name = name,
+        category = category.orEmpty(),
+        minDowntimeDays = minDowntimeDays,
+        maxDowntimeDays = maxDowntimeDays,
+        displayMode = ProcedureCardDisplayMode.Basic
+    )
 
 private fun ProcedureUiState.toEntryState(): ProcedureUiState {
     return copy(
@@ -394,5 +506,15 @@ private fun ProcedureUiState.prevStepOrEntry(): PrevResult {
         }
 
         ProcedureFlow.Entry -> PrevResult.ToEntry
+    }
+}
+
+private fun ProcedureUiState.recoveryTargetDateOrNull(): String? {
+    return try {
+        if (year.isBlank() || month.isBlank() || day.isBlank()) return null
+        val date = LocalDate.of(year.toInt(), month.toInt(), day.toInt())
+        date.format(DateTimeFormatter.ISO_LOCAL_DATE)
+    } catch (e: Exception) {
+        null
     }
 }

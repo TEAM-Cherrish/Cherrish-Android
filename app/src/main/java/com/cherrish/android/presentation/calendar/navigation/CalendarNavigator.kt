@@ -10,12 +10,13 @@ import com.cherrish.android.core.common.navigation.Route
 import com.cherrish.android.presentation.calendar.CalendarRoute
 import com.cherrish.android.presentation.calendar.procedure.ProcedureRoute
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
 @Serializable
 data object Calendar : MainTabRoute
 
 @Serializable
-private data object Procedure : Route
+data class Procedure(val startDate: String) : Route
 
 fun NavController.navigateToCalendar(
     navOptions: NavOptions? = null
@@ -27,15 +28,16 @@ fun NavController.navigateToCalendar(
 }
 
 fun NavController.navigateToProcedure(
+    startDate: LocalDate,
     navOptions: NavOptions? = null
 ) {
-    navigate(route = Procedure, navOptions = navOptions)
+    navigate(route = Procedure(startDate = startDate.toString()), navOptions = navOptions)
 }
 
 fun NavGraphBuilder.calendarNavGraph(
     paddingValues: PaddingValues,
     navigateUp: () -> Unit,
-    navigateToProcedure: () -> Unit
+    navigateToProcedure: (LocalDate) -> Unit
 ) {
     composable<Calendar> {
         CalendarRoute(

@@ -8,6 +8,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.cherrish.android.presentation.calendar.navigation.Calendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 
 @Stable
 class MainAppState(
@@ -83,8 +85,8 @@ class MainAppState(
         navController.navigateUp()
     }
 
-    fun navigateToProcedure() {
-        navController.navigateToProcedure()
+    fun navigateToProcedure(startDate: LocalDate) {
+        navController.navigateToProcedure(startDate)
     }
 }
 
