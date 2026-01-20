@@ -1,9 +1,9 @@
 package com.cherrish.android.data.model
 
-import com.cherrish.android.data.remote.dto.response.ChallengeMissionResponseDto
+import com.cherrish.android.data.remote.dto.response.ChallengeMissionProgressResponseDto
 import com.cherrish.android.data.remote.dto.response.ChallengeRoutineResponseDto
 
-data class ChallengeMissionResponseModel(
+data class ChallengeMissionProgressResponseModel(
     val challengeId: Long,
     val title: String,
     val currentDay: Int,
@@ -12,7 +12,7 @@ data class ChallengeMissionResponseModel(
     val cherryLevelName: String,
     val progressToNextLevel: Double,
     val remainingRoutinesToNextLevel: Int,
-    val routines: List<ChallengeRoutineResponseModel>,
+    val todayRoutines: List<ChallengeRoutineResponseModel>,
     val cheeringMessage: String
 )
 
@@ -23,7 +23,7 @@ data class ChallengeRoutineResponseModel(
     val isCompleted: Boolean
 )
 
-fun ChallengeMissionResponseDto.toModel() = ChallengeMissionResponseModel(
+fun ChallengeMissionProgressResponseDto.toModel() = ChallengeMissionProgressResponseModel(
     challengeId = this.challengeId,
     title = this.title,
     currentDay = this.currentDay,
@@ -32,7 +32,7 @@ fun ChallengeMissionResponseDto.toModel() = ChallengeMissionResponseModel(
     cherryLevelName = this.cherryLevelName,
     progressToNextLevel = this.progressToNextLevel,
     remainingRoutinesToNextLevel = this.remainingRoutinesToNextLevel,
-    routines = this.routines.map { it.toModel() },
+    todayRoutines = this.todayRoutines.map { it.toModel() },
     cheeringMessage = this.cheeringMessage
 )
 
