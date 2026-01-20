@@ -9,6 +9,6 @@ import retrofit2.http.POST
 interface UserProcedureService {
     @POST("api/user-procedures")
     suspend fun addUserProcedures(
-        @Body body: UserProceduresRequestDto
+        @Body request: UserProceduresRequestDto
     ): BaseResponse<UserProceduresResponseDto>
 }

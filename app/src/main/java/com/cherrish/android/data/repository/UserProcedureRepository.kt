@@ -5,6 +5,6 @@ import com.cherrish.android.data.model.UserProceduresResponseModel
 
 interface UserProcedureRepository {
     suspend fun addUserProcedures(
-        body: UserProceduresRequestModel
+        request: UserProceduresRequestModel
     ): Result<UserProceduresResponseModel>
 }

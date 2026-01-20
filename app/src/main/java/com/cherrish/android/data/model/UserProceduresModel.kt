@@ -20,9 +20,9 @@ data class UserProcedureItemModel(
 
 fun UserProceduresRequestModel.toDto(): UserProceduresRequestDto =
     UserProceduresRequestDto(
-        scheduledAt = scheduledAt,
-        recoveryTargetDate = recoveryTargetDate,
-        procedures = procedures.map { UserProcedureItemDto(it.procedureId, it.downtimeDays) }
+        scheduledAt = this.scheduledAt,
+        recoveryTargetDate = this.recoveryTargetDate,
+        procedures = this.procedures.map { UserProcedureItemDto(it.procedureId, it.downtimeDays) }
     )
 
 data class UserProceduresResponseModel(
@@ -45,10 +45,10 @@ fun UserProceduresResponseDto.toModel(): UserProceduresResponseModel =
 
 fun CreatedUserProcedureDto.toModel(): CreatedUserProcedureModel =
     CreatedUserProcedureModel(
-        userProcedureId = userProcedureId,
-        procedureId = procedureId,
-        procedureName = procedureName,
-        scheduledAt = scheduledAt,
-        downtimeDays = downtimeDays,
-        recoveryTargetDate = recoveryTargetDate
+        userProcedureId = this.userProcedureId,
+        procedureId = this.procedureId,
+        procedureName = this.procedureName,
+        scheduledAt = this.scheduledAt,
+        downtimeDays = this.downtimeDays,
+        recoveryTargetDate = this.recoveryTargetDate
     )

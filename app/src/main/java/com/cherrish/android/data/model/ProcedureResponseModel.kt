@@ -16,14 +16,14 @@ data class ProcedureModel(
 )
 
 fun ProceduresResponseDto.toModel() = ProceduresResponseModel(
-    procedures = procedures.map { it.toModel() }
+    procedures = this.procedures.map { it.toModel() }
 )
 
 fun ProcedureDto.toModel() = ProcedureModel(
-    id = id,
-    name = name,
-    category = category?.takeIf { it.isNotBlank() }
-        ?: worries.map { it.content }.filter { it.isNotBlank() }.joinToString(" | "),
-    minDowntimeDays = minDowntimeDays,
-    maxDowntimeDays = maxDowntimeDays
+    id = this.id,
+    name = this.name,
+    category = this.category?.takeIf { it.isNotBlank() }
+        ?: this.worries.map { it.content }.filter { it.isNotBlank() }.joinToString(" | "),
+    minDowntimeDays = this.minDowntimeDays,
+    maxDowntimeDays = this.maxDowntimeDays
 )

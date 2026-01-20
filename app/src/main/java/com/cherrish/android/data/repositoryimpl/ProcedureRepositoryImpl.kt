@@ -16,8 +16,6 @@ class ProcedureRepositoryImpl @Inject constructor(
     ): Result<ProceduresResponseModel> =
         suspendRunCatching {
             procedureDataSource
-                .getProcedures(keyword = keyword, worryId = worryId)
-                .data!!
-                .toModel()
+                .getProcedures(keyword = keyword, worryId = worryId).data!!.toModel()
         }
 }

@@ -14,12 +14,10 @@ class UserProcedureRepositoryImpl @Inject constructor(
 ) : UserProcedureRepository {
 
     override suspend fun addUserProcedures(
-        body: UserProceduresRequestModel
+        request: UserProceduresRequestModel
     ): Result<UserProceduresResponseModel> =
         suspendRunCatching {
             userProcedureDataSource
-                .addUserProcedures(body = body.toDto())
-                .data!!
-                .toModel()
+                .addUserProcedures(request = request.toDto()).data!!.toModel()
         }
 }

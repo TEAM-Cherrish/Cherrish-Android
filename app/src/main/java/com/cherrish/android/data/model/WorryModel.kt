@@ -8,6 +8,6 @@ data class WorryModel(
 )
 
 fun WorryResponseDto.toModel() = WorryModel(
-    id = id,
-    content = content
+    id = this.id,
+    content = this.content
 )

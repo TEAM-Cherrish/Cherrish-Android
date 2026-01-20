@@ -6,6 +6,6 @@ import com.cherrish.android.data.remote.dto.response.UserProceduresResponseDto
 
 interface UserProcedureDataSource {
     suspend fun addUserProcedures(
-        body: UserProceduresRequestDto
+        request: UserProceduresRequestDto
     ): BaseResponse<UserProceduresResponseDto>
 }

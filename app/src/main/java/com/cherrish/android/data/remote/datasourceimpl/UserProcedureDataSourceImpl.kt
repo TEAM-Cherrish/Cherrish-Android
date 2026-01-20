@@ -12,7 +12,7 @@ class UserProcedureDataSourceImpl @Inject constructor(
 ) : UserProcedureDataSource {
 
     override suspend fun addUserProcedures(
-        body: UserProceduresRequestDto
+        request: UserProceduresRequestDto
     ): BaseResponse<UserProceduresResponseDto> =
-        userProcedureService.addUserProcedures(body = body)
+        userProcedureService.addUserProcedures(request = request)
 }
