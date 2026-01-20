@@ -21,6 +21,8 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithD
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -30,8 +32,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @HiltViewModel
 class ProcedureViewModel @Inject constructor(
@@ -76,7 +76,6 @@ class ProcedureViewModel @Inject constructor(
 
     fun fetchWorries() {
         viewModelScope.launch {
-
             worryRepository.getWorries()
                 .onSuccess { worries ->
 
@@ -86,7 +85,12 @@ class ProcedureViewModel @Inject constructor(
                             .toPersistentList()
 
                         current.copy(
-                            worries = if (mapped.isEmpty()) ProcedureUiState.FakeNormal.worries else mapped
+                            worries =
+                            if (mapped.isEmpty()) {
+                                ProcedureUiState.FakeNormal.worries
+                            } else {
+                                mapped
+                            }
                         )
                     }
                 }
@@ -385,7 +389,6 @@ class ProcedureViewModel @Inject constructor(
 
     private fun fetchProcedures(keyword: String?, worryId: Long?) {
         viewModelScope.launch {
-
             procedureRepository.getProcedures(keyword = keyword, worryId = worryId)
                 .onSuccess { response ->
                     val items = response.procedures

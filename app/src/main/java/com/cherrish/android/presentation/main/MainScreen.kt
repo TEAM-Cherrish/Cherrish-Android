@@ -49,6 +49,7 @@ fun MainScreen(
 
             calendarNavGraph(
                 paddingValues = innerPadding,
+                navController = appState.navController,
                 navigateUp = appState::navigateUp,
                 navigateToProcedure = appState::navigateToProcedure
             )

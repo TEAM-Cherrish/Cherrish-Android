@@ -1,6 +1,5 @@
 package com.cherrish.android.presentation.calendar
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
@@ -253,5 +252,18 @@ class CalendarViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun refreshCalendar() {
+        val currentState = (_uiState.value as? UiState.Success)?.data
+        val selectedYearMonth = currentState?.selectedYearMonth ?: YearMonth.now()
+        val selectedDate = currentState?.selectedDate ?: LocalDate.now()
+
+        monthlyCache.clear()
+        dailyCache.clear()
+        loadMonthlyCalendar(
+            yearMonth = selectedYearMonth,
+            selectedDate = selectedDate
+        )
     }
 }

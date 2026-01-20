@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,8 @@ import java.time.YearMonth
 fun CalendarRoute(
     paddingValues: PaddingValues,
     onNavigateToProcedure: (LocalDate) -> Unit,
+    shouldRefresh: Boolean = false,
+    onRefreshConsumed: () -> Unit = {},
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
@@ -33,6 +36,13 @@ fun CalendarRoute(
             is CalendarSideEffect.NavigateToProcedure -> {
                 onNavigateToProcedure(sideEffect.startDate)
             }
+        }
+    }
+
+    LaunchedEffect(shouldRefresh) {
+        if (shouldRefresh) {
+            viewModel.refreshCalendar()
+            onRefreshConsumed()
         }
     }
 
