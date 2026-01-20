@@ -88,7 +88,8 @@ private fun ChallengeMissionSelectedScreen(
         CherrishButton(
             text = "플래너에 추가하기",
             enabled = uiState.isSelected,
-            onClick = onAddTodoClick
+            onClick = onAddTodoClick,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
 
         Spacer(Modifier.height(30.dp))
