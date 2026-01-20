@@ -64,20 +64,48 @@ class ChallengeMissionProgressViewModel @Inject constructor(
     fun onTodoClick(id: Long) {
         _uiState.updateSuccess { state ->
             state.copy(
-                routines = state.routines.map {
-                    if (it.routineId == id) {
-                        it.copy(isCompleted = !it.isCompleted)
+                routines = state.routines.map { routine ->
+                    if (routine.routineId == id) {
+                        routine.copy(isCompleted = !routine.isCompleted)
                     } else {
-                        it
+                        routine
                     }
                 }.toPersistentList()
             )
         }
+        viewModelScope.launch {
+            challengeMissionProgressRepository
+                .patchChallengeRoutinesComplete(routineId = id)
+                .onLogFailure { }
+        }
     }
 
     fun onCompletedTodayClick() {
-        val state = _uiState.value
-        if (state !is UiState.Success) return
-        if (!state.data.hasCompletedAny) return
+        viewModelScope.launch {
+            challengeMissionProgressRepository.postChallengeAdvanceDay()
+                .onSuccess { response ->
+                    _uiState.update {
+                        UiState.Success(
+                            ChallengeMissionProgressUiState(
+                                challengeId = response.challengeId,
+                                challengeName = response.title,
+                                currentDay = response.currentDay,
+                                progressPercentage = response.progressPercentage,
+                                cherryType = CherryType.entries.first {
+                                    it.step == response.cherryLevel
+                                },
+                                remainingCount = response.remainingRoutinesToNextLevel,
+                                routines = response.todayRoutines.map { routine ->
+                                    ChallengeRoutineUiModel(
+                                        routineId = routine.routineId,
+                                        routineName = routine.routineName,
+                                        isCompleted = routine.isCompleted
+                                    )
+                                }.toPersistentList()
+                            )
+                        )
+                    }
+                }
+        }
     }
 }
