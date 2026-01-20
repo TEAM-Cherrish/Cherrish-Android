@@ -5,12 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.ChallengeRepository
+import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.routine.model.toUiModel
+import com.cherrish.android.presentation.home.HomeSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -22,6 +27,10 @@ class ChallengeRoutineViewModel @Inject constructor(
     private val _uiState =
         MutableStateFlow<UiState<ChallengeRoutineUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<ChallengeRoutineUiState>> = _uiState.asStateFlow()
+
+
+    private val _sideEffect = MutableSharedFlow< ChallengeSideEffect>()
+    val sideEffect: SharedFlow<ChallengeSideEffect> = _sideEffect.asSharedFlow()
 
     init {
         loadRoutines()

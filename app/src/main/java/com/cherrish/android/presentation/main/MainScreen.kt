@@ -66,7 +66,11 @@ fun MainScreen(
                 navigateToProcedure = appState::navigateToProcedure
             )
 
-            challengeNavGraph(paddingValues = innerPadding)
+            challengeNavGraph(
+                paddingValues = innerPadding,
+                navigateToChallengeRoutine = appState::navigateToRoutine,
+                navigateUp = appState::navigateUp
+            )
 
             myPageNavGraph(paddingValues = innerPadding)
         }

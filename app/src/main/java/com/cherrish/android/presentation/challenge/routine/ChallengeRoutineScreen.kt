@@ -18,22 +18,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
 import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineUiModel
+import com.cherrish.android.presentation.home.HomeSideEffect
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeRoutineRoute(
     paddingValues: PaddingValues,
+    onNextClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+    navigateToRoutine : () -> Unit,
     viewModel: ChallengeRoutineViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ChallengeSideEffect.NavigateToTodoRoutine -> {
+               navigateToRoutine()
+            }
+        }
+    }
     when (val state = uiState) {
         is UiState.Loading -> {
         }
@@ -46,9 +60,9 @@ fun ChallengeRoutineRoute(
                 uiState = state.data,
                 paddingValues = paddingValues,
                 onRoutineClick = viewModel::onRoutineClick,
-                onNextClick = viewModel::onNextClick,
-                onBackClick = viewModel::onBackClick,
-                onCloseClick = viewModel::onCloseClick
+                onNextClick = onNextClick,
+                onBackClick = onBackClick,
+                onCloseClick = onCloseClick
             )
         }
 

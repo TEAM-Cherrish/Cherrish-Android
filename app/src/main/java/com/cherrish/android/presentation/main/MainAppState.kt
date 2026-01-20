@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeRoutine
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeStart
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
@@ -112,6 +113,11 @@ class MainAppState(
     fun navigateToProcedure() {
         navController.navigateToProcedure()
     }
+
+    fun navigateToRoutine() {
+        navController.navigateToChallengeRoutine()
+    }
+
 }
 
 @Composable
