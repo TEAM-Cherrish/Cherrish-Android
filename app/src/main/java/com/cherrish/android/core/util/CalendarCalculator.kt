@@ -10,15 +10,15 @@ fun formatProcedureDay(scheduledAt: String): String {
     val month = dateTime.month.value
     val day = dateTime.dayOfMonth
     val dayOfWeek = dateTime.dayOfWeek.toKoreanName()
-    return "${month}월 ${day}일 $dayOfWeek"
+    return "${month}월 ${day}일 ${dayOfWeek}요일"
 }
 
 fun DayOfWeek.toKoreanName(): String = when (this) {
-    DayOfWeek.MONDAY -> "월요일"
-    DayOfWeek.TUESDAY -> "화요일"
-    DayOfWeek.WEDNESDAY -> "수요일"
-    DayOfWeek.THURSDAY -> "목요일"
-    DayOfWeek.FRIDAY -> "금요일"
-    DayOfWeek.SATURDAY -> "토요일"
-    DayOfWeek.SUNDAY -> "일요일"
+    DayOfWeek.MONDAY -> "월"
+    DayOfWeek.TUESDAY -> "화"
+    DayOfWeek.WEDNESDAY -> "수"
+    DayOfWeek.THURSDAY -> "목"
+    DayOfWeek.FRIDAY -> "금"
+    DayOfWeek.SATURDAY -> "토"
+    DayOfWeek.SUNDAY -> "일"
 }

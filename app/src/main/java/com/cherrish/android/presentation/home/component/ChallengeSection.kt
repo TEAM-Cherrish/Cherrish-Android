@@ -42,7 +42,8 @@ fun ChallengeSection(
     currentStep: Int = 0,
     @DrawableRes imageRes: Int = R.drawable.img_challenge_lv2,
     onChallengeStartClick: () -> Unit = {},
-    challengeName: String = "웰니스 • 마음챙김"
+    challengeName: String? = "웰니스 • 마음챙김",
+    challengeRate: Int = 0
 ) {
     Box(
         modifier = modifier.fillMaxWidth()
@@ -80,7 +81,8 @@ fun ChallengeSection(
                 Challenge(
                     currentStep = currentStep,
                     gauges = gauges,
-                    challengeName = challengeName
+                    challengeName = challengeName,
+                    challengeRate = challengeRate
                 )
             }
         }
@@ -91,11 +93,11 @@ fun ChallengeSection(
 private fun Challenge(
     currentStep: Int,
     gauges: ImmutableList<CherrishGaugeType>,
-    challengeName: String,
+    challengeName: String?,
+    challengeRate: Int,
     modifier: Modifier = Modifier
 ) {
     val safeStep = currentStep.coerceIn(1, gauges.size)
-    val currentPercent = gauges[safeStep - 1].percent
 
     Column(
         modifier = modifier
@@ -124,13 +126,13 @@ private fun Challenge(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = challengeName,
+                text = challengeName ?: "",
                 style = CherrishTheme.typography.title2M16,
                 color = CherrishTheme.colors.gray900
             )
 
             ChallengeChip(
-                percent = currentPercent
+                percent = challengeRate
             )
         }
 
