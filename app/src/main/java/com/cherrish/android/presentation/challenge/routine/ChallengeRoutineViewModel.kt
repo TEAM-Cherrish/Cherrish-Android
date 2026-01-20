@@ -1,19 +1,23 @@
 package com.cherrish.android.presentation.challenge.routine
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
-import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import com.cherrish.android.data.repository.ChallengeRepository
+import com.cherrish.android.presentation.challenge.routine.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
+class ChallengeRoutineViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeRoutineUiState>>(UiState.Loading)
@@ -24,19 +28,34 @@ class ChallengeRoutineViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun loadRoutines() {
-        _uiState.updateSuccess {
-            ChallengeRoutineUiState(
-                routines = persistentListOf(
-                    ChallengeRoutineModel(id = 1L, routine = "피부 컨디션"),
-                    ChallengeRoutineModel(id = 2L, routine = "생활 습관"),
-                    ChallengeRoutineModel(id = 3L, routine = "체형 관리"),
-                    ChallengeRoutineModel(id = 4L, routine = "웰니스 · 마음챙김")
-                )
-            )
+        viewModelScope.launch {
+            challengeRepository
+                .getChallengeRoutineData()
+                .onSuccess { responseModels ->
+                    _uiState.value = UiState.Success(
+                        ChallengeRoutineUiState(
+                            routines = responseModels
+                                .map { it.toUiModel() }
+                                .toPersistentList()
+                        )
+                    )
+                }
+                .onFailure {
+                }
         }
+//        _uiState.updateSuccess {
+//            ChallengeRoutineUiState(
+//                routines = persistentListOf(
+//                    ChallengeRoutineUiModel(id = 1, routine = "피부 컨디션"),
+//                    ChallengeRoutineUiModel(id = 2, routine = "생활 습관"),
+//                    ChallengeRoutineUiModel(id = 3, routine = "체형 관리"),
+//                    ChallengeRoutineUiModel(id = 4, routine = "웰니스 · 마음챙김")
+//                )
+//            )
+//        }
     }
 
-    fun onRoutineClick(id: Long) {
+    fun onRoutineClick(id: Int) {
         _uiState.updateSuccess { state ->
             state.copy(
                 routines = state.routines.map {
