@@ -1,6 +1,7 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
+import com.cherrish.android.data.remote.service.MyPageService
 import com.cherrish.android.data.remote.service.OnboardingProfileService
 import dagger.Module
 import dagger.Provides
@@ -23,4 +24,10 @@ object ServiceModule {
     fun provideOnboardingProfileService(
         retrofit: Retrofit
     ): OnboardingProfileService = retrofit.create(OnboardingProfileService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMyPageService(
+        retrofit: Retrofit
+    ): MyPageService = retrofit.create(MyPageService::class.java)
 }
