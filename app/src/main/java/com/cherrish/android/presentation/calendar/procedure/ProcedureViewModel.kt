@@ -3,7 +3,6 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
@@ -15,7 +14,6 @@ import com.cherrish.android.data.repository.UserProcedureRepository
 import com.cherrish.android.data.repository.WorryRepository
 import com.cherrish.android.presentation.calendar.CalendarEvent
 import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
-import com.cherrish.android.presentation.calendar.navigation.Procedure
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
@@ -24,7 +22,6 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWithD
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -34,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 @HiltViewModel
 class ProcedureViewModel @Inject constructor(
@@ -43,9 +41,7 @@ class ProcedureViewModel @Inject constructor(
     private val calendarEventBus: CalendarRefreshEventBus,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val startDateArg = runCatching {
-        LocalDate.parse(savedStateHandle.toRoute<Procedure>().startDate)
-    }.getOrElse { LocalDate.now() }
+    private val startDateArg = LocalDate.parse(savedStateHandle.get<String>("startDate"))
 
     private val _uiState = MutableStateFlow<UiState<ProcedureUiState>>(
         UiState.Success(
