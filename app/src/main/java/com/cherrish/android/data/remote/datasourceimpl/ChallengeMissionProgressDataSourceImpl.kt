@@ -14,5 +14,7 @@ class ChallengeMissionProgressDataSourceImpl @Inject constructor(
         BaseResponse<ChallengeRoutineCompleteResponseDto> {
         return challengeMissionService.patchChallengeRoutinesComplete(routineId = routineId)
     }
-    override suspend fun postChallengeAdvanceDay() = challengeMissionService.postChallengeAdvanceDay()
+
+    override suspend fun postChallengeAdvanceDay() =
+        challengeMissionService.postChallengeAdvanceDay()
 }

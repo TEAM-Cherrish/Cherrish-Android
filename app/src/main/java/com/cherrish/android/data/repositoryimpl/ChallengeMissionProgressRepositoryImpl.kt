@@ -17,7 +17,7 @@ class ChallengeMissionProgressRepositoryImpl @Inject constructor(
         }
 
     override suspend fun patchChallengeRoutinesComplete(routineId: Long):
-            Result<ChallengeRoutineCompleteResponseModel> =
+        Result<ChallengeRoutineCompleteResponseModel> =
         suspendRunCatching {
             challengeMissionDataSource.patchChallengeRoutinesComplete(
                 routineId = routineId
