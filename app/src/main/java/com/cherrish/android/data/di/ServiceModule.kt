@@ -1,7 +1,7 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
-import com.cherrish.android.data.remote.service.OnboardingProfileService
+import com.cherrish.android.data.remote.service.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +20,7 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingProfileService(
+    fun provideHomeService(
         retrofit: Retrofit
-    ): OnboardingProfileService = retrofit.create(OnboardingProfileService::class.java)
+    ): HomeService = retrofit.create(HomeService::class.java)
 }

@@ -1,9 +1,9 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.repository.CalendarRepository
-import com.cherrish.android.data.repository.OnboardingProfileRepository
+import com.cherrish.android.data.repository.HomeRepository
 import com.cherrish.android.data.repositoryimpl.CalendarRepositoryImpl
-import com.cherrish.android.data.repositoryimpl.OnboardingProfileRepositoryImpl
+import com.cherrish.android.data.repositoryimpl.HomeRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindOnboardingProfileRepository(
-        onboardingProfileRepositoryImpl: OnboardingProfileRepositoryImpl
-    ): OnboardingProfileRepository
+    abstract fun bindHomeRepository(
+        homeRepositoryImpl: HomeRepositoryImpl
+    ): HomeRepository
 }
