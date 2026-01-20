@@ -224,7 +224,7 @@ class ProcedureViewModel @Inject constructor(
             val newList = if (cardId in currentList) {
                 currentList.filter { it != cardId }
             } else {
-                currentList + cardId
+                persistentListOf(cardId) + currentList
             }.toImmutableList()
 
             val updatedMap = if (cardId !in newList) {

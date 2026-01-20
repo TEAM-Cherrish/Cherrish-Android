@@ -187,17 +187,20 @@ data class ProcedureUiState(
     }
 
     val selectedProcedures: ImmutableList<SelectedProcedureModel>
-        get() = procedureItems
-            .filter { it.id in selectedProcedureCardIds }
-            .map {
-                SelectedProcedureModel(
-                    procedureId = it.id,
-                    procedureName = it.name,
-                    minDowntimeDays = it.minDowntimeDays,
-                    maxDowntimeDays = it.maxDowntimeDays
-                )
-            }
-            .toImmutableList()
+        get() {
+            val procedureMap = procedureItems.associateBy { it.id }
+            return selectedProcedureCardIds
+                .mapNotNull { id -> procedureMap[id] }
+                .map {
+                    SelectedProcedureModel(
+                        procedureId = it.id,
+                        procedureName = it.name,
+                        minDowntimeDays = it.minDowntimeDays,
+                        maxDowntimeDays = it.maxDowntimeDays
+                    )
+                }
+                .toImmutableList()
+        }
 
     private val targetDate: LocalDate?
         get() = try {
