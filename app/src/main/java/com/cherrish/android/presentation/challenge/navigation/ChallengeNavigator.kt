@@ -72,7 +72,7 @@ fun NavGraphBuilder.challengeNavGraph(
     composable<ChallengeMission> {
         ChallengeMissionSelectedRoute(
             paddingValues = paddingValues,
-            navigateToProgress = { }
+            //navigateToProgress = { }
         )
     }
 }
