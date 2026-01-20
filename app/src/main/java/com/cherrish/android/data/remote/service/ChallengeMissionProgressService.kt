@@ -5,6 +5,7 @@ import com.cherrish.android.data.remote.dto.response.ChallengeMissionProgressRes
 import com.cherrish.android.data.remote.dto.response.ChallengeRoutineCompleteResponseDto
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ChallengeMissionProgressService {
@@ -15,4 +16,7 @@ interface ChallengeMissionProgressService {
     suspend fun patchChallengeRoutinesComplete(
         @Path("routineId") routineId: Long
     ): BaseResponse<ChallengeRoutineCompleteResponseDto>
+
+    @POST("api/demo/challenges/advance-day")
+    suspend fun postChallengeAdvanceDay(): BaseResponse<ChallengeMissionProgressResponseDto>
 }
