@@ -23,7 +23,7 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
-import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -60,7 +60,7 @@ fun ChallengeRoutineRoute(
 private fun ChallengeRoutineScreen(
     paddingValues: PaddingValues,
     uiState: ChallengeRoutineUiState,
-    onRoutineClick: (Long) -> Unit,
+    onRoutineClick: (Int) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
@@ -111,10 +111,10 @@ private fun ChallengeRoutineScreenDisabledPreview() {
         mutableStateOf(
             ChallengeRoutineUiState(
                 routines = persistentListOf(
-                    ChallengeRoutineModel(1L, "피부 컨디션"),
-                    ChallengeRoutineModel(2L, "생활 습관"),
-                    ChallengeRoutineModel(3L, "체형 관리"),
-                    ChallengeRoutineModel(4L, "웰니스 · 마음챙김")
+                    ChallengeRoutineUiModel(1, "피부 컨디션"),
+                    ChallengeRoutineUiModel(2, "생활 습관"),
+                    ChallengeRoutineUiModel(3, "체형 관리"),
+                    ChallengeRoutineUiModel(4, "웰니스 · 마음챙김")
                 )
             )
         )
