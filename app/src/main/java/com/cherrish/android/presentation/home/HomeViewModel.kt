@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.state.UiState
-import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.data.model.toTodayDateString
 import com.cherrish.android.data.repository.HomeRepository
+import com.cherrish.android.presentation.home.type.CherrishGaugeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject

@@ -1,9 +1,9 @@
 package com.cherrish.android.presentation.home
 
 import androidx.compose.runtime.Immutable
-import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.data.model.RecentProcedureModel
 import com.cherrish.android.data.model.UpcomingProcedureModel
+import com.cherrish.android.presentation.home.type.CherrishGaugeType
 import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

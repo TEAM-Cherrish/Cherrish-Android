@@ -1,8 +1,8 @@
 package com.cherrish.android.core.designsystem.component.gaugebar
 
 import androidx.compose.ui.graphics.Color
-import com.cherrish.android.core.designsystem.component.type.CherrishGaugeType
 import com.cherrish.android.core.designsystem.theme.CherrishColors
+import com.cherrish.android.presentation.home.type.CherrishGaugeType
 
 data class CherrishGaugeStyle(
     val gaugeLabel: String,
