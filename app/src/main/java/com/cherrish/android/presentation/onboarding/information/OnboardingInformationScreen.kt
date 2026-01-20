@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.addFocusCleaner
-import com.cherrish.android.core.common.extension.advancedImePadding
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
