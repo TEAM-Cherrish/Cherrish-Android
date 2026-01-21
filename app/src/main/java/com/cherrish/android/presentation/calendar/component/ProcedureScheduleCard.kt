@@ -52,7 +52,6 @@ fun ProcedureScheduleCard(
     onAddProcedureClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     Box(
         modifier = modifier
             .fillMaxWidth()
