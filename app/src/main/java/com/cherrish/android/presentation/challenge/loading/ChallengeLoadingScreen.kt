@@ -1,6 +1,8 @@
-package com.cherrish.android.presentation.challenge
+//ChallengeLoadingScreen.kt
+package com.cherrish.android.presentation.challenge.loading
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,19 +24,43 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
-import com.cherrish.android.core.common.extension.noRippleClickable
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
-fun ChallengeLoadingScreen(
+fun ChallengeLoadingRoute(
+    navigateToChallengeMission: (Int, List<String>) -> Unit,
     paddingValues: PaddingValues,
-    modifier: Modifier = Modifier,
-    onCloseClick: () -> Unit
+    viewModel: ChallengeLoadingViewModel = hiltViewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.postAiRecommendations()
+    }
+
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ChallengeLoadingSideEffect.NavigateToChallengeMission
+                -> navigateToChallengeMission(sideEffect.routineId, sideEffect.routines)
+        }
+    }
+
+
+    ChallengeLoadingScreen(
+        paddingValues = paddingValues
+    )
+}
+
+@Composable
+private fun ChallengeLoadingScreen(
+    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(color = CherrishTheme.colors.gray0)
             .padding(horizontal = 10.dp)
             .padding(paddingValues)
             .navigationBarsPadding(),
@@ -43,7 +70,6 @@ fun ChallengeLoadingScreen(
 
         Icon(
             modifier = Modifier
-                .noRippleClickable(onClick = onCloseClick)
                 .align(Alignment.Start)
                 .padding(10.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
@@ -108,8 +134,7 @@ fun ChallengeLoadingScreen(
 private fun ChallengeLoadingScreenPreview() {
     CherrishTheme {
         ChallengeLoadingScreen(
-            paddingValues = PaddingValues(),
-            onCloseClick = {}
+            paddingValues = PaddingValues()
         )
     }
 }
