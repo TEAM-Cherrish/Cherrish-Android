@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -40,14 +41,23 @@ class ChallengeRoutineViewModel @Inject constructor(
         viewModelScope.launch {
             challengeRepository.getChallengeRoutineData()
                 .onSuccess { response ->
-                    _uiState.value = UiState.Success(
-                        ChallengeRoutineUiState(
-                            routines = response
-                                .map { it.toUiModel() }
-                                .toPersistentList()
+                    val routines = response
+                        .map { it.toUiModel() }
+                        .toPersistentList()
+
+                    _uiState.update {
+                        UiState.Success(
+                            ChallengeRoutineUiState(
+                                routines = routines
+                            )
                         )
-                    )
+                    }
+
+                    _uiState.updateSuccess { state ->
+                        state.copy(routines = routines)
+                    }
                 }
+
         }
     }
 
@@ -63,9 +73,10 @@ class ChallengeRoutineViewModel @Inject constructor(
     }
 
     fun onNextClick() {
-        val routineId = when (val state = _uiState.value) {
-            is UiState.Success -> state.data.selectedRoutineId
-            else -> null
+        var routineId: Int? = null
+        _uiState.updateSuccess { state ->
+            routineId = state.selectedRoutineId
+            state
         }
 
         routineId?.let { id ->

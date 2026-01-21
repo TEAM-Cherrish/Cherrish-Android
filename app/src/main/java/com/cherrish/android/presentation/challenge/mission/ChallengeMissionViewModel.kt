@@ -79,21 +79,24 @@ class ChallengeMissionViewModel @Inject constructor(
     }
 
     fun onAddTodoClick() {
-        val currentMissions =
-            (uiState.value as? UiState.Success)?.data?.selectedMissions ?: return
-        if (currentMissions.isEmpty()) return
+        _uiState.updateSuccess { state ->
+            val missions = state.selectedMissions
+            if (missions.isEmpty()) return@updateSuccess state
 
-        viewModelScope.launch {
-            challengeRepository
-                .postDemoChallenge(
-                    homecareRoutineId = routineIdArg,
-                    routineNames = currentMissions.map { it.missionContent }
-                )
-                .onSuccess { response ->
-                    _sideEffect.emit(
-                        ChallengeMissionSideEffect.NavigateToChallengeMissionProgress
+            viewModelScope.launch {
+                challengeRepository
+                    .postDemoChallenge(
+                        homecareRoutineId = routineIdArg,
+                        routineNames = missions.map { it.missionContent }
                     )
-                }.onLogFailure { }
+                    .onSuccess {
+                        _sideEffect.emit(
+                            ChallengeMissionSideEffect.NavigateToChallengeMissionProgress
+                        )
+                    }.onLogFailure { }
+            }
+
+            state
         }
     }
 
