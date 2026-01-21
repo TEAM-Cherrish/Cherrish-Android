@@ -144,7 +144,7 @@ fun ProcedureScreen(
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .navigationBarsPadding()
-            .padding(top = 44.dp, bottom = 30.dp),
+            .padding(top = 44.dp, bottom = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BackAndCloseTopAppBar(
@@ -176,6 +176,7 @@ fun ProcedureScreen(
                         selectedIndex = uiState.existenceSelectedIndex,
                         onItemClick = onExistenceClick,
                         modifier = Modifier.padding(horizontal = 26.dp)
+                            .padding(bottom = 10.dp)
                     )
                 }
 
@@ -187,6 +188,7 @@ fun ProcedureScreen(
                                 selectedWorryId = uiState.selectedWorryId,
                                 onWorryClick = onWorryClick,
                                 modifier = Modifier.padding(horizontal = 26.dp)
+                                    .padding(bottom = 10.dp)
                             )
                         }
 
@@ -224,7 +226,7 @@ fun ProcedureScreen(
                                 onSearchAction = onSearchAction,
                                 query = uiState.searchQuery,
                                 onQueryChange = onSearchableQueryChange,
-                                bottomPadding = uiState.lazyColumnBottomPadding,
+                                bottomContentPadding = uiState.lazyColumnBottomPadding,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 24.dp)

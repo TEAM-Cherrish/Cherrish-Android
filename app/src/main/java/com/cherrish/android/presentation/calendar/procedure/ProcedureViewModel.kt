@@ -44,6 +44,8 @@ class ProcedureViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private var latestScreenHeightDp: Float = 0f
+
     private val startDateArg = runCatching {
         LocalDate.parse(savedStateHandle.toRoute<Procedure>().startDate)
     }.getOrElse { LocalDate.now() }
@@ -60,6 +62,7 @@ class ProcedureViewModel @Inject constructor(
     }
 
     fun updateScreenHeight(heightDp: Float) {
+        latestScreenHeightDp = heightDp
         _uiState.updateSuccess { current ->
             current.copy(screenHeightDp = heightDp)
         }
@@ -97,7 +100,8 @@ class ProcedureViewModel @Inject constructor(
                         _uiState.value = UiState.Success(
                             ProcedureUiState(
                                 worries = worriesToUse,
-                                startDay = startDateArg
+                                startDay = startDateArg,
+                                screenHeightDp = latestScreenHeightDp
                             )
                         )
                     }
