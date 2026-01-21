@@ -57,7 +57,6 @@ class ChallengeRoutineViewModel @Inject constructor(
                         state.copy(routines = routines)
                     }
                 }
-
         }
     }
 

@@ -50,7 +50,6 @@ private fun ChallengeStartScreen(
             .padding(horizontal = 17.dp)
             .padding(paddingValues)
 
-
     ) {
         Spacer(modifier = Modifier.weight(98f))
 
