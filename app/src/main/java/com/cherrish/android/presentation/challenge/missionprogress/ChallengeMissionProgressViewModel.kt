@@ -8,13 +8,13 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeMissionProgressViewModel @Inject constructor(
@@ -67,7 +67,9 @@ class ChallengeMissionProgressViewModel @Inject constructor(
                 routines = state.routines.map { routine ->
                     if (routine.routineId == id) {
                         routine.copy(isCompleted = !routine.isCompleted)
-                    } else routine
+                    } else {
+                        routine
+                    }
                 }.toPersistentList()
             )
         }
