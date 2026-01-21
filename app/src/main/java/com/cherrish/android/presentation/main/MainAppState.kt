@@ -115,6 +115,10 @@ class MainAppState(
     fun navigateUp() {
         navController.navigateUp()
     }
+
+    fun navigateToCalendarSelected(date: LocalDate) {
+        navController.navigateToCalendar(date = date)
+    }
 }
 
 @Composable

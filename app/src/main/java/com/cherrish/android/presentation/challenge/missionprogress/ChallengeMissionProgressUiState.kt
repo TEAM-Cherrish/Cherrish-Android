@@ -14,7 +14,4 @@ data class ChallengeMissionProgressUiState(
     val progressPercentage: Int,
     val routines: ImmutableList<ChallengeRoutineUiModel>
 
-) {
-    val hasCompletedAny: Boolean
-        get() = routines.any { it.isCompleted }
-}
+)

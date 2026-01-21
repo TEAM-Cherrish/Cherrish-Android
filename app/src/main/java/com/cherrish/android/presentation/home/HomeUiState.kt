@@ -55,4 +55,5 @@ data class HomeUiState(
 
 sealed interface HomeSideEffect {
     data object NavigateToChallenge : HomeSideEffect
+    data class NavigateToCalendar(val date: LocalDate) : HomeSideEffect
 }

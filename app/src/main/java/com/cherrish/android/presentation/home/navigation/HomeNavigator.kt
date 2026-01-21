@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.presentation.home.HomeRoute
+import java.time.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,12 +23,14 @@ fun NavController.navigateToHome(
 }
 
 fun NavGraphBuilder.homeNavGraph(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    navigateToCalendar: (LocalDate) -> Unit
 ) {
     composable<Home> {
         HomeRoute(
             paddingValues = paddingValues,
-            navigateToChallenge = {}
+            navigateToChallenge = {},
+            navigateToCalendar = navigateToCalendar
         )
     }
 }

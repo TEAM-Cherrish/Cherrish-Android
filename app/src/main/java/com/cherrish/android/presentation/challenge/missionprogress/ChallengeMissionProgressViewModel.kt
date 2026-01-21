@@ -80,32 +80,43 @@ class ChallengeMissionProgressViewModel @Inject constructor(
         }
     }
 
+    private var isPostingAdvanceDay = false
+
     fun onCompletedTodayClick() {
+        if (isPostingAdvanceDay) return
+
+        isPostingAdvanceDay = true
         viewModelScope.launch {
-            challengeMissionProgressRepository.postChallengeAdvanceDay()
-                .onSuccess { response ->
-                    _uiState.update {
-                        UiState.Success(
-                            ChallengeMissionProgressUiState(
-                                challengeId = response.challengeId,
-                                challengeName = response.title,
-                                currentDay = response.currentDay,
-                                progressPercentage = response.progressPercentage,
-                                cherryType = CherryType.entries.first {
-                                    it.step == response.cherryLevel
-                                },
-                                remainingCount = response.remainingRoutinesToNextLevel,
-                                routines = response.todayRoutines.map { routine ->
-                                    ChallengeRoutineUiModel(
-                                        routineId = routine.routineId,
-                                        routineName = routine.routineName,
-                                        isCompleted = routine.isCompleted
-                                    )
-                                }.toPersistentList()
+            try {
+                challengeMissionProgressRepository
+                    .postChallengeAdvanceDay()
+                    .onSuccess { response ->
+                        _uiState.update {
+                            UiState.Success(
+                                ChallengeMissionProgressUiState(
+                                    challengeId = response.challengeId,
+                                    challengeName = response.title,
+                                    currentDay = response.currentDay,
+                                    progressPercentage = response.progressPercentage,
+                                    cherryType = CherryType.entries.first {
+                                        it.step == response.cherryLevel
+                                    },
+                                    remainingCount = response.remainingRoutinesToNextLevel,
+                                    routines = response.todayRoutines.map { routine ->
+                                        ChallengeRoutineUiModel(
+                                            routineId = routine.routineId,
+                                            routineName = routine.routineName,
+                                            isCompleted = routine.isCompleted
+                                        )
+                                    }.toPersistentList()
+                                )
                             )
-                        )
+                        }
                     }
-                }
+                    .onLogFailure { }
+            } finally {
+                isPostingAdvanceDay = false
+            }
         }
     }
 }

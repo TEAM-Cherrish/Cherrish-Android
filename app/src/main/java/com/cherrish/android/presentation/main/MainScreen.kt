@@ -61,7 +61,10 @@ fun MainScreen(
                     navigateToHome = appState::navigateToHome
                 )
 
-                homeNavGraph(paddingValues = innerPadding)
+                homeNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToCalendar = appState::navigateToCalendarSelected
+                )
 
                 calendarNavGraph(
                     paddingValues = innerPadding,

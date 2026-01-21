@@ -7,6 +7,7 @@ import com.cherrish.android.presentation.calendar.navigation.Calendar
 import com.cherrish.android.presentation.challenge.navigation.Challenge
 import com.cherrish.android.presentation.home.navigation.Home
 import com.cherrish.android.presentation.mypage.navigation.MyPage
+import java.time.LocalDate
 
 enum class MainTab(
     @DrawableRes val iconRes: Int,
@@ -20,7 +21,7 @@ enum class MainTab(
     ),
     CALENDAR(
         iconRes = R.drawable.ic_calendar,
-        route = Calendar,
+        route = Calendar(date = LocalDate.now().toString()),
         label = "캘린더"
     ),
     CHALLENGE(
