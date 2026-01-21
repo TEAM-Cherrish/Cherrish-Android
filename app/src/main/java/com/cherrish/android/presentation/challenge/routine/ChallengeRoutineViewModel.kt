@@ -88,8 +88,4 @@ class ChallengeRoutineViewModel @Inject constructor(
             }
         }
     }
-
-    fun onBackClick() {}
-
-    fun onCloseClick() {}
 }
