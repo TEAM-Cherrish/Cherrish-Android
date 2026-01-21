@@ -28,7 +28,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val calendarRepository: CalendarRepository
+    private val calendarRepository: CalendarRepository,
+    private val calendarEventBus: CalendarRefreshEventBus
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CalendarUiState>> = _uiState.asStateFlow()
@@ -41,6 +42,17 @@ class CalendarViewModel @Inject constructor(
 
     init {
         loadMonthlyCalendar(yearMonth = YearMonth.now())
+        subscribeToRefreshEvents()
+    }
+
+    private fun subscribeToRefreshEvents() {
+        viewModelScope.launch {
+            calendarEventBus.events.collect { event ->
+                when (event) {
+                    CalendarEvent.RefreshRequired -> refreshCalendar()
+                }
+            }
+        }
     }
 
     fun onDateClick(date: LocalDate) {
@@ -264,7 +276,25 @@ class CalendarViewModel @Inject constructor(
 
     fun onAddButtonClick() {
         viewModelScope.launch {
-            _sideEffect.emit(CalendarSideEffect.NavigateToProcedure)
+            val selectedDate = when (val state = _uiState.value) {
+                is UiState.Success -> state.data.selectedDate
+                else -> LocalDate.now()
+            }
+            selectedDate?.let { _sideEffect.emit(CalendarSideEffect.NavigateToProcedure(it)) }
+        }
+    }
+
+    fun refreshCalendar() {
+        _uiState.updateSuccess { currentState ->
+            monthlyCache.clear()
+            dailyCache.clear()
+            currentState.selectedDate?.let {
+                loadMonthlyCalendar(
+                    yearMonth = currentState.selectedYearMonth,
+                    selectedDate = it
+                )
+            }
+            currentState
         }
     }
 }
