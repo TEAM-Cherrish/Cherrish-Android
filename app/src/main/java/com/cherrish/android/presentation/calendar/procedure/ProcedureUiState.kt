@@ -228,8 +228,12 @@ data class ProcedureUiState(
 
     val downtimeValidationType: DowntimeValidationType
         get() {
+            if (downtimePickerValue == 0) {
+                return DowntimeValidationType.EXCEEDS_GOAL
+            }
             val target = targetDate ?: return DowntimeValidationType.INVALID
             val logic = DowntimeDayLogic(
+                startDay = startDay,
                 endDay = target,
                 downtimeDay = downtimePickerValue
             )
