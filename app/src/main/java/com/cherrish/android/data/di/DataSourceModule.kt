@@ -1,6 +1,7 @@
 package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.datasource.CalendarDataSource
+import com.cherrish.android.data.remote.datasource.ChallengeDataSource
 import com.cherrish.android.data.remote.datasource.ChallengeMissionProgressDataSource
 import com.cherrish.android.data.remote.datasource.HomeDataSource
 import com.cherrish.android.data.remote.datasource.MyPageDataSource
@@ -9,6 +10,7 @@ import com.cherrish.android.data.remote.datasource.ProcedureDataSource
 import com.cherrish.android.data.remote.datasource.UserProcedureDataSource
 import com.cherrish.android.data.remote.datasource.WorryDataSource
 import com.cherrish.android.data.remote.datasourceimpl.CalendarDataSourceImpl
+import com.cherrish.android.data.remote.datasourceimpl.ChallengeDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.ChallengeMissionProgressDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.HomeDataSourceImpl
 import com.cherrish.android.data.remote.datasourceimpl.MyPageDataSourceImpl
@@ -63,13 +65,19 @@ abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindMyPageDataSource(
-        myPageDataSourceImpl: MyPageDataSourceImpl
-    ): MyPageDataSource
+    abstract fun bindChallengeDataSource(
+        challengeDataSourceImpl: ChallengeDataSourceImpl
+    ): ChallengeDataSource
 
     @Binds
     @Singleton
     abstract fun bindChallengeMissionProgressDataSource(
         challengeMissionProgressDataSourceImpl: ChallengeMissionProgressDataSourceImpl
     ): ChallengeMissionProgressDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindMyPageDataSource(
+        myPageDataSourceImpl: MyPageDataSourceImpl
+    ): MyPageDataSource
 }

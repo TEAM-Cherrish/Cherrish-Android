@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
@@ -29,9 +30,21 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeMissionSelectedRoute(
     paddingValues: PaddingValues,
+    navigateToChallengeRoutine: () -> Unit,
+    navigateToChallengeMissionProgress: () -> Unit,
     viewModel: ChallengeMissionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            ChallengeMissionSideEffect.NavigateToChallengeMissionProgress ->
+                navigateToChallengeMissionProgress()
+            ChallengeMissionSideEffect.NavigateToChallengeRoutine ->
+                navigateToChallengeRoutine()
+        }
+    }
+
     when (val state = uiState) {
         is UiState.Loading -> {
         }
@@ -53,8 +66,8 @@ fun ChallengeMissionSelectedRoute(
 
 @Composable
 private fun ChallengeMissionSelectedScreen(
-    paddingValues: PaddingValues,
     uiState: ChallengeMissionUiState,
+    paddingValues: PaddingValues,
     onMissionClick: (Long) -> Unit,
     onAddTodoClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -88,7 +101,8 @@ private fun ChallengeMissionSelectedScreen(
         CherrishButton(
             text = "플래너에 추가하기",
             enabled = uiState.isSelected,
-            onClick = onAddTodoClick
+            onClick = onAddTodoClick,
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
 
         Spacer(Modifier.height(30.dp))
@@ -133,8 +147,8 @@ private fun ChallengeMissionSelectedScreenPreview() {
     }
 
     ChallengeMissionSelectedScreen(
-        paddingValues = PaddingValues(),
         uiState = uiState,
+        paddingValues = PaddingValues(),
         onMissionClick = { clickedId ->
             uiState = uiState.copy(
                 missions = uiState.missions.map { mission ->

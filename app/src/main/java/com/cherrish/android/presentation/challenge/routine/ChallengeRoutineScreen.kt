@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,22 +19,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.component.ChallengeRoutineOnboardingBody
-import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineModel
+import com.cherrish.android.presentation.challenge.routine.model.ChallengeRoutineUiModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeRoutineRoute(
     paddingValues: PaddingValues,
+    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
+    navigateToChallengeLoading: (Int) -> Unit,
     viewModel: ChallengeRoutineViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            is ChallengeSideEffect.NavigateToChallengeLoading ->
+                navigateToChallengeLoading(sideEffect.routineId)
+        }
+    }
     when (val state = uiState) {
         is UiState.Loading -> {
         }
@@ -47,8 +59,8 @@ fun ChallengeRoutineRoute(
                 paddingValues = paddingValues,
                 onRoutineClick = viewModel::onRoutineClick,
                 onNextClick = viewModel::onNextClick,
-                onBackClick = viewModel::onBackClick,
-                onCloseClick = viewModel::onCloseClick
+                onBackClick = onBackClick,
+                onCloseClick = onCloseClick
             )
         }
 
@@ -60,7 +72,7 @@ fun ChallengeRoutineRoute(
 private fun ChallengeRoutineScreen(
     paddingValues: PaddingValues,
     uiState: ChallengeRoutineUiState,
-    onRoutineClick: (Long) -> Unit,
+    onRoutineClick: (Int) -> Unit,
     onNextClick: () -> Unit,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
@@ -72,8 +84,8 @@ private fun ChallengeRoutineScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
-            .padding(paddingValues)
             .navigationBarsPadding()
+            .systemBarsPadding()
     ) {
         Spacer(Modifier.height(44.dp))
 
@@ -111,10 +123,10 @@ private fun ChallengeRoutineScreenDisabledPreview() {
         mutableStateOf(
             ChallengeRoutineUiState(
                 routines = persistentListOf(
-                    ChallengeRoutineModel(1L, "피부 컨디션"),
-                    ChallengeRoutineModel(2L, "생활 습관"),
-                    ChallengeRoutineModel(3L, "체형 관리"),
-                    ChallengeRoutineModel(4L, "웰니스 · 마음챙김")
+                    ChallengeRoutineUiModel(1, "피부 컨디션"),
+                    ChallengeRoutineUiModel(2, "생활 습관"),
+                    ChallengeRoutineUiModel(3, "체형 관리"),
+                    ChallengeRoutineUiModel(4, "웰니스 · 마음챙김")
                 )
             )
         )

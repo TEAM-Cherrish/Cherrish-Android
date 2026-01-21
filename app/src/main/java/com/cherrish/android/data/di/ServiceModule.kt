@@ -2,6 +2,7 @@ package com.cherrish.android.data.di
 
 import com.cherrish.android.data.remote.service.CalendarService
 import com.cherrish.android.data.remote.service.ChallengeMissionProgressService
+import com.cherrish.android.data.remote.service.ChallengeService
 import com.cherrish.android.data.remote.service.HomeService
 import com.cherrish.android.data.remote.service.MyPageService
 import com.cherrish.android.data.remote.service.OnboardingProfileService
@@ -50,6 +51,12 @@ object ServiceModule {
     @Singleton
     fun provideUserProcedureService(retrofit: Retrofit): UserProcedureService =
         retrofit.create(UserProcedureService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideChallengeService(
+        retrofit: Retrofit
+    ): ChallengeService = retrofit.create(ChallengeService::class.java)
 
     @Provides
     @Singleton

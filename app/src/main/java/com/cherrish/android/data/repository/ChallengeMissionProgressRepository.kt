@@ -8,4 +8,6 @@ interface ChallengeMissionProgressRepository {
     suspend fun patchChallengeRoutinesComplete(routineId: Long):
         Result<ChallengeRoutineCompleteResponseModel>
     suspend fun postChallengeAdvanceDay(): Result<ChallengeMissionProgressResponseModel>
+
+    suspend fun hasChallengeRegistered(): Result<Boolean>
 }

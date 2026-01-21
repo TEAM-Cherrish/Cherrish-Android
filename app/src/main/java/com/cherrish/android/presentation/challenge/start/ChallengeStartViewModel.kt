@@ -5,8 +5,4 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChallengeStartViewModel @Inject constructor() :
-    ViewModel() {
-    fun onNextClick() {
-    }
-}
+class ChallengeStartViewModel @Inject constructor() : ViewModel()

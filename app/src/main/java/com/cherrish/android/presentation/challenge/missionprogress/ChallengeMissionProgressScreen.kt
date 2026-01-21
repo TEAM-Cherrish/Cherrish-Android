@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -34,9 +35,18 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun ChallengeMissionProgressRoute(
     paddingValues: PaddingValues,
+    onNavigateToChallengeStart: () -> Unit,
     viewModel: ChallengeMissionProgressViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
+        when (sideEffect) {
+            ChallengeMissionProgressSideEffect.NavigateToChallengeStart -> {
+                onNavigateToChallengeStart()
+            }
+        }
+    }
 
     when (val state = uiState) {
         is UiState.Loading -> {

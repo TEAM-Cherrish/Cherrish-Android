@@ -1,6 +1,7 @@
 package com.cherrish.android.presentation.challenge.start
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -27,12 +27,11 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 @Composable
 fun ChallengeStartRoute(
     paddingValues: PaddingValues,
-    viewModel: ChallengeStartViewModel = hiltViewModel()
-
+    onNavigateToRoutine: () -> Unit
 ) {
     ChallengeStartScreen(
         paddingValues = paddingValues,
-        onNextClick = viewModel::onNextClick
+        onNextClick = onNavigateToRoutine
     )
 }
 
@@ -45,8 +44,9 @@ private fun ChallengeStartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 17.dp)
+            .background(CherrishTheme.colors.gray0)
             .padding(paddingValues)
+            .padding(horizontal = 17.dp)
 
     ) {
         Spacer(modifier = Modifier.weight(98f))
