@@ -213,10 +213,10 @@ private fun OnboardingSection(
                     modifier = Modifier.align(Alignment.Bottom),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_bubble_speech),
-                        contentDescription = null
-                    )
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_bubble_speech),
+//                        contentDescription = null
+//                    )
                     Text(
                         text = "*다운타임",
                         style = CherrishTheme.typography.title2M16,
@@ -354,7 +354,7 @@ private fun Onboarding2Section(
 
         Text(
             text = "원하는 추구미에 도달할 수 있도록\nTO-DO 루틴을 제시해줘요",
-            style = CherrishTheme.typography.title1M18,
+            style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000,
             modifier = Modifier
                 .fillMaxWidth()
@@ -381,7 +381,7 @@ private fun Onboarding2Section(
             color = CherrishTheme.colors.gray600
         )
 
-        Spacer(modifier = Modifier.weight(62f))
+        Spacer(modifier = Modifier.height(62.dp))
     }
 }
 

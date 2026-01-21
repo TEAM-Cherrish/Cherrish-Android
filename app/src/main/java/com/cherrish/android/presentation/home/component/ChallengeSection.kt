@@ -114,7 +114,7 @@ private fun Challenge(
             .padding(18.dp)
     ) {
         Text(
-            text = "진행중인 챌린지",
+            text = "진행 중인 챌린지",
             style = CherrishTheme.typography.body1M14,
             color = CherrishTheme.colors.gray700
         )
@@ -158,7 +158,7 @@ private fun ChallengeChip(
             .clip(shape = RoundedCornerShape(30.dp))
             .border(
                 width = 1.dp,
-                color = CherrishTheme.colors.red700,
+                color = CherrishTheme.colors.red600,
                 shape = RoundedCornerShape(30.dp)
             )
             .padding(horizontal = 7.dp, vertical = 1.dp)

@@ -51,6 +51,7 @@ fun MainBottomBar(
                 .fillMaxWidth()
                 .background(color = CherrishTheme.colors.gray0)
                 .padding(top = 10.dp)
+                .padding(horizontal = 33.dp)
                 .navigationBarsPadding()
         ) {
             tabs.forEach { tab ->
