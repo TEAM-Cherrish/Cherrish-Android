@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
-import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
