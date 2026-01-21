@@ -40,6 +40,7 @@ data class ProcedureUiState(
     val selectedProcedureCardId: Long? = null,
 
     val selectedProcedureCardIds: ImmutableList<Long> = persistentListOf(),
+    val selectedProcedureItems: ImmutableList<ProcedureCardItemUiModel> = persistentListOf(),
 
     val selectedWorryName: String = "",
 
@@ -190,7 +191,7 @@ data class ProcedureUiState(
 
     val selectedProcedures: ImmutableList<SelectedProcedureModel>
         get() {
-            val procedureMap = procedureItems.associateBy { it.id }
+            val procedureMap = selectedProcedureItems.associateBy { it.id }
             return selectedProcedureCardIds
                 .mapNotNull { id -> procedureMap[id] }
                 .map {
@@ -201,6 +202,14 @@ data class ProcedureUiState(
                         maxDowntimeDays = it.maxDowntimeDays
                     )
                 }
+                .toImmutableList()
+        }
+
+    val selectedProcedureCardItems: ImmutableList<ProcedureCardItemUiModel>
+        get() {
+            val procedureMap = selectedProcedureItems.associateBy { it.id }
+            return selectedProcedureCardIds
+                .mapNotNull { id -> procedureMap[id] }
                 .toImmutableList()
         }
 
