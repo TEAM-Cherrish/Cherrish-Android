@@ -5,15 +5,13 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class DowntimeDayLogic(
+    private val startDay: LocalDate,
     private val endDay: LocalDate,
     private val downtimeDay: Int
 ) {
-    private val startDate: LocalDate = LocalDate.now()
-    private val endDate: LocalDate = endDay
-
     val downtimeValidationType: DowntimeValidationType
         get() {
-            val diffDays = ChronoUnit.DAYS.between(startDate, endDate).toInt()
+            val diffDays = ChronoUnit.DAYS.between(startDay, endDay).toInt()
 
             return if (downtimeDay >= diffDays) {
                 DowntimeValidationType.EXCEEDS_GOAL
