@@ -1,4 +1,4 @@
-package com.cherrish.android.presentation.challenge.model
+package com.cherrish.android.presentation.challenge.mission.model
 
 import com.cherrish.android.data.model.ChallengeCreateResponseModel
 import com.cherrish.android.data.model.ChallengeRoutineResponseModel

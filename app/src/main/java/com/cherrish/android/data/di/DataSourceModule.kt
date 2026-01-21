@@ -65,7 +65,7 @@ abstract class DataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun challengeDataSource(
+    abstract fun bindChallengeDataSource(
         challengeDataSourceImpl: ChallengeDataSourceImpl
     ): ChallengeDataSource
 

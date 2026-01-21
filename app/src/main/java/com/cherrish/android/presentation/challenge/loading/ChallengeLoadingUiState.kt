@@ -13,3 +13,9 @@ sealed interface ChallengeLoadingSideEffect {
     data class NavigateToChallengeMission(val routineId: Int, val routines: List<String>) :
         ChallengeLoadingSideEffect
 }
+
+sealed interface ChallengeSideEffect {
+    data class NavigateToChallengeLoading(
+        val routineId: Int
+    ) : ChallengeSideEffect
+}
