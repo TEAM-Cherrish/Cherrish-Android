@@ -239,6 +239,8 @@ fun ProcedureScreen(
                                 selectedCardIds =
                                 uiState.procedureDowntimeMap.keys.toImmutableList(),
                                 onCardClick = onDowntimeClick,
+                                activeCardId = uiState.selectedProcedureForDowntime?.id,
+                                isDowntimeBottomSheetVisible = uiState.showDowntimeBottomSheet,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }

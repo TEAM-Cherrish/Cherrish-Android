@@ -90,7 +90,9 @@ fun DowntimeContent(
     cardItems: ImmutableList<ProcedureCardItemUiModel>,
     selectedCardIds: ImmutableList<Long>,
     onCardClick: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    activeCardId: Long? = null,
+    isDowntimeBottomSheetVisible: Boolean = false
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
@@ -112,14 +114,20 @@ fun DowntimeContent(
             items = cardItems,
             key = { _, item -> item.id }
         ) { _, item ->
+            val isFocused = isDowntimeBottomSheetVisible && item.id == activeCardId
+            val displayMode = if (isFocused) {
+                ProcedureCardDisplayMode.SelectableFocused
+            } else {
+                item.displayMode
+            }
             ProcedureCard(
                 procedureName = item.name,
                 category = item.category,
                 minDowntimeDays = item.minDowntimeDays,
                 maxDowntimeDays = item.maxDowntimeDays,
                 onCardClick = { onCardClick(item.id) },
-                isSelected = item.id in selectedCardIds,
-                displayMode = item.displayMode,
+                isSelected = isFocused || item.id in selectedCardIds,
+                displayMode = displayMode,
                 modifier = Modifier.padding(top = 10.dp)
             )
         }
@@ -151,7 +159,9 @@ private fun DowntimeContentPreview() {
                     } else {
                         selectedCardIds.add(clickedId)
                     }
-            }
+            },
+            activeCardId = selectedCardIds.firstOrNull(),
+            isDowntimeBottomSheetVisible = true
         )
     }
 }

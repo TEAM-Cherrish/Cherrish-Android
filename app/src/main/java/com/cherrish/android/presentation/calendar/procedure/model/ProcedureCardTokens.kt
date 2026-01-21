@@ -52,5 +52,16 @@ fun procedureCardTokens(
                 unselectedCheckIconResId = R.drawable.ic_check_circular
             )
         }
+
+        ProcedureCardDisplayMode.SelectableFocused -> {
+            SelectableProcedureCardTokens(
+                selectedContainerColor = CherrishTheme.colors.gray300,
+                unselectedContainerColor = CherrishTheme.colors.gray0,
+                selectedBorderColor = CherrishTheme.colors.gray500,
+                unselectedBorderColor = CherrishTheme.colors.gray500,
+                selectedCheckIconResId = R.drawable.ic_check_circular,
+                unselectedCheckIconResId = R.drawable.ic_check_circular
+            )
+        }
     }
 }
