@@ -1,6 +1,7 @@
 package com.cherrish.android.presentation.challenge.start
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,8 +46,10 @@ private fun ChallengeStartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(CherrishTheme.colors.gray0)
             .padding(horizontal = 17.dp)
             .padding(paddingValues)
+
 
     ) {
         Spacer(modifier = Modifier.weight(98f))
