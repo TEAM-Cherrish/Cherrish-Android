@@ -10,8 +10,11 @@ import com.cherrish.android.presentation.challenge.missionprogress.model.Challen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +28,9 @@ class ChallengeMissionProgressViewModel @Inject constructor(
         MutableStateFlow<UiState<ChallengeMissionProgressUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<ChallengeMissionProgressUiState>> =
         _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<ChallengeMissionProgressSideEffect>()
+    val sideEffect: SharedFlow<ChallengeMissionProgressSideEffect> = _sideEffect.asSharedFlow()
 
     init {
         loadMissions()
@@ -106,6 +112,17 @@ class ChallengeMissionProgressViewModel @Inject constructor(
                         )
                     }
                 }
+                .onLogFailure { exception ->
+                    if (exception is retrofit2.HttpException) {
+                        _sideEffect.emit(
+                            ChallengeMissionProgressSideEffect.NavigateToChallengeStart
+                        )
+                    }
+                }
         }
     }
+}
+
+sealed interface ChallengeMissionProgressSideEffect {
+    data object NavigateToChallengeStart : ChallengeMissionProgressSideEffect
 }

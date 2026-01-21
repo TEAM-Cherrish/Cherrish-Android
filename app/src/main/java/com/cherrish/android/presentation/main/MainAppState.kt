@@ -124,6 +124,10 @@ class MainAppState(
         }
     }
 
+    fun navigateToChallengeStart(navOptions: NavOptions? = clearStackNavOptions) {
+        navController.navigateToChallengeStart(navOptions = navOptions)
+    }
+
     fun navigateToOnboarding(navOptions: NavOptions? = clearStackNavOptions) {
         navController.navigateToOnboarding(navOptions)
     }

@@ -99,7 +99,8 @@ fun MainScreen(
                         appState.navigateToChallengeLoading(routineId = routineId)
                     },
                     navigateToChallengeMissionProgress =
-                    appState::navigateToChallengeMissionProgress
+                    appState::navigateToChallengeMissionProgress,
+                    navigateToChallengeStart = appState::navigateToChallengeStart
                 )
 
                 myPageNavGraph(paddingValues = innerPadding)
