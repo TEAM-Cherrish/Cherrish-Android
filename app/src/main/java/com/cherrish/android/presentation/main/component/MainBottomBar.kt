@@ -46,12 +46,11 @@ fun MainBottomBar(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(50.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = CherrishTheme.colors.gray0)
                 .padding(top = 10.dp)
-                .padding(horizontal = 9.dp)
                 .navigationBarsPadding()
         ) {
             tabs.forEach { tab ->

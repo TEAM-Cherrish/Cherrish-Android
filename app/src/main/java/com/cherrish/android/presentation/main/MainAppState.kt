@@ -12,12 +12,7 @@ import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
-import com.cherrish.android.presentation.challenge.navigation.ChallengeProgress
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeLoading
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMission
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMissionProgress
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeRoutine
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeStart
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
@@ -127,16 +122,6 @@ class MainAppState(
                 launchSingleTop = true
             }
         }
-
-        if (hasChallengeRegistered) {
-            navController.navigateToChallengeMissionProgress(navOptions = navOptions)
-        } else {
-            navController.navigateToChallengeStart(navOptions = navOptions)
-        }
-    }
-
-    fun navigateToChallengeStart(navOptions: NavOptions? = clearStackNavOptions) {
-        navController.navigateToChallengeStart(navOptions = navOptions)
     }
 
     fun navigateToOnboarding(navOptions: NavOptions? = clearStackNavOptions) {
@@ -185,6 +170,10 @@ class MainAppState(
         navOptions: NavOptions? = clearStackNavOptions
     ) {
         navController.navigateToChallengeMissionProgress(navOptions = navOptions)
+    }
+
+    fun navigateToCalendarSelected(date: LocalDate) {
+        navController.navigateToCalendar(date = date)
     }
 }
 

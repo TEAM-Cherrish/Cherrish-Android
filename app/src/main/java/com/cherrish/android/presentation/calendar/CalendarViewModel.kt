@@ -1,7 +1,9 @@
 package com.cherrish.android.presentation.calendar
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
@@ -10,6 +12,7 @@ import com.cherrish.android.data.repository.CalendarRepository
 import com.cherrish.android.presentation.calendar.model.CalendarDisplayMode
 import com.cherrish.android.presentation.calendar.model.DownTimeStatus
 import com.cherrish.android.presentation.calendar.model.ProcedureInfoModel
+import com.cherrish.android.presentation.calendar.navigation.Calendar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -29,8 +32,12 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
     private val calendarRepository: CalendarRepository,
-    private val calendarEventBus: CalendarRefreshEventBus
+    private val calendarEventBus: CalendarRefreshEventBus,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val dateArg: LocalDate =
+        LocalDate.parse(savedStateHandle.toRoute<Calendar>().date)
+
     private val _uiState = MutableStateFlow<UiState<CalendarUiState>>(UiState.Loading)
     val uiState: StateFlow<UiState<CalendarUiState>> = _uiState.asStateFlow()
 
@@ -41,7 +48,11 @@ class CalendarViewModel @Inject constructor(
     private val dailyCache = mutableMapOf<LocalDate, ImmutableList<ProcedureInfoModel>>()
 
     init {
-        loadMonthlyCalendar(yearMonth = YearMonth.now())
+        val yearMonth = YearMonth.from(dateArg)
+        loadMonthlyCalendar(
+            yearMonth = yearMonth,
+            selectedDate = dateArg
+        )
         subscribeToRefreshEvents()
     }
 

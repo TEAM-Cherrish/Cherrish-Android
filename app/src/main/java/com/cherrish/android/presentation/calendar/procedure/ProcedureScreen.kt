@@ -235,9 +235,7 @@ fun ProcedureScreen(
 
                         ProcedureStep.Downtime -> {
                             DowntimeContent(
-                                cardItems = uiState.procedureItems
-                                    .filter { it.id in uiState.selectedProcedureCardIds }
-                                    .toImmutableList(),
+                                cardItems = uiState.selectedProcedureCardItems,
                                 selectedCardIds =
                                 uiState.procedureDowntimeMap.keys.toImmutableList(),
                                 onCardClick = onDowntimeClick,
