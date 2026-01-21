@@ -102,7 +102,7 @@ fun FilteringWithSearchContent(
     onSearchAction: (String) -> Unit,
     query: String,
     onQueryChange: (String) -> Unit,
-    bottomPadding: Dp,
+    bottomContentPadding: Dp,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -118,7 +118,7 @@ fun FilteringWithSearchContent(
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            contentPadding = PaddingValues(bottom = bottomPadding)
+            contentPadding = PaddingValues(bottom = bottomContentPadding)
         ) {
             item {
                 CautionDescription()
@@ -202,7 +202,7 @@ private fun FilteringWithSearchContentPreview() {
             },
             onSearchAction = {},
             query = query,
-            bottomPadding = 20.dp,
+            bottomContentPadding = 20.dp,
             onQueryChange = { query = it }
         )
     }
@@ -218,7 +218,7 @@ private fun FilteringWithSearchContentEmptyPreview() {
             onCardClick = {},
             onSearchAction = {},
             query = "레이저 토닝",
-            bottomPadding = 20.dp,
+            bottomContentPadding = 20.dp,
             onQueryChange = {}
         )
     }
