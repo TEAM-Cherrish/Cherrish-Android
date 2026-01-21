@@ -1,3 +1,4 @@
+//mainscreen
 package com.cherrish.android.presentation.main
 
 import androidx.compose.animation.EnterTransition
@@ -69,7 +70,18 @@ fun MainScreen(
                     navigateToProcedure = appState::navigateToProcedure
                 )
 
-                challengeNavGraph(paddingValues = innerPadding)
+                challengeNavGraph(
+                    paddingValues = innerPadding,
+                    navigateUp = appState::navigateUp,
+                    navigateToChallengeRoutine = appState::navigateToChallengeRoutine,
+                    navigateToChallengeMission = { routineId, routines ->
+                        appState.navigateToChallengeMission(routineId = routineId, routines = routines)
+                    },
+                    navigateToChallengeLoading = { routineId ->
+                        appState.navigateToChallengeLoading(routineId = routineId)
+                    },
+                    navigateToChallengeMissionProgress = appState::navigateToChallengeMissionProgress
+                )
 
                 myPageNavGraph(paddingValues = innerPadding)
             }

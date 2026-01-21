@@ -1,3 +1,4 @@
+//mainAppState
 package com.cherrish.android.presentation.main
 
 import androidx.compose.runtime.Composable
@@ -12,7 +13,11 @@ import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
-import com.cherrish.android.presentation.challenge.navigation.navigateToChallenge
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeLoading
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMission
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMissionProgress
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeRoutine
+import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeStart
 import com.cherrish.android.presentation.home.navigation.navigateToHome
 import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
@@ -92,7 +97,7 @@ class MainAppState(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions = navOptions)
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
-            MainTab.CHALLENGE -> navController.navigateToChallenge(navOptions = navOptions)
+            MainTab.CHALLENGE -> navController.navigateToChallengeStart(navOptions = navOptions)
         }
     }
 
@@ -114,6 +119,34 @@ class MainAppState(
 
     fun navigateUp() {
         navController.navigateUp()
+    }
+
+    fun navigateToChallengeRoutine() {
+        navController.navigateToChallengeRoutine()
+    }
+
+    fun navigateToChallengeLoading(routineId: Int, navOptions: NavOptions? = keepStackNavOptions){
+        navController.navigateToChallengeLoading(
+            routineId = routineId, navOptions = navOptions
+        )
+    }
+
+    fun navigateToChallengeMission(
+        routineId: Int,
+        routines: List<String>,
+        navOptions: NavOptions? = clearStackNavOptions
+    ) {
+        navController.navigateToChallengeMission(
+            routineId = routineId,
+            routines = routines,
+            navOptions = navOptions
+        )
+    }
+
+    fun navigateToChallengeMissionProgress(
+        navOptions: NavOptions? = clearStackNavOptions
+    ) {
+        navController.navigateToChallengeMissionProgress(navOptions = navOptions)
     }
 }
 
