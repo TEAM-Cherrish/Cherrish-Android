@@ -8,6 +8,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
+import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -17,6 +18,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var calendarEventBus: CalendarRefreshEventBus
+
+    @Inject
+    lateinit var challengeMissionProgressRepository: ChallengeMissionProgressRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +33,8 @@ class MainActivity : ComponentActivity() {
             CherrishTheme {
                 val appState = rememberMainAppState(calendarEventBus = calendarEventBus)
                 MainScreen(
-                    appState = appState
+                    appState = appState,
+                    challengeMissionProgressRepository = challengeMissionProgressRepository
                 )
             }
         }

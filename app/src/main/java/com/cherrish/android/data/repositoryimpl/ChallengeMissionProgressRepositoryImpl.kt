@@ -28,4 +28,10 @@ class ChallengeMissionProgressRepositoryImpl @Inject constructor(
         suspendRunCatching {
             challengeMissionDataSource.postChallengeAdvanceDay().data!!.toModel()
         }
+
+    override suspend fun hasChallengeRegistered(): Result<Boolean> =
+        suspendRunCatching {
+            val response = challengeMissionDataSource.getChallengeMissions()
+            response.data != null
+        }
 }

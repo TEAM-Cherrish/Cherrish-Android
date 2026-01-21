@@ -6,8 +6,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
+import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.presentation.calendar.LocalCalendarEventBus
 import com.cherrish.android.presentation.calendar.navigation.calendarNavGraph
 import com.cherrish.android.presentation.challenge.navigation.challengeNavGraph
@@ -18,13 +20,16 @@ import com.cherrish.android.presentation.onboarding.navigation.onboardingInforma
 import com.cherrish.android.presentation.onboarding.navigation.onboardingNavGraph
 import com.cherrish.android.presentation.splash.navigation.splashNavGraph
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-    appState: MainAppState
+    appState: MainAppState,
+    challengeMissionProgressRepository: ChallengeMissionProgressRepository
 ) {
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
+    val coroutineScope = rememberCoroutineScope()
 
     CompositionLocalProvider(LocalCalendarEventBus provides appState.calendarEventBus) {
         Scaffold(
@@ -33,7 +38,18 @@ fun MainScreen(
                     visible = isBottomBarVisible,
                     tabs = MainTab.entries.toPersistentList(),
                     currentTab = currentTab,
-                    onTabSelected = appState::navigate
+                    onTabSelected = { tab ->
+                        if (tab == MainTab.CHALLENGE) {
+                            coroutineScope.launch {
+                                val hasChallenge = challengeMissionProgressRepository
+                                    .hasChallengeRegistered()
+                                    .getOrDefault(false)
+                                appState.navigateToChallengeTab(hasChallenge)
+                            }
+                        } else {
+                            appState.navigate(tab)
+                        }
+                    }
                 )
             }
         ) { innerPadding ->

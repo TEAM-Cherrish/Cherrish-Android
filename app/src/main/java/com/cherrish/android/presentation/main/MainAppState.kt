@@ -12,6 +12,7 @@ import androidx.navigation.navOptions
 import com.cherrish.android.presentation.calendar.CalendarRefreshEventBus
 import com.cherrish.android.presentation.calendar.navigation.navigateToCalendar
 import com.cherrish.android.presentation.calendar.navigation.navigateToProcedure
+import com.cherrish.android.presentation.challenge.navigation.ChallengeProgress
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeLoading
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMission
 import com.cherrish.android.presentation.challenge.navigation.navigateToChallengeMissionProgress
@@ -58,8 +59,12 @@ class MainAppState(
 
     val currentTab: StateFlow<MainTab?> = currentDestination
         .map { destination ->
-            MainTab.find { tab ->
-                destination?.hasRoute(tab.route::class) == true
+            if (destination?.hasRoute(ChallengeProgress::class) == true) {
+                MainTab.CHALLENGE
+            } else {
+                MainTab.find { tab ->
+                    destination?.hasRoute(tab.route::class) == true
+                }
             }
         }
         .stateIn(
@@ -72,7 +77,7 @@ class MainAppState(
         .map { destination ->
             MainTab.contains { tab ->
                 destination?.hasRoute(tab.route::class) == true
-            }
+            } || destination?.hasRoute(ChallengeProgress::class) == true
         }
         .stateIn(
             scope = coroutineScope,
@@ -96,7 +101,26 @@ class MainAppState(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions = navOptions)
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
-            MainTab.CHALLENGE -> navController.navigateToChallengeStart(navOptions = navOptions)
+            MainTab.CHALLENGE -> { }
+        }
+    }
+
+    fun navigateToChallengeTab(hasChallengeRegistered: Boolean) {
+        val navOptions = navOptions {
+            navController.currentDestination?.route?.let {
+                popUpTo(it) {
+                    inclusive = true
+                    saveState = true
+                }
+                restoreState = true
+                launchSingleTop = true
+            }
+        }
+
+        if (hasChallengeRegistered) {
+            navController.navigateToChallengeMissionProgress(navOptions = navOptions)
+        } else {
+            navController.navigateToChallengeStart(navOptions = navOptions)
         }
     }
 
