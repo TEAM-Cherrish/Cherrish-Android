@@ -77,7 +77,7 @@ private fun ChallengeLoadingScreen(
                 .padding(10.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
             contentDescription = null,
-            tint = CherrishTheme.colors.gray1000,
+            tint = CherrishTheme.colors.gray1000
         )
 
         Spacer(modifier = Modifier.weight(84f))
