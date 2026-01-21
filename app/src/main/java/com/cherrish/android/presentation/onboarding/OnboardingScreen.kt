@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -90,17 +92,17 @@ private fun OnboardingScreen(
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
-    val colors = CherrishTheme.colors
     val density = LocalDensity.current
 
     val gradientEndY = with(density) { 310.dp.toPx() }
+    val gradationColors = listOf(CherrishTheme.colors.graStart, CherrishTheme.colors.graEnd)
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = persistentListOf(colors.graStart, colors.graEnd),
+                    colors = gradationColors,
                     startY = 0f,
                     endY = gradientEndY
                 )
@@ -170,6 +172,10 @@ private fun OnboardingSection(
     modifier: Modifier = Modifier
 ) {
     val colors = CherrishTheme.colors
+    val density = LocalDensity.current
+    val fixedFontSize = with(density) {
+        (16.sp / fontScale)
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -213,14 +219,22 @@ private fun OnboardingSection(
                     modifier = Modifier.align(Alignment.Bottom),
                     contentAlignment = Alignment.Center
                 ) {
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_bubble_speech),
-//                        contentDescription = null
-//                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.img_bubble_speech),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(width = 118.dp, height = 62.dp)
+                            .offset(x = (-9).dp, y = 10.dp)
+                    )
                     Text(
                         text = "*다운타임",
-                        style = CherrishTheme.typography.title2M16,
-                        color = colors.gray700
+                        style = CherrishTheme.typography.title2M16.copy(
+                            fontSize = with(density) {
+                                CherrishTheme.typography.title2M16.fontSize / fontScale
+                            }
+                        ),
+                        color = colors.gray700,
+                        modifier = Modifier.offset(x = (-9).dp, y = 10.dp)
                     )
                 }
 
