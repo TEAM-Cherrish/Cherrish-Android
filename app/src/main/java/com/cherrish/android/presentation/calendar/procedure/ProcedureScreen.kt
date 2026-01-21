@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -55,8 +56,11 @@ fun ProcedureRoute(
     }
 
     when (val state = uiState) {
-        is UiState.Loading -> Unit
-        is UiState.Failure -> Unit
+        is UiState.Loading -> {
+            LoadingScreen()
+        }
+
+        is UiState.Failure -> {}
         is UiState.Success -> {
             ProcedureScreen(
                 uiState = state.data,
@@ -175,7 +179,8 @@ fun ProcedureScreen(
                     ExistenceContent(
                         selectedIndex = uiState.existenceSelectedIndex,
                         onItemClick = onExistenceClick,
-                        modifier = Modifier.padding(horizontal = 26.dp)
+                        modifier = Modifier
+                            .padding(horizontal = 26.dp)
                             .padding(bottom = 10.dp)
                     )
                 }
@@ -187,7 +192,8 @@ fun ProcedureScreen(
                                 worries = uiState.worries,
                                 selectedWorryId = uiState.selectedWorryId,
                                 onWorryClick = onWorryClick,
-                                modifier = Modifier.padding(horizontal = 26.dp)
+                                modifier = Modifier
+                                    .padding(horizontal = 26.dp)
                                     .padding(bottom = 10.dp)
                             )
                         }
@@ -237,7 +243,7 @@ fun ProcedureScreen(
                             DowntimeContent(
                                 cardItems = uiState.selectedProcedureCardItems,
                                 selectedCardIds =
-                                uiState.procedureDowntimeMap.keys.toImmutableList(),
+                                    uiState.procedureDowntimeMap.keys.toImmutableList(),
                                 onCardClick = onDowntimeClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
@@ -272,7 +278,9 @@ fun ProcedureScreen(
             validationType = uiState.downtimeValidationType,
             downtimeDay = uiState.downtimeDay,
             spareTimeDay = uiState.spareTimeDay,
+            downtimeStartMonth = uiState.downtimeStartMonth,
             downtimeStartDay = uiState.downtimeStartDay,
+            downtimeEndMonth = uiState.downtimeEndMonth,
             downtimeEndDay = uiState.downtimeEndDay,
             state = downtimePickerState,
             onAddWithoutDowntimeClick = onAddWithoutDowntime,

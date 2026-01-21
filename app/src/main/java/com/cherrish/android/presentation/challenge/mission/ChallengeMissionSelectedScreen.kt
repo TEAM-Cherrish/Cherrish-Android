@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.topappbar.BackAndCloseTopAppBar
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -47,6 +48,7 @@ fun ChallengeMissionSelectedRoute(
 
     when (val state = uiState) {
         is UiState.Loading -> {
+            LoadingScreen()
         }
         is UiState.Failure -> {
         }
