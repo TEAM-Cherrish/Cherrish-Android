@@ -238,7 +238,7 @@ class ProcedureViewModel @Inject constructor(
             val newList = if (isSelected) {
                 currentList.filter { it != cardId }
             } else {
-                persistentListOf(cardId) + currentList
+                currentList + persistentListOf(cardId)
             }.toImmutableList()
 
             val baseSelectedItems = current.selectedProcedureItems
@@ -251,7 +251,7 @@ class ProcedureViewModel @Inject constructor(
                 val items = if (selectedItem == null) {
                     baseSelectedItems
                 } else {
-                    (persistentListOf(selectedItem) + baseSelectedItems)
+                    baseSelectedItems + persistentListOf(selectedItem)
                 }
                 items.toImmutableList()
             }

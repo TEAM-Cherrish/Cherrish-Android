@@ -80,7 +80,8 @@ class CalendarViewModel @Inject constructor(
                                 procedureDay = formatProcedureDay(event.scheduledAt),
                                 downTimeDuration = event.downtimeDays
                             )
-                        }.toImmutableList()
+                        }.reversed()
+                            .toImmutableList()
 
                         dailyCache[date] = procedureList
 
@@ -196,7 +197,8 @@ class CalendarViewModel @Inject constructor(
                             procedureDay = formatProcedureDay(event.scheduledAt),
                             downTimeDuration = event.downtimeDays
                         )
-                    }.toImmutableList()
+                    }.reversed()
+                        .toImmutableList()
 
                     dailyCache[selectedDate] = procedureList
 
@@ -241,7 +243,8 @@ class CalendarViewModel @Inject constructor(
                         procedureDay = formatProcedureDay(event.scheduledAt),
                         downTimeDuration = event.downtimeDays
                     )
-                }.toImmutableList()
+                }.reversed()
+                    .toImmutableList()
 
                 dailyCache[date] = procedureList
 
