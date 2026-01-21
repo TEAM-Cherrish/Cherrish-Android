@@ -23,12 +23,12 @@ import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
 import com.cherrish.android.presentation.splash.navigation.Splash
-import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 
 @Stable
 class MainAppState(
@@ -48,6 +48,17 @@ class MainAppState(
         launchSingleTop = true
         restoreState = true
     }
+
+    private fun challengeLoadingStackNavOptions(): NavOptions =
+        navOptions {
+            popUpTo(
+                navController.currentDestination?.route
+                    ?: return@navOptions
+            ) {
+                inclusive = true
+                saveState = false
+            }
+        }
 
     private val currentDestination = navController.currentBackStackEntryFlow
         .map { it.destination }
@@ -101,7 +112,7 @@ class MainAppState(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions = navOptions)
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
-            MainTab.CHALLENGE -> { }
+            MainTab.CHALLENGE -> {}
         }
     }
 
@@ -162,12 +173,11 @@ class MainAppState(
     fun navigateToChallengeMission(
         routineId: Int,
         routines: List<String>,
-        navOptions: NavOptions? = clearStackNavOptions
     ) {
         navController.navigateToChallengeMission(
             routineId = routineId,
             routines = routines,
-            navOptions = navOptions
+            navOptions = challengeLoadingStackNavOptions()
         )
     }
 

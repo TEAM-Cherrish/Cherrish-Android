@@ -122,7 +122,7 @@ fun NavGraphBuilder.challengeNavGraph(
         ChallengeMissionSelectedRoute(
             paddingValues = paddingValues,
             navigateToChallengeMissionProgress = navigateToChallengeMissionProgress,
-            navigateToChallengeRoutine = navigateToChallengeRoutine
+            navigateToChallengeRoutine = navigateUp
         )
     }
 
