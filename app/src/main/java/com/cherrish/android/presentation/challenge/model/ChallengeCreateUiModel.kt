@@ -1,4 +1,3 @@
-//ChallengeCreateUiModel.kt
 package com.cherrish.android.presentation.challenge.model
 
 import com.cherrish.android.data.model.ChallengeCreateResponseModel

@@ -1,4 +1,3 @@
-//ChallengeStartScreen.kt
 package com.cherrish.android.presentation.challenge.start
 
 import androidx.compose.foundation.Image

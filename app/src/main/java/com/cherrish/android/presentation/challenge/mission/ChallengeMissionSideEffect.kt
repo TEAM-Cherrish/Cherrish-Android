@@ -1,4 +1,3 @@
-//ChallengeMissionSideEffect.kt
 package com.cherrish.android.presentation.challenge.mission
 
 sealed interface ChallengeMissionSideEffect {

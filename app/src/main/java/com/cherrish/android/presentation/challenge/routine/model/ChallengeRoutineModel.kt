@@ -1,4 +1,3 @@
-//ChallengeRoutineUiModel.kt
 package com.cherrish.android.presentation.challenge.routine.model
 
 import androidx.compose.runtime.Immutable

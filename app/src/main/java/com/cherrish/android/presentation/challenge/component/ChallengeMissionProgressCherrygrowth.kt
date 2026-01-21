@@ -1,4 +1,3 @@
-//ChallengeMissionProgressCherrygrowth.kt
 package com.cherrish.android.presentation.challenge.component
 
 import androidx.compose.foundation.Image

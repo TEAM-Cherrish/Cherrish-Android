@@ -1,4 +1,3 @@
-//mainAppState
 package com.cherrish.android.presentation.main
 
 import androidx.compose.runtime.Composable
@@ -125,9 +124,10 @@ class MainAppState(
         navController.navigateToChallengeRoutine()
     }
 
-    fun navigateToChallengeLoading(routineId: Int, navOptions: NavOptions? = keepStackNavOptions){
+    fun navigateToChallengeLoading(routineId: Int, navOptions: NavOptions? = keepStackNavOptions) {
         navController.navigateToChallengeLoading(
-            routineId = routineId, navOptions = navOptions
+            routineId = routineId,
+            navOptions = navOptions
         )
     }
 

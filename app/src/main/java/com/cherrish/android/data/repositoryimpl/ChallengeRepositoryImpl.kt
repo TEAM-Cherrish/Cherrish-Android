@@ -1,4 +1,3 @@
-//ChallengeRepositoryImpl.kt
 package com.cherrish.android.data.repositoryimpl
 
 import com.cherrish.android.core.util.suspendRunCatching
@@ -7,8 +6,8 @@ import com.cherrish.android.data.model.ChallengeHomecareRoutinesResponseModel
 import com.cherrish.android.data.model.ChallengesAiRecommendResponseModel
 import com.cherrish.android.data.model.toModel
 import com.cherrish.android.data.remote.datasource.ChallengeDataSource
-import com.cherrish.android.data.remote.dto.request.ChallengeAiRecommendationRequestDto
-import com.cherrish.android.data.remote.dto.request.ChallengeCreateRequestDto
+import com.cherrish.android.data.remote.dto.request.ChallengeAiRecommendRequestDto
+import com.cherrish.android.data.remote.dto.request.ChallengeCreateDataRequestDto
 import com.cherrish.android.data.repository.ChallengeRepository
 import javax.inject.Inject
 
@@ -16,7 +15,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     private val challengeDataSource: ChallengeDataSource
 ) : ChallengeRepository {
     override suspend fun getChallengeRoutineData():
-            Result<List<ChallengeHomecareRoutinesResponseModel>> =
+        Result<List<ChallengeHomecareRoutinesResponseModel>> =
         suspendRunCatching {
             challengeDataSource
                 .getHomecareRoutineData()
@@ -31,7 +30,7 @@ class ChallengeRepositoryImpl @Inject constructor(
         suspendRunCatching {
             challengeDataSource
                 .postAiRecommendations(
-                    ChallengeAiRecommendationRequestDto(
+                    ChallengeAiRecommendRequestDto(
                         homecareRoutineId = homecareRoutineId
                     )
                 )
@@ -47,7 +46,7 @@ class ChallengeRepositoryImpl @Inject constructor(
         suspendRunCatching {
             challengeDataSource
                 .postDemoChallenge(
-                    ChallengeCreateRequestDto(
+                    ChallengeCreateDataRequestDto(
                         homecareRoutineId = homecareRoutineId,
                         routineNames = routineNames
                     )

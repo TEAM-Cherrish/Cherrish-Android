@@ -1,4 +1,3 @@
-//ChallengeNavigator.kt
 package com.cherrish.android.presentation.challenge.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +9,7 @@ import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.core.common.navigation.Route
 import com.cherrish.android.presentation.challenge.loading.ChallengeLoadingRoute
 import com.cherrish.android.presentation.challenge.mission.ChallengeMissionSelectedRoute
+import com.cherrish.android.presentation.challenge.missionprogress.ChallengeMissionProgressRoute
 import com.cherrish.android.presentation.challenge.routine.ChallengeRoutineRoute
 import com.cherrish.android.presentation.challenge.start.ChallengeStartRoute
 import kotlinx.serialization.Serializable
@@ -120,6 +120,12 @@ fun NavGraphBuilder.challengeNavGraph(
         ChallengeMissionSelectedRoute(
             paddingValues = paddingValues,
             navigateToChallengeMissionProgress = navigateToChallengeMissionProgress
+        )
+    }
+
+    composable<ChallengeProgress> {
+        ChallengeMissionProgressRoute(
+            paddingValues = paddingValues
         )
     }
 }

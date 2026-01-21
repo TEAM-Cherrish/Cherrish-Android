@@ -1,4 +1,4 @@
-//ChallengeMissionModel.kt
+// ChallengeMissionModel.kt
 package com.cherrish.android.presentation.challenge.mission.model
 
 import androidx.compose.runtime.Immutable

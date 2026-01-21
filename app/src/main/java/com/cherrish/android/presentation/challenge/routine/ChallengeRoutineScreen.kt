@@ -1,4 +1,3 @@
-//ChallengeRoutineScreen.kt
 package com.cherrish.android.presentation.challenge.routine
 
 import androidx.compose.foundation.background
@@ -43,7 +42,7 @@ fun ChallengeRoutineRoute(
 
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
-            is ChallengeSideEffect.NavigateToChallengeLoading->
+            is ChallengeSideEffect.NavigateToChallengeLoading ->
                 navigateToChallengeLoading(sideEffect.routineId)
         }
     }
@@ -85,7 +84,6 @@ private fun ChallengeRoutineScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
-            .padding(paddingValues)
             .navigationBarsPadding()
             .systemBarsPadding()
     ) {

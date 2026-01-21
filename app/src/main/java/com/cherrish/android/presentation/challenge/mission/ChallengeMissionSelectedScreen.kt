@@ -1,4 +1,3 @@
-//ChallengeMissionSelectedScreen.kt
 package com.cherrish.android.presentation.challenge.mission
 
 import androidx.compose.foundation.background
@@ -7,7 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +39,8 @@ fun ChallengeMissionSelectedRoute(
 
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
-            ChallengeMissionSideEffect.NavigateToChallengeMissionProgress -> navigateToChallengeMissionProgress
+            ChallengeMissionSideEffect.NavigateToChallengeMissionProgress ->
+                navigateToChallengeMissionProgress()
         }
     }
 
@@ -75,7 +77,8 @@ private fun ChallengeMissionSelectedScreen(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
-            .padding(paddingValues)
+            .navigationBarsPadding()
+            .systemBarsPadding()
     ) {
         Spacer(Modifier.height(44.dp))
 

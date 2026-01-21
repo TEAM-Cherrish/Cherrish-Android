@@ -1,4 +1,3 @@
-//ChallengeMissionViewModel.kt
 package com.cherrish.android.presentation.challenge.mission
 
 import androidx.lifecycle.SavedStateHandle
@@ -12,6 +11,7 @@ import com.cherrish.android.data.repository.ChallengeRepository
 import com.cherrish.android.presentation.challenge.mission.model.ChallengeMissionModel
 import com.cherrish.android.presentation.challenge.navigation.ChallengeMission
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeMissionViewModel @Inject constructor(
@@ -59,7 +58,8 @@ class ChallengeMissionViewModel @Inject constructor(
             UiState.Success(
                 ChallengeMissionUiState(
                     missions = missions,
-                    routineId = routineIdArg)
+                    routineId = routineIdArg
+                )
             )
         }
     }
@@ -93,7 +93,7 @@ class ChallengeMissionViewModel @Inject constructor(
                     _sideEffect.emit(
                         ChallengeMissionSideEffect.NavigateToChallengeMissionProgress
                     )
-                }.onLogFailure {  }
+                }.onLogFailure { }
         }
     }
 

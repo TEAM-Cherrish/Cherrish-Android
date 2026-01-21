@@ -1,4 +1,3 @@
-//ChallengeStartViewModel.kt
 package com.cherrish.android.presentation.challenge.start
 
 import androidx.lifecycle.ViewModel

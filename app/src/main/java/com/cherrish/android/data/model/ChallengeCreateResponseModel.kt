@@ -1,7 +1,7 @@
 package com.cherrish.android.data.model
 
-import com.cherrish.android.data.remote.dto.response.ChallengeCreateDataDto
-import com.cherrish.android.data.remote.dto.response.ChallengeRoutineDto
+import com.cherrish.android.data.remote.dto.response.ChallengeCreateDataResponseDto
+import com.cherrish.android.data.remote.dto.response.ChallengeCreateRoutineResponseDto
 
 data class ChallengeCreateResponseModel(
     val challengeId: Long,
@@ -13,7 +13,7 @@ data class ChallengeCreateResponseModel(
     val routines: List<ChallengeRoutineResponseModel>
 )
 
-fun ChallengeCreateDataDto.toModel() = ChallengeCreateResponseModel(
+fun ChallengeCreateDataResponseDto.toModel() = ChallengeCreateResponseModel(
     challengeId = challengeId,
     title = title,
     totalDays = totalDays,
@@ -23,7 +23,7 @@ fun ChallengeCreateDataDto.toModel() = ChallengeCreateResponseModel(
     routines = routines.map { it.toModel() }
 )
 
-fun ChallengeRoutineDto.toModel() = ChallengeRoutineResponseModel(
+fun ChallengeCreateRoutineResponseDto.toModel() = ChallengeRoutineResponseModel(
     routineId = routineId,
     routineName = name,
     scheduledDate = scheduledDate,

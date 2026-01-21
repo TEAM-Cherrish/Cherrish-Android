@@ -1,4 +1,3 @@
-//ChallengeLoadingUiState.kt
 package com.cherrish.android.presentation.challenge.loading
 
 import androidx.compose.runtime.Immutable

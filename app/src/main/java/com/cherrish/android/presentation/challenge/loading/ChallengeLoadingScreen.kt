@@ -1,4 +1,3 @@
-//ChallengeLoadingScreen.kt
 package com.cherrish.android.presentation.challenge.loading
 
 import androidx.compose.foundation.Image
@@ -42,10 +41,9 @@ fun ChallengeLoadingRoute(
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
             is ChallengeLoadingSideEffect.NavigateToChallengeMission
-                -> navigateToChallengeMission(sideEffect.routineId, sideEffect.routines)
+            -> navigateToChallengeMission(sideEffect.routineId, sideEffect.routines)
         }
     }
-
 
     ChallengeLoadingScreen(
         paddingValues = paddingValues

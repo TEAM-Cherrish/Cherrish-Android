@@ -1,4 +1,3 @@
-//ChallengeRoutineViewModel.kt
 package com.cherrish.android.presentation.challenge.routine
 
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.cherrish.android.data.repository.ChallengeRepository
 import com.cherrish.android.presentation.challenge.ChallengeSideEffect
 import com.cherrish.android.presentation.challenge.routine.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +17,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeRoutineViewModel @Inject constructor(
-    private val challengeRepository: ChallengeRepository,
+    private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
     private val _uiState =
@@ -45,13 +44,12 @@ class ChallengeRoutineViewModel @Inject constructor(
                         ChallengeRoutineUiState(
                             routines = response
                                 .map { it.toUiModel() }
-                                .toPersistentList(),
+                                .toPersistentList()
                         )
                     )
                 }
         }
     }
-
 
     fun onRoutineClick(id: Int) {
         _uiState.updateSuccess { state ->
@@ -84,8 +82,4 @@ class ChallengeRoutineViewModel @Inject constructor(
     fun onBackClick() {}
 
     fun onCloseClick() {}
-
-    private companion object {
-        const val KEY_SELECTED_ROUTINE_ID = "challenge_routine_selected_id"
-    }
 }

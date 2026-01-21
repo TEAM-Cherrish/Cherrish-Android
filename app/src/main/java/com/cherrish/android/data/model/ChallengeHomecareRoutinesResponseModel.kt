@@ -1,4 +1,3 @@
-//ChallengeHomecareRoutinesResponseModel.kt
 package com.cherrish.android.data.model
 
 import com.cherrish.android.data.remote.dto.response.ChallengeHomecareRoutinesResponseDto
