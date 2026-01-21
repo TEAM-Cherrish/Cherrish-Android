@@ -2,10 +2,13 @@ package com.cherrish.android.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import com.cherrish.android.presentation.calendar.LocalCalendarEventBus
@@ -61,7 +64,10 @@ fun MainScreen(
                     navigateToHome = appState::navigateToHome
                 )
 
-                homeNavGraph(paddingValues = innerPadding)
+                homeNavGraph(
+                    paddingValues = innerPadding,
+                    navigateToCalendar = appState::navigateToCalendarSelected
+                )
 
                 calendarNavGraph(
                     paddingValues = innerPadding,

@@ -12,13 +12,13 @@ import java.time.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object Calendar : MainTabRoute
+data class Calendar(val date: String) : MainTabRoute
 
 @Serializable
 data class Procedure(val startDate: String)
 
-fun NavController.navigateToCalendar(navOptions: NavOptions? = null) =
-    navigate(Calendar, navOptions)
+fun NavController.navigateToCalendar(date: LocalDate? = LocalDate.now(), navOptions: NavOptions? = null) =
+    navigate(Calendar(date = date.toString()), navOptions)
 
 fun NavController.navigateToProcedure(startDate: LocalDate, navOptions: NavOptions? = null) =
     navigate(Procedure(startDate = startDate.toString()), navOptions)

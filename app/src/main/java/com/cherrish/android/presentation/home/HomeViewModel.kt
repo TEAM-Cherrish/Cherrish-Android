@@ -61,7 +61,7 @@ class HomeViewModel @Inject constructor(
     fun onUpcomingPlanClick(date: LocalDate) {
         viewModelScope.launch {
             _sideEffect.emit(
-                HomeSideEffect.NavigateToCalendar
+                HomeSideEffect.NavigateToCalendar(date = date)
             )
         }
     }
@@ -75,5 +75,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onAddPlanClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(
+                HomeSideEffect.NavigateToCalendar(date = LocalDate.now())
+            )
+        }
     }
 }
