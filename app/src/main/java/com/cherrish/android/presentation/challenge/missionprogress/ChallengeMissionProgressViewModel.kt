@@ -8,13 +8,13 @@ import com.cherrish.android.core.common.state.UiState
 import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeMissionProgressViewModel @Inject constructor(
@@ -67,9 +67,7 @@ class ChallengeMissionProgressViewModel @Inject constructor(
                 routines = state.routines.map { routine ->
                     if (routine.routineId == id) {
                         routine.copy(isCompleted = !routine.isCompleted)
-                    } else {
-                        routine
-                    }
+                    } else routine
                 }.toPersistentList()
             )
         }
@@ -80,32 +78,43 @@ class ChallengeMissionProgressViewModel @Inject constructor(
         }
     }
 
+    private var isPostingAdvanceDay = false
+
     fun onCompletedTodayClick() {
+        if (isPostingAdvanceDay) return
+
+        isPostingAdvanceDay = true
         viewModelScope.launch {
-            challengeMissionProgressRepository.postChallengeAdvanceDay()
-                .onSuccess { response ->
-                    _uiState.update {
-                        UiState.Success(
-                            ChallengeMissionProgressUiState(
-                                challengeId = response.challengeId,
-                                challengeName = response.title,
-                                currentDay = response.currentDay,
-                                progressPercentage = response.progressPercentage,
-                                cherryType = CherryType.entries.first {
-                                    it.step == response.cherryLevel
-                                },
-                                remainingCount = response.remainingRoutinesToNextLevel,
-                                routines = response.todayRoutines.map { routine ->
-                                    ChallengeRoutineUiModel(
-                                        routineId = routine.routineId,
-                                        routineName = routine.routineName,
-                                        isCompleted = routine.isCompleted
-                                    )
-                                }.toPersistentList()
+            try {
+                challengeMissionProgressRepository
+                    .postChallengeAdvanceDay()
+                    .onSuccess { response ->
+                        _uiState.update {
+                            UiState.Success(
+                                ChallengeMissionProgressUiState(
+                                    challengeId = response.challengeId,
+                                    challengeName = response.title,
+                                    currentDay = response.currentDay,
+                                    progressPercentage = response.progressPercentage,
+                                    cherryType = CherryType.entries.first {
+                                        it.step == response.cherryLevel
+                                    },
+                                    remainingCount = response.remainingRoutinesToNextLevel,
+                                    routines = response.todayRoutines.map { routine ->
+                                        ChallengeRoutineUiModel(
+                                            routineId = routine.routineId,
+                                            routineName = routine.routineName,
+                                            isCompleted = routine.isCompleted
+                                        )
+                                    }.toPersistentList()
+                                )
                             )
-                        )
+                        }
                     }
-                }
+                    .onLogFailure { }
+            } finally {
+                isPostingAdvanceDay = false
+            }
         }
     }
 }
