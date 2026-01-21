@@ -20,7 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
@@ -28,8 +27,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 @Composable
 fun ChallengeStartRoute(
     paddingValues: PaddingValues,
-    onNavigateToRoutine: () -> Unit,
-    viewModel: ChallengeStartViewModel = hiltViewModel()
+    onNavigateToRoutine: () -> Unit
 ) {
     ChallengeStartScreen(
         paddingValues = paddingValues,
@@ -46,8 +44,8 @@ private fun ChallengeStartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(paddingValues)
             .background(CherrishTheme.colors.gray0)
+            .padding(paddingValues)
             .padding(horizontal = 17.dp)
 
     ) {

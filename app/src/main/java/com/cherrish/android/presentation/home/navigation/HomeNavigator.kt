@@ -24,12 +24,13 @@ fun NavController.navigateToHome(
 
 fun NavGraphBuilder.homeNavGraph(
     paddingValues: PaddingValues,
+    navigateToChallengeStart: () -> Unit,
     navigateToCalendar: (LocalDate) -> Unit
 ) {
     composable<Home> {
         HomeRoute(
             paddingValues = paddingValues,
-            navigateToChallenge = {},
+            navigateToChallenge = navigateToChallengeStart,
             navigateToCalendar = navigateToCalendar
         )
     }

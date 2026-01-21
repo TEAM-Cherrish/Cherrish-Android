@@ -79,7 +79,8 @@ fun MainScreen(
 
                 homeNavGraph(
                     paddingValues = innerPadding,
-                    navigateToCalendar = appState::navigateToCalendarSelected
+                    navigateToCalendar = appState::navigateToCalendarSelected,
+                    navigateToChallengeStart = appState::navigateToChallengeStart
                 )
 
                 calendarNavGraph(
