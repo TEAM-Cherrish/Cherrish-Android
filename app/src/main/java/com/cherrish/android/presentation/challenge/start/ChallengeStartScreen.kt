@@ -46,9 +46,9 @@ private fun ChallengeStartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .padding(paddingValues)
             .background(CherrishTheme.colors.gray0)
             .padding(horizontal = 17.dp)
-            .padding(paddingValues)
 
     ) {
         Spacer(modifier = Modifier.weight(98f))

@@ -52,10 +52,6 @@ class ChallengeRoutineViewModel @Inject constructor(
                             )
                         )
                     }
-
-                    _uiState.updateSuccess { state ->
-                        state.copy(routines = routines)
-                    }
                 }
         }
     }
@@ -72,19 +68,16 @@ class ChallengeRoutineViewModel @Inject constructor(
     }
 
     fun onNextClick() {
-        var routineId: Int? = null
-        _uiState.updateSuccess { state ->
-            routineId = state.selectedRoutineId
-            state
-        }
-
-        routineId?.let { id ->
-            viewModelScope.launch {
-                _sideEffect.emit(
-                    ChallengeSideEffect.NavigateToChallengeLoading(
-                        routineId = id
+        val currentState = _uiState.value
+        if (currentState is UiState.Success) {
+            currentState.data.selectedRoutineId?.let { id ->
+                viewModelScope.launch {
+                    _sideEffect.emit(
+                        ChallengeSideEffect.NavigateToChallengeLoading(
+                            routineId = id
+                        )
                     )
-                )
+                }
             }
         }
     }
