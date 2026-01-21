@@ -108,8 +108,15 @@ class MainAppState(
             }
         }
 
+        val refreshNavOptions = navOptions {
+            popUpTo(0) {
+                inclusive = true
+            }
+            launchSingleTop
+        }
+
         when (tab) {
-            MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
+            MainTab.HOME -> navController.navigateToHome(navOptions = refreshNavOptions)
             MainTab.CALENDAR -> navController.navigateToCalendar(navOptions = navOptions)
             MainTab.MYPAGE -> navController.navigateToMyPage(navOptions = navOptions)
             MainTab.CHALLENGE -> {}
