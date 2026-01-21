@@ -121,7 +121,11 @@ class ProcedureViewModel @Inject constructor(
     fun onSearchAction(query: String) {
         val current = currentStateOrNull() ?: return
         val keyword = query.trim().takeIf { it.isNotEmpty() }
-        fetchProcedures(keyword = keyword, worryId = current.selectedWorryId)
+        fetchProcedures(
+            keyword = keyword,
+            worryId = current.selectedWorryId,
+            resetSelection = false
+        )
     }
 
     fun onDowntimeClick(procedureId: Long) {
@@ -228,21 +232,36 @@ class ProcedureViewModel @Inject constructor(
     fun onProcedureCardClick(cardId: Long) {
         _uiState.updateSuccess { current ->
             val currentList = current.selectedProcedureCardIds
+            val isSelected = cardId in currentList
+            val selectedItem = current.procedureItems.firstOrNull { it.id == cardId }
 
-            val newList = if (cardId in currentList) {
+            val newList = if (isSelected) {
                 currentList.filter { it != cardId }
             } else {
                 persistentListOf(cardId) + currentList
             }.toImmutableList()
 
-            val updatedMap = if (cardId !in newList) {
-                current.procedureDowntimeMap.filterKeys { it != cardId }
+            val baseSelectedItems = current.selectedProcedureItems
+                .filter { it.id != cardId }
+                .toImmutableList()
+
+            val updatedSelectedItems = if (isSelected) {
+                baseSelectedItems
             } else {
-                current.procedureDowntimeMap
+                val items = if (selectedItem == null) {
+                    baseSelectedItems
+                } else {
+                    (persistentListOf(selectedItem) + baseSelectedItems)
+                }
+                items.toImmutableList()
             }
+
+            val updatedMap = current.procedureDowntimeMap
+                .filterKeys { it in newList }
 
             current.copy(
                 selectedProcedureCardIds = newList,
+                selectedProcedureItems = updatedSelectedItems,
                 procedureDowntimeMap = updatedMap
             )
         }
@@ -273,6 +292,7 @@ class ProcedureViewModel @Inject constructor(
                     day = "",
                     selectedDowntime = null,
                     selectedProcedureCardIds = persistentListOf(),
+                    selectedProcedureItems = persistentListOf(),
                     procedureDowntimeMap = emptyMap()
                 )
             }
@@ -290,9 +310,18 @@ class ProcedureViewModel @Inject constructor(
                     }
                 }.toImmutableList()
 
+                val updatedSelectedItems = current.selectedProcedureItems.map { item ->
+                    if (item.id in current.selectedProcedureCardIds) {
+                        item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
+                    } else {
+                        item
+                    }
+                }.toImmutableList()
+
                 return@updateSuccess current.copy(
                     step = nextStep,
-                    procedureItems = updatedProcedureItems
+                    procedureItems = updatedProcedureItems,
+                    selectedProcedureItems = updatedSelectedItems
                 )
             }
 
@@ -341,9 +370,14 @@ class ProcedureViewModel @Inject constructor(
                             item.copy(displayMode = ProcedureCardDisplayMode.Basic)
                         }.toImmutableList()
 
+                        val updatedSelectedItems = current.selectedProcedureItems.map { item ->
+                            item.copy(displayMode = ProcedureCardDisplayMode.Basic)
+                        }.toImmutableList()
+
                         current.copy(
                             step = prevStepOrEntry.step,
                             procedureItems = updatedProcedureItems,
+                            selectedProcedureItems = updatedSelectedItems,
                             procedureDowntimeMap = emptyMap()
                         )
                     } else {
@@ -391,7 +425,11 @@ class ProcedureViewModel @Inject constructor(
     private fun currentStateOrNull(): ProcedureUiState? =
         (_uiState.value as? UiState.Success)?.data
 
-    private fun fetchProcedures(keyword: String?, worryId: Long?) {
+    private fun fetchProcedures(
+        keyword: String?,
+        worryId: Long?,
+        resetSelection: Boolean = true
+    ) {
         viewModelScope.launch {
             procedureRepository.getProcedures(keyword = keyword, worryId = worryId)
                 .onSuccess { response ->
@@ -400,12 +438,43 @@ class ProcedureViewModel @Inject constructor(
                         .toPersistentList()
 
                     _uiState.updateSuccess { current ->
+                        val selectedIds = if (resetSelection) {
+                            persistentListOf()
+                        } else {
+                            current.selectedProcedureCardIds
+                        }
+
+                        val refreshedSelectedItems = current.selectedProcedureItems.map { item ->
+                            items.firstOrNull { it.id == item.id } ?: item
+                        }.toImmutableList()
+
+                        val selectedItems = if (resetSelection) {
+                            persistentListOf()
+                        } else {
+                            refreshedSelectedItems
+                        }
+
+                        val updatedDowntimeMap = if (resetSelection) {
+                            emptyMap()
+                        } else {
+                            current.procedureDowntimeMap.filterKeys { it in selectedIds }
+                        }
+
                         current.copy(
                             procedureItems = items,
-                            selectedProcedureCardIds = persistentListOf(),
-                            procedureDowntimeMap = emptyMap(),
-                            selectedProcedureForDowntime = null,
-                            showDowntimeBottomSheet = false
+                            selectedProcedureCardIds = selectedIds,
+                            selectedProcedureItems = selectedItems,
+                            procedureDowntimeMap = updatedDowntimeMap,
+                            selectedProcedureForDowntime = if (resetSelection) {
+                                null
+                            } else {
+                                current.selectedProcedureForDowntime
+                            },
+                            showDowntimeBottomSheet = if (resetSelection) {
+                                false
+                            } else {
+                                current.showDowntimeBottomSheet
+                            }
                         )
                     }
                 }
@@ -441,6 +510,7 @@ private fun ProcedureUiState.toEntryState(): ProcedureUiState {
         day = "",
         selectedDowntime = null,
         selectedProcedureCardIds = persistentListOf(),
+        selectedProcedureItems = persistentListOf(),
         procedureDowntimeMap = emptyMap()
     )
 }
