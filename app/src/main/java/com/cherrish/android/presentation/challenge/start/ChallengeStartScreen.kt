@@ -68,7 +68,7 @@ private fun ChallengeStartScreen(
         Spacer(Modifier.weight(12f))
 
         CherrishButton(
-            text = "다음",
+            text = "챌린지 시작하기",
             onClick = onNextClick
         )
 
