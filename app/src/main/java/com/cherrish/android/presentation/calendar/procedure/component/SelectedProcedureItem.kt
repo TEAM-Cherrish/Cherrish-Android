@@ -80,7 +80,7 @@ private fun SelectedProcedureTitle(
         )
 
         Text(
-            text = "다운타임* $minDowntimeDays-$maxDowntimeDays",
+            text = "다운타임* $minDowntimeDays-${maxDowntimeDays}일",
             color = CherrishTheme.colors.gray700,
             style = CherrishTheme.typography.body1R14
         )
