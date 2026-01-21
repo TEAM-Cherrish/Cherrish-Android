@@ -17,7 +17,10 @@ data class Calendar(val date: String) : MainTabRoute
 @Serializable
 data class Procedure(val startDate: String)
 
-fun NavController.navigateToCalendar(date: LocalDate? = LocalDate.now(), navOptions: NavOptions? = null) =
+fun NavController.navigateToCalendar(
+    date: LocalDate? = LocalDate.now(),
+    navOptions: NavOptions? = null
+) =
     navigate(Calendar(date = date.toString()), navOptions)
 
 fun NavController.navigateToProcedure(startDate: LocalDate, navOptions: NavOptions? = null) =

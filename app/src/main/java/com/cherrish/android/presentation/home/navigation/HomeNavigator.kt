@@ -7,8 +7,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.cherrish.android.core.common.navigation.MainTabRoute
 import com.cherrish.android.presentation.home.HomeRoute
-import kotlinx.serialization.Serializable
 import java.time.LocalDate
+import kotlinx.serialization.Serializable
 
 @Serializable
 data object Home : MainTabRoute
