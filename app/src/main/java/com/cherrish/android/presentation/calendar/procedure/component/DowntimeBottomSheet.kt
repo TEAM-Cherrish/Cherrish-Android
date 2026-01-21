@@ -83,9 +83,9 @@ fun DowntimeBottomSheet(
         ) {
             val downtimeGuideBubbleText = when {
                 downtimeDay == 0 -> "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
-                validationType == DowntimeValidationType.INVALID -> ""
                 validationType == DowntimeValidationType.VALID ->
                     "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
+                validationType == DowntimeValidationType.INVALID -> ""
                 else -> "설정한 다운타임은 목표일을 넘깁니다."
             }
 
