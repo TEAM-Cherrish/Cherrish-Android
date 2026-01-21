@@ -10,7 +10,6 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorryUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
-import com.cherrish.android.presentation.calendar.procedure.util.DowntimeDayLogic
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -229,15 +228,15 @@ data class ProcedureUiState(
     val downtimeValidationType: DowntimeValidationType
         get() {
             if (downtimePickerValue == 0) {
-                return DowntimeValidationType.EXCEEDS_GOAL
+                return DowntimeValidationType.INVALID
             }
             val target = targetDate ?: return DowntimeValidationType.INVALID
-            val logic = DowntimeDayLogic(
-                startDay = startDay,
-                endDay = target,
-                downtimeDay = downtimePickerValue
-            )
-            return logic.downtimeValidationType
+            val diffDays = ChronoUnit.DAYS.between(startDay, target).toInt()
+            return if (diffDays - downtimePickerValue <= 0) {
+                DowntimeValidationType.EXCEEDS_GOAL
+            } else {
+                DowntimeValidationType.VALID
+            }
         }
 
     val downtimeStartDay: String
