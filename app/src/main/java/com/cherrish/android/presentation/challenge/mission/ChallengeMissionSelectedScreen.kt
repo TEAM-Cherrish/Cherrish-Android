@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun ChallengeMissionSelectedRoute(
-    paddingValues: PaddingValues,
+    navigateToChallengeRoutine: () -> Unit,
     navigateToChallengeMissionProgress: () -> Unit,
     viewModel: ChallengeMissionViewModel = hiltViewModel()
 ) {
@@ -41,6 +41,8 @@ fun ChallengeMissionSelectedRoute(
         when (sideEffect) {
             ChallengeMissionSideEffect.NavigateToChallengeMissionProgress ->
                 navigateToChallengeMissionProgress()
+            ChallengeMissionSideEffect.NavigateToChallengeRoutine ->
+                navigateToChallengeRoutine()
         }
     }
 
@@ -52,7 +54,6 @@ fun ChallengeMissionSelectedRoute(
         is UiState.Success -> {
             ChallengeMissionSelectedScreen(
                 uiState = state.data,
-                paddingValues = paddingValues,
                 onBackClick = viewModel::onBackClick,
                 onCloseClick = viewModel::onCloseClick,
                 onMissionClick = viewModel::onTodoMissionClick,
@@ -65,7 +66,6 @@ fun ChallengeMissionSelectedRoute(
 
 @Composable
 private fun ChallengeMissionSelectedScreen(
-    paddingValues: PaddingValues,
     uiState: ChallengeMissionUiState,
     onMissionClick: (Long) -> Unit,
     onAddTodoClick: () -> Unit,
@@ -147,7 +147,6 @@ private fun ChallengeMissionSelectedScreenPreview() {
     }
 
     ChallengeMissionSelectedScreen(
-        paddingValues = PaddingValues(),
         uiState = uiState,
         onMissionClick = { clickedId ->
             uiState = uiState.copy(

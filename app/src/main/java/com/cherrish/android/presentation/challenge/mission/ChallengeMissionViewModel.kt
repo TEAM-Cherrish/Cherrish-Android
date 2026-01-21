@@ -97,7 +97,15 @@ class ChallengeMissionViewModel @Inject constructor(
         }
     }
 
-    fun onBackClick() {}
+    fun onBackClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(ChallengeMissionSideEffect.NavigateToChallengeRoutine)
+        }
+    }
 
-    fun onCloseClick() {}
+    fun onCloseClick() {
+        viewModelScope.launch {
+            _sideEffect.emit(ChallengeMissionSideEffect.NavigateToChallengeRoutine)
+        }
+    }
 }

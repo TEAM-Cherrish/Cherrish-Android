@@ -113,14 +113,16 @@ fun NavGraphBuilder.challengeNavGraph(
     composable<ChallengeLoading> {
         ChallengeLoadingRoute(
             navigateToChallengeMission = navigateToChallengeMission,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            navigateUp = navigateUp
         )
     }
 
     composable<ChallengeMission> {
         ChallengeMissionSelectedRoute(
             paddingValues = paddingValues,
-            navigateToChallengeMissionProgress = navigateToChallengeMissionProgress
+            navigateToChallengeMissionProgress = navigateToChallengeMissionProgress,
+            navigateToChallengeRoutine = navigateToChallengeRoutine
         )
     }
 

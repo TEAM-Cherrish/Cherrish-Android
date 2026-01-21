@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
+import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
 fun ChallengeLoadingRoute(
+    navigateUp: () -> Unit,
     navigateToChallengeMission: (Int, List<String>) -> Unit,
     paddingValues: PaddingValues,
     viewModel: ChallengeLoadingViewModel = hiltViewModel()
@@ -46,13 +48,15 @@ fun ChallengeLoadingRoute(
     }
 
     ChallengeLoadingScreen(
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
+        onClick = navigateUp
     )
 }
 
 @Composable
 private fun ChallengeLoadingScreen(
     paddingValues: PaddingValues,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -69,10 +73,11 @@ private fun ChallengeLoadingScreen(
         Icon(
             modifier = Modifier
                 .align(Alignment.Start)
+                .noRippleClickable(onClick = onClick)
                 .padding(10.dp),
             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
             contentDescription = null,
-            tint = CherrishTheme.colors.gray1000
+            tint = CherrishTheme.colors.gray1000,
         )
 
         Spacer(modifier = Modifier.weight(84f))
@@ -132,7 +137,8 @@ private fun ChallengeLoadingScreen(
 private fun ChallengeLoadingScreenPreview() {
     CherrishTheme {
         ChallengeLoadingScreen(
-            paddingValues = PaddingValues()
+            paddingValues = PaddingValues(0.dp),
+            onClick = {}
         )
     }
 }
