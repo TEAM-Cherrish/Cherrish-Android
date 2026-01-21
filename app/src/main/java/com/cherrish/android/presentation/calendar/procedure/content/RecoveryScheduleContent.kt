@@ -72,7 +72,7 @@ fun RecoveryScheduleContent(
                     onYearChange = onYearChange,
                     onMonthChange = onMonthChange,
                     onDayChange = onDayChange,
-                    onDone = { focusManager.clearFocus() },
+                    onDone = { focusManager.clearFocus(force = true) },
                     onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) }
                 )
 
