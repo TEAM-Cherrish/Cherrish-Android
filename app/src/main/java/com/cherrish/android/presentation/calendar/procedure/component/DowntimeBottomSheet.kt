@@ -1,7 +1,7 @@
 package com.cherrish.android.presentation.calendar.procedure.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,7 +20,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -39,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
-import com.cherrish.android.core.common.extension.dropShadow
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.core.designsystem.type.CherrishButtonStyle
@@ -47,6 +44,7 @@ import com.cherrish.android.core.util.rememberFixedDpFontSize
 import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,8 +54,10 @@ fun DowntimeBottomSheet(
     validationType: DowntimeValidationType,
     downtimeDay: Int,
     spareTimeDay: Int,
-    downtimeStartDay: String,
-    downtimeEndDay: String,
+    downtimeStartMonth: Int,
+    downtimeStartDay: Int,
+    downtimeEndMonth: Int,
+    downtimeEndDay: Int,
     state: LazyListState,
     onAddWithoutDowntimeClick: () -> Unit,
     onConfirmClick: () -> Unit,
@@ -85,6 +85,7 @@ fun DowntimeBottomSheet(
                 downtimeDay == 0 -> "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
                 validationType == DowntimeValidationType.VALID ->
                     "회복 목표디데이로부터 약 ${spareTimeDay}일 전에 안정될 수 있어요."
+
                 validationType == DowntimeValidationType.INVALID -> ""
                 else -> "설정한 다운타임은 목표일을 넘깁니다."
             }
@@ -96,13 +97,15 @@ fun DowntimeBottomSheet(
             ) {
                 DowntimeHeader()
 
-                Spacer(modifier = Modifier.height(44.dp))
+                Spacer(modifier = Modifier.height(34.dp))
 
                 DowntimeProgressBarSection(
                     downtimeGuideBubbleText = downtimeGuideBubbleText,
                     downtimeDay = downtimeDay,
                     spareTimeDay = spareTimeDay,
+                    downtimeStartMonth = downtimeStartMonth,
                     downtimeStartDay = downtimeStartDay,
+                    downtimeEndMonth = downtimeEndMonth,
                     downtimeEndDay = downtimeEndDay
                 )
 
@@ -160,8 +163,10 @@ private fun DowntimeProgressBarSection(
     downtimeGuideBubbleText: String,
     downtimeDay: Int,
     spareTimeDay: Int,
-    downtimeStartDay: String,
-    downtimeEndDay: String,
+    downtimeStartMonth: Int,
+    downtimeStartDay: Int,
+    downtimeEndMonth: Int,
+    downtimeEndDay: Int,
     modifier: Modifier = Modifier
 ) {
     val downtimeWeight by remember(downtimeDay, spareTimeDay) {
@@ -176,16 +181,16 @@ private fun DowntimeProgressBarSection(
     }
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         DowntimeGuideBubble(text = downtimeGuideBubbleText)
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
         ) {
             Text(
                 text = "다운타임 ${downtimeDay}일",
@@ -206,22 +211,27 @@ private fun DowntimeProgressBarSection(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DowntimeProgressBar(downtimeWeight = downtimeWeight)
+        DowntimeProgressBar(
+            downtimeWeight = downtimeWeight,
+            modifier = Modifier.padding(horizontal = 24.dp)
+        )
 
         Spacer(modifier = Modifier.height(4.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = downtimeStartDay,
+                text = "${downtimeStartMonth}월 ${downtimeStartDay}일",
                 color = CherrishTheme.colors.gray700,
                 style = CherrishTheme.typography.body2R13
             )
 
             Text(
-                text = downtimeEndDay,
+                text = "${downtimeEndMonth}월 ${downtimeEndDay}일",
                 color = CherrishTheme.colors.gray700,
                 style = CherrishTheme.typography.body2R13
             )
@@ -234,42 +244,23 @@ private fun DowntimeGuideBubble(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
+    Box() {
+        Image(
+            painter = painterResource(id = R.drawable.img_bottomsheet_bubble_speech),
+            contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .dropShadow(
-                    shape = RoundedCornerShape(8.dp),
-                    color = CherrishTheme.colors.shadow,
-                    blur = 10.dp,
-                    offsetX = 0.dp,
-                    offsetY = 0.dp
-                )
-                .clip(shape = RoundedCornerShape(10.dp))
-                .background(CherrishTheme.colors.gray0)
-                .border(
-                    width = 1.dp,
-                    color = CherrishTheme.colors.gray200,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(vertical = 12.dp),
+                .padding(horizontal = 15.dp)
+        )
+
+        Text(
             text = text,
             style = CherrishTheme.typography.body1R14,
             color = CherrishTheme.colors.gray1000,
-            textAlign = TextAlign.Center
-        )
-
-        Icon(
-            painter = painterResource(R.drawable.ic_tooltip_arrow),
-            contentDescription = null,
-            tint = CherrishTheme.colors.gray0,
+            textAlign = TextAlign.Center,
             modifier = Modifier
-                .offset(y = (-5).dp)
-                .padding(end = 45.dp)
-                .align(Alignment.End)
+                .fillMaxWidth()
+                .padding(top = 25.dp)
         )
     }
 }
@@ -487,8 +478,10 @@ private fun Preview() {
             validationType = DowntimeValidationType.VALID,
             downtimeDay = 10,
             spareTimeDay = 15,
-            downtimeStartDay = "2023.08.01",
-            downtimeEndDay = "2023.08.1",
+            downtimeStartMonth = 1,
+            downtimeStartDay = 2,
+            downtimeEndDay = 2,
+            downtimeEndMonth = 1,
             scrimColor = CherrishTheme.colors.gray400,
             state = state,
             onAddWithoutDowntimeClick = {},
