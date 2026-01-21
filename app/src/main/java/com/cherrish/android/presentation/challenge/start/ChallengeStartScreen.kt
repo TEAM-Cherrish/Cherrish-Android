@@ -1,3 +1,4 @@
+//ChallengeStartScreen.kt
 package com.cherrish.android.presentation.challenge.start
 
 import androidx.compose.foundation.Image
@@ -27,12 +28,12 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 @Composable
 fun ChallengeStartRoute(
     paddingValues: PaddingValues,
+    onNavigateToRoutine: () -> Unit,
     viewModel: ChallengeStartViewModel = hiltViewModel()
-
 ) {
     ChallengeStartScreen(
         paddingValues = paddingValues,
-        onNextClick = viewModel::onNextClick
+        onNextClick = onNavigateToRoutine
     )
 }
 
