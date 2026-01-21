@@ -23,12 +23,12 @@ import com.cherrish.android.presentation.mypage.navigation.navigateToMyPage
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboarding
 import com.cherrish.android.presentation.onboarding.navigation.navigateToOnboardingInformation
 import com.cherrish.android.presentation.splash.navigation.Splash
+import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
 
 @Stable
 class MainAppState(
@@ -172,7 +172,7 @@ class MainAppState(
 
     fun navigateToChallengeMission(
         routineId: Int,
-        routines: List<String>,
+        routines: List<String>
     ) {
         navController.navigateToChallengeMission(
             routineId = routineId,
