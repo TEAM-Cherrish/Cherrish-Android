@@ -121,7 +121,9 @@ class ChallengeMissionProgressViewModel @Inject constructor(
                     }
                     .onLogFailure { e ->
                         if (e is retrofit2.HttpException && e.code() == 404) {
-                            _sideEffect.emit(ChallengeMissionProgressSideEffect.NavigateToChallengeStart)
+                            _sideEffect.emit(
+                                ChallengeMissionProgressSideEffect.NavigateToChallengeStart
+                            )
                         }
                     }
             } finally {
