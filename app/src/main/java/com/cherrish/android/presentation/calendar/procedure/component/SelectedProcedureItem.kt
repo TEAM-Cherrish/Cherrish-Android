@@ -79,13 +79,12 @@ private fun SelectedProcedureTitle(
             style = CherrishTheme.typography.body2R13
         )
 
-        val downtimeText = if (minDowntimeDays == 0 && maxDowntimeDays == 0) {
-            "다운타임* 0일"
-        } else {
-            "다운타임* $minDowntimeDays-${maxDowntimeDays}일"
-        }
         Text(
-            text = downtimeText,
+            text = if (maxDowntimeDays == 0 && minDowntimeDays == 0) {
+                "다운타임* 0일"
+            } else {
+                "다운타임* $minDowntimeDays-${maxDowntimeDays}일"
+            },
             color = CherrishTheme.colors.gray700,
             style = CherrishTheme.typography.body1R14
         )

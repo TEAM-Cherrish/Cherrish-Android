@@ -61,7 +61,8 @@ fun ProcedureTextField(
                         color = CherrishTheme.colors.gray200,
                         shape = RoundedCornerShape(30.dp)
                     )
-                    .padding(horizontal = 13.dp, vertical = 8.dp)
+                    .padding(horizontal = 13.dp, vertical = 8.dp),
+                contentAlignment = Alignment.CenterStart
             ) {
                 if (value.isEmpty()) {
                     Text(

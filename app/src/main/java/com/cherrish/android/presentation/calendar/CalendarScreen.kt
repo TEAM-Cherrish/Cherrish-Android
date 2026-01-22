@@ -77,7 +77,7 @@ private fun CalendarScreen(
             .fillMaxSize()
             .background(color = CherrishTheme.colors.gray100)
             .padding(paddingValues)
-            .padding(top = 18.dp, bottom = 26.dp),
+            .padding(top = 40.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
