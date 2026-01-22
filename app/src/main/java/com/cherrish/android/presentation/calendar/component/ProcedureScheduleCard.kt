@@ -70,8 +70,7 @@ fun ProcedureScheduleCard(
             EmptyCardView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .padding(top = 50.dp, bottom = 24.dp),
+                    .padding(horizontal = 24.dp),
                 onClick = onAddProcedureClick
             )
         } else {
@@ -99,7 +98,8 @@ fun ProcedureScheduleCard(
 
                     LazyColumn(
                         state = listState,
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(1f)
                     ) {
                         items(
                             items = procedureInfo,
@@ -252,11 +252,14 @@ private fun EmptyCardView(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(50f))
+
         Image(
             painter = painterResource(id = R.drawable.img_calendar_empty_view),
             contentDescription = null,
             modifier = Modifier.padding(8.dp)
         )
+        Spacer(modifier = Modifier.weight(8f))
 
         Text(
             text = "오늘 예정된 일정이 없어요.",
@@ -264,11 +267,13 @@ private fun EmptyCardView(
             style = CherrishTheme.typography.body1R14
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.weight(40f))
 
         AddProcedureButton(
             onClick = onClick
         )
+
+        Spacer(modifier = Modifier.weight(24f))
     }
 }
 
