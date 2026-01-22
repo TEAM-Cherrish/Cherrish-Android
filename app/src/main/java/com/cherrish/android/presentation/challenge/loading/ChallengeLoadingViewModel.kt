@@ -26,7 +26,9 @@ class ChallengeLoadingViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository,
     saveStatedHandle: SavedStateHandle
 ) : ViewModel() {
-    private val routineIdArg = saveStatedHandle.toRoute<ChallengeLoading>().routineId
+    private val challengeLoadingArgs = saveStatedHandle.toRoute<ChallengeLoading>()
+    private val routineIdArg = challengeLoadingArgs.routineId
+    val routineName: String = challengeLoadingArgs.routineName
 
     private val _uiState =
         MutableStateFlow<UiState<ChallengeLoadingUiState>>(UiState.Loading)
