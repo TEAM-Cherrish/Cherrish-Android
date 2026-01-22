@@ -21,11 +21,12 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             val id = tokenManager.getId()
             _sideEffect.emit(
-                if (id != null) {
-                    SplashSideEffect.NavigateToHome
-                } else {
-                    SplashSideEffect.NavigateToOnboarding
-                }
+                SplashSideEffect.NavigateToOnboarding
+//                if (id != null) {
+//                    SplashSideEffect.NavigateToHome
+//                } else {
+//                    SplashSideEffect.NavigateToOnboarding
+//                }
             )
         }
     }
