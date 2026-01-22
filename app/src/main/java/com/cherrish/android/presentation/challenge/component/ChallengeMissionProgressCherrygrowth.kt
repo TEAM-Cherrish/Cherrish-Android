@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,
-    remainingRoutines: Int,
+    remainingGuideText: String,
     challengeProgress: Int,
     modifier: Modifier = Modifier
 ) {
@@ -71,7 +71,7 @@ fun ChallengeMissionProgressCherrygrowth(
         )
 
         Text(
-            text = "체리가 크려면 ${remainingRoutines}개의 미션을 수행해야 해요!",
+            text = remainingGuideText,
             color = CherrishTheme.colors.gray800,
             style = CherrishTheme.typography.body2R13
         )
@@ -171,10 +171,15 @@ private fun ChallengeMissionProgressCherrygrowthPreview() {
                 Triple(first = CherryType.KKUKKU, second = 0, third = 100)
             )
         ) { (type, remain, progress) ->
-
+            val remainingGuide =
+                if (type == CherryType.KKUKKU) {
+                    "챌린지 완료까지 ${remain}개의 미션을 수행해야 해요!"
+                } else {
+                    "체리가 크려면 ${remain}개의 미션을 수행해야 해요!"
+                }
             ChallengeMissionProgressCherrygrowth(
                 cherryType = type,
-                remainingRoutines = remain,
+                remainingGuideText = remainingGuide,
                 challengeProgress = progress
             )
 
