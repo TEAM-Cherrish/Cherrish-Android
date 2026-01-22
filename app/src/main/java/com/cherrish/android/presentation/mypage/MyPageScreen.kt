@@ -72,7 +72,7 @@ private fun MyPageScreen(
         )
 
         HorizontalDivider(
-            color = CherrishTheme.colors.gray100,
+            color = CherrishTheme.colors.gray200,
             thickness = 10.dp
         )
 
@@ -94,7 +94,7 @@ private fun MyPageScreen(
         Spacer(Modifier.weight(weight = 120f))
 
         HorizontalDivider(
-            color = CherrishTheme.colors.gray100,
+            color = CherrishTheme.colors.gray200,
             thickness = 10.dp
         )
     }
