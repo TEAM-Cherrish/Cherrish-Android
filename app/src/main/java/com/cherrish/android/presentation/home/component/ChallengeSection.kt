@@ -40,15 +40,17 @@ fun ChallengeSection(
     gauges: ImmutableList<CherrishGaugeType>,
     modifier: Modifier = Modifier,
     currentStep: Int = 0,
-    @DrawableRes imageRes: Int? = R.drawable.img_challenge_lv2,
+    @DrawableRes imageRes: Int? = R.drawable.img_challenge_lv1,
     onChallengeStartClick: () -> Unit = {},
     challengeName: String? = "웰니스 • 마음챙김",
     challengeRate: Int = 0
 ) {
+    val hasChallenge = !challengeName.isNullOrBlank()
+
     Box(
         modifier = modifier.fillMaxWidth()
     ) {
-        if (currentStep != 0 && imageRes != null) {
+        if (hasChallenge && imageRes != null) {
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
@@ -71,9 +73,9 @@ fun ChallengeSection(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            if (currentStep == 0) {
+            if (!hasChallenge) {
                 NoChallenge(
-                    currentStep = currentStep,
+                    currentStep = 0,
                     gauges = gauges,
                     onChallengeStartClick = onChallengeStartClick
                 )
@@ -97,8 +99,6 @@ private fun Challenge(
     challengeRate: Int,
     modifier: Modifier = Modifier
 ) {
-    val safeStep = currentStep.coerceIn(1, gauges.size)
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -139,7 +139,7 @@ private fun Challenge(
         Spacer(modifier = Modifier.height(16.dp))
 
         CherrishGaugeBar(
-            currentStep = safeStep,
+            currentStep = currentStep,
             gauges = gauges
         )
     }

@@ -98,26 +98,34 @@ class ChallengeMissionProgressViewModel @Inject constructor(
 }
 
 private fun ChallengeMissionProgressResponseModel.toUiState(): ChallengeMissionProgressUiState {
-    val cherryType = CherryType.entries.first { it.step == cherryLevel }
+    val gaugeStep = cherryLevel.coerceIn(0, 4)
+
+    val stepForCherry = when (cherryLevel) {
+        0, 1 -> 1
+        else -> cherryLevel
+    }
+
+    val cherryType = CherryType.entries.firstOrNull { it.step == stepForCherry }
+        ?: CherryType.MONGRONG
+
     val isMaxLevel = cherryType == CherryType.KKUKKU
+
     val remainingText = if (isMaxLevel) {
         "챌린지 완료까지 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
     } else {
         "체리가 크려면 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
     }
-    val completeButtonText = if (isMaxLevel) {
-        "챌린지 완료하기"
-    } else {
-        "오늘 미션 종료하기"
-    }
+
+    val completeButtonText = if (isMaxLevel) "챌린지 종료하기" else "오늘 미션 종료하기"
 
     return ChallengeMissionProgressUiState(
         challengeId = challengeId,
         challengeName = title,
         currentDay = currentDay,
-        progressPercentage = progressPercentage,
         cherryType = cherryType,
+        gaugeStep = gaugeStep,
         remainingCount = remainingRoutinesToNextLevel,
+        progressPercentage = progressPercentage,
         routines = todayRoutines.map { routine ->
             ChallengeRoutineUiModel(
                 routineId = routine.routineId,

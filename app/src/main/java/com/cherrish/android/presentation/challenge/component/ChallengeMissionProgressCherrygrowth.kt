@@ -31,6 +31,7 @@ import kotlinx.collections.immutable.toImmutableList
 @Composable
 fun ChallengeMissionProgressCherrygrowth(
     cherryType: CherryType,
+    gaugeStep: Int,
     remainingGuideText: String,
     challengeProgress: Int,
     modifier: Modifier = Modifier
@@ -86,7 +87,7 @@ fun ChallengeMissionProgressCherrygrowth(
 
         CherryGrowthProgressSection(
             challengeProgress = challengeProgress,
-            cherryType = cherryType,
+            gaugeStep = gaugeStep,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 18.dp)
@@ -121,7 +122,7 @@ private fun CherryGrowthSection(
 @Composable
 private fun CherryGrowthProgressSection(
     challengeProgress: Int,
-    cherryType: CherryType,
+    gaugeStep: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -147,7 +148,7 @@ private fun CherryGrowthProgressSection(
         }
 
         CherrishGaugeBar(
-            currentStep = cherryType.step,
+            currentStep = gaugeStep,
             gauges = CherrishGaugeType.entries.toImmutableList()
 
         )
@@ -179,6 +180,7 @@ private fun ChallengeMissionProgressCherrygrowthPreview() {
                 }
             ChallengeMissionProgressCherrygrowth(
                 cherryType = type,
+                gaugeStep = 0,
                 remainingGuideText = remainingGuide,
                 challengeProgress = progress
             )

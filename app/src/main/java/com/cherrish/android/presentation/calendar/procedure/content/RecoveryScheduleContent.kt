@@ -23,7 +23,11 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.changedToUp
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -53,8 +57,23 @@ fun RecoveryScheduleContent(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val focusManager = LocalFocusManager.current
     val hasSelection = selectedIndex != null && selectedIndex >= 0
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.pointerInput(focusManager) {
+            awaitPointerEventScope {
+                while (true) {
+                    val event = awaitPointerEvent(PointerEventPass.Final)
+                    val isTapUp = event.changes.any { it.changedToUp() }
+                    val isConsumed = event.changes.any { it.isConsumed }
+                    if (isTapUp && !isConsumed) {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                }
+            }
+        }
+    ) {
         SelectionSection(
             title = "회복을 계획할 때 고려해야 할\n중요한 일정이 있나요?",
             items = persistentListOf("아직 없어요", "네, 있어요"),

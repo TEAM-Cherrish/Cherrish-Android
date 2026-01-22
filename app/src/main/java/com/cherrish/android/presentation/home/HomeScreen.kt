@@ -43,6 +43,7 @@ fun HomeRoute(
             is HomeSideEffect.NavigateToChallenge -> {
                 navigateToChallenge()
             }
+
             is HomeSideEffect.NavigateToCalendar -> {
                 navigateToCalendar(sideEffect.date)
             }
