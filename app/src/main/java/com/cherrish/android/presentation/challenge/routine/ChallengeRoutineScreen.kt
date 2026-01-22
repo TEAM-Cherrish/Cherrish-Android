@@ -35,7 +35,7 @@ fun ChallengeRoutineRoute(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
-    navigateToChallengeLoading: (Int) -> Unit,
+    navigateToChallengeLoading: (Int, String) -> Unit,
     viewModel: ChallengeRoutineViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -43,7 +43,10 @@ fun ChallengeRoutineRoute(
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
             is ChallengeSideEffect.NavigateToChallengeLoading ->
-                navigateToChallengeLoading(sideEffect.routineId)
+                navigateToChallengeLoading(
+                    sideEffect.routineId,
+                    sideEffect.routineName
+                )
         }
     }
     when (val state = uiState) {

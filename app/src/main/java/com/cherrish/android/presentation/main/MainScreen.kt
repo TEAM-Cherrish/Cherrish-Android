@@ -99,8 +99,11 @@ fun MainScreen(
                             routines = routines
                         )
                     },
-                    navigateToChallengeLoading = { routineId ->
-                        appState.navigateToChallengeLoading(routineId = routineId)
+                    navigateToChallengeLoading = { routineId, routineName ->
+                        appState.navigateToChallengeLoading(
+                            routineId = routineId,
+                            routineName = routineName
+                        )
                     },
                     navigateToChallengeMissionProgress =
                     appState::navigateToChallengeMissionProgress,

@@ -22,7 +22,8 @@ data object ChallengeRoutine : Route
 
 @Serializable
 data class ChallengeLoading(
-    val routineId: Int
+    val routineId: Int,
+    val routineName: String
 ) : Route
 
 @Serializable
@@ -54,10 +55,14 @@ fun NavController.navigateToChallengeRoutine(
 
 fun NavController.navigateToChallengeLoading(
     routineId: Int,
+    routineName: String,
     navOptions: NavOptions? = null
 ) {
     navigate(
-        route = ChallengeLoading(routineId = routineId),
+        route = ChallengeLoading(
+            routineId = routineId,
+            routineName = routineName
+        ),
         navOptions = navOptions
     )
 }
@@ -89,7 +94,7 @@ fun NavGraphBuilder.challengeNavGraph(
     paddingValues: PaddingValues,
     navigateToChallengeRoutine: () -> Unit,
     navigateToChallengeMission: (Int, List<String>) -> Unit,
-    navigateToChallengeLoading: (Int) -> Unit,
+    navigateToChallengeLoading: (Int, String) -> Unit,
     navigateToChallengeMissionProgress: () -> Unit,
     navigateToChallengeStart: () -> Unit,
     navigateUp: () -> Unit
