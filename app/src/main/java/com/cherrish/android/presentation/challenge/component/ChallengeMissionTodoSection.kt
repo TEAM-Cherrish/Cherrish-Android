@@ -31,6 +31,7 @@ fun ChallengeMissionTodoSection(
     currentDay: Int,
     onRoutineClick: (Long) -> Unit,
     onCompleteClick: () -> Unit,
+    completeButtonText: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -61,7 +62,7 @@ fun ChallengeMissionTodoSection(
         )
 
         CherrishButton(
-            text = "오늘 미션 종료하기",
+            text = completeButtonText,
             onClick = onCompleteClick,
 
             modifier = Modifier
@@ -152,6 +153,7 @@ private fun ChallengeMissionTodoSectionPreview() {
                 .toImmutableList()
         },
         onCompleteClick = {},
+        completeButtonText = "오늘 미션 종료하기",
         modifier = Modifier.padding(20.dp)
     )
 }

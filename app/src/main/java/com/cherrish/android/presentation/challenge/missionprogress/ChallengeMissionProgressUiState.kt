@@ -12,6 +12,8 @@ data class ChallengeMissionProgressUiState(
     val cherryType: CherryType,
     val remainingCount: Int,
     val progressPercentage: Int,
-    val routines: ImmutableList<ChallengeRoutineUiModel>
+    val routines: ImmutableList<ChallengeRoutineUiModel>,
+    val remainingGuideText: String,
+    val completeButtonText: String
 
 )

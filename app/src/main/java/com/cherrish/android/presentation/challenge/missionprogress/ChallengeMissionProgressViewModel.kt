@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
 import com.cherrish.android.core.common.extension.updateSuccess
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.data.model.ChallengeMissionProgressResponseModel
 import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
 import com.cherrish.android.presentation.challenge.missionprogress.model.ChallengeRoutineUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,26 +43,7 @@ class ChallengeMissionProgressViewModel @Inject constructor(
 
             challengeMissionProgressRepository.getChallengeMissions().onSuccess { response ->
                 _uiState.update {
-                    UiState.Success(
-                        ChallengeMissionProgressUiState(
-                            challengeId = response.challengeId,
-                            challengeName = response.title,
-                            currentDay = response.currentDay,
-                            progressPercentage = response.progressPercentage,
-                            cherryType = CherryType.entries.first {
-                                it.step == response.cherryLevel
-                            },
-                            remainingCount = response.remainingRoutinesToNextLevel,
-                            routines = response.todayRoutines.map { routine ->
-                                ChallengeRoutineUiModel(
-                                    routineId = routine.routineId,
-                                    routineName = routine.routineName,
-                                    isCompleted = routine.isCompleted
-                                )
-                            }
-                                .toPersistentList()
-                        )
-                    )
+                    UiState.Success(response.toUiState())
                 }
             }.onLogFailure {}
         }
@@ -98,25 +80,7 @@ class ChallengeMissionProgressViewModel @Inject constructor(
                     .postChallengeAdvanceDay()
                     .onSuccess { response ->
                         _uiState.update {
-                            UiState.Success(
-                                ChallengeMissionProgressUiState(
-                                    challengeId = response.challengeId,
-                                    challengeName = response.title,
-                                    currentDay = response.currentDay,
-                                    progressPercentage = response.progressPercentage,
-                                    cherryType = CherryType.entries.first {
-                                        it.step == response.cherryLevel
-                                    },
-                                    remainingCount = response.remainingRoutinesToNextLevel,
-                                    routines = response.todayRoutines.map { routine ->
-                                        ChallengeRoutineUiModel(
-                                            routineId = routine.routineId,
-                                            routineName = routine.routineName,
-                                            isCompleted = routine.isCompleted
-                                        )
-                                    }.toPersistentList()
-                                )
-                            )
+                            UiState.Success(response.toUiState())
                         }
                     }
                     .onLogFailure { e ->
@@ -131,6 +95,39 @@ class ChallengeMissionProgressViewModel @Inject constructor(
             }
         }
     }
+}
+
+private fun ChallengeMissionProgressResponseModel.toUiState(): ChallengeMissionProgressUiState {
+    val cherryType = CherryType.entries.first { it.step == cherryLevel }
+    val isMaxLevel = cherryType == CherryType.KKUKKU
+    val remainingText = if (isMaxLevel) {
+        "챌린지 완료까지 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
+    } else {
+        "체리가 크려면 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
+    }
+    val completeButtonText = if (isMaxLevel) {
+        "챌린지 완료하기"
+    } else {
+        "오늘 미션 종료하기"
+    }
+
+    return ChallengeMissionProgressUiState(
+        challengeId = challengeId,
+        challengeName = title,
+        currentDay = currentDay,
+        progressPercentage = progressPercentage,
+        cherryType = cherryType,
+        remainingCount = remainingRoutinesToNextLevel,
+        routines = todayRoutines.map { routine ->
+            ChallengeRoutineUiModel(
+                routineId = routine.routineId,
+                routineName = routine.routineName,
+                isCompleted = routine.isCompleted
+            )
+        }.toPersistentList(),
+        remainingGuideText = remainingText,
+        completeButtonText = completeButtonText
+    )
 }
 
 sealed interface ChallengeMissionProgressSideEffect {
