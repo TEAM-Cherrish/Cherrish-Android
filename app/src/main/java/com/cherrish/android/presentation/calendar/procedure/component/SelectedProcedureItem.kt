@@ -83,7 +83,7 @@ private fun SelectedProcedureTitle(
             text = if (maxDowntimeDays == 0 && minDowntimeDays == 0) {
                 "다운타임* 0일"
             } else {
-                "다운타임* ${minDowntimeDays}-${maxDowntimeDays}일"
+                "다운타임* $minDowntimeDays-${maxDowntimeDays}일"
             },
             color = CherrishTheme.colors.gray700,
             style = CherrishTheme.typography.body1R14
