@@ -43,6 +43,7 @@ data class ProcedureUiState(
     val selectedWorryName: String = "",
 
     val searchQuery: String = "",
+    val searchedQuery: String = "",
 
     val showDowntimeBottomSheet: Boolean = false,
     val selectedProcedureForDowntime: ProcedureCardItemUiModel? = null,
