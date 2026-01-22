@@ -98,10 +98,8 @@ class ChallengeMissionProgressViewModel @Inject constructor(
 }
 
 private fun ChallengeMissionProgressResponseModel.toUiState(): ChallengeMissionProgressUiState {
-    // ✅ 게이지는 서버값 그대로: 0이면 아무것도 활성화 X
     val gaugeStep = cherryLevel.coerceIn(0, 4)
 
-    // ✅ 이미지는 0,1 둘 다 몽롱(Lv1)로
     val stepForCherry = when (cherryLevel) {
         0, 1 -> 1
         else -> cherryLevel
@@ -118,7 +116,7 @@ private fun ChallengeMissionProgressResponseModel.toUiState(): ChallengeMissionP
         "체리가 크려면 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
     }
 
-    val completeButtonText = if (isMaxLevel) "챌린지 완료하기" else "오늘 미션 종료하기"
+    val completeButtonText = if (isMaxLevel) "챌린지 종료하기" else "오늘 미션 종료하기"
 
     return ChallengeMissionProgressUiState(
         challengeId = challengeId,
