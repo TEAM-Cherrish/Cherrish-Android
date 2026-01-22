@@ -1,29 +1,34 @@
 package com.cherrish.android.presentation.challenge.loading
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -61,6 +66,14 @@ private fun ChallengeLoadingScreen(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.lt_challenge_loading)
+    )
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true
+    )
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -106,12 +119,17 @@ private fun ChallengeLoadingScreen(
             style = CherrishTheme.typography.title1SB18
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(80.dp))
 
-        Image(
-            painter = painterResource(id = R.drawable.img_challenge_loading),
-            contentDescription = null,
-            modifier = Modifier.size(150.dp)
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 105.dp)
+                .aspectRatio(130f / 154f)
+                .align(Alignment.CenterHorizontally)
+                .noRippleClickable(onClick = onClick)
         )
 
         Spacer(modifier = Modifier.height(80.dp))
