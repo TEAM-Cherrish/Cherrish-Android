@@ -99,8 +99,6 @@ private fun Challenge(
     challengeRate: Int,
     modifier: Modifier = Modifier
 ) {
-//    val safeStep = currentStep.coerceIn(0, gauges.lastIndex)
-
     Column(
         modifier = modifier
             .fillMaxWidth()
