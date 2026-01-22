@@ -49,6 +49,7 @@ fun ChallengeLoadingRoute(
 
     ChallengeLoadingScreen(
         paddingValues = paddingValues,
+        routineName = viewModel.routineName,
         onClick = navigateUp
     )
 }
@@ -56,6 +57,7 @@ fun ChallengeLoadingRoute(
 @Composable
 private fun ChallengeLoadingScreen(
     paddingValues: PaddingValues,
+    routineName: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -84,7 +86,7 @@ private fun ChallengeLoadingScreen(
 
         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
-                text = "피부 컨디션",
+                text = routineName,
                 color = CherrishTheme.colors.red700,
                 style = CherrishTheme.typography.title1SB18
             )
@@ -138,6 +140,7 @@ private fun ChallengeLoadingScreenPreview() {
     CherrishTheme {
         ChallengeLoadingScreen(
             paddingValues = PaddingValues(0.dp),
+            routineName = "피부 컨디션",
             onClick = {}
         )
     }

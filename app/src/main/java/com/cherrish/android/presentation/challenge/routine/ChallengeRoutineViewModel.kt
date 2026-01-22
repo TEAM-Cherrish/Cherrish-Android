@@ -70,11 +70,12 @@ class ChallengeRoutineViewModel @Inject constructor(
     fun onNextClick() {
         val currentState = _uiState.value
         if (currentState is UiState.Success) {
-            currentState.data.selectedRoutineId?.let { id ->
+            currentState.data.selectedRoutine?.let { routine ->
                 viewModelScope.launch {
                     _sideEffect.emit(
                         ChallengeSideEffect.NavigateToChallengeLoading(
-                            routineId = id
+                            routineId = routine.id,
+                            routineName = routine.routine
                         )
                     )
                 }

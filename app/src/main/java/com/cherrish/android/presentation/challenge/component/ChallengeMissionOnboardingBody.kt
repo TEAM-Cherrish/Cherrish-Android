@@ -47,7 +47,7 @@ fun ChallengeMissionOnboardingBody(
         Spacer(modifier = Modifier.height(height = 30.dp))
 
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(space = 10.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             items(

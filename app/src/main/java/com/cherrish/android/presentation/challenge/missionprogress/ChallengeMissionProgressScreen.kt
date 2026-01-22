@@ -91,7 +91,7 @@ private fun ChallengeMissionprogressScreen(
         item {
             ChallengeMissionProgressCherrygrowth(
                 cherryType = uiState.cherryType,
-                remainingRoutines = uiState.remainingCount,
+                remainingGuideText = uiState.remainingGuideText,
                 challengeProgress = uiState.progressPercentage
             )
         }
@@ -102,6 +102,7 @@ private fun ChallengeMissionprogressScreen(
                 currentDay = uiState.currentDay,
                 onRoutineClick = onTodoClick,
                 onCompleteClick = onCompleteTodayClick,
+                completeButtonText = uiState.completeButtonText,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -163,6 +164,8 @@ private fun ChallengeMissionprogressScreenPreview() {
                 cherryType = CherryType.BBANGBBANG,
                 remainingCount = 3,
                 progressPercentage = 25,
+                remainingGuideText = "체리가 크려면 3개의 미션을 수행해야 해요!",
+                completeButtonText = "오늘 미션 종료하기",
                 routines = persistentListOf(
                     ChallengeRoutineUiModel(
                         routineId = 1L,

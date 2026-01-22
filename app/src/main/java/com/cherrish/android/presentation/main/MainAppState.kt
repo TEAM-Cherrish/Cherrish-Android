@@ -166,9 +166,14 @@ class MainAppState(
         navController.navigateToChallengeRoutine()
     }
 
-    fun navigateToChallengeLoading(routineId: Int, navOptions: NavOptions? = keepStackNavOptions) {
+    fun navigateToChallengeLoading(
+        routineId: Int,
+        routineName: String,
+        navOptions: NavOptions? = keepStackNavOptions
+    ) {
         navController.navigateToChallengeLoading(
             routineId = routineId,
+            routineName = routineName,
             navOptions = navOptions
         )
     }

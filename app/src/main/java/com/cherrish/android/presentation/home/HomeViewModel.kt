@@ -50,7 +50,8 @@ class HomeViewModel @Inject constructor(
                             todayDate = response.toTodayDateString(),
                             plans = response.recentProcedures.toImmutableList(),
                             upcomingPlans = response.upcomingProcedures.toImmutableList(),
-                            selectedIndex = response.cherryLevel
+                            selectedIndex = (response.cherryLevel - 1)
+                                .coerceIn(0, CherrishGaugeType.entries.size - 1)
                         )
                     )
                 }
