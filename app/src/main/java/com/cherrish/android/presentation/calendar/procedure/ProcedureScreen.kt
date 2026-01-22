@@ -280,10 +280,12 @@ fun ProcedureScreen(
                                 ProcedureStep.Downtime -> {
                                     DowntimeContent(
                                         cardItems = uiState.selectedProcedureCardItems,
-                                        selectedCardIds = uiState.procedureDowntimeMap.keys.toImmutableList(),
+                                        selectedCardIds = uiState.procedureDowntimeMap.keys
+                                            .toImmutableList(),
                                         onCardClick = onDowntimeClick,
                                         activeCardId = uiState.selectedProcedureForDowntime?.id,
-                                        isDowntimeBottomSheetVisible = uiState.showDowntimeBottomSheet,
+                                        isDowntimeBottomSheetVisible = uiState
+                                            .showDowntimeBottomSheet,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(top = uiState.contentTopPadding)
