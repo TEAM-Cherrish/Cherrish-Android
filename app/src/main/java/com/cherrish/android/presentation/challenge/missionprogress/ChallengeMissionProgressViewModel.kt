@@ -98,7 +98,7 @@ class ChallengeMissionProgressViewModel @Inject constructor(
 }
 
 private fun ChallengeMissionProgressResponseModel.toUiState(): ChallengeMissionProgressUiState {
-    val cherryType = CherryType.entries.first { it.step == cherryLevel }
+    val cherryType = CherryType.entries.firstOrNull { it.step == cherryLevel } ?: CherryType.MONGRONG
     val isMaxLevel = cherryType == CherryType.KKUKKU
     val remainingText = if (isMaxLevel) {
         "챌린지 완료까지 ${remainingRoutinesToNextLevel}개의 미션을 수행해야 해요!"
