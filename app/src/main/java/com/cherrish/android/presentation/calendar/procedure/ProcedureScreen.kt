@@ -3,8 +3,10 @@ package com.cherrish.android.presentation.calendar.procedure
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -146,144 +149,154 @@ fun ProcedureScreen(
 
     BackHandler { onBackClick() }
 
-    Column(
+    Scaffold(
         modifier = modifier
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .navigationBarsPadding()
             .padding(top = 44.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        BackAndCloseTopAppBar(
-            title = uiState.title,
-            onBackClick = onBackClick,
-            onCloseClick = onCloseClick
-        )
-
+        containerColor = CherrishTheme.colors.gray0,
+        bottomBar = {
+            CherrishButton(
+                text = if (uiState.step == ProcedureStep.Downtime) "완료" else "다음",
+                onClick = onNextClick,
+                enabled = uiState.isNextEnabled,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(vertical = 20.dp)
+                    .background(CherrishTheme.colors.gray0)
+            )
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .imePadding()
+                .fillMaxSize()
+                .imePadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.showStepProgressBar) {
-                StepProgressBar(
-                    totalStep = uiState.totalSteps,
-                    currentStep = uiState.currentStepIndex,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 26.dp)
-                        .padding(top = 20.dp)
-                )
-            }
+            BackAndCloseTopAppBar(
+                title = uiState.title,
+                onBackClick = onBackClick,
+                onCloseClick = onCloseClick
+            )
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
             ) {
-                when (uiState.flow) {
-                    ProcedureFlow.Entry -> {
-                        ExistenceContent(
-                            selectedIndex = uiState.existenceSelectedIndex,
-                            onItemClick = onExistenceClick,
-                            modifier = Modifier
-                                .padding(top = uiState.contentTopPadding)
-                                .padding(horizontal = 26.dp)
-                                .padding(bottom = 10.dp)
-                        )
-                    }
+                if (uiState.showStepProgressBar) {
+                    StepProgressBar(
+                        totalStep = uiState.totalSteps,
+                        currentStep = uiState.currentStepIndex,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 26.dp)
+                            .padding(top = 20.dp)
+                    )
+                }
 
-                    ProcedureFlow.NoTreat, ProcedureFlow.Treat -> {
-                        when (uiState.step) {
-                            ProcedureStep.Category -> {
-                                CategoryContent(
-                                    worries = uiState.worries,
-                                    selectedWorryId = uiState.selectedWorryId,
-                                    onWorryClick = onWorryClick,
-                                    modifier = Modifier
-                                        .padding(top = uiState.contentTopPadding)
-                                        .padding(horizontal = 26.dp)
-                                        .padding(bottom = 10.dp)
-                                )
-                            }
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    when (uiState.flow) {
+                        ProcedureFlow.Entry -> {
+                            ExistenceContent(
+                                selectedIndex = uiState.existenceSelectedIndex,
+                                onItemClick = onExistenceClick,
+                                modifier = Modifier
+                                    .padding(top = uiState.contentTopPadding)
+                                    .padding(horizontal = 26.dp)
+                                    .padding(bottom = 10.dp)
+                            )
+                        }
 
-                            ProcedureStep.RecoverySchedule -> {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .verticalScroll(rememberScrollState())
-                                ) {
-                                    RecoveryScheduleContent(
-                                        selectedIndex = uiState.recoverySelectedIndex,
-                                        onItemClick = onRecoveryOptionClick,
-                                        year = uiState.year,
-                                        month = uiState.month,
-                                        day = uiState.day,
-                                        onYearChange = onYearChange,
-                                        onMonthChange = onMonthChange,
-                                        onDayChange = onDayChange,
-                                        errorMessage = uiState.dateErrorMessage,
+                        ProcedureFlow.NoTreat, ProcedureFlow.Treat -> {
+                            when (uiState.step) {
+                                ProcedureStep.Category -> {
+                                    CategoryContent(
+                                        worries = uiState.worries,
+                                        selectedWorryId = uiState.selectedWorryId,
+                                        onWorryClick = onWorryClick,
                                         modifier = Modifier
                                             .padding(top = uiState.contentTopPadding)
                                             .padding(horizontal = 26.dp)
+                                            .padding(bottom = 10.dp)
                                     )
                                 }
-                            }
 
-                            ProcedureStep.Filtering -> {
-                                FilteringContent(
-                                    name = uiState.selectedWorryName,
-                                    cardItems = uiState.procedureItems,
-                                    selectedCardIds = uiState.selectedProcedureCardIds,
-                                    onCardClick = onProcedureCardClick,
-                                    bottomPadding = uiState.lazyColumnBottomPadding,
-                                    modifier = Modifier.fillMaxWidth()
-                                        .padding(top = uiState.contentTopPadding)
-                                )
-                            }
+                                ProcedureStep.RecoverySchedule -> {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .verticalScroll(rememberScrollState())
+                                    ) {
+                                        RecoveryScheduleContent(
+                                            selectedIndex = uiState.recoverySelectedIndex,
+                                            onItemClick = onRecoveryOptionClick,
+                                            year = uiState.year,
+                                            month = uiState.month,
+                                            day = uiState.day,
+                                            onYearChange = onYearChange,
+                                            onMonthChange = onMonthChange,
+                                            onDayChange = onDayChange,
+                                            errorMessage = uiState.dateErrorMessage,
+                                            modifier = Modifier
+                                                .padding(top = uiState.contentTopPadding)
+                                                .padding(horizontal = 26.dp)
+                                        )
+                                    }
+                                }
 
-                            ProcedureStep.FilteringWithSearch -> {
-                                FilteringWithSearchContent(
-                                    cardItems = uiState.procedureItems,
-                                    selectedCardIds = uiState.selectedProcedureCardIds,
-                                    onCardClick = onProcedureCardClick,
-                                    onSearchAction = onSearchAction,
-                                    query = uiState.searchQuery,
-                                    onQueryChange = onSearchableQueryChange,
-                                    bottomContentPadding = uiState.lazyColumnBottomPadding,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = uiState.contentTopPadding)
-                                        .padding(horizontal = 24.dp)
-                                )
-                            }
+                                ProcedureStep.Filtering -> {
+                                    FilteringContent(
+                                        name = uiState.selectedWorryName,
+                                        cardItems = uiState.procedureItems,
+                                        selectedCardIds = uiState.selectedProcedureCardIds,
+                                        onCardClick = onProcedureCardClick,
+                                        bottomPadding = uiState.lazyColumnBottomPadding,
+                                        modifier = Modifier.fillMaxWidth()
+                                            .padding(top = uiState.contentTopPadding)
+                                    )
+                                }
 
-                            ProcedureStep.Downtime -> {
-                                DowntimeContent(
-                                    cardItems = uiState.selectedProcedureCardItems,
-                                    selectedCardIds = uiState.procedureDowntimeMap.keys.toImmutableList(),
-                                    onCardClick = onDowntimeClick,
-                                    activeCardId = uiState.selectedProcedureForDowntime?.id,
-                                    isDowntimeBottomSheetVisible = uiState.showDowntimeBottomSheet,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(top = uiState.contentTopPadding)
-                                )
+                                ProcedureStep.FilteringWithSearch -> {
+                                    FilteringWithSearchContent(
+                                        cardItems = uiState.procedureItems,
+                                        selectedCardIds = uiState.selectedProcedureCardIds,
+                                        onCardClick = onProcedureCardClick,
+                                        onSearchAction = onSearchAction,
+                                        query = uiState.searchQuery,
+                                        onQueryChange = onSearchableQueryChange,
+                                        bottomContentPadding = uiState.lazyColumnBottomPadding,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = uiState.contentTopPadding)
+                                            .padding(horizontal = 24.dp)
+                                    )
+                                }
+
+                                ProcedureStep.Downtime -> {
+                                    DowntimeContent(
+                                        cardItems = uiState.selectedProcedureCardItems,
+                                        selectedCardIds = uiState.procedureDowntimeMap.keys.toImmutableList(),
+                                        onCardClick = onDowntimeClick,
+                                        activeCardId = uiState.selectedProcedureForDowntime?.id,
+                                        isDowntimeBottomSheetVisible = uiState.showDowntimeBottomSheet,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = uiState.contentTopPadding)
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
-        }
 
-        CherrishButton(
-            text = if (uiState.step == ProcedureStep.Downtime) "완료" else "다음",
-            onClick = onNextClick,
-            enabled = uiState.isNextEnabled,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(vertical = 20.dp)
-        )
+            Spacer(modifier = Modifier.height(innerPadding.calculateBottomPadding()))
+        }
     }
 
     SelectedProcedureBottomSheet(
