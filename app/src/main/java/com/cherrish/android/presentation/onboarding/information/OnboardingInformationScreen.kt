@@ -1,5 +1,6 @@
 package com.cherrish.android.presentation.onboarding.information
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -122,7 +123,8 @@ private fun OnboardingInformationScreen(
     val listState = rememberLazyListState()
     val imeBottom = WindowInsets.ime.getBottom(density)
     val imeBottomDp = with(density) { imeBottom.toDp() }
-    val bottomInset = if (imeBottomDp > 0.dp) 0.dp else paddingValues.calculateBottomPadding()
+    val targetBottomInset = if (imeBottomDp > 0.dp) 0.dp else paddingValues.calculateBottomPadding()
+    val bottomInset by animateDpAsState(targetValue = targetBottomInset, label = "bottomInset")
 
     Column(
         modifier = modifier
