@@ -52,17 +52,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.model.OnboardingCherryType
-import kotlin.math.ceil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
+import kotlin.math.ceil
 
 @Composable
 fun OnboardingRoute(
@@ -146,7 +145,7 @@ private fun OnboardingScreen(
         ) {
             PagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(bottom = 40.dp)
             )
 
             val showButton = pagerState.currentPage == 1
@@ -173,9 +172,6 @@ private fun OnboardingSection(
 ) {
     val colors = CherrishTheme.colors
     val density = LocalDensity.current
-    val fixedFontSize = with(density) {
-        (16.sp / fontScale)
-    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -395,7 +391,6 @@ private fun Onboarding2Section(
             color = CherrishTheme.colors.gray600
         )
 
-        Spacer(modifier = Modifier.height(62.dp))
     }
 }
 
