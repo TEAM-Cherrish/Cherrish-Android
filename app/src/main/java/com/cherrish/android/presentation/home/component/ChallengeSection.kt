@@ -45,10 +45,12 @@ fun ChallengeSection(
     challengeName: String? = "웰니스 • 마음챙김",
     challengeRate: Int = 0
 ) {
+    val hasChallenge = !challengeName.isNullOrBlank()
+
     Box(
         modifier = modifier.fillMaxWidth()
     ) {
-        if (currentStep != 0 && imageRes != null) {
+        if (hasChallenge && imageRes != null) {
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
@@ -71,9 +73,9 @@ fun ChallengeSection(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            if (currentStep == 0) {
+            if (!hasChallenge) {
                 NoChallenge(
-                    currentStep = currentStep,
+                    currentStep = 0,
                     gauges = gauges,
                     onChallengeStartClick = onChallengeStartClick
                 )
@@ -97,7 +99,7 @@ private fun Challenge(
     challengeRate: Int,
     modifier: Modifier = Modifier
 ) {
-    val safeStep = currentStep.coerceIn(1, gauges.size)
+    val safeStep = currentStep.coerceIn(0, gauges.lastIndex)
 
     Column(
         modifier = modifier

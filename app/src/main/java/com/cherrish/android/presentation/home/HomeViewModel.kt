@@ -59,7 +59,7 @@ class HomeViewModel @Inject constructor(
                         )
                     )
                 }
-            }.onLogFailure {}
+            }.onLogFailure { }
         }
     }
 

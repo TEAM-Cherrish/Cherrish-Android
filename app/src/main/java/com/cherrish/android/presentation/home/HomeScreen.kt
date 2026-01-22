@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -27,8 +26,8 @@ import com.cherrish.android.core.designsystem.theme.graStart
 import com.cherrish.android.presentation.home.component.ChallengeSection
 import com.cherrish.android.presentation.home.component.PlanBoxSection
 import com.cherrish.android.presentation.home.component.UpcomingPlanSection
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDate
 
 @Composable
 fun HomeRoute(
@@ -44,6 +43,7 @@ fun HomeRoute(
             is HomeSideEffect.NavigateToChallenge -> {
                 navigateToChallenge()
             }
+
             is HomeSideEffect.NavigateToCalendar -> {
                 navigateToCalendar(sideEffect.date)
             }
@@ -81,14 +81,6 @@ private fun HomeScreen(
     onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(uiState.selectedIndex) {
-        val gauge = uiState.gauges.getOrNull(uiState.selectedIndex)
-        android.util.Log.d(
-            "HomeScreen",
-            "selectedIndex=${uiState.selectedIndex}, gauge=$gauge, image=${gauge?.image}"
-        )
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()

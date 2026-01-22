@@ -38,9 +38,9 @@ val green3 = Color(0xFF9AD342)
 val shadow = Color(0xFF9098A7).copy(alpha = 0.12f)
 
 val gradation = Color(0xFFFFFDFD)
-val gradation2 = Color(0xFFFAE0E6)
+val gradation2 = Color(0xFFFFE0E0)
 
-val graStart = Color(0xFFFFF7f7)
+val graStart = Color(0xFFFFEBEB)
 val graEnd = Color(0xFFFFFDFD)
 
 val bottomSheetScrimColor = Color(0x1A464C52)
