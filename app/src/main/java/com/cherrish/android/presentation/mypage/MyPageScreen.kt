@@ -87,6 +87,7 @@ private fun MyPageScreen(
         Text(
             text = "앗! 아직 준비중이에요.",
             color = CherrishTheme.colors.gray600,
+            style = CherrishTheme.typography.body1M14,
             modifier = Modifier.padding(top = 20.dp)
         )
 

@@ -91,6 +91,7 @@ private fun ChallengeMissionprogressScreen(
         item {
             ChallengeMissionProgressCherrygrowth(
                 cherryType = uiState.cherryType,
+                gaugeStep = uiState.gaugeStep,
                 remainingGuideText = uiState.remainingGuideText,
                 challengeProgress = uiState.progressPercentage
             )
@@ -162,6 +163,7 @@ private fun ChallengeMissionprogressScreenPreview() {
                 challengeName = "피부 컨디션 챌린지",
                 currentDay = 3,
                 cherryType = CherryType.BBANGBBANG,
+                gaugeStep = 0,
                 remainingCount = 3,
                 progressPercentage = 25,
                 remainingGuideText = "체리가 크려면 3개의 미션을 수행해야 해요!",

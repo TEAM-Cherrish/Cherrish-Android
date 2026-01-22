@@ -9,6 +9,7 @@ data class ChallengeMissionProgressUiState(
     val challengeId: Long,
     val challengeName: String,
     val currentDay: Int,
+    val gaugeStep: Int,
     val cherryType: CherryType,
     val remainingCount: Int,
     val progressPercentage: Int,
