@@ -41,7 +41,9 @@ class HomeViewModel @Inject constructor(
 
             homeRepository.getMainDashboard().onSuccess { response ->
                 val level = response.cherryLevel
-                val safeIndex = level.coerceIn(1, CherrishGaugeType.entries.lastIndex
+                val safeIndex = level.coerceIn(
+                    1,
+                    CherrishGaugeType.entries.lastIndex
                 )
                 _uiState.update {
                     UiState.Success(

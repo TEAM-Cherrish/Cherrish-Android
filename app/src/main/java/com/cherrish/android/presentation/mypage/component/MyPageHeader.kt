@@ -39,7 +39,6 @@ fun MyPageHeader(
                 .clip(CircleShape)
         )
 
-
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
