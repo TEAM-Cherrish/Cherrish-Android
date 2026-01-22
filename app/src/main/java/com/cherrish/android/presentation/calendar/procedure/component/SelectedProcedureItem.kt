@@ -82,7 +82,7 @@ private fun SelectedProcedureTitle(
         val downtimeText = if (minDowntimeDays == 0 && maxDowntimeDays == 0) {
             "다운타임* 0일"
         } else {
-            "다운타임* $minDowntimeDays-$maxDowntimeDays"
+            "다운타임* $minDowntimeDays-${maxDowntimeDays}일"
         }
         Text(
             text = downtimeText,
