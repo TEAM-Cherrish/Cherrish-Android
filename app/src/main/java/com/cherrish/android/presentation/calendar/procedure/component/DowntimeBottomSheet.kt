@@ -44,7 +44,6 @@ import com.cherrish.android.core.util.rememberFixedDpFontSize
 import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

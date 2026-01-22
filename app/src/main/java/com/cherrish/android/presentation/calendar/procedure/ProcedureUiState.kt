@@ -12,7 +12,6 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorry
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

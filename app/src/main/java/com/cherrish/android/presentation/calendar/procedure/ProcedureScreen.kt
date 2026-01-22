@@ -243,7 +243,7 @@ fun ProcedureScreen(
                             DowntimeContent(
                                 cardItems = uiState.selectedProcedureCardItems,
                                 selectedCardIds =
-                                    uiState.procedureDowntimeMap.keys.toImmutableList(),
+                                uiState.procedureDowntimeMap.keys.toImmutableList(),
                                 onCardClick = onDowntimeClick,
                                 modifier = Modifier.fillMaxWidth()
                             )
