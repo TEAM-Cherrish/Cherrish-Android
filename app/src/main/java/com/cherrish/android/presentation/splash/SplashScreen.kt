@@ -1,7 +1,5 @@
 package com.cherrish.android.presentation.splash
 
-import android.R.attr.progress
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -10,21 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -32,9 +28,9 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
-import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SplashRoute(
@@ -43,20 +39,19 @@ fun SplashRoute(
     paddingValues: PaddingValues,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.isAutoLoginCheck()
+    val scope = rememberCoroutineScope()
+
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        scope.launch {
+            delay(3000)
+            viewModel.isAutoLoginCheck()
+        }
     }
 
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
-        delay(3000)
-
         when (sideEffect) {
-            SplashSideEffect.NavigateToOnboarding -> {
-                navigateToOnboarding()
-            }
-            SplashSideEffect.NavigateToHome -> {
-                navigateToHome()
-            }
+            SplashSideEffect.NavigateToOnboarding -> navigateToOnboarding()
+            SplashSideEffect.NavigateToHome -> navigateToHome()
         }
     }
 
