@@ -336,7 +336,12 @@ private fun DowntimeDayPicker(
             )
 
             Text(
-                text = "보통 $minDowntimeDays-${maxDowntimeDays}일",
+                text = if (minDowntimeDays == 0 && maxDowntimeDays == 0) {
+                    "보통 다운타임 0일 "
+                }
+                else {
+                    "보통 $minDowntimeDays-${maxDowntimeDays}일"
+                },
                 color = CherrishTheme.colors.gray600,
                 style = CherrishTheme.typography.title2M16
             )
