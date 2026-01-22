@@ -345,7 +345,7 @@ private fun DowntimeDayPicker(
         Spacer(modifier = Modifier.weight(69f))
 
         NumberPicker(
-            list = (1..30).toPersistentList(),
+            list = (0..30).toPersistentList(),
             state = state,
             flingBehavior = flingBehavior
         )

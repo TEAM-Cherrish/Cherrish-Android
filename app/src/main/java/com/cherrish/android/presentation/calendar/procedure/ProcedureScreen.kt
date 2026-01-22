@@ -129,14 +129,14 @@ fun ProcedureScreen(
 
     LaunchedEffect(uiState.showDowntimeBottomSheet, uiState.downtimePickerValue) {
         if (uiState.showDowntimeBottomSheet) {
-            val initialIndex = uiState.downtimePickerValue - 1
-            downtimePickerState.scrollToItem(initialIndex.coerceIn(0, 29))
+            val initialIndex = uiState.downtimePickerValue
+            downtimePickerState.scrollToItem(initialIndex.coerceIn(0, 30))
         }
     }
 
     LaunchedEffect(downtimePickerState.firstVisibleItemIndex) {
         if (uiState.showDowntimeBottomSheet) {
-            val newValue = downtimePickerState.firstVisibleItemIndex + 1
+            val newValue = downtimePickerState.firstVisibleItemIndex
             onDowntimePickerValueChange(newValue)
         }
     }
@@ -245,6 +245,8 @@ fun ProcedureScreen(
                                 selectedCardIds =
                                 uiState.procedureDowntimeMap.keys.toImmutableList(),
                                 onCardClick = onDowntimeClick,
+                                activeCardId = uiState.selectedProcedureForDowntime?.id,
+                                isDowntimeBottomSheetVisible = uiState.showDowntimeBottomSheet,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }

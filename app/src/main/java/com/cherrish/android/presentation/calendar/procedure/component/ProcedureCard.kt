@@ -141,8 +141,13 @@ private fun ProcedureCardDuration(
             tint = CherrishTheme.colors.gray700
         )
 
+        val downtimeText = if (minDowntimeDay == 0 && maxDowntimeDay == 0) {
+            "다운타임* 0일"
+        } else {
+            "다운타임* $minDowntimeDay-${maxDowntimeDay}일"
+        }
         Text(
-            text = "다운타임* $minDowntimeDay-${maxDowntimeDay}일",
+            text = downtimeText,
             style = CherrishTheme.typography.body2R13,
             color = CherrishTheme.colors.gray700
         )

@@ -4,7 +4,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.presentation.calendar.procedure.model.DowntimeValidationType
-import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardDisplayMode
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureFlow
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureStep
@@ -72,7 +71,6 @@ data class ProcedureUiState(
             val inputDate = LocalDate.of(yearInt, monthInt, dayInt)
 
             when {
-                inputDate.isBefore(today) -> "이미 지난 날짜는 입력할 수 없어요."
                 inputDate.isBefore(startDay) -> "목표일은 시술 날짜 이후로만 설정할 수 있어요."
                 else -> null
             }
@@ -269,83 +267,6 @@ data class ProcedureUiState(
                 ProcedureWorryUiModel(id = 4L, content = "탄력 ∙ 주름"),
                 ProcedureWorryUiModel(id = 5L, content = "모공"),
                 ProcedureWorryUiModel(id = 6L, content = "트러블")
-            )
-        )
-
-        val FakeProcedureCardItems = ProcedureUiState(
-            procedureItems = persistentListOf(
-                ProcedureCardItemUiModel(
-                    id = 1L,
-                    name = "레이저 토닝1",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 2L,
-                    name = "레이저 토닝2",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 1,
-                    maxDowntimeDays = 3,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 3L,
-                    name = "레이저 토닝3",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 5,
-                    maxDowntimeDays = 10,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 4L,
-                    name = "레이저 토닝4",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 5L,
-                    name = "레이저 토닝5",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 6L,
-                    name = "레이저 토닝6",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 7L,
-                    name = "레이저 토닝7",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 8L,
-                    name = "레이저 토닝8",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                ),
-                ProcedureCardItemUiModel(
-                    id = 9L,
-                    name = "레이저 토닝9",
-                    category = "색소 개선 | 톤업",
-                    minDowntimeDays = 3,
-                    maxDowntimeDays = 5,
-                    displayMode = ProcedureCardDisplayMode.Basic
-                )
             )
         )
     }

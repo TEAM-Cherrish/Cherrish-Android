@@ -98,8 +98,8 @@ private fun SelectedProcedureItemPreview() {
         SelectedProcedureItem(
             procedureId = 1,
             procedureName = "레이저 토닝",
-            minDowntimeDays = 0,
-            maxDowntimeDays = 0,
+            minDowntimeDays = 3,
+            maxDowntimeDays = 5,
             onDeletedClick = {}
         )
     }
