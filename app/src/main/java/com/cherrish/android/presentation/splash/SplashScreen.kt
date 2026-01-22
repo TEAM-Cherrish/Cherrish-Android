@@ -1,15 +1,19 @@
 package com.cherrish.android.presentation.splash
 
+import android.R.attr.progress
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -21,8 +25,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
+import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import kotlinx.coroutines.delay
 
@@ -60,6 +70,15 @@ private fun SplashScreen(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.lt_challenge_loading)
+    )
+    val progress by animateLottieCompositionAsState(
+        composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true
+    )
+
     val gradationColors = listOf(CherrishTheme.colors.gradation, CherrishTheme.colors.gradation2)
 
     Column(
@@ -77,10 +96,14 @@ private fun SplashScreen(
     ) {
         Spacer(modifier = Modifier.weight(283f))
 
-        Image(
-            painter = painterResource(id = R.drawable.ic_app_logo),
-            contentDescription = null,
-            modifier = Modifier.size(width = 114.dp, height = 100.dp)
+        LottieAnimation(
+            composition = composition,
+            progress = { progress },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 105.dp)
+                .aspectRatio(130f / 154f)
+                .align(Alignment.CenterHorizontally)
         )
 
         Spacer(modifier = Modifier.height(14.dp))
