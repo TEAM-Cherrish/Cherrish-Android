@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -84,7 +83,6 @@ fun OnboardingInformationRoute(
         ageErrorCase = viewModel.onAgeErrorCase(uiState.age)
     )
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -202,9 +200,13 @@ private fun OnboardingInformationScreen(
                             }
                         },
                         keyboardType = KeyboardType.Number,
-                        visualTransformation = if (isAgeFocused) VisualTransformation.None else AgeSuffixTransformation(
-                            " 세"
-                        ),
+                        visualTransformation = if (isAgeFocused) {
+                            VisualTransformation.None
+                        } else {
+                            AgeSuffixTransformation(
+                                " 세"
+                            )
+                        },
                         errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
                         errorCase = ageErrorCase,
                         textFieldModifier = Modifier
@@ -316,7 +318,6 @@ private fun UserInfoTextField(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
