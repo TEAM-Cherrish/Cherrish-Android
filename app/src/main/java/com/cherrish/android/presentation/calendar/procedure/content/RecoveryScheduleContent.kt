@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +33,8 @@ import com.cherrish.android.core.designsystem.component.textfield.CherrishTextFi
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.calendar.procedure.component.SelectionSection
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecoveryScheduleContent(
@@ -43,8 +49,10 @@ fun RecoveryScheduleContent(
     modifier: Modifier = Modifier,
     errorMessage: String? = null
 ) {
-    val hasSelection = selectedIndex != null && selectedIndex >= 0
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val focusManager = LocalFocusManager.current
+    val hasSelection = selectedIndex != null && selectedIndex >= 0
 
     Column(modifier = modifier) {
         SelectionSection(
@@ -56,7 +64,9 @@ fun RecoveryScheduleContent(
 
         if (hasSelection) {
             Column(
-                modifier = Modifier.padding(top = 56.dp)
+                modifier = Modifier
+                    .padding(top = 56.dp)
+                    .bringIntoViewRequester(bringIntoViewRequester)
             ) {
                 val sectionTitle = if (selectedIndex == 0) {
                     "대략적인 회복 목표일을 정해볼까요?"
@@ -72,8 +82,14 @@ fun RecoveryScheduleContent(
                     onYearChange = onYearChange,
                     onMonthChange = onMonthChange,
                     onDayChange = onDayChange,
+                    onFocus = {
+                        coroutineScope.launch {
+                            delay(100)
+                            bringIntoViewRequester.bringIntoView()
+                        }
+                    },
                     onDone = { focusManager.clearFocus(force = true) },
-                    onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) }
+                    onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) },
                 )
 
                 if (errorMessage != null) {
@@ -93,6 +109,7 @@ private fun ScheduleSettingSection(
     onYearChange: (String) -> Unit,
     onMonthChange: (String) -> Unit,
     onDayChange: (String) -> Unit,
+    onFocus: () -> Unit,
     onDone: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier
@@ -123,6 +140,7 @@ private fun ScheduleSettingSection(
                 suffix = "년",
                 placeholder = "YYYY",
                 onValueChange = onYearChange,
+                onFocus = onFocus,
                 imeAction = ImeAction.Next,
                 onNext = onNext,
                 modifier = Modifier.weight(1f)
@@ -132,6 +150,7 @@ private fun ScheduleSettingSection(
                 suffix = "월",
                 placeholder = "MM",
                 onValueChange = onMonthChange,
+                onFocus = onFocus,
                 imeAction = ImeAction.Next,
                 onNext = onNext,
                 modifier = Modifier.weight(1f)
@@ -141,6 +160,7 @@ private fun ScheduleSettingSection(
                 suffix = "일",
                 placeholder = "DD",
                 onValueChange = onDayChange,
+                onFocus = onFocus,
                 imeAction = ImeAction.Done,
                 onDone = onDone,
                 modifier = Modifier.weight(1f)
@@ -155,6 +175,7 @@ private fun DateInputBasicSection(
     suffix: String,
     placeholder: String,
     onValueChange: (String) -> Unit,
+    onFocus: () -> Unit,
     modifier: Modifier = Modifier,
     imeAction: ImeAction = ImeAction.Next,
     onDone: () -> Unit = {},
@@ -182,8 +203,10 @@ private fun DateInputBasicSection(
             keyboardImeAction = imeAction,
             onDoneAction = onDone,
             onNextAction = onNext,
-            paddingValues = PaddingValues(horizontal = 19.dp, vertical = 8.dp),
-            modifier = Modifier.weight(1f)
+            paddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            modifier = Modifier
+                .weight(1f)
+                .onFocusChanged { if (it.isFocused) onFocus() }
         )
 
         Text(

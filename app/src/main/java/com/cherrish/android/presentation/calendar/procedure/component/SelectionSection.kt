@@ -2,12 +2,10 @@ package com.cherrish.android.presentation.calendar.procedure.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +42,7 @@ fun SelectionSection(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        ChipGrid(
+        ChipFlowGrid(
             items = items,
             selectedIndex = selectedIndex,
             onItemClick = onItemClick
@@ -53,29 +51,34 @@ fun SelectionSection(
 }
 
 @Composable
-private fun ChipGrid(
+private fun ChipFlowGrid(
     items: ImmutableList<String>,
     onItemClick: (index: Int) -> Unit,
     modifier: Modifier = Modifier,
     selectedIndex: Int? = null
 ) {
-    LazyVerticalGrid(
+    Column(
         modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        itemsIndexed(
-            items = items,
-            key = { index, item -> "$item-$index" }
-        ) { index, text ->
-
-            CherrishSelectionChip(
-                text = text,
-                onClick = { onItemClick(index) },
+        items.chunked(2).forEachIndexed { rowIndex, rowItems ->
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                isSelected = selectedIndex == index
-            )
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                rowItems.forEachIndexed { colIndex, text ->
+                    val index = rowIndex * 2 + colIndex
+                    CherrishSelectionChip(
+                        text = text,
+                        onClick = { onItemClick(index) },
+                        modifier = Modifier.weight(1f),
+                        isSelected = selectedIndex == index
+                    )
+                }
+                if (rowItems.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
         }
     }
 }
