@@ -122,7 +122,7 @@ private fun ChallengeLoadingScreen(
             style = CherrishTheme.typography.title1SB18
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(80.dp))
 
         LottieAnimation(
             composition = composition,

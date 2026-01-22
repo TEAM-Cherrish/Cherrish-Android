@@ -108,11 +108,6 @@ private fun SplashScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_app_logo_title),
-            contentDescription = null
-        )
-
         Spacer(modifier = Modifier.weight(298f))
     }
 }
