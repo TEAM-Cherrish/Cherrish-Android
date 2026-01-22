@@ -12,7 +12,6 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureWorry
 import com.cherrish.android.presentation.calendar.procedure.model.SelectedProcedureModel
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -248,18 +247,17 @@ data class ProcedureUiState(
             }
         }
 
-    val downtimeStartDay: String
-        get() {
-            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            return startDay.format(formatter)
-        }
+    val downtimeStartMonth: Int
+        get() = startDay.monthValue
 
-    val downtimeEndDay: String
-        get() {
-            val target = targetDate ?: return ""
-            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
-            return target.format(formatter)
-        }
+    val downtimeStartDay: Int
+        get() = startDay.dayOfMonth
+
+    val downtimeEndMonth: Int
+        get() = targetDate?.monthValue ?: 0
+
+    val downtimeEndDay: Int
+        get() = targetDate?.dayOfMonth ?: 0
 
     companion object {
 

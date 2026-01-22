@@ -95,3 +95,7 @@ data class CalendarUiState(
         )
     }
 }
+
+sealed interface CalendarSideEffect {
+    data class NavigateToProcedure(val startDate: LocalDate) : CalendarSideEffect
+}

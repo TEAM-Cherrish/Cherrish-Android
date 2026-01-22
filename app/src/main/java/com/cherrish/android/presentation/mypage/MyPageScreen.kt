@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cherrish.android.R
 import com.cherrish.android.core.common.state.UiState
+import com.cherrish.android.core.designsystem.component.LoadingScreen
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.mypage.component.MyPageHeader
 
@@ -32,6 +33,7 @@ fun MyPageRoute(
 
     when (val state = uiState) {
         is UiState.Loading -> {
+            LoadingScreen()
         }
 
         is UiState.Failure -> {

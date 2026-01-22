@@ -79,7 +79,9 @@ fun UpcomingPlanSection(
             text = "다가오는 일정",
             style = CherrishTheme.typography.body1M14,
             color = CherrishTheme.colors.gray700,
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 5.dp)
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .padding(bottom = 16.dp)
         )
 
         HorizontalDivider(

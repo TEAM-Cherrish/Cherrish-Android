@@ -49,3 +49,8 @@ data class ChallengeMissionUiState(
         )
     }
 }
+
+sealed interface ChallengeMissionSideEffect {
+    data object NavigateToChallengeMissionProgress : ChallengeMissionSideEffect
+    data object NavigateToChallengeRoutine : ChallengeMissionSideEffect
+}

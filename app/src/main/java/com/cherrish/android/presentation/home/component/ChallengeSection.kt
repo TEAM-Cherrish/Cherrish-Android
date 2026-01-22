@@ -40,7 +40,7 @@ fun ChallengeSection(
     gauges: ImmutableList<CherrishGaugeType>,
     modifier: Modifier = Modifier,
     currentStep: Int = 0,
-    @DrawableRes imageRes: Int = R.drawable.img_challenge_lv2,
+    @DrawableRes imageRes: Int? = R.drawable.img_challenge_lv2,
     onChallengeStartClick: () -> Unit = {},
     challengeName: String? = "웰니스 • 마음챙김",
     challengeRate: Int = 0
@@ -48,7 +48,7 @@ fun ChallengeSection(
     Box(
         modifier = modifier.fillMaxWidth()
     ) {
-        if (currentStep != 0) {
+        if (currentStep != 0 && imageRes != null) {
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
@@ -114,7 +114,7 @@ private fun Challenge(
             .padding(18.dp)
     ) {
         Text(
-            text = "진행중인 챌린지",
+            text = "진행 중인 챌린지",
             style = CherrishTheme.typography.body1M14,
             color = CherrishTheme.colors.gray700
         )
@@ -158,7 +158,7 @@ private fun ChallengeChip(
             .clip(shape = RoundedCornerShape(30.dp))
             .border(
                 width = 1.dp,
-                color = CherrishTheme.colors.red700,
+                color = CherrishTheme.colors.red600,
                 shape = RoundedCornerShape(30.dp)
             )
             .padding(horizontal = 7.dp, vertical = 1.dp)

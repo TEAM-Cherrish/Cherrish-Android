@@ -14,6 +14,11 @@ fun cherrishGaugeActiveColors(
     colors: CherrishColors
 ): CherrishGaugeColors =
     when (gaugeType) {
+        CherrishGaugeType.LEVEL0 -> CherrishGaugeColors(
+            background = colors.gray300,
+            border = colors.gray500
+        )
+
         CherrishGaugeType.LEVEL1 -> CherrishGaugeColors(
             background = colors.red300,
             border = colors.red500

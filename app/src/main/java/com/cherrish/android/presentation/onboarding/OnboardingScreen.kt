@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -50,7 +51,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cherrish.android.R
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.common.extension.noRippleClickable
@@ -90,17 +90,17 @@ private fun OnboardingScreen(
     modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState(pageCount = { 2 })
-    val colors = CherrishTheme.colors
     val density = LocalDensity.current
 
     val gradientEndY = with(density) { 310.dp.toPx() }
+    val gradationColors = listOf(CherrishTheme.colors.graStart, CherrishTheme.colors.graEnd)
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = persistentListOf(colors.graStart, colors.graEnd),
+                    colors = gradationColors,
                     startY = 0f,
                     endY = gradientEndY
                 )
@@ -144,7 +144,7 @@ private fun OnboardingScreen(
         ) {
             PagerIndicator(
                 pagerState = pagerState,
-                modifier = Modifier.padding(bottom = 24.dp)
+                modifier = Modifier.padding(bottom = 40.dp)
             )
 
             val showButton = pagerState.currentPage == 1
@@ -170,6 +170,7 @@ private fun OnboardingSection(
     modifier: Modifier = Modifier
 ) {
     val colors = CherrishTheme.colors
+    val density = LocalDensity.current
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -214,13 +215,21 @@ private fun OnboardingSection(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_bubble_speech),
-                        contentDescription = null
+                        painter = painterResource(id = R.drawable.img_bubble_speech),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(width = 118.dp, height = 62.dp)
+                            .offset(x = (-9).dp, y = 10.dp)
                     )
                     Text(
                         text = "*다운타임",
-                        style = CherrishTheme.typography.title2M16,
-                        color = colors.gray700
+                        style = CherrishTheme.typography.title2M16.copy(
+                            fontSize = with(density) {
+                                CherrishTheme.typography.title2M16.fontSize / fontScale
+                            }
+                        ),
+                        color = colors.gray700,
+                        modifier = Modifier.offset(x = (-9).dp, y = 10.dp)
                     )
                 }
 
@@ -354,7 +363,7 @@ private fun Onboarding2Section(
 
         Text(
             text = "원하는 추구미에 도달할 수 있도록\nTO-DO 루틴을 제시해줘요",
-            style = CherrishTheme.typography.title1M18,
+            style = CherrishTheme.typography.title1SB18,
             color = CherrishTheme.colors.gray1000,
             modifier = Modifier
                 .fillMaxWidth()
@@ -380,8 +389,6 @@ private fun Onboarding2Section(
             style = CherrishTheme.typography.title2R16,
             color = CherrishTheme.colors.gray600
         )
-
-        Spacer(modifier = Modifier.weight(62f))
     }
 }
 

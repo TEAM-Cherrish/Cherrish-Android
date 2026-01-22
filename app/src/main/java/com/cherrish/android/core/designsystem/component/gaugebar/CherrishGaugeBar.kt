@@ -34,11 +34,14 @@ fun CherrishGaugeBar(
     BoxWithConstraints(
         modifier = modifier.fillMaxWidth()
     ) {
-        val reversedGauges = remember(gauges) { gauges.asReversed() }
+        val displayGauges = remember(gauges) { gauges.filter { it.step != 0 } }
+        val reversedGauges = remember(displayGauges) { displayGauges.asReversed() }
 
         val baseSegmentWidth = 89.dp
         val baseSegmentOffset = 67.dp
-        val totalBaseWidth = baseSegmentWidth + baseSegmentOffset * (gauges.size - 1)
+
+        val count = displayGauges.size.coerceAtLeast(1)
+        val totalBaseWidth = baseSegmentWidth + baseSegmentOffset * (count - 1)
 
         val screenScale = maxWidth / totalBaseWidth
         val segmentWidth = baseSegmentWidth * screenScale
