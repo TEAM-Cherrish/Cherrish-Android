@@ -77,7 +77,7 @@ private fun CalendarScreen(
             .fillMaxSize()
             .background(color = CherrishTheme.colors.gray100)
             .padding(paddingValues)
-            .padding(top = 40.dp),
+            .padding(top = 40.dp, bottom = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
@@ -95,7 +95,9 @@ private fun CalendarScreen(
             procedureInfo = uiState.procedureInfoList,
             onProcedureClick = onEventClick,
             onAddProcedureClick = onAddButtonClick,
-            modifier = Modifier.padding(horizontal = 17.dp)
+            modifier = Modifier
+                .padding(horizontal = 17.dp)
+                .weight(1f)
         )
     }
 }

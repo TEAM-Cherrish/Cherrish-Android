@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +39,8 @@ import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.information.extension.AgeSuffixTransformation
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingInformationRoute(
@@ -80,75 +85,81 @@ private fun OnboardingInformationScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val ageFocusRequester = remember { FocusRequester() }
-
     var isAgeFocused by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = CherrishTheme.colors.gray0)
-            .addFocusCleaner(focusManager)
-            .padding(paddingValues = paddingValues)
-    ) {
-        Spacer(modifier = Modifier.weight(135f))
+    Scaffold(
+        bottomBar = {
+            CherrishButton(
+                text = "다음",
+                onClick = onNextClick,
+                enabled = enabled,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 30.dp)
+                    .background(CherrishTheme.colors.gray0)
+                    .navigationBarsPadding()
 
-        UserInfoHeader()
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = CherrishTheme.colors.gray0)
+                .addFocusCleaner(focusManager)
+                .padding(paddingValues = paddingValues)
+                .imePadding()
+        ) {
+            Spacer(modifier = Modifier.weight(135f))
+            UserInfoHeader()
+            Spacer(modifier = Modifier.weight(70f))
 
-        Spacer(modifier = Modifier.weight(70f))
+            UserInfoTextField(
+                textFieldName = "이름",
+                value = username,
+                onValueChange = onNameChange,
+                placeholder = "김체리",
+                keyboardImeAction = ImeAction.Next,
+                onNextAction = { ageFocusRequester.requestFocus() },
+                keyboardType = KeyboardType.Text,
+                errorText = "이름은 최대 7자까지 입력 가능합니다.",
+                errorCase = nameErrorCase
+            )
 
-        UserInfoTextField(
-            textFieldName = "이름",
-            value = username,
-            onValueChange = onNameChange,
-            placeholder = "김체리",
-            keyboardImeAction = ImeAction.Next,
-            onNextAction = {
-                ageFocusRequester.requestFocus()
-            },
-            keyboardType = KeyboardType.Text,
-            errorText = "이름은 최대 7자까지 입력 가능합니다.",
-            errorCase = nameErrorCase
-        )
+            Spacer(modifier = Modifier.weight(30f))
 
-        Spacer(modifier = Modifier.weight(30f))
+            UserInfoTextField(
+                textFieldName = "나이",
+                value = age,
+                onValueChange = onAgeChange,
+                placeholder = "20",
+                keyboardImeAction = ImeAction.Done,
+                onDoneAction = {
+                    keyboardController?.hide()
+                    kotlinx.coroutines.MainScope().launch {
+                        delay(100)
+                        focusManager.clearFocus()
+                    }
+                },
+                keyboardType = KeyboardType.Number,
+                visualTransformation = if (isAgeFocused) {
+                    VisualTransformation.None
+                } else {
+                    AgeSuffixTransformation(" 세")
+                },
+                errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
+                errorCase = ageErrorCase,
+                modifier = Modifier
+                    .focusRequester(ageFocusRequester)
+                    .onFocusChanged { state ->
+                        isAgeFocused = state.isFocused
+                    }
+            )
 
-        UserInfoTextField(
-            textFieldName = "나이",
-            value = age,
-            onValueChange = onAgeChange,
-            placeholder = "20",
-            keyboardImeAction = ImeAction.Done,
-            onDoneAction = {
-                keyboardController?.hide()
-                focusManager.clearFocus()
-            },
-            keyboardType = KeyboardType.Number,
-            visualTransformation = if (isAgeFocused) {
-                VisualTransformation.None
-            } else {
-                AgeSuffixTransformation(
-                    " 세"
-                )
-            },
-            errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
-            errorCase = ageErrorCase,
-            modifier = Modifier
-                .focusRequester(ageFocusRequester)
-                .onFocusChanged { state ->
-                    isAgeFocused = state.isFocused
-                }
-        )
+            Spacer(modifier = Modifier.weight(200f))
 
-        Spacer(modifier = Modifier.weight(200f))
-
-        CherrishButton(
-            text = "다음",
-            onClick = onNextClick,
-            enabled = enabled,
-            modifier = Modifier.padding(horizontal = 24.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(30f))
+            Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
+        }
     }
 }
 
