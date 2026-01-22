@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cherrish.android.R
+import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 
 @Composable
@@ -78,7 +79,12 @@ fun ProcedureTextField(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_search),
                     contentDescription = null,
                     tint = CherrishTheme.colors.gray500,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .noRippleClickable {
+                            onSearchAction()
+                            keyboardController?.hide()
+                        }
                 )
             }
         }
