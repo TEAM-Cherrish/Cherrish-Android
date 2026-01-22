@@ -231,6 +231,7 @@ fun ProcedureScreen(
                                 onCardClick = onProcedureCardClick,
                                 onSearchAction = onSearchAction,
                                 query = uiState.searchQuery,
+                                searchedQuery = uiState.searchedQuery,
                                 onQueryChange = onSearchableQueryChange,
                                 bottomContentPadding = uiState.lazyColumnBottomPadding,
                                 modifier = Modifier

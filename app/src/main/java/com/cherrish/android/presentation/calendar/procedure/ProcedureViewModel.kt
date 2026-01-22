@@ -121,6 +121,7 @@ class ProcedureViewModel @Inject constructor(
     fun onSearchAction(query: String) {
         val current = currentStateOrNull() ?: return
         val keyword = query.trim().takeIf { it.isNotEmpty() }
+        _uiState.updateSuccess { it.copy(searchedQuery = query.trim()) }
         fetchProcedures(
             keyword = keyword,
             worryId = current.selectedWorryId,
@@ -433,7 +434,22 @@ class ProcedureViewModel @Inject constructor(
         viewModelScope.launch {
             procedureRepository.getProcedures(keyword = keyword, worryId = worryId)
                 .onSuccess { response ->
-                    val items = response.procedures
+                    val normalizedKeyword = keyword?.trim().takeIf { !it.isNullOrEmpty() }
+                    val filteredProcedures = if (normalizedKeyword == null) {
+                        response.procedures
+                    } else {
+                        response.procedures.filter { procedure ->
+                            procedure.name.contains(normalizedKeyword, ignoreCase = true) ||
+                                (
+                                    procedure.category?.contains(
+                                        normalizedKeyword,
+                                        ignoreCase = true
+                                    ) == true
+                                    )
+                        }
+                    }
+
+                    val items = filteredProcedures
                         .map { it.toUiModel() }
                         .toPersistentList()
 
@@ -511,7 +527,9 @@ private fun ProcedureUiState.toEntryState(): ProcedureUiState {
         selectedDowntime = null,
         selectedProcedureCardIds = persistentListOf(),
         selectedProcedureItems = persistentListOf(),
-        procedureDowntimeMap = emptyMap()
+        procedureDowntimeMap = emptyMap(),
+        searchQuery = "",
+        searchedQuery = ""
     )
 }
 

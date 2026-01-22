@@ -33,6 +33,7 @@ import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardD
 import com.cherrish.android.presentation.calendar.procedure.model.ProcedureCardItemUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 
 /* TODO: 삭제 예정 */
 private val mockProcedureCardItems = persistentListOf(
@@ -101,10 +102,21 @@ fun FilteringWithSearchContent(
     onCardClick: (Long) -> Unit,
     onSearchAction: (String) -> Unit,
     query: String,
+    searchedQuery: String,
     onQueryChange: (String) -> Unit,
     bottomContentPadding: Dp,
     modifier: Modifier = Modifier
 ) {
+    val normalizedQuery = searchedQuery.trim()
+    val filteredItems = if (normalizedQuery.isEmpty()) {
+        cardItems
+    } else {
+        cardItems.filter { item ->
+            item.name.contains(normalizedQuery, ignoreCase = true) ||
+                item.category.contains(normalizedQuery, ignoreCase = true)
+        }.toPersistentList()
+    }
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -128,7 +140,7 @@ fun FilteringWithSearchContent(
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
-            if (cardItems.isEmpty()) {
+            if (filteredItems.isEmpty()) {
                 item {
                     EmptySearchResult(
                         modifier = Modifier.fillParentMaxSize()
@@ -136,7 +148,7 @@ fun FilteringWithSearchContent(
                 }
             } else {
                 items(
-                    items = cardItems,
+                    items = filteredItems,
                     key = { it.id }
                 ) { item ->
                     ProcedureCard(
@@ -202,6 +214,7 @@ private fun FilteringWithSearchContentPreview() {
             },
             onSearchAction = {},
             query = query,
+            searchedQuery = "",
             bottomContentPadding = 20.dp,
             onQueryChange = { query = it }
         )
@@ -218,6 +231,7 @@ private fun FilteringWithSearchContentEmptyPreview() {
             onCardClick = {},
             onSearchAction = {},
             query = "레이저 토닝",
+            searchedQuery = "레이저 토닝",
             bottomContentPadding = 20.dp,
             onQueryChange = {}
         )
