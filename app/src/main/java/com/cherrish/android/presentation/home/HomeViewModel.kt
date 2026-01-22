@@ -40,18 +40,20 @@ class HomeViewModel @Inject constructor(
             _uiState.update { UiState.Loading }
 
             homeRepository.getMainDashboard().onSuccess { response ->
+                val level = response.cherryLevel
+                val safeIndex = level.coerceIn(1, CherrishGaugeType.entries.lastIndex
+                )
                 _uiState.update {
                     UiState.Success(
                         HomeUiState(
-                            currentStep = response.cherryLevel,
+                            currentStep = level,
                             gauges = CherrishGaugeType.entries.toImmutableList(),
                             challengeRate = response.challengeRate,
                             challengeName = response.challengeName,
                             todayDate = response.toTodayDateString(),
                             plans = response.recentProcedures.toImmutableList(),
                             upcomingPlans = response.upcomingProcedures.toImmutableList(),
-                            selectedIndex = (response.cherryLevel - 1)
-                                .coerceIn(0, CherrishGaugeType.entries.size - 1)
+                            selectedIndex = safeIndex
                         )
                     )
                 }

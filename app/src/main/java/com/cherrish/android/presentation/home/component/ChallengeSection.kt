@@ -40,7 +40,7 @@ fun ChallengeSection(
     gauges: ImmutableList<CherrishGaugeType>,
     modifier: Modifier = Modifier,
     currentStep: Int = 0,
-    @DrawableRes imageRes: Int? = R.drawable.img_challenge_lv2,
+    @DrawableRes imageRes: Int? = R.drawable.img_challenge_lv1,
     onChallengeStartClick: () -> Unit = {},
     challengeName: String? = "웰니스 • 마음챙김",
     challengeRate: Int = 0

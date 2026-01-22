@@ -46,8 +46,8 @@ private fun ChallengeStartScreen(
             .fillMaxSize()
             .background(CherrishTheme.colors.gray0)
             .padding(paddingValues)
-            .padding(horizontal = 17.dp)
-
+            .padding(horizontal = 17.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(98f))
 

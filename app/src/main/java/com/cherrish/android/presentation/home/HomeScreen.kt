@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -80,6 +81,14 @@ private fun HomeScreen(
     onAddPlanClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(uiState.selectedIndex) {
+        val gauge = uiState.gauges.getOrNull(uiState.selectedIndex)
+        android.util.Log.d(
+            "HomeScreen",
+            "selectedIndex=${uiState.selectedIndex}, gauge=$gauge, image=${gauge?.image}"
+        )
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
