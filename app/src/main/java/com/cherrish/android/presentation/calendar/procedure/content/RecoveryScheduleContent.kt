@@ -89,7 +89,7 @@ fun RecoveryScheduleContent(
                         }
                     },
                     onDone = { focusManager.clearFocus(force = true) },
-                    onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) },
+                    onNext = { focusManager.moveFocus(focusDirection = FocusDirection.Next) }
                 )
 
                 if (errorMessage != null) {
