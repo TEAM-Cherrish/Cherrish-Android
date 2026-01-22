@@ -49,7 +49,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cherrish.android.R
@@ -58,10 +57,10 @@ import com.cherrish.android.core.common.extension.noRippleClickable
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.theme.CherrishTheme
 import com.cherrish.android.presentation.onboarding.model.OnboardingCherryType
+import kotlin.math.ceil
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
-import kotlin.math.ceil
 
 @Composable
 fun OnboardingRoute(
@@ -390,7 +389,6 @@ private fun Onboarding2Section(
             style = CherrishTheme.typography.title2R16,
             color = CherrishTheme.colors.gray600
         )
-
     }
 }
 
