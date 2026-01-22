@@ -99,7 +99,7 @@ private fun Challenge(
     challengeRate: Int,
     modifier: Modifier = Modifier
 ) {
-    val safeStep = currentStep.coerceIn(0, gauges.lastIndex)
+//    val safeStep = currentStep.coerceIn(0, gauges.lastIndex)
 
     Column(
         modifier = modifier
@@ -141,7 +141,7 @@ private fun Challenge(
         Spacer(modifier = Modifier.height(16.dp))
 
         CherrishGaugeBar(
-            currentStep = safeStep,
+            currentStep = currentStep,
             gauges = gauges
         )
     }
