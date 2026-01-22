@@ -80,7 +80,11 @@ private fun SelectedProcedureTitle(
         )
 
         Text(
-            text = "다운타임* $minDowntimeDays-${maxDowntimeDays}일",
+            text = if (maxDowntimeDays == 0 && minDowntimeDays == 0) {
+                "다운타임* 0일"
+            } else {
+                "다운타임* ${minDowntimeDays}-${maxDowntimeDays}일"
+            },
             color = CherrishTheme.colors.gray700,
             style = CherrishTheme.typography.body1R14
         )
@@ -94,8 +98,8 @@ private fun SelectedProcedureItemPreview() {
         SelectedProcedureItem(
             procedureId = 1,
             procedureName = "레이저 토닝",
-            minDowntimeDays = 3,
-            maxDowntimeDays = 5,
+            minDowntimeDays = 0,
+            maxDowntimeDays = 0,
             onDeletedClick = {}
         )
     }

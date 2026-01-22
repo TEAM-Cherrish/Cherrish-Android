@@ -14,7 +14,7 @@ import com.cherrish.android.core.designsystem.theme.CherrishTheme
 fun CautionDescription(
     modifier: Modifier = Modifier,
     description: String = "본 정보는 인터넷 빅데이터 검색 및 분석을 통해 " +
-        "수집된 정보이며, 공식적인 의료 정보가 아닙니다."
+            "수집된 정보\n이며, 공식적인 의료 정보가 아닙니다."
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -28,7 +28,6 @@ fun CautionDescription(
 
         Text(
             text = description,
-            modifier = Modifier.weight(1f),
             style = CherrishTheme.typography.body3R12,
             color = CherrishTheme.colors.gray600
         )
