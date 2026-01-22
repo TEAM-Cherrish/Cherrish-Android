@@ -52,8 +52,6 @@ fun ProcedureScheduleCard(
     onAddProcedureClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val isDowntimeMode = displayMode is CalendarDisplayMode.Downtime
-
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -116,7 +114,6 @@ fun ProcedureScheduleCard(
                                     procedureId = procedure.procedureId,
                                     downTimeDuration = procedure.downTimeDuration
                                 ),
-                                isDowntimeMode = isDowntimeMode,
                                 onClick = { onProcedureClick(procedure.procedureId) }
                             )
                         }

@@ -75,7 +75,10 @@ fun SelectedProcedureBottomSheet(
 
     LaunchedEffect(selectedProcedure) {
         if (selectedProcedure.size > lastSelectedCount) {
-            listState.animateScrollToItem(0)
+            val lastIndex = selectedProcedure.size - 1
+            if (lastIndex >= 0) {
+                listState.animateScrollToItem(lastIndex)
+            }
         }
         lastSelectedCount = selectedProcedure.size
     }

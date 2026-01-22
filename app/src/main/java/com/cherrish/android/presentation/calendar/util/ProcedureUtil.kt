@@ -58,7 +58,11 @@ fun getProcedureType(
     }
     is CalendarDisplayMode.Downtime -> {
         if (displayMode.selectedProcedureId == procedureId) {
-            ProcedureType.ACTIVE
+            if (downTimeDuration == 0) {
+                ProcedureType.ACTIVE_NO_DOWNTIME
+            } else {
+                ProcedureType.ACTIVE
+            }
         } else {
             ProcedureType.INACTIVE
         }
