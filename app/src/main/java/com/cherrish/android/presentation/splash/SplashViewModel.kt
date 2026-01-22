@@ -20,15 +20,7 @@ class SplashViewModel @Inject constructor(
     fun isAutoLoginCheck() {
         viewModelScope.launch {
             val id = tokenManager.getId()
-            _sideEffect.emit(
-//                if (id != null) {
-//                    SplashSideEffect.NavigateToHome
-//                } else {
-//                    SplashSideEffect.NavigateToOnboarding
-//                }
-
-                SplashSideEffect.NavigateToOnboarding
-            )
+            _sideEffect.emit(SplashSideEffect.NavigateToOnboarding)
         }
     }
 }
