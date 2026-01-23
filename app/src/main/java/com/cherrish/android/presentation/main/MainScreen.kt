@@ -1,12 +1,17 @@
 package com.cherrish.android.presentation.main
 
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import com.cherrish.android.data.repository.ChallengeMissionProgressRepository
@@ -30,6 +35,8 @@ fun MainScreen(
     val isBottomBarVisible by appState.isBottomBarVisible.collectAsStateWithLifecycle()
     val currentTab by appState.currentTab.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
+
+    HandleBackPressToExit()
 
     CompositionLocalProvider(LocalCalendarEventBus provides appState.calendarEventBus) {
         Scaffold(
@@ -112,5 +119,21 @@ fun MainScreen(
                 myPageNavGraph(paddingValues = innerPadding)
             }
         }
+    }
+}
+
+@Composable
+private fun HandleBackPressToExit(
+    enabled: Boolean = true,
+    backPressInterval: Long = 2000L
+) {
+    val context = LocalActivity.current
+    var backPressedTime by remember { mutableLongStateOf(0L) }
+
+    BackHandler(enabled = enabled) {
+        if (System.currentTimeMillis() - backPressedTime <= backPressInterval) {
+            context?.finish()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 }
