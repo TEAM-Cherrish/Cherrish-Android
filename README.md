@@ -53,8 +53,8 @@
 
 ## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>**Convention**
 
-💫 [Git & Branch Convention](https://alpine-marten-2ce.notion.site/2d5fe06db52581d099b6cb0fa89a4c62?pvs=74)<br/>
-✍️ [Code Convention](https://lively-mars-3b7.notion.site/Issue-PR-Convention-216ab823e68d803ba888cf3702831e2f?source=copy_link)<br/>
+💫 [Git & Branch Convention](https://www.notion.so/2d5fe06db52581bca022f39c34cdb3f5)<br/>
+✍️ [Code Convention](https://www.notion.so/2d5fe06db52581d099b6cb0fa89a4c62)<br/>
 📂 [Packaging Convention](https://alpine-marten-2ce.notion.site/2d5fe06db525810f8a53ccbb507fbd0b?pvs=74)<br/>
 
 <br/>
