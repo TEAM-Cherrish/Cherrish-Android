@@ -39,7 +39,7 @@ fun SplashRoute(
 ) {
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect (Unit) {
+    LaunchedEffect(Unit) {
         scope.launch {
             delay(3000)
             viewModel.navigateToOnboarding()
