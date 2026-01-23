@@ -18,13 +18,11 @@ fun NavController.navigateToSplash(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.splashNavGraph(
     navigateToOnboarding: () -> Unit,
-    navigateToHome: () -> Unit,
     paddingValues: PaddingValues
 ) {
     composable<Splash> {
         SplashRoute(
             navigateToOnboarding = navigateToOnboarding,
-            navigateToHome = navigateToHome,
             paddingValues = paddingValues
         )
     }
