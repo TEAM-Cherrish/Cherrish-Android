@@ -1,29 +1,45 @@
 package com.cherrish.android.presentation.onboarding.information
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -33,7 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.cherrish.android.core.common.extension.addFocusCleaner
 import com.cherrish.android.core.common.extension.collectLatestSideEffect
 import com.cherrish.android.core.designsystem.component.button.CherrishButton
 import com.cherrish.android.core.designsystem.component.textfield.CherrishTextField
@@ -69,6 +84,7 @@ fun OnboardingInformationRoute(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun OnboardingInformationScreen(
     paddingValues: PaddingValues,
@@ -84,82 +100,144 @@ private fun OnboardingInformationScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val density = LocalDensity.current
+
+    val nameFocusRequester = remember { FocusRequester() }
     val ageFocusRequester = remember { FocusRequester() }
+    var isNameFocused by remember { mutableStateOf(false) }
     var isAgeFocused by remember { mutableStateOf(false) }
 
-    Scaffold(
-        bottomBar = {
-            CherrishButton(
-                text = "다음",
-                onClick = onNextClick,
-                enabled = enabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 30.dp)
-                    .background(CherrishTheme.colors.gray0)
-                    .navigationBarsPadding()
+    val coroutineScope = rememberCoroutineScope()
 
-            )
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+
+    LaunchedEffect(isNameFocused, isAgeFocused) {
+        if (isNameFocused || isAgeFocused) {
+            delay(300)
+            bringIntoViewRequester.bringIntoView()
         }
-    ) { innerPadding ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(color = CherrishTheme.colors.gray0)
-                .addFocusCleaner(focusManager)
-                .padding(paddingValues = paddingValues)
-                .imePadding()
+    }
+
+    val listState = rememberLazyListState()
+    val imeBottom = WindowInsets.ime.getBottom(density)
+    val imeBottomDp = with(density) { imeBottom.toDp() }
+    val targetBottomInset = if (imeBottomDp > 0.dp) 0.dp else paddingValues.calculateBottomPadding()
+    val bottomInset by animateDpAsState(targetValue = targetBottomInset, label = "bottomInset")
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = CherrishTheme.colors.gray0)
+    ) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentPadding = PaddingValues(bottom = 24.dp)
         ) {
-            Spacer(modifier = Modifier.weight(135f))
-            UserInfoHeader()
-            Spacer(modifier = Modifier.weight(70f))
+            item {
+                Spacer(modifier = Modifier.height(157.dp))
+            }
 
-            UserInfoTextField(
-                textFieldName = "이름",
-                value = username,
-                onValueChange = onNameChange,
-                placeholder = "김체리",
-                keyboardImeAction = ImeAction.Next,
-                onNextAction = { ageFocusRequester.requestFocus() },
-                keyboardType = KeyboardType.Text,
-                errorText = "이름은 최대 7자까지 입력 가능합니다.",
-                errorCase = nameErrorCase
-            )
+            stickyHeader {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(CherrishTheme.colors.gray0)
+                ) {
+                    UserInfoHeader()
+                }
+            }
 
-            Spacer(modifier = Modifier.weight(30f))
+            item {
+                Spacer(modifier = Modifier.height(70.dp))
+            }
 
-            UserInfoTextField(
-                textFieldName = "나이",
-                value = age,
-                onValueChange = onAgeChange,
-                placeholder = "20",
-                keyboardImeAction = ImeAction.Done,
-                onDoneAction = {
-                    keyboardController?.hide()
-                    kotlinx.coroutines.MainScope().launch {
-                        delay(100)
-                        focusManager.clearFocus()
-                    }
-                },
-                keyboardType = KeyboardType.Number,
-                visualTransformation = if (isAgeFocused) {
-                    VisualTransformation.None
-                } else {
-                    AgeSuffixTransformation(" 세")
-                },
-                errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
-                errorCase = ageErrorCase,
-                modifier = Modifier
-                    .focusRequester(ageFocusRequester)
-                    .onFocusChanged { state ->
-                        isAgeFocused = state.isFocused
-                    }
-            )
+            item {
+                Column(
+                    modifier = Modifier
+                        .bringIntoViewRequester(bringIntoViewRequester)
+                        .windowInsetsPadding(WindowInsets.ime.only(WindowInsetsSides.Bottom))
+                ) {
+                    UserInfoTextField(
+                        textFieldName = "이름",
+                        value = username,
+                        onValueChange = onNameChange,
+                        placeholder = "김체리",
+                        keyboardImeAction = ImeAction.Next,
+                        onNextAction = { ageFocusRequester.requestFocus() },
+                        keyboardType = KeyboardType.Text,
+                        errorText = "이름은 최대 7자까지 입력 가능합니다.",
+                        errorCase = nameErrorCase,
+                        textFieldModifier = Modifier
+                            .focusRequester(nameFocusRequester)
+                            .pointerInput(Unit) {
+                                awaitEachGesture {
+                                    awaitFirstDown(pass = PointerEventPass.Initial)
+                                    nameFocusRequester.requestFocus()
+                                    waitForUpOrCancellation()
+                                }
+                            }
+                            .onFocusChanged { state ->
+                                isNameFocused = state.isFocused
+                            }
+                    )
 
-            Spacer(modifier = Modifier.weight(200f))
+                    Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.padding(innerPadding.calculateBottomPadding()))
+                    UserInfoTextField(
+                        textFieldName = "나이",
+                        value = age,
+                        onValueChange = onAgeChange,
+                        placeholder = "20",
+                        keyboardImeAction = ImeAction.Done,
+                        onDoneAction = {
+                            keyboardController?.hide()
+                            coroutineScope.launch {
+                                delay(100)
+                                focusManager.clearFocus()
+                            }
+                        },
+                        keyboardType = KeyboardType.Number,
+                        visualTransformation = if (isAgeFocused) {
+                            VisualTransformation.None
+                        } else {
+                            AgeSuffixTransformation(
+                                " 세"
+                            )
+                        },
+                        errorText = "입력 가능한 최대 나이 100세를 초과했습니다.",
+                        errorCase = ageErrorCase,
+                        textFieldModifier = Modifier
+                            .focusRequester(ageFocusRequester)
+                            .pointerInput(Unit) {
+                                awaitEachGesture {
+                                    awaitFirstDown(pass = PointerEventPass.Initial)
+                                    ageFocusRequester.requestFocus()
+                                    waitForUpOrCancellation()
+                                }
+                            }
+                            .onFocusChanged { state ->
+                                isAgeFocused = state.isFocused
+                            }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
+
+        CherrishButton(
+            text = "다음",
+            onClick = onNextClick,
+            enabled = enabled,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(CherrishTheme.colors.gray0)
+                .padding(horizontal = 24.dp)
+                .padding(top = 30.dp, bottom = 30.dp + bottomInset)
+        )
     }
 }
 
@@ -168,7 +246,7 @@ private fun UserInfoHeader() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp),
+            .padding(horizontal = 15.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
@@ -195,6 +273,7 @@ private fun UserInfoTextField(
     keyboardType: KeyboardType,
     errorText: String,
     modifier: Modifier = Modifier,
+    textFieldModifier: Modifier = Modifier,
     onNextAction: () -> Unit = {},
     onDoneAction: () -> Unit = {},
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -227,7 +306,7 @@ private fun UserInfoTextField(
             onDoneAction = onDoneAction,
             keyboardType = keyboardType,
             visualTransformation = visualTransformation,
-            modifier = Modifier.fillMaxWidth()
+            modifier = textFieldModifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(4.dp))

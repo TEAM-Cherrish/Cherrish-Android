@@ -63,7 +63,6 @@ fun MainScreen(
             ) {
                 splashNavGraph(
                     navigateToOnboarding = appState::navigateToOnboarding,
-                    navigateToHome = appState::navigateToHome,
                     paddingValues = innerPadding
                 )
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -19,8 +20,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -35,23 +34,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashRoute(
     navigateToOnboarding: () -> Unit,
-    navigateToHome: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
 
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+    LaunchedEffect(Unit) {
         scope.launch {
             delay(3000)
-            viewModel.isAutoLoginCheck()
+            viewModel.navigateToOnboarding()
         }
     }
 
     viewModel.sideEffect.collectLatestSideEffect { sideEffect ->
         when (sideEffect) {
             SplashSideEffect.NavigateToOnboarding -> navigateToOnboarding()
-            SplashSideEffect.NavigateToHome -> navigateToHome()
         }
     }
 
