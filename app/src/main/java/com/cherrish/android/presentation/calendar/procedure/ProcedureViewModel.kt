@@ -384,12 +384,12 @@ class ProcedureViewModel @Inject constructor(
                     } else {
                         response.procedures.filter { procedure ->
                             procedure.name.contains(normalizedKeyword, ignoreCase = true) ||
-                                    (
-                                            procedure.category?.contains(
-                                                normalizedKeyword,
-                                                ignoreCase = true
-                                            ) == true
-                                            )
+                                (
+                                    procedure.category?.contains(
+                                        normalizedKeyword,
+                                        ignoreCase = true
+                                    ) == true
+                                    )
                         }
                     }
 
