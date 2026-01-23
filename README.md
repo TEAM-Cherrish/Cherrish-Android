@@ -10,16 +10,16 @@
 
 <br/>
 
-## Cherrish 주요 기능
+## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>Cherrish 주요 기능
 - 피부 고민 키워드 기반 시술 리스트
 - 시술 다운타임 설정 및 디데이 여유기간 시각화
 - AI가 짜주는 챌린지 루틴 추천
 - 챌린지 기반 체리 게이미피케이션
 
-  
+
 <br/>
 
-## Tech Stack  
+## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>Tech Stack  
   
 | Category | Stack |  
 | --- | --- |  
@@ -27,12 +27,31 @@
 | **UI** | Jetpack Compose |  
 | **DI** | Dagger-Hilt |  
 | **Asynchronous** | Kotlin Coroutine, Flow |  
-| **Modularization** | Android App Modularization |  
+| **Modularization** | Single Modularization |  
 | **Build Configuration** | Gradle Version Catalog, Custom Convention Plugins |  
 
 <br/>
 
-## **Convention**
+### <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="30"/> Tech Stack 소개 ###
+
+**1️⃣ Architecture: Google Recommended App Architecture** <br/>
+구글 권장 아키텍처는 UI–상태–비즈니스 로직–데이터를 명확히 분리하여 코드의 책임을 분명하게 만들기 위해 사용했다. 
+이 구조는 테스트와 유지보수를 쉽게 하고 기능이 커져도 안정적으로 확장할 수 있다고 판단했다. 
+또한 Android Jetpack(ViewModel, Flow, Compose 등)과 자연스럽게 연동되어 공식 가이드와의 일관성을 유지할 수 있어 선택하였다.
+
+**2️⃣ Pattern: MVVM** <br/>
+러닝커브가 조금 높은 MVI를 적용하기보다 MVVM을 조금 더 체계적으로 사용해보고자 도입했습니다.
+
+**3️⃣ Dependency Injection: Hilt** <br/>
+의존성 주입으로 뷰모델 관리를 더욱 편하게 하고자 도입했습니다.
+구글이 공식 지원하는 DI 라이브러리로 보일러플레이트 코드를 최소화할 수 있습니다.
+
+**4️⃣ Navigation: Type-Safety Navigation**<br/>
+기존 문자열 기반 네비게이션은 런타임 오류를 유발할 수 있기 때문에 타입 안정성을 지원하는 Type-Safety Navigation을 도입했습니다.
+
+<br/>
+
+## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>**Convention**
 
 💫 [Git & Branch Convention](https://alpine-marten-2ce.notion.site/2d5fe06db52581d099b6cb0fa89a4c62?pvs=74)<br/>
 ✍️ [Code Convention](https://lively-mars-3b7.notion.site/Issue-PR-Convention-216ab823e68d803ba888cf3702831e2f?source=copy_link)<br/>
@@ -40,7 +59,7 @@
 
 <br/>
 
-## Contributors  
+## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>Contributors  
   
 | 🤴김나현<br/>[@nhyeonii](https://github.com/nhyeonii) | 🍒정소희<br/>[@sohee6989](https://github.com/sohee6989) | 🍒남궁혜민<br/>[@hyeminililo](https://github.com/hyeminililo) | 🍒유수현<br/>[@usuuhyn](https://github.com/usuuhyn) |
 | --- | --- | --- | --- |
@@ -49,7 +68,7 @@
 
 <br/>
 
-## **Foldering**
+## <img src="https://github.com/user-attachments/assets/ac0bd614-bf51-4fde-9727-f6f3d70dafa2" height="40"/>**Foldering**
 ```
 📂 cherrish
 ┣ 📂 core
