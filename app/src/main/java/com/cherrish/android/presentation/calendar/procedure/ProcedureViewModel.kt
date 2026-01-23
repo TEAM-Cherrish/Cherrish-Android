@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -93,17 +94,21 @@ class ProcedureViewModel @Inject constructor(
 
                     val currentState = _uiState.value
                     if (currentState is UiState.Success) {
-                        _uiState.value = currentState.copy(
-                            data = currentState.data.copy(worries = worriesToUse)
-                        )
+                        _uiState.update { state ->
+                            (state as? UiState.Success)?.copy(
+                                data = state.data.copy(worries = worriesToUse)
+                            ) ?: state
+                        }
                     } else {
-                        _uiState.value = UiState.Success(
-                            ProcedureUiState(
-                                worries = worriesToUse,
-                                startDay = startDateArg,
-                                screenHeightDp = latestScreenHeightDp
+                        _uiState.update {
+                            UiState.Success(
+                                ProcedureUiState(
+                                    worries = worriesToUse,
+                                    startDay = startDateArg,
+                                    screenHeightDp = latestScreenHeightDp
+                                )
                             )
-                        )
+                        }
                     }
                 }
                 .onLogFailure { }
@@ -269,21 +274,21 @@ class ProcedureViewModel @Inject constructor(
     }
 
     fun onNextClick() {
-        var queryToFetch: ProceduresQuery? = null
+        val current = currentStateOrNull() ?: return
 
-        _uiState.updateSuccess { current ->
-            if (!current.isNextEnabled) return@updateSuccess current
+        if (!current.isNextEnabled) return
 
-            if (current.flow == ProcedureFlow.Entry) {
-                val selected = current.existenceSelectedIndex ?: return@updateSuccess current
-                val nextFlow = if (selected == 1) ProcedureFlow.NoTreat else ProcedureFlow.Treat
-                val nextStep = if (nextFlow == ProcedureFlow.NoTreat) {
-                    ProcedureStep.Category
-                } else {
-                    ProcedureStep.RecoverySchedule
-                }
+        if (current.flow == ProcedureFlow.Entry) {
+            val selected = current.existenceSelectedIndex ?: return
+            val nextFlow = if (selected == 1) ProcedureFlow.NoTreat else ProcedureFlow.Treat
+            val nextStep = if (nextFlow == ProcedureFlow.NoTreat) {
+                ProcedureStep.Category
+            } else {
+                ProcedureStep.RecoverySchedule
+            }
 
-                return@updateSuccess current.copy(
+            _uiState.updateSuccess {
+                it.copy(
                     flow = nextFlow,
                     step = nextStep,
                     selectedWorryId = null,
@@ -297,60 +302,117 @@ class ProcedureViewModel @Inject constructor(
                     procedureDowntimeMap = emptyMap()
                 )
             }
+            return
+        }
 
-            if (current.step == ProcedureStep.Filtering ||
-                current.step == ProcedureStep.FilteringWithSearch
-            ) {
-                val nextStep = current.nextStep()
+        if (current.step == ProcedureStep.Filtering ||
+            current.step == ProcedureStep.FilteringWithSearch
+        ) {
+            val nextStep = current.nextStep()
 
-                val updatedProcedureItems = current.procedureItems.map { item ->
-                    if (item.id in current.selectedProcedureCardIds) {
-                        item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
-                    } else {
-                        item
-                    }
-                }.toImmutableList()
+            val updatedProcedureItems = current.procedureItems.map { item ->
+                if (item.id in current.selectedProcedureCardIds) {
+                    item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
+                } else {
+                    item.copy(displayMode = ProcedureCardDisplayMode.Basic)
+                }
+            }.toImmutableList()
 
-                val updatedSelectedItems = current.selectedProcedureItems.map { item ->
-                    if (item.id in current.selectedProcedureCardIds) {
-                        item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
-                    } else {
-                        item
-                    }
-                }.toImmutableList()
+            val updatedSelectedItems = current.selectedProcedureItems.map { item ->
+                if (item.id in current.selectedProcedureCardIds) {
+                    item.copy(displayMode = ProcedureCardDisplayMode.Selectable)
+                } else {
+                    item.copy(displayMode = ProcedureCardDisplayMode.Basic)
+                }
+            }.toImmutableList()
 
-                return@updateSuccess current.copy(
+            _uiState.updateSuccess {
+                it.copy(
                     step = nextStep,
                     procedureItems = updatedProcedureItems,
                     selectedProcedureItems = updatedSelectedItems
                 )
             }
-
-            val nextStep = current.nextStep()
-
-            if (current.flow == ProcedureFlow.NoTreat &&
-                current.step == ProcedureStep.RecoverySchedule
-            ) {
-                queryToFetch = ProceduresQuery(
-                    keyword = null,
-                    worryId = current.selectedWorryId
-                )
-            }
-
-            if (current.flow == ProcedureFlow.Treat &&
-                current.step == ProcedureStep.RecoverySchedule
-            ) {
-                val keyword = current.searchQuery.trim().takeIf { it.isNotEmpty() }
-                queryToFetch = ProceduresQuery(
-                    keyword = keyword,
-                    worryId = null
-                )
-            }
-
-            current.copy(step = nextStep)
+            return
         }
 
-        queryToFetch?.let { fetchProcedures(keyword = it.keyword, worryId = it.worryId) }
+        val nextStep = current.nextStep()
+
+        if (current.flow == ProcedureFlow.NoTreat &&
+            current.step == ProcedureStep.RecoverySchedule
+        ) {
+            _uiState.update { UiState.Loading }
+
+            viewModelScope.launch {
+                procedureRepository.getProcedures(
+                    keyword = null,
+                    worryId = current.selectedWorryId
+                ).onSuccess { response ->
+                    val items = response.procedures
+                        .map { it.toUiModel() }
+                        .toPersistentList()
+
+                    _uiState.update {
+                        UiState.Success(
+                            current.copy(
+                                step = nextStep,
+                                procedureItems = items
+                            )
+                        )
+                    }
+                }.onLogFailure {
+                    _uiState.update { UiState.Success(current) }
+                }
+            }
+            return
+        }
+
+        if (current.flow == ProcedureFlow.Treat &&
+            current.step == ProcedureStep.RecoverySchedule
+        ) {
+            _uiState.update { UiState.Loading }
+
+            viewModelScope.launch {
+                val keyword = current.searchQuery.trim().takeIf { it.isNotEmpty() }
+                procedureRepository.getProcedures(
+                    keyword = keyword,
+                    worryId = null
+                ).onSuccess { response ->
+                    val normalizedKeyword = keyword?.trim().takeIf { !it.isNullOrEmpty() }
+                    val filteredProcedures = if (normalizedKeyword == null) {
+                        response.procedures
+                    } else {
+                        response.procedures.filter { procedure ->
+                            procedure.name.contains(normalizedKeyword, ignoreCase = true) ||
+                                    (
+                                            procedure.category?.contains(
+                                                normalizedKeyword,
+                                                ignoreCase = true
+                                            ) == true
+                                            )
+                        }
+                    }
+
+                    val items = filteredProcedures
+                        .map { it.toUiModel() }
+                        .toPersistentList()
+
+                    _uiState.update {
+                        UiState.Success(
+                            current.copy(
+                                step = nextStep,
+                                procedureItems = items
+                            )
+                        )
+                    }
+                }.onLogFailure {
+                    _uiState.update { UiState.Success(current) }
+                }
+            }
+            return
+        }
+
+        _uiState.updateSuccess { it.copy(step = nextStep) }
     }
 
     fun onBackClick() {
@@ -498,11 +560,6 @@ class ProcedureViewModel @Inject constructor(
         }
     }
 }
-
-private data class ProceduresQuery(
-    val keyword: String?,
-    val worryId: Long?
-)
 
 private fun ProcedureModel.toUiModel(): ProcedureCardItemUiModel =
     ProcedureCardItemUiModel(
