@@ -3,6 +3,7 @@ package com.cherrish.android.presentation.onboarding.information
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cherrish.android.core.common.extension.onLogFailure
+import com.cherrish.android.core.local.TokenManager
 import com.cherrish.android.data.model.OnboardingProfileRequestModel
 import com.cherrish.android.data.repository.OnboardingProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class OnboardingInformationViewModel @Inject constructor(
-    private val onboardingProfileRepository: OnboardingProfileRepository
+    private val onboardingProfileRepository: OnboardingProfileRepository,
+    private val tokenManager: TokenManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(InformationUiState())
     val uiState: StateFlow<InformationUiState> = _uiState.asStateFlow()
@@ -53,6 +55,7 @@ class OnboardingInformationViewModel @Inject constructor(
                     age = age
                 )
             ).onSuccess { response ->
+                tokenManager.saveId(id = response.id)
                 _sideEffect.emit(InformationSideEffect.NavigateToHome)
             }.onLogFailure {}
         }
